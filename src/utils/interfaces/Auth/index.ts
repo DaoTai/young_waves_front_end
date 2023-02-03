@@ -36,4 +36,5 @@ export interface Register {
 export interface SignIn {
    username: string;
    password: string;
+   isRemember: boolean;
 }

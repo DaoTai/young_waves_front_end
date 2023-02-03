@@ -1,25 +1,32 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Helmet } from "react-helmet-async";
-import { Link, useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
 import { Send } from "@mui/icons-material";
 import {
+   Alert,
+   AlertTitle,
    Box,
    Button,
    Checkbox,
+   Fade,
    FormControlLabel,
    Stack,
    TextField,
    Typography,
 } from "@mui/material";
-import { signInState$ } from "../../../redux-saga/redux/selectors";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../../../redux-saga/redux/actions";
+import { signInState$ } from "../../../redux-saga/redux/selectors";
+import { TIME_ALERT } from "../../../utils/constants";
+import { Spinner } from "../../../components";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const dispatch = useDispatch();
-   const signInData = useSelector(signInState$);
+   const { isLoading, payload } = useSelector(signInState$);
    const navigate = useNavigate();
+   const [msg, setMsg] = useState<string>("");
+   const [showAlert, setShowAlert] = useState<boolean>(false);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
       initialValues: init,
       validationSchema: signInOptions,
@@ -29,12 +36,24 @@ const SignIn = () => {
    });
 
    useEffect(() => {
-      if (signInData.payload.status === 200) {
+      // When success
+      if (payload?.status === 200) {
          navigate("/", {
             replace: true,
          });
       }
-   }, [signInData, dispatch]);
+      // When failed
+      if (payload?.response && payload?.response.status !== 200) {
+         setShowAlert(true);
+         setMsg(payload?.response?.data?.msg);
+         const timerId = setTimeout(() => {
+            setShowAlert(false);
+         }, TIME_ALERT);
+         return () => {
+            clearTimeout(timerId);
+         };
+      }
+   }, [isLoading, payload, dispatch]);
 
    return (
       <div id="sign-in">
@@ -96,7 +115,14 @@ const SignIn = () => {
                direction={{ md: "row", sm: "column", xs: "column" }}
                justifyContent={{ md: "space-between", sm: "space-between", xs: "flex-start" }}
                alignItems={{ md: "center", sm: "flex-start", xs: "flex-start" }}>
-               <FormControlLabel control={<Checkbox />} label="Remember me" />
+               {/* Remember */}
+               <FormControlLabel
+                  name="isRemember"
+                  onChange={handleChange}
+                  checked={values.isRemember}
+                  control={<Checkbox />}
+                  label="Remember me"
+               />
                <Typography>
                   <Link to="/">Forgot password?</Link>
                </Typography>
@@ -108,6 +134,29 @@ const SignIn = () => {
                <Link to="/auth/sign-up">Sign up</Link>
             </Box>
          </Box>
+
+         {/* Alert */}
+         {showAlert && (
+            <Alert
+               severity="error"
+               closeText="Close"
+               variant="outlined"
+               sx={{
+                  position: "fixed",
+                  zIndex: 999,
+                  bottom: "1%",
+                  right: "1%",
+                  minWidth: "250px",
+                  backgroundColor: "#fff",
+               }}
+               onClose={() => setShowAlert(false)}>
+               <AlertTitle>Error</AlertTitle>
+               {msg}
+            </Alert>
+         )}
+
+         {/* Spinner */}
+         {isLoading && <Spinner />}
       </div>
    );
 };

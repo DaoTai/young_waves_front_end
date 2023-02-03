@@ -1,20 +1,19 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { signInUser } from "../../apis/auth";
 import { SIGN_IN } from "../../utils/constants";
-import { hideSpinner, showSpinner, signInFailure, signInSuccess } from "../redux/actions";
-
+import { signInFailure, signInSuccess } from "../redux/actions";
+import { SignIn } from "../../utils/interfaces/Auth";
 // Saga
 function* signInSaga(action) {
    try {
-      // Show loading
-      yield put(showSpinner());
+      console.log("action: ", action);
+
       const data = yield call(signInUser, action.payload);
       yield put(signInSuccess(data));
-      // Hide loading
-      yield put(hideSpinner());
+      action.payload.isRemember
+         ? localStorage.setItem("username", action.payload.username)
+         : localStorage.removeItem("username");
    } catch (err) {
-      // Hide loading
-      yield put(hideSpinner());
       yield put(signInFailure(err as string));
    }
 }

@@ -1,22 +1,14 @@
-import { CssBaseline, styled } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
 import GlobalStyle from "./components/GolbalStyle";
 import { AuthLayout } from "./pages/auth";
 import Home from "./pages/home";
-import { Spinner } from "./components";
-import { spinnerState$ } from "./redux-saga/redux/selectors";
 import { authRoutes, commonRoutes, errorRoutes, userRoutes } from "./routes";
-import { useEffect } from "react";
 
 function App() {
-   const showSpinner = useSelector(spinnerState$);
-
    return (
       <>
          {/* Spinner */}
-         {/* <Spinner /> */}
-         {showSpinner.isShow && <Spinner />}
          <CssBaseline />
          <GlobalStyle />
          {/* Routing */}
