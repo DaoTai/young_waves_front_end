@@ -1,12 +1,28 @@
-import React from "react";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useSelector, useDispatch } from "react-redux";
+import { Box, Grid, Stack } from "@mui/material";
+import { Post } from "../../../components";
+import { getProfile } from "../../../redux-saga/redux/actions";
+import { signInState$, profileState$ } from "../../../redux-saga/redux/selectors";
+import News from "../NewsFeed/News";
 import Heading from "./Heading";
 import Introduction from "./Introduction";
 import Navigation from "./Navigation";
-import News from "../NewsFeed/News";
-import { Post } from "../../../components";
-import { Box, Grid, Stack, styled } from "@mui/material";
 const Profile = () => {
+   const dispatch = useDispatch();
+   const { id } = useParams();
+   const { accessToken } = useSelector(signInState$);
+   const user = useSelector(profileState$);
+   useEffect(() => {
+      dispatch(
+         getProfile({
+            id: id as string,
+            accessToken,
+         })
+      );
+   }, []);
    return (
       <>
          <Helmet>

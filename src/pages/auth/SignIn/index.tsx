@@ -1,6 +1,5 @@
 import { Send } from "@mui/icons-material";
 import {
-   Alert,
    AlertTitle,
    Box,
    Button,
@@ -19,11 +18,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../../../redux-saga/redux/actions";
 import { signInState$ } from "../../../redux-saga/redux/selectors";
 import { TIME_ALERT } from "../../../utils/constants";
-import { Spinner } from "../../../components";
+import { Spinner, Alert } from "../../../components";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const dispatch = useDispatch();
-   const { isLoading, payload } = useSelector(signInState$);
+   const { isLoading, payload, status, err } = useSelector(signInState$);
    const navigate = useNavigate();
    const [msg, setMsg] = useState<string>("");
    const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -36,22 +35,24 @@ const SignIn = () => {
    });
 
    useEffect(() => {
-      // When success
-      if (payload?.status === 200) {
-         navigate("/", {
-            replace: true,
-         });
-      }
-      // When failed
-      if (payload?.response && payload?.response.status !== 200) {
-         setShowAlert(true);
-         setMsg(payload?.response?.data?.msg);
-         const timerId = setTimeout(() => {
-            setShowAlert(false);
-         }, TIME_ALERT);
-         return () => {
-            clearTimeout(timerId);
-         };
+      if (status) {
+         // When success
+         if (status === 200) {
+            navigate("/", {
+               replace: true,
+            });
+         }
+         // When failed
+         else {
+            setShowAlert(true);
+            setMsg(err);
+            const timerId = setTimeout(() => {
+               setShowAlert(false);
+            }, TIME_ALERT);
+            return () => {
+               clearTimeout(timerId);
+            };
+         }
       }
    }, [isLoading, payload, dispatch]);
 
@@ -136,27 +137,9 @@ const SignIn = () => {
          </Box>
 
          {/* Alert */}
-         {showAlert && (
-            <Alert
-               severity="error"
-               closeText="Close"
-               variant="outlined"
-               sx={{
-                  position: "fixed",
-                  zIndex: 999,
-                  bottom: "1%",
-                  right: "1%",
-                  minWidth: "250px",
-                  backgroundColor: "#fff",
-               }}
-               onClose={() => setShowAlert(false)}>
-               <AlertTitle>Error</AlertTitle>
-               {msg}
-            </Alert>
-         )}
-
+         <Alert show={showAlert} msg={msg} onClose={() => setShowAlert(false)} />
          {/* Spinner */}
-         {isLoading && <Spinner />}
+         <Spinner show={isLoading} />
       </div>
    );
 };

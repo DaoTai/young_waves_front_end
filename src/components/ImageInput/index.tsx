@@ -1,9 +1,6 @@
-import { Box, Button, Tooltip } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { useEffect, useRef } from "react";
+import { Tooltip } from "@mui/material";
 import FileBase64 from "react-file-base64";
-import { Stack } from "@mui/system";
-import { MyLabel, WrapFileInput } from "./styles";
+import { WrapFileInput } from "./styles";
 
 const ImageInput = ({ onChange }: { onChange: (e: React.FormEvent<EventTarget>) => void }) => {
    const handleGetImages = (files: any) => {

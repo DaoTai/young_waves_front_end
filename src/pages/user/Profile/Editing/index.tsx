@@ -1,3 +1,4 @@
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import {
    Box,
    Button,
@@ -5,27 +6,45 @@ import {
    FormControlLabel,
    FormLabel,
    Grid,
+   Modal,
    Radio,
    RadioGroup,
    TextField,
-   Modal,
-   Input,
 } from "@mui/material";
-import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
-import { Helmet } from "react-helmet-async";
-import { textInfoUser, radioFields } from "../../../auth/SignUp/config";
-import { useState } from "react";
-import { DateTimePicker } from "../../../../components";
-import Password from "./Password";
-import { MyBox } from "./Password/styles";
-import { textFields } from "./Password/config";
 import { Stack } from "@mui/system";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import { profileState$ } from "../../../../redux-saga/redux/selectors";
+import { Helmet } from "react-helmet-async";
+import { DateTimePicker } from "../../../../components";
+import { radioFields, textInfoUser, init, updateUserOptions } from "../../../auth/SignUp/config";
+import Password from "./Password";
 
 const Editing = () => {
+   const { isLoading, user, status } = useSelector(profileState$);
    const [open, setOpen] = useState<boolean>(false);
-   const handleSubmit = (e) => {
-      console.log("Submit");
-   };
+   const {
+      values,
+      errors,
+      touched,
+      handleBlur,
+      handleChange,
+      handleSubmit,
+      setValues,
+      setFieldValue,
+   } = useFormik({
+      initialValues: user || init,
+      validationSchema: updateUserOptions,
+      onSubmit: (values) => {
+         console.log("values: ", values);
+      },
+   });
+
+   useEffect(() => {
+      setValues(user);
+   }, [isLoading, user, status]);
+
    return (
       <>
          <Helmet>
@@ -38,31 +57,46 @@ const Editing = () => {
                   Change Password
                </Button>
             </Stack>
-            <form autoComplete="off" onSubmit={(e: React.SyntheticEvent) => handleSubmit(e)}>
+            <form autoComplete="off" onSubmit={handleSubmit}>
                <Grid container spacing={2}>
                   {/* Text fields */}
                   {textInfoUser.map((props: any, i: number) => {
                      return (
                         <Grid key={i} item sm={6} xs={12}>
-                           <TextField {...props} />
+                           <TextField
+                              {...props}
+                              value={values[props.name] || ""}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={errors[props.name] && touched[props.name]}
+                              helperText={
+                                 errors[props.name] && touched[props.name]
+                                    ? errors[props.name]
+                                    : null
+                              }
+                           />
                         </Grid>
                      );
                   })}
-                  {/* Checkbox fields */}
+                  {/* Radio fields */}
                   {radioFields.map((item: any, i: number) => {
                      return (
                         <Grid key={i} item md={6} xs={12}>
                            <FormControl>
                               <FormLabel>{item.label}</FormLabel>
                               <RadioGroup name={item.name}>
-                                 {item.radioes.map((checkbox: any, i: number) => (
-                                    <FormControlLabel
-                                       key={i}
-                                       value={checkbox.value}
-                                       control={<Radio />}
-                                       label={checkbox.label}
-                                    />
-                                 ))}
+                                 {item.radioes.map((radio: any, i: number) => {
+                                    return (
+                                       <FormControlLabel
+                                          key={i}
+                                          value={radio.value}
+                                          checked={values[item.name] === radio.value}
+                                          control={<Radio />}
+                                          label={radio.label}
+                                          onChange={handleChange}
+                                       />
+                                    );
+                                 })}
                               </RadioGroup>
                            </FormControl>
                         </Grid>
@@ -71,11 +105,17 @@ const Editing = () => {
 
                   {/* Time fields */}
                   <Grid item md={6} xs={12}>
-                     <DateTimePicker />
+                     <DateTimePicker name="dob" value={values.dob} onChange={setFieldValue} />
                   </Grid>
                </Grid>
 
-               <Button type="submit" size="large" variant="contained" sx={{ marginTop: 2 }}>
+               {/* Submit button */}
+               <Button
+                  fullWidth
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  sx={{ marginTop: 2 }}>
                   Update
                </Button>
             </form>

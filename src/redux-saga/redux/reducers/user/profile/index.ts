@@ -1,38 +1,40 @@
-import React from "react";
 import {
    INIT_STATE,
-   SIGN_IN,
-   SIGN_IN_SUCCESS,
-   SIGN_IN_FAILURE,
+   GET_PROFILE,
+   GET_PROFILE_SUCCESS,
+   GET_PROFILE_FAILURE,
+   UPDATE_PROFILE,
+   UPDATE_PROFILE_SUCCESS,
+   UPDATE_PROFILE_FAILURE,
 } from "../../../../../utils/constants";
 import { Action } from "../../../../../utils/interfaces/Action";
-const signInReducer = (state = INIT_STATE.signIn, action: Action) => {
+const profileReducer = (state = INIT_STATE.profile, action: Action) => {
    switch (action.type) {
-      case SIGN_IN:
+      case GET_PROFILE:
+      case UPDATE_PROFILE:
          return {
             ...state,
             isLoading: true,
          };
-      case SIGN_IN_SUCCESS:
+      case GET_PROFILE_SUCCESS:
+      case UPDATE_PROFILE_SUCCESS:
          return {
             ...state,
             isLoading: false,
             payload: action.payload,
-            accessToken: action.payload.data.accessToken,
-            user: action.payload.data.payload,
-            status: 200,
+            user: action.payload.data,
+            status: action.payload.status,
          };
-      case SIGN_IN_FAILURE:
+      case GET_PROFILE_FAILURE:
+      case UPDATE_PROFILE_FAILURE:
          return {
             ...state,
             isLoading: false,
             payload: action.payload,
-            status: action.payload.response?.status,
-            err: action.payload.response?.data,
          };
       default:
          return state;
    }
 };
 
-export default signInReducer;
+export default profileReducer;

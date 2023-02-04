@@ -55,7 +55,7 @@ const MyModal = (props: any, ref: any) => {
                      {images?.map((item, index) => (
                         <ImageListItem key={item}>
                            <CloseButton onClick={() => handleRemoveImage(index)} />
-                           <img srcSet={`${item} 2x`} loading="lazy" />
+                           <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
                         </ImageListItem>
                      ))}
                   </ImageList>

@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { TextField, RadioField, Register } from "../../../utils/interfaces/Auth";
+import { TextField, RadioField, SignUp } from "../../../utils/interfaces/Auth";
 import { REQUIRED_MSG, LENGTH_PASSWORD } from "../../../utils/constants";
 export const textInfoUser: Array<TextField> = [
    {
@@ -103,7 +103,8 @@ export const radioFields: Array<RadioField> = [
 ];
 
 // Initial value formik
-export const init: Register = {
+export const init: SignUp = {
+   validateOnMount: true,
    fullName: "",
    dob: "",
    address: "",
@@ -114,6 +115,20 @@ export const init: Register = {
    password: "",
    confirmedPassword: "",
 };
+
+export const updateUserOptions = Yup.object().shape({
+   fullName: Yup.string()
+      .required(REQUIRED_MSG)
+      .trim()
+      .matches(/^([^0-9]*)$/, "Name is invalid"),
+   dob: Yup.string().required(REQUIRED_MSG),
+   address: Yup.string().required(REQUIRED_MSG).trim(),
+   region: Yup.string()
+      .required(REQUIRED_MSG)
+      .matches(/^([^0-9]*)$/, "Region is invalid"),
+   gender: Yup.string().required(REQUIRED_MSG),
+   email: Yup.string().email("Email is invalid").required(REQUIRED_MSG).trim(),
+});
 
 export const registerOptions = Yup.object().shape({
    fullName: Yup.string()

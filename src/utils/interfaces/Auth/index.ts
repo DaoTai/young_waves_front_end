@@ -22,7 +22,8 @@ export interface RadioField {
    radioes: Array<RadioItem>;
 }
 
-export interface Register {
+export interface SignUp {
+   validateOnMount?: boolean;
    fullName: string;
    region: string;
    address: string;

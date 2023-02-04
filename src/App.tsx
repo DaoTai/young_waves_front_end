@@ -1,6 +1,6 @@
 import { CssBaseline } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
-import GlobalStyle from "./components/GolbalStyle";
+import { GlobalStyle, AuthProtect } from "./components";
 import { AuthLayout } from "./pages/auth";
 import Home from "./pages/home";
 import { authRoutes, commonRoutes, errorRoutes, userRoutes } from "./routes";
@@ -23,7 +23,13 @@ function App() {
 
             {/* Users pages */}
 
-            <Route path="/user" element={<Home />}>
+            <Route
+               path="/user"
+               element={
+                  <AuthProtect>
+                     <Home />
+                  </AuthProtect>
+               }>
                {userRoutes?.map((route, i) => {
                   const Page = route.component;
                   const children = route.children;
@@ -39,7 +45,13 @@ function App() {
             </Route>
 
             {/* Common pages */}
-            <Route path="/" element={<Home />}>
+            <Route
+               path="/"
+               element={
+                  <AuthProtect>
+                     <Home />
+                  </AuthProtect>
+               }>
                {commonRoutes.map((route, i) => {
                   const Page = route.component;
 

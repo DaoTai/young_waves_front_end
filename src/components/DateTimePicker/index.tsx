@@ -8,14 +8,33 @@ import {
    Box,
    Typography,
 } from "@mui/material";
-import { useState, useEffect, useMemo } from "react";
-import { Dob } from "./interface";
+import { useState, useEffect, useMemo, memo } from "react";
+import { Dob } from "../../utils/interfaces/DateTimePicker";
 import { MyFormControl } from "./styles";
-const DateTimePicker = ({ ...props }: React.ComponentProps<any>) => {
-   const [dob, setDob] = useState<Dob>({
-      date: "1",
-      month: String(new Date().getMonth() + 1),
-      year: String(new Date().getFullYear()),
+const DateTimePicker = ({
+   onChange = () => {},
+   name = "",
+   value,
+}: {
+   name?: string;
+   value?: string;
+   onChange?: any;
+}) => {
+   const [dob, setDob] = useState<Dob>(() => {
+      const formatValue = value && value.split("-");
+      if (Array.isArray(formatValue)) {
+         return {
+            date: formatValue[0],
+            month: formatValue[1],
+            year: formatValue[2],
+         };
+      } else {
+         return {
+            date: "1",
+            month: String(new Date().getMonth() + 1),
+            year: String(new Date().getFullYear()),
+         };
+      }
    });
 
    const listDate = useMemo(() => {
@@ -44,7 +63,7 @@ const DateTimePicker = ({ ...props }: React.ComponentProps<any>) => {
                throw new Error("Invalid value");
          }
       } catch (err) {
-         console.log("Error");
+         console.log("Error: ", err);
       }
    }, [dob.month, dob.year]);
 
@@ -73,9 +92,10 @@ const DateTimePicker = ({ ...props }: React.ComponentProps<any>) => {
       });
    };
    useEffect(() => {
-      const formatDob = dob.date + "/" + dob.month + "/" + dob.year;
-      props.onChange(props.name, formatDob);
+      const formatDob = dob.date + "-" + dob.month + "-" + dob.year;
+      onChange(name, formatDob);
    }, [dob]);
+
    return (
       <Box>
          <Typography variant="subtitle1" mb={1} sx={{ color: "rgba(0, 0, 0, 0.6)" }}>
@@ -134,4 +154,4 @@ const DateTimePicker = ({ ...props }: React.ComponentProps<any>) => {
    );
 };
 
-export default DateTimePicker;
+export default memo(DateTimePicker);

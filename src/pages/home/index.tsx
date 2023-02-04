@@ -1,11 +1,7 @@
 import { Container } from "@mui/material";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { Outlet } from "react-router-dom";
 import { Header } from "../../components";
-import { NewsFeed } from "../user";
-import { signInState$ } from "../../redux-saga/redux/selectors";
 const Home = () => {
    return (
       <div>

@@ -41,9 +41,9 @@ const userRoutes: Array<Route> = [
       path: "profile",
       component: Fragment as React.FC,
       children: [
-         { path: "", component: Profile },
+         { path: ":id", component: Profile },
          { path: "edit", component: Editing },
-         { path: "password", component: EditingPassword },
+         { path: "password", component: EditingPassword as any },
       ],
    },
 ];

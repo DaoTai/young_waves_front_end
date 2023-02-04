@@ -6,9 +6,18 @@ import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import SecurityIcon from "@mui/icons-material/Security";
 import { Box, ToggleButton, Typography } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { signInState$ } from "../../../redux-saga/redux/selectors";
+
 import { Option, ToggleOptions } from "../styles";
 import { Anchor } from "./types";
 const ToggleActions = () => {
+   const {
+      isLoading,
+      payload: {
+         data: { payload, token },
+      },
+   } = useSelector(signInState$);
    const [show, setShow] = useState(false);
    const toggleDrawer =
       (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -31,7 +40,7 @@ const ToggleActions = () => {
             onOpen={toggleDrawer("right", true)}>
             {/* List options */}
             <Box>
-               <Option to="/user/profile">
+               <Option to={`/user/profile/${payload._id}`}>
                   <AccountBoxIcon fontSize="medium" />
                   <Typography variant="subtitle1"> Profile</Typography>
                </Option>

@@ -1,3 +1,4 @@
+import { Send } from "@mui/icons-material";
 import {
    Box,
    Button,
@@ -10,24 +11,64 @@ import {
    TextField,
    Typography,
 } from "@mui/material";
-import { useEffect } from "react";
 import { useFormik } from "formik";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { Send } from "@mui/icons-material";
-
-import DateTimePicker from "../../../components/DateTimePicker";
-import { radioFields, textFields, init, registerOptions } from "./config";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { Alert, DateTimePicker, Spinner } from "../../../components";
+import { signUp } from "../../../redux-saga/redux/actions";
+import { signUpState$ } from "../../../redux-saga/redux/selectors";
+import { TIME_ALERT } from "../../../utils/constants";
+import { init, radioFields, registerOptions, textFields } from "./config";
 const SignUp = () => {
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const { isLoading, payload, err, status } = useSelector(signUpState$);
+   const data = useSelector(signUpState$);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
          initialValues: init,
          validationSchema: registerOptions,
          onSubmit: (values) => {
-            console.log("Values: ", values);
+            dispatch(signUp(values));
          },
       });
+   const [showAlert, setShowAlert] = useState<boolean>(false);
+   const [msg, setMsg] = useState<string>("");
+   const [countries, setCountries] = useState([]);
 
+   useEffect(() => {
+      if (status) {
+         if (status === 200) {
+            navigate("/auth/sign-in");
+         } else {
+            setShowAlert(true);
+            setMsg(err);
+            const timerId = setTimeout(() => {
+               setShowAlert(false);
+            }, TIME_ALERT);
+            return () => {
+               clearTimeout(timerId);
+            };
+         }
+      }
+   }, [isLoading, payload, dispatch]);
+
+   // useEffect(() => {
+   //    fetch("https://restcountries.com/v3.1/all")
+   //       .then((res) => res.json())
+   //       .then((data) => {
+   //          const newData = data.map((item) => {
+   //             return {
+   //                name: item.name.common,
+   //                image: item.flags.png,
+   //             };
+   //          });
+   //          setCountries(newData);
+   //       })
+   //       .catch((err) => console.error(err));
+   // }, []);
    return (
       <div id="sign-up">
          <Helmet>
@@ -109,6 +150,12 @@ const SignUp = () => {
                <Link to="/auth/sign-in">Sign in</Link>
             </Box>
          </Box>
+
+         {/* Alert */}
+
+         <Alert show={showAlert} msg={msg} onClose={() => setShowAlert(false)} />
+         {/* Spinner */}
+         {isLoading && <Spinner show={isLoading} />}
       </div>
    );
 };
