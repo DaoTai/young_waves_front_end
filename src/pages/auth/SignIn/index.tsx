@@ -22,7 +22,8 @@ import { Spinner, Alert } from "../../../components";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const dispatch = useDispatch();
-   const { isLoading, payload, status, err } = useSelector(signInState$);
+   const { isLoading, payload } = useSelector(signInState$);
+   const data$ = useSelector(signInState$);
    const navigate = useNavigate();
    const [msg, setMsg] = useState<string>("");
    const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -35,9 +36,9 @@ const SignIn = () => {
    });
 
    useEffect(() => {
-      if (status) {
-         // When success
-         if (status === 200) {
+      // When success
+      if (!isLoading && payload.status) {
+         if (payload.status === 200) {
             navigate("/", {
                replace: true,
             });
@@ -45,7 +46,7 @@ const SignIn = () => {
          // When failed
          else {
             setShowAlert(true);
-            setMsg(err);
+            setMsg(payload.message);
             const timerId = setTimeout(() => {
                setShowAlert(false);
             }, TIME_ALERT);
@@ -54,7 +55,7 @@ const SignIn = () => {
             };
          }
       }
-   }, [isLoading, payload, dispatch]);
+   }, [isLoading, payload, dispatch, data$]);
 
    return (
       <div id="sign-in">

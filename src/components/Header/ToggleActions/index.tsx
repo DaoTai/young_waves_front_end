@@ -12,12 +12,7 @@ import { signInState$ } from "../../../redux-saga/redux/selectors";
 import { Option, ToggleOptions } from "../styles";
 import { Anchor } from "./types";
 const ToggleActions = () => {
-   const {
-      isLoading,
-      payload: {
-         data: { payload, token },
-      },
-   } = useSelector(signInState$);
+   const { isLoading, payload } = useSelector(signInState$);
    const [show, setShow] = useState(false);
    const toggleDrawer =
       (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -40,7 +35,7 @@ const ToggleActions = () => {
             onOpen={toggleDrawer("right", true)}>
             {/* List options */}
             <Box>
-               <Option to={`/user/profile/${payload._id}`}>
+               <Option to={`/user/profile/${payload.data.payload._id}`}>
                   <AccountBoxIcon fontSize="medium" />
                   <Typography variant="subtitle1"> Profile</Typography>
                </Option>

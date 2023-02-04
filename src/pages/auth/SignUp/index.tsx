@@ -24,8 +24,7 @@ import { init, radioFields, registerOptions, textFields } from "./config";
 const SignUp = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const { isLoading, payload, err, status } = useSelector(signUpState$);
-   const data = useSelector(signUpState$);
+   const { isLoading, payload } = useSelector(signUpState$);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
          initialValues: init,
@@ -39,12 +38,12 @@ const SignUp = () => {
    const [countries, setCountries] = useState([]);
 
    useEffect(() => {
-      if (status) {
-         if (status === 200) {
+      if (!isLoading && payload.status) {
+         if (payload.status === 200) {
             navigate("/auth/sign-in");
          } else {
             setShowAlert(true);
-            setMsg(err);
+            setMsg(payload.message);
             const timerId = setTimeout(() => {
                setShowAlert(false);
             }, TIME_ALERT);

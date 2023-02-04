@@ -1,4 +1,3 @@
-import React from "react";
 import {
    INIT_STATE,
    SIGN_UP,
@@ -18,15 +17,12 @@ const signUpReducer = (state = INIT_STATE.signUp, action: Action) => {
             ...state,
             isLoading: false,
             payload: action.payload,
-            status: 200,
          };
       case SIGN_UP_FAILURE:
          return {
             ...state,
             isLoading: false,
             payload: action.payload,
-            status: action.payload.response?.status,
-            err: action.payload.response?.data,
          };
       default:
          return state;

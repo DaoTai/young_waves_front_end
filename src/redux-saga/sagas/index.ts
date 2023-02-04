@@ -9,11 +9,15 @@ import { Profile } from "../../utils/interfaces/Profile";
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
       const data = yield call(api.auth.signInUser, action.payload);
-      yield put(ACTIONS.signInSuccess(data));
-      const { password, ...localUser } = action.payload;
-      action.payload.isRemember
-         ? localStorage.setItem("user", JSON.stringify(localUser))
-         : localStorage.removeItem("user");
+      if (data.status === 200) {
+         yield put(ACTIONS.signInSuccess(data));
+         const { password, ...localUser } = action.payload;
+         action.payload.isRemember
+            ? localStorage.setItem("user", JSON.stringify(localUser))
+            : localStorage.removeItem("user");
+      } else {
+         yield put(ACTIONS.signInFailure(data as string));
+      }
    } catch (err) {
       yield put(ACTIONS.signInFailure(err as string));
    }
@@ -22,7 +26,11 @@ function* signInSaga(action: { type: string; payload: SignIn }) {
 function* signUpSaga(action: { type: string; payload: SignUp }) {
    try {
       const data = yield call(api.auth.signUpUser, action.payload);
-      yield put(ACTIONS.signUpSuccess(data));
+      if (data.status === 200) {
+         yield put(ACTIONS.signUpSuccess(data));
+      } else {
+         yield put(ACTIONS.signUpFailure(data));
+      }
    } catch (err) {
       yield put(ACTIONS.signUpFailure(err as string));
    }
@@ -34,8 +42,10 @@ function* getProfileSaga(action: {
 }) {
    try {
       const { id, accessToken } = action.payload;
-      const profile = yield call(api.user.getProfile, id, accessToken);
-      yield put(ACTIONS.getProfileSuccess(profile));
+      const res = yield call(api.user.getProfile, { id, accessToken });
+      if (res.status === 200) {
+         yield put(ACTIONS.getProfileSuccess(res));
+      }
    } catch (err) {
       yield put(ACTIONS.getProfileFailure(err as string));
    }

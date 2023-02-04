@@ -1,28 +1,34 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import { useSelector, useDispatch } from "react-redux";
 import { Box, Grid, Stack } from "@mui/material";
-import { Post } from "../../../components";
+import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { Post, Spinner } from "../../../components";
 import { getProfile } from "../../../redux-saga/redux/actions";
-import { signInState$, profileState$ } from "../../../redux-saga/redux/selectors";
+import { signInState$ } from "../../../redux-saga/redux/selectors";
 import News from "../NewsFeed/News";
 import Heading from "./Heading";
 import Introduction from "./Introduction";
 import Navigation from "./Navigation";
+
 const Profile = () => {
    const dispatch = useDispatch();
    const { id } = useParams();
-   const { accessToken } = useSelector(signInState$);
-   const user = useSelector(profileState$);
+   const {
+      isLoading,
+      payload: { data },
+   } = useSelector(signInState$);
+   const {
+      payload: { avatar, fullName },
+   } = data;
    useEffect(() => {
       dispatch(
          getProfile({
             id: id as string,
-            accessToken,
+            accessToken: data.accessToken,
          })
       );
-   }, []);
+   }, [data]);
    return (
       <>
          <Helmet>
@@ -31,7 +37,7 @@ const Profile = () => {
 
          <Stack flexDirection="column" sx={{ gap: 4 }}>
             <Box boxShadow={1} bgcolor="#fff">
-               <Heading />
+               <Heading avatar={avatar} fullName={fullName} />
                <Navigation />
             </Box>
             <Grid container pt={1} bgcolor="#fff">
@@ -44,6 +50,7 @@ const Profile = () => {
                </Grid>
             </Grid>
          </Stack>
+         <Spinner show={isLoading} />
       </>
    );
 };

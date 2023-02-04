@@ -22,7 +22,7 @@ import { radioFields, textInfoUser, init, updateUserOptions } from "../../../aut
 import Password from "./Password";
 
 const Editing = () => {
-   const { isLoading, user, status } = useSelector(profileState$);
+   const { isLoading, payload } = useSelector(profileState$);
    const [open, setOpen] = useState<boolean>(false);
    const {
       values,
@@ -34,7 +34,7 @@ const Editing = () => {
       setValues,
       setFieldValue,
    } = useFormik({
-      initialValues: user || init,
+      initialValues: payload.data || init,
       validationSchema: updateUserOptions,
       onSubmit: (values) => {
          console.log("values: ", values);
@@ -42,8 +42,8 @@ const Editing = () => {
    });
 
    useEffect(() => {
-      setValues(user);
-   }, [isLoading, user, status]);
+      setValues(payload.data);
+   }, [isLoading, payload]);
 
    return (
       <>
@@ -105,7 +105,7 @@ const Editing = () => {
 
                   {/* Time fields */}
                   <Grid item md={6} xs={12}>
-                     <DateTimePicker name="dob" value={values.dob} onChange={setFieldValue} />
+                     <DateTimePicker name="dob" value={values?.dob} onChange={setFieldValue} />
                   </Grid>
                </Grid>
 

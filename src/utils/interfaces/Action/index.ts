@@ -1,13 +1,15 @@
 import { AxiosError } from "axios";
 
-export interface SuccessAction {
-   config: any;
-   data: any;
-   headers: any;
-   status: number;
+export interface Payload {
+   isLoading: boolean;
+   payload: {
+      status: string;
+      message?: string;
+      data?: string;
+   };
 }
 
 export interface Action {
    type: string;
-   payload: Partial<SuccessAction> & AxiosError;
+   payload: Partial<Payload> & AxiosError;
 }

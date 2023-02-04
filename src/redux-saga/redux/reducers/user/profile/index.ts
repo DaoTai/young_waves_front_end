@@ -22,8 +22,6 @@ const profileReducer = (state = INIT_STATE.profile, action: Action) => {
             ...state,
             isLoading: false,
             payload: action.payload,
-            user: action.payload.data,
-            status: action.payload.status,
          };
       case GET_PROFILE_FAILURE:
       case UPDATE_PROFILE_FAILURE:

@@ -18,17 +18,12 @@ const signInReducer = (state = INIT_STATE.signIn, action: Action) => {
             ...state,
             isLoading: false,
             payload: action.payload,
-            accessToken: action.payload.data.accessToken,
-            user: action.payload.data.payload,
-            status: 200,
          };
       case SIGN_IN_FAILURE:
          return {
             ...state,
             isLoading: false,
             payload: action.payload,
-            status: action.payload.response?.status,
-            err: action.payload.response?.data,
          };
       default:
          return state;
