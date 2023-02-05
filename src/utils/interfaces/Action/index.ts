@@ -2,10 +2,14 @@ import { AxiosError } from "axios";
 
 export interface Payload {
    isLoading: boolean;
-   payload: {
-      status: string;
-      message?: string;
-      data?: string;
+   payload: Object;
+}
+
+export interface SignInPayload {
+   status: number;
+   data: {
+      payload: any;
+      accessToken: string;
    };
 }
 

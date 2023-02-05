@@ -11,3 +11,9 @@ export interface Profile {
    email: string;
    avatar: string;
 }
+
+export interface ChangePassword {
+   currentPassword: string;
+   newPassword: string;
+   confirmPassword: string;
+}

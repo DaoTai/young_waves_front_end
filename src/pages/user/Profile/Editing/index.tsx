@@ -12,18 +12,25 @@ import {
    TextField,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
-import { profileState$ } from "../../../../redux-saga/redux/selectors";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { DateTimePicker } from "../../../../components";
-import { radioFields, textInfoUser, init, updateUserOptions } from "../../../auth/SignUp/config";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, DateTimePicker, Spinner } from "../../../../components";
+import { updateProfile } from "../../../../redux-saga/redux/actions";
+import { profileState$ } from "../../../../redux-saga/redux/selectors";
+import { TIME_ALERT } from "../../../../utils/constants";
+import { init, radioFields, textInfoUser, updateUserOptions } from "../../../auth/SignUp/config";
+import Avatar from "../Heading/Avatar";
 import Password from "./Password";
 
 const Editing = () => {
    const { isLoading, payload } = useSelector(profileState$);
+   const dispatch = useDispatch();
    const [open, setOpen] = useState<boolean>(false);
+   const [showAlert, setShowAlert] = useState<boolean>(false);
+   const [msg, setMsg] = useState<string>("");
+
    const {
       values,
       errors,
@@ -34,16 +41,33 @@ const Editing = () => {
       setValues,
       setFieldValue,
    } = useFormik({
-      initialValues: payload.data || init,
+      initialValues: payload?.data || init,
       validationSchema: updateUserOptions,
       onSubmit: (values) => {
-         console.log("values: ", values);
+         dispatch(updateProfile(values));
       },
    });
-
    useEffect(() => {
-      setValues(payload.data);
-   }, [isLoading, payload]);
+      // If network slow, payload?.data'll undefined. So we shoud assign in Object
+      const { fullName, dob, address, region, gender, email, _id } = Object(payload?.data);
+      setValues({
+         _id,
+         fullName,
+         dob,
+         address,
+         region,
+         gender,
+         email,
+      });
+      if (!isLoading && payload.status === 201) {
+         setShowAlert(true);
+         setMsg("Edited succesfully");
+         const timerId = setTimeout(() => setShowAlert(false), TIME_ALERT);
+         return () => {
+            clearTimeout(timerId);
+         };
+      }
+   }, [isLoading, payload, dispatch]);
 
    return (
       <>
@@ -59,6 +83,10 @@ const Editing = () => {
             </Stack>
             <form autoComplete="off" onSubmit={handleSubmit}>
                <Grid container spacing={2}>
+                  {/* Avatar */}
+                  <Grid item sm={12} xs={12} display="flex" justifyContent="center">
+                     <Avatar image={payload?.data?.avatar} />
+                  </Grid>
                   {/* Text fields */}
                   {textInfoUser.map((props: any, i: number) => {
                      return (
@@ -131,6 +159,17 @@ const Editing = () => {
                <Password onClose={() => setOpen(false)} />
             </>
          </Modal>
+
+         {/* Alert */}
+         <Alert
+            show={showAlert}
+            title="Success"
+            mode="success"
+            msg={msg}
+            onClose={() => setShowAlert(false)}
+         />
+         {/* Spinner */}
+         <Spinner show={isLoading} />
       </>
    );
 };

@@ -35,7 +35,7 @@ export const signUpFailure = (payload: string) => ({
 });
 
 // Actions PROFILE
-
+// GET
 export const getProfile = (payload: { id: string; accessToken: string }) => ({
    type: CONSTANTS.GET_PROFILE,
    payload,
@@ -48,5 +48,20 @@ export const getProfileSuccess = (payload: Profile) => ({
 
 export const getProfileFailure = (payload: string) => ({
    type: CONSTANTS.GET_PROFILE_FAILURE,
+   payload,
+});
+//UPDATE
+export const updateProfile = (payload: Partial<Profile>) => ({
+   type: CONSTANTS.UPDATE_PROFILE,
+   payload,
+});
+
+export const updateProfileSuccess = (payload: Profile) => ({
+   type: CONSTANTS.UPDATE_PROFILE_SUCCESS,
+   payload,
+});
+
+export const updateProfileFailure = (payload: string) => ({
+   type: CONSTANTS.UPDATE_PROFILE_FAILURE,
    payload,
 });

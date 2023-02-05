@@ -12,6 +12,7 @@ export const textInfoUser: Array<TextField> = [
       placeholder: "Enter your name",
       required: true,
       fullWidth: true,
+      autoComplete: "off",
    },
    {
       name: "region",
@@ -23,6 +24,7 @@ export const textInfoUser: Array<TextField> = [
       placeholder: "Enter your region",
       required: true,
       fullWidth: true,
+      autoComplete: "off",
    },
    {
       name: "address",
@@ -34,6 +36,7 @@ export const textInfoUser: Array<TextField> = [
       placeholder: "Enter your address",
       required: true,
       fullWidth: true,
+      autoComplete: "off",
    },
    {
       name: "email",
@@ -45,6 +48,7 @@ export const textInfoUser: Array<TextField> = [
       placeholder: "Enter your email",
       required: true,
       fullWidth: true,
+      autoComplete: "off",
    },
 ];
 

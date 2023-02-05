@@ -5,8 +5,12 @@ import {
    SIGN_IN_SUCCESS,
    SIGN_IN_FAILURE,
 } from "../../../../../utils/constants";
-import { Action } from "../../../../../utils/interfaces/Action";
-const signInReducer = (state = INIT_STATE.signIn, action: Action) => {
+import { Action, SignInPayload } from "../../../../../utils/interfaces/Action";
+
+const signInReducer = (
+   state = INIT_STATE.signIn,
+   action: { type: string; payload: SignInPayload }
+) => {
    switch (action.type) {
       case SIGN_IN:
          return {

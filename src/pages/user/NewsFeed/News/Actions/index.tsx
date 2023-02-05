@@ -18,9 +18,9 @@ const Actions = () => {
    return (
       <>
          {/* Actions */}
-         <CardActions sx={{ justifyContent: "space-between" }}>
+         <CardActions sx={{ gap: 12 }}>
             {/* Likes */}
-            <Stack flexDirection="column" alignItems="center" justifyContent="space-between">
+            <Stack flexDirection="column" justifyContent="space-between">
                <Chip variant="outlined" onClick={() => console.log("heelo")} label="100 likes" />
                <Checkbox
                   sx={{ padding: "14px" }}
@@ -31,17 +31,14 @@ const Actions = () => {
                />
             </Stack>
             {/* Comments */}
-            <Stack flexDirection="column" alignItems="center" justifyContent="space-between">
-               <Chip variant="outlined" onClick={() => console.log("heelo")} label="12k comments" />
-               <MyIconButton onClick={handleExpandComments}>
-                  <CommentIcon />
-               </MyIconButton>
-            </Stack>
-            {/* Detail */}
-            <Stack flexDirection="column" alignItems="center" justifyContent="space-between">
-               <Chip label="Detail post" />
+            <Stack flexDirection="column" justifyContent="space-between">
+               <Chip
+                  variant="outlined"
+                  onClick={() => detailRef.current?.handleOpen()}
+                  label="12k comments"
+               />
                <MyIconButton onClick={() => detailRef.current?.handleOpen()}>
-                  <DetailsIcon />
+                  <CommentIcon />
                </MyIconButton>
             </Stack>
          </CardActions>
@@ -49,11 +46,6 @@ const Actions = () => {
          <Detail ref={detailRef} />
 
          {/* Show comments */}
-         <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-               <Comment />
-            </CardContent>
-         </Collapse>
       </>
    );
 };

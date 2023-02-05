@@ -105,7 +105,7 @@ const DateTimePicker = ({
             {/* Dates */}
             <MyFormControl fullWidth>
                <InputLabel>Date</InputLabel>
-               <Select label="Date" name="date" value={dob.date} onChange={handleChange}>
+               <Select label="Date" name="date" value={dob?.date} onChange={handleChange}>
                   {listDate?.map((date: any) => (
                      <MenuItem key={date} value={date}>
                         {date}
@@ -116,7 +116,7 @@ const DateTimePicker = ({
             {/* Months */}
             <MyFormControl fullWidth>
                <InputLabel>Month</InputLabel>
-               <Select label="Month" name="month" value={dob.month} onChange={handleChange}>
+               <Select label="Month" name="month" value={dob?.month} onChange={handleChange}>
                   {months.map((month) => (
                      <MenuItem key={month} value={month}>
                         {month}
@@ -133,9 +133,9 @@ const DateTimePicker = ({
                fullWidth
                defaultValue={String(new Date().getFullYear())}
                options={years}
-               value={dob.year}
+               value={dob?.year}
                onBlur={() => {
-                  !!dob.year ||
+                  !!dob?.year ||
                      setDob((prev) => ({
                         ...prev,
                         year: String(new Date().getFullYear()),

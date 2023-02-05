@@ -6,6 +6,7 @@ export interface TextField {
    margin?: string;
    size?: string;
    placeholder?: string;
+   autoComplete?: string;
    fullWidth?: boolean;
    autoFocus?: boolean;
    required?: boolean;

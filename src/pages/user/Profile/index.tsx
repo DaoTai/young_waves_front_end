@@ -18,9 +18,7 @@ const Profile = () => {
       isLoading,
       payload: { data },
    } = useSelector(signInState$);
-   const {
-      payload: { avatar, fullName },
-   } = data;
+
    useEffect(() => {
       dispatch(
          getProfile({
@@ -28,7 +26,7 @@ const Profile = () => {
             accessToken: data.accessToken,
          })
       );
-   }, [data]);
+   }, [data, dispatch]);
    return (
       <>
          <Helmet>
@@ -37,7 +35,7 @@ const Profile = () => {
 
          <Stack flexDirection="column" sx={{ gap: 4 }}>
             <Box boxShadow={1} bgcolor="#fff">
-               <Heading avatar={avatar} fullName={fullName} />
+               <Heading />
                <Navigation />
             </Box>
             <Grid container pt={1} bgcolor="#fff">

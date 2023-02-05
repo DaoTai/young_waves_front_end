@@ -1,17 +1,28 @@
-import { Box, Button, Grid, Input, Stack } from "@mui/material";
+import { Box, Button, Grid, Input, Stack, Typography } from "@mui/material";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
 import React from "react";
 import { Helmet } from "react-helmet-async";
-import { textFields } from "./config";
+import { textFields, init, changePasswordPassword } from "./config";
+import { updateProfile } from "../../../../../redux-saga/redux/actions";
 import { MyBox } from "./styles";
 const Password = ({ onClose }: { onClose: () => void }) => {
-   const handleSubmit = (e) => {};
+   const dispatch = useDispatch();
+   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+      initialValues: init,
+      validationSchema: changePasswordPassword,
+      onSubmit: (values) => {
+         console.log(values);
+         // dispatch(updateProfile(values));
+      },
+   });
    return (
       <>
          <Helmet>
             <title>Change password | Young Waves</title>
          </Helmet>
          <MyBox p={3}>
-            <form autoComplete="off" onSubmit={(e: React.SyntheticEvent) => handleSubmit(e)}>
+            <form autoComplete="off" onSubmit={handleSubmit}>
                <Grid container spacing={2}>
                   {textFields.map((props: any, i: number) => {
                      return (
@@ -19,7 +30,19 @@ const Password = ({ onClose }: { onClose: () => void }) => {
                            <label htmlFor={props.name} style={{ fontWeight: 500 }}>
                               {props.label}
                            </label>
-                           <Input {...props} />
+                           <Input
+                              {...props}
+                              id={props.name}
+                              value={values[props.name] || ""}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={errors[props.name] && touched[props.name]}
+                           />
+                           <Typography variant="subtitle2" color="error">
+                              {errors[props.name] && touched[props.name]
+                                 ? errors[props.name]
+                                 : null}
+                           </Typography>
                         </Grid>
                      );
                   })}

@@ -39,10 +39,7 @@ const ToggleActions = () => {
                   <AccountBoxIcon fontSize="medium" />
                   <Typography variant="subtitle1"> Profile</Typography>
                </Option>
-               <Option to="/user/profile/edit">
-                  <EditIcon fontSize="medium" />
-                  <Typography variant="subtitle1"> Edit profile</Typography>
-               </Option>
+
                <Option to="/user/profile/password">
                   <SecurityIcon fontSize="medium" />
                   <Typography variant="subtitle1"> Edit password</Typography>

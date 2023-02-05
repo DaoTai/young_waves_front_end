@@ -59,7 +59,7 @@ const MyModal = (props: any, ref: any) => {
                         </ImageListItem>
                      ))}
                   </ImageList>
-                  <ImageInput onChange={handleSetImages} />
+                  <ImageInput multiple onChange={handleSetImages} />
                   <Button
                      fullWidth
                      type="submit"

@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import * as api from "../../apis";
 import * as CONSTANTS from "../../utils/constants";
 import * as ACTIONS from "../redux/actions";
@@ -42,7 +42,7 @@ function* getProfileSaga(action: {
 }) {
    try {
       const { id, accessToken } = action.payload;
-      const res = yield call(api.user.getProfile, { id, accessToken });
+      const res = yield call(api.user.getProfile, id);
       if (res.status === 200) {
          yield put(ACTIONS.getProfileSuccess(res));
       }
@@ -50,11 +50,27 @@ function* getProfileSaga(action: {
       yield put(ACTIONS.getProfileFailure(err as string));
    }
 }
+
+function* updateProfileSaga(action: { type: string; payload: Profile }) {
+   try {
+      const res = yield call(api.user.updateProfile, action.payload);
+      delay(3000);
+      if (res.status === 201) {
+         yield put(ACTIONS.updateProfileSuccess(res));
+      } else {
+         yield put(ACTIONS.getProfileFailure("Edited failed"));
+      }
+   } catch (err) {
+      yield put(ACTIONS.getProfileFailure(err as string));
+   }
+}
+
 // Combine saga
 export default function* rootSaga() {
    yield all([
       takeLatest(CONSTANTS.SIGN_IN, signInSaga),
       takeLatest(CONSTANTS.SIGN_UP, signUpSaga),
       takeLatest(CONSTANTS.GET_PROFILE, getProfileSaga),
+      takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),
    ]);
 }
