@@ -1,6 +1,6 @@
 import * as Yup from "yup";
-import { ChangePassword } from "../../../../../utils/interfaces/Profile";
-import { LENGTH_PASSWORD } from "../../../../../utils/constants";
+import { ChangePassword } from "../../../../utils/interfaces/Profile";
+import { LENGTH_PASSWORD, REQUIRED_MSG } from "../../../../utils/constants";
 
 export const textFields = [
    {
@@ -42,13 +42,13 @@ export const init: ChangePassword = {
 };
 
 export const changePasswordPassword = Yup.object().shape({
-   currentPassword: Yup.string().required().min(LENGTH_PASSWORD),
+   currentPassword: Yup.string().required(REQUIRED_MSG).min(LENGTH_PASSWORD),
    newPassword: Yup.string()
-      .required()
+      .required(REQUIRED_MSG)
       .min(LENGTH_PASSWORD)
       .notOneOf([Yup.ref("currentPassword")], "Must be different current password"),
    confirmPassword: Yup.string()
-      .required()
+      .required(REQUIRED_MSG)
       .oneOf([Yup.ref("newPassword")], "Confirmed password is not matched")
       .notOneOf([Yup.ref("currentPassword")], "Must be different current password"),
 });

@@ -7,3 +7,7 @@ export const signInUser = async (user: SignIn) => {
 export const signUpUser = async (data: SignUp) => {
    return await axiosInstance.post("/register", data);
 };
+
+export const logOutUser = async () => {
+   return await axiosInstance.post("/logout");
+};

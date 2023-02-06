@@ -120,20 +120,6 @@ export const init: SignUp = {
    confirmedPassword: "",
 };
 
-export const updateUserOptions = Yup.object().shape({
-   fullName: Yup.string()
-      .required(REQUIRED_MSG)
-      .trim()
-      .matches(/^([^0-9]*)$/, "Name is invalid"),
-   dob: Yup.string().required(REQUIRED_MSG),
-   address: Yup.string().required(REQUIRED_MSG).trim(),
-   region: Yup.string()
-      .required(REQUIRED_MSG)
-      .matches(/^([^0-9]*)$/, "Region is invalid"),
-   gender: Yup.string().required(REQUIRED_MSG),
-   email: Yup.string().email("Email is invalid").required(REQUIRED_MSG).trim(),
-});
-
 export const registerOptions = Yup.object().shape({
    fullName: Yup.string()
       .required(REQUIRED_MSG)

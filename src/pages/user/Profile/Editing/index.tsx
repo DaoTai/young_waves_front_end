@@ -1,4 +1,5 @@
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
    Box,
    Button,
@@ -6,7 +7,6 @@ import {
    FormControlLabel,
    FormLabel,
    Grid,
-   Modal,
    Radio,
    RadioGroup,
    TextField,
@@ -14,23 +14,24 @@ import {
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, DateTimePicker, Spinner } from "../../../../components";
 import { updateProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
-import { TIME_ALERT } from "../../../../utils/constants";
-import { init, radioFields, textInfoUser, updateUserOptions } from "../../../auth/SignUp/config";
+import { TIME_ALERT, UPDATE_PROFILE_SUCCESS } from "../../../../utils/constants";
+import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
+import { Profile } from "../../../../utils/interfaces/Profile";
+import { updateUserOptions, init } from "./config";
 import Avatar from "../Heading/Avatar";
-import Password from "./Password";
 
 const Editing = () => {
-   const { isLoading, payload } = useSelector(profileState$);
+   const { isLoading, payload, action, error } = useSelector(profileState$);
    const dispatch = useDispatch();
-   const [open, setOpen] = useState<boolean>(false);
+   const navigate = useNavigate();
    const [showAlert, setShowAlert] = useState<boolean>(false);
    const [msg, setMsg] = useState<string>("");
-
    const {
       values,
       errors,
@@ -41,15 +42,18 @@ const Editing = () => {
       setValues,
       setFieldValue,
    } = useFormik({
-      initialValues: payload?.data || init,
+      initialValues: init,
       validationSchema: updateUserOptions,
       onSubmit: (values) => {
          dispatch(updateProfile(values));
       },
    });
    useEffect(() => {
+      let timerId = 0;
       // If network slow, payload?.data'll undefined. So we shoud assign in Object
-      const { fullName, dob, address, region, gender, email, _id } = Object(payload?.data);
+      const { fullName, dob, address, region, gender, email, _id } = Object(
+         payload?.data
+      ) as Profile;
       setValues({
          _id,
          fullName,
@@ -59,14 +63,19 @@ const Editing = () => {
          gender,
          email,
       });
-      if (!isLoading && payload.status === 201) {
-         setShowAlert(true);
-         setMsg("Edited succesfully");
-         const timerId = setTimeout(() => setShowAlert(false), TIME_ALERT);
-         return () => {
-            clearTimeout(timerId);
-         };
+      if (!isLoading && !!values.fullName) {
+         if (action === UPDATE_PROFILE_SUCCESS) {
+            setShowAlert(true);
+            setMsg("Edited succesfully");
+         } else {
+            setShowAlert(true);
+            setMsg("Edited failed");
+         }
+         timerId = setTimeout(() => setShowAlert(false), TIME_ALERT);
       }
+      return () => {
+         clearTimeout(timerId);
+      };
    }, [isLoading, payload, dispatch]);
 
    return (
@@ -76,8 +85,15 @@ const Editing = () => {
          </Helmet>
          {/* Content */}
          <Box>
-            <Stack flexDirection="row" justifyContent="flex-end">
-               <Button endIcon={<ChangeCircleIcon />} onClick={() => setOpen(true)}>
+            <Stack flexDirection="row" justifyContent="space-between">
+               <Button
+                  startIcon={<ArrowBackIosIcon />}
+                  onClick={() => navigate(`/user/profile/${values._id}`)}>
+                  Back
+               </Button>
+               <Button
+                  endIcon={<ChangeCircleIcon />}
+                  onClick={() => navigate("/user/profile/password")}>
                   Change Password
                </Button>
             </Stack>
@@ -150,15 +166,6 @@ const Editing = () => {
          </Box>
 
          {/* Password modal */}
-         <Modal
-            open={open}
-            onClose={() => setOpen(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
-            <>
-               <Password onClose={() => setOpen(false)} />
-            </>
-         </Modal>
 
          {/* Alert */}
          <Alert

@@ -8,3 +8,7 @@ export const getProfile = async (id: string) => {
 export const updateProfile = async (user: Profile) => {
    return await axiosInstance.patch(`/${user._id}`, user);
 };
+
+export const changePasswordProfile = async (user: Partial<Profile>) => {
+   return await axiosInstance.patch(`/${user._id}/new-password`, user);
+};

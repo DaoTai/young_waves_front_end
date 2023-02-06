@@ -41,7 +41,7 @@ function* getProfileSaga(action: {
    payload: Profile & { id: string; accessToken: string };
 }) {
    try {
-      const { id, accessToken } = action.payload;
+      const { id } = action.payload;
       const res = yield call(api.user.getProfile, id);
       if (res.status === 200) {
          yield put(ACTIONS.getProfileSuccess(res));
@@ -51,17 +51,30 @@ function* getProfileSaga(action: {
    }
 }
 
+// Update saga
 function* updateProfileSaga(action: { type: string; payload: Profile }) {
    try {
       const res = yield call(api.user.updateProfile, action.payload);
-      delay(3000);
-      if (res.status === 201) {
+      if (res.status === 200) {
          yield put(ACTIONS.updateProfileSuccess(res));
       } else {
-         yield put(ACTIONS.getProfileFailure("Edited failed"));
+         yield put(ACTIONS.updateProfileFailure(res));
       }
    } catch (err) {
-      yield put(ACTIONS.getProfileFailure(err as string));
+      yield put(ACTIONS.updateProfileFailure(err as string));
+   }
+}
+
+function* changePasswordProfileSaga(action: { type: string; payload: Profile }) {
+   try {
+      const res = yield call(api.user.changePasswordProfile, action.payload);
+      if (res.status === 200) {
+         yield put(ACTIONS.changePasswordProfileSuccess(res));
+      } else {
+         yield put(ACTIONS.changePasswordProfileFailure(res));
+      }
+   } catch (err) {
+      yield put(ACTIONS.changePasswordProfileFailure(err as string));
    }
 }
 
@@ -72,5 +85,6 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.SIGN_UP, signUpSaga),
       takeLatest(CONSTANTS.GET_PROFILE, getProfileSaga),
       takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),
+      takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
    ]);
 }

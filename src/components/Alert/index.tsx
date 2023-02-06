@@ -1,19 +1,7 @@
 import { AlertColor, AlertTitle } from "@mui/material";
-import React from "react";
+import { AlertProps } from "../../utils/interfaces/Props";
 import { MyAlert } from "./styles";
-const Alert = ({
-   show,
-   msg,
-   title = "Error",
-   mode = "error",
-   onClose,
-}: {
-   show: boolean;
-   msg: string;
-   title?: string;
-   mode?: AlertColor;
-   onClose: () => void;
-}) => {
+const Alert = ({ show, msg, title = "Error", mode = "error", onClose }: AlertProps) => {
    return (
       <>
          {show && (

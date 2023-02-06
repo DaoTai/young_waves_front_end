@@ -39,10 +39,10 @@ const Profile = () => {
                <Navigation />
             </Box>
             <Grid container pt={1} bgcolor="#fff">
-               <Grid item xs={12} md={4}>
+               {/* <Grid item xs={12} md={4}>
                   <Introduction />
-               </Grid>
-               <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 4 }}>
+               </Grid> */}
+               <Grid item xs={12} md={12} display="flex" flexDirection="column" sx={{ gap: 4 }}>
                   <Post />
                   <News />
                </Grid>

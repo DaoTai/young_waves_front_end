@@ -1,6 +1,6 @@
 import * as CONSTANTS from "../../../utils/constants";
 import { SignIn, SignUp } from "../../../utils/interfaces/Auth";
-import { Profile } from "../../../utils/interfaces/Profile";
+import { Profile, ChangePassword } from "../../../utils/interfaces/Profile";
 
 // Actions SIGN-IN
 export const signIn = (payload: SignIn) => ({
@@ -63,5 +63,21 @@ export const updateProfileSuccess = (payload: Profile) => ({
 
 export const updateProfileFailure = (payload: string) => ({
    type: CONSTANTS.UPDATE_PROFILE_FAILURE,
+   payload,
+});
+
+// CHANGE-PASSWORD
+export const changePasswordProfile = (payload: ChangePassword & { _id: string }) => ({
+   type: CONSTANTS.CHANGE_PASSWORD_PROFILE,
+   payload,
+});
+
+export const changePasswordProfileSuccess = (payload: string) => ({
+   type: CONSTANTS.CHANGE_PASSWORD_PROFILE_SUCCESS,
+   payload,
+});
+
+export const changePasswordProfileFailure = (payload: string) => ({
+   type: CONSTANTS.CHANGE_PASSWORD_PROFILE_FAILURE,
    payload,
 });
