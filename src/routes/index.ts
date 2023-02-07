@@ -1,12 +1,17 @@
 import { Fragment } from "../components";
 import { SignIn, SignUp } from "../pages/auth";
 import Error from "../pages/error";
-import { Editing, NewsFeed, Profile, EditingPassword } from "../pages/user";
+import { Editing, NewsFeed, Profile, EditingPassword, NewsDetail } from "../pages/user";
 import Route from "./interface";
 const commonRoutes: Array<Route> = [
    {
       path: "",
       component: NewsFeed,
+   },
+   {
+      path: "news",
+      component: NewsFeed,
+      children: [{ path: ":id", component: NewsDetail }],
    },
 ];
 
@@ -43,8 +48,13 @@ const userRoutes: Array<Route> = [
       children: [
          { path: ":id", component: Profile },
          { path: "edit", component: Editing },
-         { path: "password", component: EditingPassword as any },
+         { path: "password", component: EditingPassword },
       ],
+   },
+   {
+      path: "news",
+      component: Fragment as React.FC,
+      children: [{ path: ":id", component: NewsDetail }],
    },
 ];
 

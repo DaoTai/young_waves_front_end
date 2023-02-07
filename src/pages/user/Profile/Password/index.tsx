@@ -1,6 +1,18 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { Box, Button, Grid, Input, Stack, Typography } from "@mui/material";
+import {
+   Box,
+   Button,
+   Dialog,
+   DialogActions,
+   DialogContent,
+   DialogContentText,
+   DialogTitle,
+   Grid,
+   Input,
+   Stack,
+   Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -24,6 +36,7 @@ const Password = () => {
       },
    } = useSelector(signInState$);
    const [show, setShow] = useState<boolean>(false);
+   const [openDialog, setOpenDialog] = useState<boolean>(false);
    const [props, setProps] = useState<Partial<AlertProps>>({
       msg: "",
       title: "",
@@ -38,17 +51,17 @@ const Password = () => {
          },
       }
    );
-
    useEffect(() => {
       if (!isLoading && !!values.newPassword) {
          setShow(true);
-         let timerId;
+         let timerId = 0;
          if (action === CHANGE_PASSWORD_PROFILE_SUCCESS) {
             setProps({
                msg: "Create new password successfully",
                title: "Success",
                mode: "success",
             });
+            resetForm();
          } else {
             setProps({
                msg: error,
@@ -60,18 +73,21 @@ const Password = () => {
          return () => clearTimeout(timerId);
       }
    }, [isLoading, payload, action, error, dispatch]);
+   const handleConfirm = () => {
+      handleSubmit(), setOpenDialog(false);
+   };
    return (
       <>
          <Helmet>
             <title>Change password | Young Waves</title>
          </Helmet>
          <Box bgcolor="#fff" p={3}>
-            <Button
-               sx={{ mb: 2 }}
-               startIcon={<ArrowBackIosIcon />}
-               onClick={() => navigate("/user/profile/edit")}>
+            <Button startIcon={<ArrowBackIosIcon />} onClick={() => navigate("/user/profile/edit")}>
                Back
             </Button>
+            <Typography variant="h4" mb={2} textAlign="center">
+               Change Password
+            </Typography>
             <form autoComplete="off" onSubmit={handleSubmit}>
                <Grid container spacing={2}>
                   {textFields.map((props: any, i: number) => {
@@ -98,6 +114,7 @@ const Password = () => {
                   })}
                </Grid>
 
+               {/* Actions */}
                <Stack flexDirection="row" justifyContent="space-between" mt={2}>
                   <Button
                      startIcon={<RestartAltIcon />}
@@ -106,12 +123,30 @@ const Password = () => {
                      onClick={() => resetForm()}>
                      Reset
                   </Button>
-                  <Button type="submit" size="large" variant="contained">
+                  <Button size="large" variant="contained" onClick={() => setOpenDialog(true)}>
                      Confirm
                   </Button>
                </Stack>
             </form>
          </Box>
+
+         {/* Dialog confirm */}
+         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+            <DialogTitle>
+               <Typography variant="h6" textAlign="center">
+                  Change Password
+               </Typography>
+            </DialogTitle>
+            <DialogContent>
+               <DialogContentText>Do you agree to change password?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+               <Button onClick={() => setOpenDialog(false)}>Disagree</Button>
+               <Button type="submit" onClick={handleConfirm}>
+                  Agree
+               </Button>
+            </DialogActions>
+         </Dialog>
 
          {/* Spinner */}
          <Spinner show={isLoading} />

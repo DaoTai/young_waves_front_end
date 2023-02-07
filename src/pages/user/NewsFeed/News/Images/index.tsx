@@ -12,7 +12,7 @@ const images = [
    "https://mensfolio.vn/wp-content/uploads/2021/11/Rhymastic-VSoul.jpg",
    "https://images.immediate.co.uk/production/volatile/sites/3/2017/11/peaky-tommy-5d3c20b.jpg?quality=90&resize=620,414",
 ];
-const ListImages = () => {
+const ListImages = ({ attachments }: { attachments: string[] }) => {
    const columns = 5;
    const detailRef = useRef<DetailRef>(null);
    const [indexImage, setIndexImage] = useState(0);
@@ -23,7 +23,7 @@ const ListImages = () => {
    return (
       <>
          <ImageList variant="quilted" cols={columns} gap={8}>
-            {images?.map((item, index, arr) => {
+            {attachments?.map((item, index, arr) => {
                if (index < columns) {
                   return index === columns - 1 ? (
                      <ImageListItem key={index} onClick={() => handleClickImage(index)}>
@@ -39,7 +39,7 @@ const ListImages = () => {
             })}
          </ImageList>
 
-         <Detail ref={detailRef} indexImage={indexImage} />
+         {/* <Detail ref={detailRef} indexImage={indexImage} /> */}
       </>
    );
 };

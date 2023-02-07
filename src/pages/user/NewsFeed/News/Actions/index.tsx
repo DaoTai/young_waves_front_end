@@ -1,27 +1,30 @@
-import { useState, useRef } from "react";
 import CommentIcon from "@mui/icons-material/Comment";
 import DetailsIcon from "@mui/icons-material/Details";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { CardActions, CardContent, Collapse, Checkbox, Stack, Chip } from "@mui/material";
-import Comment from "../../../../../components/Comment";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Detail from "../Detail";
 import { MyIconButton } from "./styles";
 import { DetailRef } from "../Detail/interface";
-const Actions = () => {
-   const [expanded, setExpanded] = useState<boolean>(false);
+import { Comment } from "../../../../../utils/interfaces/Post";
+const Actions = ({ likes, comments, id }: { likes: string[]; comments: Comment[]; id: string }) => {
+   const navigate = useNavigate();
    const [like, setLike] = useState<boolean>(false);
    const detailRef = useRef<DetailRef>(null);
-   const handleExpandComments = () => {
-      setExpanded(!expanded);
-   };
    return (
       <>
          {/* Actions */}
          <CardActions sx={{ gap: 12 }}>
             {/* Likes */}
             <Stack flexDirection="column" justifyContent="space-between">
-               <Chip variant="outlined" onClick={() => console.log("heelo")} label="100 likes" />
+               <Chip
+                  variant="outlined"
+                  onClick={() => console.log("heelo")}
+                  label={`${likes?.length} likes`}
+                  // label={likes.length > 0 ? `${likes.length} likes` : "You will be first like"}
+               />
                <Checkbox
                   sx={{ padding: "14px" }}
                   icon={<FavoriteBorderIcon />}
@@ -31,19 +34,22 @@ const Actions = () => {
                />
             </Stack>
             {/* Comments */}
-            <Stack flexDirection="column" justifyContent="space-between">
+            <Stack
+               flexDirection="column"
+               justifyContent="space-between"
+               onClick={() => navigate(`/news/${id}`)}>
                <Chip
                   variant="outlined"
-                  onClick={() => detailRef.current?.handleOpen()}
-                  label="12k comments"
+                  // onClick={() => detailRef.current?.handleOpen()}
+                  label={`${comments?.length} comments`}
                />
-               <MyIconButton onClick={() => detailRef.current?.handleOpen()}>
+               <MyIconButton
+               //  onClick={() => detailRef.current?.handleOpen()}
+               >
                   <CommentIcon />
                </MyIconButton>
             </Stack>
          </CardActions>
-
-         <Detail ref={detailRef} />
 
          {/* Show comments */}
       </>

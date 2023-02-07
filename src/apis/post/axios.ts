@@ -1,7 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import store from "../../redux-saga/redux/store";
+
 const axiosInstance = axios.create({
-   baseURL: "http://localhost:8001/user",
+   baseURL: "http://localhost:8001/posts",
 });
 
 axiosInstance.interceptors.request.use(

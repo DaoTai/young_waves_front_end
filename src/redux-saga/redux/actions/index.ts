@@ -1,6 +1,7 @@
 import * as CONSTANTS from "../../../utils/constants";
 import { SignIn, SignUp } from "../../../utils/interfaces/Auth";
 import { Profile, ChangePassword } from "../../../utils/interfaces/Profile";
+import { Post } from "../../../utils/interfaces/Post";
 
 // Actions SIGN-IN
 export const signIn = (payload: SignIn) => ({
@@ -34,8 +35,23 @@ export const signUpFailure = (payload: string) => ({
    payload,
 });
 
+// Actions LogOut
+export const signOut = () => ({
+   type: CONSTANTS.SIGN_OUT,
+});
+
+export const signOutSuccess = () => ({
+   type: CONSTANTS.SIGN_OUT_SUCCESS,
+});
+
+export const signOutFailure = (payload: string) => ({
+   type: CONSTANTS.SIGN_OUT_FAILURE,
+   payload,
+});
+
 // Actions PROFILE
 // GET
+
 export const getProfile = (payload: { id: string; accessToken: string }) => ({
    type: CONSTANTS.GET_PROFILE,
    payload,
@@ -77,7 +93,28 @@ export const changePasswordProfileSuccess = (payload: string) => ({
    payload,
 });
 
-export const changePasswordProfileFailure = (payload: string) => ({
+export const changePasswordProfileFailure = (payload: any) => ({
    type: CONSTANTS.CHANGE_PASSWORD_PROFILE_FAILURE,
+   payload,
+});
+
+// POSTS
+export const getPosts = () => ({ type: CONSTANTS.GET_POSTS });
+export const getPostsSuccess = (payload: Array<Post>) => ({
+   type: CONSTANTS.GET_POSTS_SUCCESS,
+   payload,
+});
+export const getPostsFailure = (payload: any) => ({
+   type: CONSTANTS.GET_POSTS_FAILURE,
+   payload,
+});
+// Post
+export const getPost = (id: string) => ({ type: CONSTANTS.GET_POST, payload: id });
+export const getPostSuccess = (payload: Post) => ({
+   type: CONSTANTS.GET_POST_SUCCESS,
+   payload,
+});
+export const getPostFailure = (payload: any) => ({
+   type: CONSTANTS.GET_POST_FAILURE,
    payload,
 });

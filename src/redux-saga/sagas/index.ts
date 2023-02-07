@@ -4,6 +4,7 @@ import * as CONSTANTS from "../../utils/constants";
 import * as ACTIONS from "../redux/actions";
 import { SignIn, SignUp } from "../../utils/interfaces/Auth";
 import { Profile } from "../../utils/interfaces/Profile";
+import { Post } from "../../utils/interfaces/Post";
 // Saga
 // Sign-in
 function* signInSaga(action: { type: string; payload: SignIn }) {
@@ -35,6 +36,22 @@ function* signUpSaga(action: { type: string; payload: SignUp }) {
       yield put(ACTIONS.signUpFailure(err as string));
    }
 }
+
+// Sign-out
+function* signOutSaga(action) {
+   try {
+      const res = yield call(api.auth.logOutUser);
+      console.log(res);
+      if (res.status === 200) {
+         yield put(ACTIONS.signOutSuccess());
+      } else {
+         yield put(ACTIONS.signOutFailure(res));
+      }
+   } catch (err) {
+      yield put(ACTIONS.signOutFailure(err as string));
+   }
+}
+
 // Profile
 function* getProfileSaga(action: {
    type: string;
@@ -51,7 +68,7 @@ function* getProfileSaga(action: {
    }
 }
 
-// Update saga
+// Update
 function* updateProfileSaga(action: { type: string; payload: Profile }) {
    try {
       const res = yield call(api.user.updateProfile, action.payload);
@@ -65,6 +82,7 @@ function* updateProfileSaga(action: { type: string; payload: Profile }) {
    }
 }
 
+// Change password
 function* changePasswordProfileSaga(action: { type: string; payload: Profile }) {
    try {
       const res = yield call(api.user.changePasswordProfile, action.payload);
@@ -78,13 +96,34 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
    }
 }
 
+// Posts
+function* getPostsSaga() {
+   try {
+      const res = yield call(api.post.getPosts);
+      yield put(ACTIONS.getPostsSuccess(res));
+   } catch (err) {
+      yield put(ACTIONS.getPostsFailure(err));
+   }
+}
+function* getPostSaga(action: { type: string; payload: string }) {
+   try {
+      const res = yield call(api.post.getDetailPost, action.payload);
+      yield put(ACTIONS.getPostSuccess(res));
+   } catch (err) {
+      yield put(ACTIONS.getPostFailure(err));
+   }
+}
+
 // Combine saga
 export default function* rootSaga() {
    yield all([
       takeLatest(CONSTANTS.SIGN_IN, signInSaga),
       takeLatest(CONSTANTS.SIGN_UP, signUpSaga),
       takeLatest(CONSTANTS.GET_PROFILE, getProfileSaga),
+      takeLatest(CONSTANTS.SIGN_OUT, signOutSaga),
       takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),
       takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
+      takeLatest(CONSTANTS.GET_POSTS, getPostsSaga),
+      takeLatest(CONSTANTS.GET_POST, getPostSaga),
    ]);
 }

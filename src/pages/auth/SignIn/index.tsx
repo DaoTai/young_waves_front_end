@@ -23,7 +23,6 @@ import { init, signInOptions } from "./config";
 const SignIn = () => {
    const dispatch = useDispatch();
    const { isLoading, payload } = useSelector(signInState$);
-   const data$ = useSelector(signInState$);
    const navigate = useNavigate();
    const [msg, setMsg] = useState<string>("");
    const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -55,7 +54,7 @@ const SignIn = () => {
             };
          }
       }
-   }, [isLoading, payload, dispatch, data$]);
+   }, [isLoading, payload, dispatch]);
 
    return (
       <div id="sign-in">

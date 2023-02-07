@@ -1,10 +1,22 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import dateFormat, { masks } from "dateformat";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Avatar, Button, CardHeader, IconButton, Popover, Stack } from "@mui/material";
-const Heading = () => {
+import { Post } from "../../../../../utils/interfaces/Post";
+import { Profile } from "../../../../../utils/interfaces/Profile";
+import { Image } from "../../../../../components";
+const Heading = ({
+   author,
+   createdAt = "",
+   _id = "",
+}: {
+   author: Profile;
+   createdAt: string;
+   _id: string;
+}) => {
    const navigate = useNavigate();
    const location = useLocation();
    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -25,19 +37,22 @@ const Heading = () => {
       <>
          <CardHeader
             avatar={
-               <Avatar
-                  srcSet="https://images.immediate.co.uk/production/volatile/sites/3/2017/11/peaky-tommy-5d3c20b.jpg?quality=90&resize=620,414"
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => navigate("/user/profile")}
-               />
+               <Link to={`/user/profile/${author?._id}`}>
+                  <Image
+                     src={author?.avatar}
+                     srcSet={author?.avatar}
+                     alt="avatar"
+                     style={{ borderRadius: "50%", width: "40px", height: "40px" }}
+                  />
+               </Link>
             }
             action={
                <IconButton onClick={handleClick}>
                   <MoreVertIcon />
                </IconButton>
             }
-            title={<Link to="user/profile">Đào Tài</Link>}
-            subheader="September 14, 2016"
+            title={<Link to={`/user/profile/${author?._id}`}>{author?.fullName}</Link>}
+            subheader={dateFormat(createdAt, "mmmm dS, yyyy, h:MM TT")}
          />
          <Popover
             open={open}

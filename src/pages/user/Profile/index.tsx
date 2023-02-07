@@ -33,12 +33,12 @@ const Profile = () => {
             <title>Profile | Young Waves</title>
          </Helmet>
 
-         <Stack flexDirection="column" sx={{ gap: 4 }}>
+         <Stack flexDirection="column" sx={{ gap: 1 }}>
             <Box boxShadow={1} bgcolor="#fff">
                <Heading />
                <Navigation />
             </Box>
-            <Grid container pt={1} bgcolor="#fff">
+            <Grid container pt={1}>
                {/* <Grid item xs={12} md={4}>
                   <Introduction />
                </Grid> */}

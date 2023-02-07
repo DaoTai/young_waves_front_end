@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { styled, Input, SwipeableDrawer } from "@mui/material";
+import { styled, Input, SwipeableDrawer, Button } from "@mui/material";
 export const Logo = styled(Link)(({ theme }) => {
    return {
       "&:hover": {
@@ -23,6 +23,30 @@ export const Logo = styled(Link)(({ theme }) => {
 });
 
 export const Option = styled(Link)(({ theme }) => ({
+   display: "inline-flex",
+   alignItems: "center",
+   gap: 4,
+   padding: 8,
+   boxShadow: "1px 1px 1px rgb(0 0 0 / 40%)",
+   width: "100%",
+   color: "pink",
+   position: "relative",
+   transition: "all 0.2s linear",
+   "&:hover": {
+      color: "#fff",
+      backgroundColor: theme.palette.primary.main,
+      svg: {
+         transform: "scale(1.2)",
+      },
+   },
+   "&:last-child:hover": {
+      svg: {
+         transform: "translateX(2px)",
+      },
+   },
+}));
+
+export const OptionButton = styled(Button)(({ theme }) => ({
    display: "inline-flex",
    alignItems: "center",
    gap: 4,
