@@ -6,7 +6,7 @@ import Weather from "./Weather";
 const NewsFeed = () => {
    return (
       <>
-         <Stack direction="column" sx={{ gap: 4 }}>
+         <Stack direction="column" sx={{ gap: 1 }}>
             {/* <Weather /> */}
             <Post />
             <News />

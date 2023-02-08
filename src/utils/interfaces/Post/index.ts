@@ -8,11 +8,11 @@ export interface Post {
    author: Partial<Profile>;
    likes: Array<string>;
    comments: Array<Comment>;
-   attachment: Array<string>;
+   attachments: Array<string>;
 }
 export interface Comment {
    _id: string;
-   user: string;
+   user: Partial<Profile>;
    post: string;
    body: string;
    createdAt: string;

@@ -37,6 +37,9 @@ export const UPDATE_POSTS_FAILURE = `${UPDATE_POSTS}_FAILURE`;
 export const DELETE_POSTS = "DELETE_POSTS";
 export const DELETE_POSTS_SUCCESS = `${DELETE_POSTS}_SUCCESS`;
 export const DELETE_POSTS_FAILURE = `${DELETE_POSTS}_FAILURE`;
+export const CREATE_POST = "CREATE_POST";
+export const CREATE_POST_SUCCESS = `${CREATE_POST}_SUCCESS`;
+export const CREATE_POST_FAILURE = `${CREATE_POST}_FAILURE`;
 // For init state
 export const INIT_STATE = {
    signUp: {

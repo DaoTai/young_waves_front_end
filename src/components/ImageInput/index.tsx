@@ -24,7 +24,7 @@ const ImageInput = ({
    };
    return (
       <div className="image-input">
-         <Tooltip title="Add images" arrow placement="top" sx={{ display: "block" }}>
+         <Tooltip title="Add images" arrow placement="top" sx={{ display: "flex" }}>
             <WrapFileInput>
                <FileBase64
                   multiple={multiple}

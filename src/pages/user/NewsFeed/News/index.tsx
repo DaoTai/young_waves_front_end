@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { postsState$ } from "../../../../redux-saga/redux/selectors";
@@ -11,6 +11,7 @@ import Images from "./Images";
 import { Outlet } from "react-router-dom";
 import { Profile } from "../../../../utils/interfaces/Profile";
 const News = () => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const { isLoading, action, payload } = useSelector(postsState$);
    const { data } = payload as { status: string; data: Post[] };
@@ -22,18 +23,20 @@ const News = () => {
          {data?.map((news: Post) => {
             return (
                <Box key={news._id}>
-                  <Card>
+                  <Card sx={{ pl: 2, pr: 2 }}>
                      {/* Heading */}
                      <Heading
                         author={news.author as Profile}
                         createdAt={news.createdAt as string}
-                        _id={news._id}
+                        idNews={news._id}
                      />
                      {/* Images */}
-                     {news.attachment.length > 0 && <Images attachments={news.attachment} />}
+                     {news.attachments.length > 0 && (
+                        <Images id={news._id} attachments={news.attachments} />
+                     )}
                      {/* Body */}
-                     <CardContent>
-                        <Typography variant="body1" color="text.secondary">
+                     <CardContent sx={{ mb: 1, bgcolor: theme.myColor.bgGray, borderRadius: 2 }}>
+                        <Typography variant="body1" color="text.secondary" paragraph>
                            {news.body}
                         </Typography>
                      </CardContent>

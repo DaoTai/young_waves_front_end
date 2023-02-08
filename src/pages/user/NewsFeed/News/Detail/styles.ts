@@ -7,7 +7,7 @@ export const MyBox = styled(Box)(({ theme }) => ({
    transform: "translate(-50%, -50%)",
    width: "90vw",
    maxHeight: "90vh",
-   overflow: "auto",
+   overflow: "scroll",
    backgroundColor: "#fff",
    border: "1px solid #000",
    padding: "24px",

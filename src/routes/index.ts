@@ -11,7 +11,10 @@ const commonRoutes: Array<Route> = [
    {
       path: "news",
       component: NewsFeed,
-      children: [{ path: ":id", component: NewsDetail }],
+      children: [
+         { path: ":id", component: NewsDetail },
+         { path: ":id/:indexImage", component: NewsDetail },
+      ],
    },
 ];
 
@@ -54,7 +57,10 @@ const userRoutes: Array<Route> = [
    {
       path: "news",
       component: Fragment as React.FC,
-      children: [{ path: ":id", component: NewsDetail }],
+      children: [
+         { path: ":id/", component: NewsDetail },
+         { path: ":id/:indexImage", component: NewsDetail },
+      ],
    },
 ];
 

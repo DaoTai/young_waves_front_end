@@ -1,26 +1,26 @@
 import { Send } from "@mui/icons-material";
 import {
-   AlertTitle,
    Box,
    Button,
    Checkbox,
-   Fade,
    FormControlLabel,
    Stack,
    TextField,
    Typography,
+   useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { Alert, Spinner } from "../../../components";
 import { signIn } from "../../../redux-saga/redux/actions";
 import { signInState$ } from "../../../redux-saga/redux/selectors";
 import { TIME_ALERT } from "../../../utils/constants";
-import { Spinner, Alert } from "../../../components";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const { isLoading, payload } = useSelector(signInState$);
    const navigate = useNavigate();

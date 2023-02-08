@@ -1,4 +1,4 @@
-import { CssBaseline } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 import { Route, Routes } from "react-router-dom";
 import { GlobalStyle, AuthProtect } from "./components";
 import { AuthLayout } from "./pages/auth";

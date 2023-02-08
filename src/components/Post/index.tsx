@@ -34,7 +34,6 @@ const Post = () => {
          boxShadow={1}
          borderRadius={2}
          sx={{ gap: 4 }}>
-         {/* <Avatar alt="Your name" children={"DT"} /> */}
          <Grid item>
             <Image
                src={payload.avatar}
@@ -49,7 +48,7 @@ const Post = () => {
                onClick={handleFocus}
             />
          </Grid>
-         <Modal ref={modalRef} />
+         <Modal idUser={payload._id as string} ref={modalRef} />
       </Grid>
    );
 };

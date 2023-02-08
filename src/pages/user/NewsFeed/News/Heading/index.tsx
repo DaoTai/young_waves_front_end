@@ -1,23 +1,21 @@
-import React from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import dateFormat, { masks } from "dateformat";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Avatar, Button, CardHeader, IconButton, Popover, Stack } from "@mui/material";
-import { Post } from "../../../../../utils/interfaces/Post";
-import { Profile } from "../../../../../utils/interfaces/Profile";
+import { Button, CardHeader, IconButton, Popover, Stack } from "@mui/material";
+import dateFormat from "dateformat";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Image } from "../../../../../components";
+import { Profile } from "../../../../../utils/interfaces/Profile";
 const Heading = ({
+   idNews = "",
    author,
    createdAt = "",
-   _id = "",
 }: {
+   idNews: string;
    author: Profile;
    createdAt: string;
-   _id: string;
 }) => {
-   const navigate = useNavigate();
    const location = useLocation();
    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,7 +27,7 @@ const Heading = ({
    };
 
    const handleCopyLinkPost = () => {
-      navigator.clipboard.writeText(location.pathname);
+      navigator.clipboard.writeText(`${window.location.origin}/news/${idNews}`);
    };
 
    const open = Boolean(anchorEl);
@@ -53,6 +51,7 @@ const Heading = ({
             }
             title={<Link to={`/user/profile/${author?._id}`}>{author?.fullName}</Link>}
             subheader={dateFormat(createdAt, "mmmm dS, yyyy, h:MM TT")}
+            sx={{ pl: 0 }}
          />
          <Popover
             open={open}

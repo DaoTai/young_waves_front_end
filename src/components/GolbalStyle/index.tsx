@@ -22,6 +22,7 @@ const GlobalStyle = () => {
                lineHeight: 1.5,
                textRendering: "optimizeSpeed",
                backgroundColor: theme.myColor.bg,
+               color: theme.myColor.text,
             },
             a: {
                color: theme.palette.primary.main,

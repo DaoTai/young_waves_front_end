@@ -118,3 +118,13 @@ export const getPostFailure = (payload: any) => ({
    type: CONSTANTS.GET_POST_FAILURE,
    payload,
 });
+
+export const createPost = () => ({ type: CONSTANTS.CREATE_POST });
+export const createPostSuccess = (payload: Partial<Post>) => ({
+   type: CONSTANTS.CREATE_POST_SUCCESS,
+   payload,
+});
+export const createPostFailure = (payload: any) => ({
+   type: CONSTANTS.CREATE_POST_FAILURE,
+   payload,
+});
