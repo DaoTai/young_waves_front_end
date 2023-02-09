@@ -2,7 +2,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { CardActions, Checkbox, Chip, Stack } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Comment } from "../../../../../utils/interfaces/Post";
 import { MyIconButton } from "./styles";

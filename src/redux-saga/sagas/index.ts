@@ -105,12 +105,33 @@ function* getPostsSaga() {
       yield put(ACTIONS.getPostsFailure(err));
    }
 }
+// Get detail post
 function* getPostSaga(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.post.getDetailPost, action.payload);
       yield put(ACTIONS.getPostSuccess(res));
    } catch (err) {
       yield put(ACTIONS.getPostFailure(err));
+   }
+}
+
+// Create new post
+function* createPost(action: { type: string; payload: string }) {
+   try {
+      const res = yield call(api.post.createPost, action.payload);
+      yield put(ACTIONS.createPostSuccess(res));
+   } catch (err) {
+      yield put(ACTIONS.createPostFailure(err));
+   }
+}
+
+// Create comment
+function* createComment(action: { type: string; payload: { id: string; comment: string } }) {
+   try {
+      const res = yield call(api.comment.createComment, action.payload);
+      yield put(ACTIONS.createCommentSuccess(res));
+   } catch (err) {
+      yield put(ACTIONS.createCommentFailure(err));
    }
 }
 
@@ -125,5 +146,7 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
       takeLatest(CONSTANTS.GET_POSTS, getPostsSaga),
       takeLatest(CONSTANTS.GET_POST, getPostSaga),
+      takeLatest(CONSTANTS.CREATE_POST, createPost),
+      takeLatest(CONSTANTS.CREATE_COMMENT, createComment),
    ]);
 }

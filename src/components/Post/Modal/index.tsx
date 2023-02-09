@@ -1,10 +1,23 @@
 import { Send } from "@mui/icons-material";
-import { Box, Button, ImageList, ImageListItem, Modal, TextField, Typography } from "@mui/material";
+import {
+   Box,
+   Button,
+   ImageList,
+   ImageListItem,
+   Modal,
+   TextField,
+   Typography,
+   useTheme,
+} from "@mui/material";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { useDispatch } from "react-redux";
+import { createPost } from "../../../redux-saga/redux/actions";
 import { CloseButton, ImageInput } from "../../index";
 import { MyBox } from "./styles";
 
-const MyModal = ({ idUser = "" }: { idUser: string }, ref: any) => {
+const MyModal = (props, ref: any) => {
+   const theme = useTheme();
+   const dispatch = useDispatch();
    const [open, setOpen] = useState(false);
    const [images, setImages] = useState<string[]>([]);
    const [post, setPost] = useState<string>("");
@@ -14,7 +27,8 @@ const MyModal = ({ idUser = "" }: { idUser: string }, ref: any) => {
 
    const handleSubmit = (e: React.FormEvent<EventTarget>) => {
       e.preventDefault();
-      console.log({ post: post.trim(), images, status: status.trim() });
+      dispatch(createPost({ body: post.trim(), attachments: images, status: status.trim() }));
+      handleClose();
    };
 
    const handleSetImages = (files: any) => {
@@ -29,9 +43,7 @@ const MyModal = ({ idUser = "" }: { idUser: string }, ref: any) => {
       });
    };
 
-   useEffect(() => {
-      console.log(post);
-   }, [images, post]);
+   useEffect(() => {}, [images, post]);
 
    useImperativeHandle(ref, () => ({
       handleOpen,
@@ -68,9 +80,9 @@ const MyModal = ({ idUser = "" }: { idUser: string }, ref: any) => {
                      rows={10}
                      onChange={(e) => setPost(e.target.value)}
                   />
-                  <ImageList cols={3} rowHeight={164} variant="quilted">
+                  <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
                      {images?.map((item, index) => (
-                        <ImageListItem key={item}>
+                        <ImageListItem key={item} sx={{ mb: 1, minHeight: "40vh" }}>
                            <CloseButton onClick={() => handleRemoveImage(index)} />
                            <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
                         </ImageListItem>
@@ -83,7 +95,7 @@ const MyModal = ({ idUser = "" }: { idUser: string }, ref: any) => {
                      size="large"
                      variant="contained"
                      endIcon={<Send />}
-                     sx={{ marginTop: 2 }}>
+                     sx={{ marginTop: 2, color: theme.myColor.white }}>
                      Create
                   </Button>
                </form>

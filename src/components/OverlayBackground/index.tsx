@@ -12,8 +12,12 @@ const OverlayBackground = ({ amount }: { amount?: number }) => {
    });
    return (
       <MyDiv>
-         <Typography variant="h4" textAlign="center" color="#fff">
-            {amount} +
+         <Typography
+            variant="h4"
+            textAlign="center"
+            color="#fff"
+            sx={{ textShadow: "1px 1px 4px rgba(255,255,255,0.3)" }}>
+            {amount}+
          </Typography>
       </MyDiv>
    );

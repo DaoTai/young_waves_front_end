@@ -106,7 +106,7 @@ const SignIn = () => {
                   size="large"
                   variant="contained"
                   endIcon={<Send />}
-                  sx={{ marginTop: 2 }}>
+                  sx={{ marginTop: 2, color: theme.myColor.white }}>
                   Submit
                </Button>
             </form>

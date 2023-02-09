@@ -10,6 +10,7 @@ import {
    RadioGroup,
    TextField,
    Typography,
+   useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import { signUpState$ } from "../../../redux-saga/redux/selectors";
 import { TIME_ALERT } from "../../../utils/constants";
 import { init, radioFields, registerOptions, textFields } from "./config";
 const SignUp = () => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const { isLoading, payload } = useSelector(signUpState$);
@@ -136,7 +138,7 @@ const SignUp = () => {
                   size="large"
                   variant="contained"
                   endIcon={<Send />}
-                  sx={{ marginTop: 2 }}>
+                  sx={{ marginTop: 2, color: theme.myColor.white }}>
                   Sign up
                </Button>
             </form>

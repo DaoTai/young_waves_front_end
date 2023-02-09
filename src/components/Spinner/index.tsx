@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
 const Spinner = ({ show }: { show: boolean }) => {
@@ -22,4 +22,4 @@ const Spinner = ({ show }: { show: boolean }) => {
    );
 };
 
-export default Spinner;
+export default memo(Spinner);

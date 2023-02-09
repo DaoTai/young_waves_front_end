@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Stack, Typography, Chip, useTheme } from "@mui/material";
 import dateFormat from "dateformat";
 import { Link } from "react-router-dom";
 import { Comment } from "../../utils/interfaces/Post";
@@ -21,9 +21,8 @@ const MyComment = ({ comment }: { comment: Comment }) => {
                   <Link to={`/user/profile/${comment.user._id}`}>
                      <Typography variant="subtitle1">{comment.user.fullName}</Typography>
                   </Link>
-                  <Typography variant={"body1"} fontWeight={500} paragraph>
-                     {comment.body}
-                  </Typography>
+                  <Chip label={comment.body} />
+
                   <Typography variant="body2" color={theme.myColor.textSecondary}>
                      {dateFormat(comment.updatedAt, " mmmm dS, yyyy, h:MM TT")}
                   </Typography>

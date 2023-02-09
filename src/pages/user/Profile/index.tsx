@@ -1,11 +1,12 @@
 import { Box, Grid, Stack } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Post, Spinner } from "../../../components";
 import { getProfile } from "../../../redux-saga/redux/actions";
 import { signInState$ } from "../../../redux-saga/redux/selectors";
+
 import News from "../NewsFeed/News";
 import Heading from "./Heading";
 import Introduction from "./Introduction";
@@ -18,7 +19,6 @@ const Profile = () => {
       isLoading,
       payload: { data },
    } = useSelector(signInState$);
-
    useEffect(() => {
       dispatch(
          getProfile({

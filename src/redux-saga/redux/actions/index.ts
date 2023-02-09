@@ -2,6 +2,7 @@ import * as CONSTANTS from "../../../utils/constants";
 import { SignIn, SignUp } from "../../../utils/interfaces/Auth";
 import { Profile, ChangePassword } from "../../../utils/interfaces/Profile";
 import { Post } from "../../../utils/interfaces/Post";
+import { Comment } from "../../../utils/interfaces/Comment";
 
 // Actions SIGN-IN
 export const signIn = (payload: SignIn) => ({
@@ -119,12 +120,25 @@ export const getPostFailure = (payload: any) => ({
    payload,
 });
 
-export const createPost = () => ({ type: CONSTANTS.CREATE_POST });
+export const createPost = (payload: Partial<Post>) => ({ type: CONSTANTS.CREATE_POST, payload });
 export const createPostSuccess = (payload: Partial<Post>) => ({
    type: CONSTANTS.CREATE_POST_SUCCESS,
    payload,
 });
 export const createPostFailure = (payload: any) => ({
    type: CONSTANTS.CREATE_POST_FAILURE,
+   payload,
+});
+// Comment
+export const createComment = (payload: { id: string; comment: string }) => ({
+   type: CONSTANTS.CREATE_COMMENT,
+   payload,
+});
+export const createCommentSuccess = (payload: string) => ({
+   type: CONSTANTS.CREATE_COMMENT_SUCCESS,
+   payload,
+});
+export const createCommentFailure = (payload: any) => ({
+   type: CONSTANTS.CREATE_COMMENT_FAILURE,
    payload,
 });

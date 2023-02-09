@@ -31,15 +31,18 @@ export const GET_POST_FAILURE = `${GET_POST}_FAILURE`;
 export const GET_POSTS = "GET_POSTS";
 export const GET_POSTS_SUCCESS = `${GET_POSTS}_SUCCESS`;
 export const GET_POSTS_FAILURE = `${GET_POSTS}_FAILURE`;
-export const UPDATE_POSTS = "UPDATE_POSTS";
-export const UPDATE_POSTS_SUCCESS = `${UPDATE_POSTS}_SUCCESS`;
-export const UPDATE_POSTS_FAILURE = `${UPDATE_POSTS}_FAILURE`;
-export const DELETE_POSTS = "DELETE_POSTS";
-export const DELETE_POSTS_SUCCESS = `${DELETE_POSTS}_SUCCESS`;
-export const DELETE_POSTS_FAILURE = `${DELETE_POSTS}_FAILURE`;
+export const UPDATE_POST = "UPDATE_POST";
+export const UPDATE_POST_SUCCESS = `${UPDATE_POST}_SUCCESS`;
+export const UPDATE_POST_FAILURE = `${UPDATE_POST}_FAILURE`;
+export const DELETE_POST = "DELETE_POST";
+export const DELETE_POST_SUCCESS = `${DELETE_POST}_SUCCESS`;
+export const DELETE_POST_FAILURE = `${DELETE_POST}_FAILURE`;
 export const CREATE_POST = "CREATE_POST";
 export const CREATE_POST_SUCCESS = `${CREATE_POST}_SUCCESS`;
 export const CREATE_POST_FAILURE = `${CREATE_POST}_FAILURE`;
+export const CREATE_COMMENT = "CREATE_COMMENT";
+export const CREATE_COMMENT_SUCCESS = `${CREATE_COMMENT}_SUCCESS`;
+export const CREATE_COMMENT_FAILURE = `${CREATE_COMMENT}_FAILURE`;
 // For init state
 export const INIT_STATE = {
    signUp: {
@@ -60,11 +63,19 @@ export const INIT_STATE = {
    },
    posts: {
       isLoading: false,
-      payload: [],
+      payload: {
+         status: 0,
+         data: [],
+      },
    },
    post: {
       isLoading: false,
-      payload: {},
+      payload: {
+         data: {
+            post: {},
+            comments: [],
+         },
+      },
    },
 };
 

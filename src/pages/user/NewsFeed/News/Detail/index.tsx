@@ -1,24 +1,23 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import SendIcon from "@mui/icons-material/Send";
-import { Box, Fab, Grid, Modal, TextField, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useEffect, useRef, useState } from "react";
+import { Box, Fab, Grid, Modal, Typography } from "@mui/material";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { CloseButton, Comment as MyComment, Image, Spinner } from "../../../../../components";
+import { CloseButton, Comment as MyComment, Spinner } from "../../../../../components";
 import { getPost } from "../../../../../redux-saga/redux/actions";
 import { postState$ } from "../../../../../redux-saga/redux/selectors";
 import { Comment, Post } from "../../../../../utils/interfaces/Post";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 import Heading from "../Heading";
+import CommentField from "./CommentField";
 import { settings } from "./config";
 import { ButtonSlide, MyBox } from "./styles";
 
 const Detail = () => {
-   const [newComment, setNewComment] = useState<string>("");
    const {
       isLoading,
       payload: { data },
@@ -30,7 +29,6 @@ const Detail = () => {
    const { post, comments } = (data as { post: Post; comments: Comment[] }) ?? {};
    const [open, setOpen] = useState(true);
    const sliderRef = useRef<Slider | null>(null);
-
    useEffect(() => {
       id && dispatch(getPost(id as string));
       const timerId = setTimeout(() => {
@@ -46,16 +44,6 @@ const Detail = () => {
       navigate("/");
    };
 
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-      setNewComment(e.target.value);
-   };
-
-   const handleSubmit = (e: React.KeyboardEvent): void => {
-      if (e.keyCode === 13) {
-         console.log("Submit");
-      }
-   };
-
    return (
       <>
          <Modal open={open} onClose={handleClose}>
@@ -64,7 +52,7 @@ const Detail = () => {
 
                <Grid mt={3} container>
                   {/* Images */}
-                  {post?.attachments.length > 0 && (
+                  {post?.attachments?.length ? (
                      <Grid item md={6} xs={12} position="relative" height="100%">
                         <Slider ref={sliderRef} {...settings}>
                            {post?.attachments.map((img, index) => (
@@ -95,10 +83,11 @@ const Detail = () => {
                            </Fab>
                         </ButtonSlide>
                      </Grid>
-                  )}
+                  ) : null}
 
                   {/* Content */}
-                  <Grid item md={post?.attachments.length > 0 ? 6 : 12} xs={12} pl={4}>
+
+                  <Grid item md={post?.attachments?.length > 0 ? 6 : 12} xs={12} pl={4}>
                      <Heading
                         author={post?.author as Profile}
                         idNews={post?._id}
@@ -111,39 +100,7 @@ const Detail = () => {
                      </Box>
 
                      {/* Action comments */}
-                     <Grid
-                        container
-                        mb={2}
-                        mt={2}
-                        gap={1}
-                        justifyContent="space-between"
-                        alignItems="center"
-                        flexWrap="nowrap">
-                        <Grid item xs={1} md={1}>
-                           <Image
-                              src={post?.author?.avatar}
-                              srcSet={post?.author?.avatar}
-                              alt="avatar"
-                              style={{ borderRadius: "50%", width: "40px", height: "40px" }}
-                           />
-                        </Grid>
-                        <Grid item xs={11} md={11}>
-                           <TextField
-                              fullWidth
-                              multiline
-                              variant="standard"
-                              placeholder="Write your comment"
-                              value={newComment}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
-                              onKeyDown={handleSubmit}
-                           />
-                        </Grid>
-                        {newComment && (
-                           <Box sx={{ cursor: "pointer" }}>
-                              <SendIcon />
-                           </Box>
-                        )}
-                     </Grid>
+                     <CommentField post={post} />
                      {/* List comments */}
                      <Box>
                         {comments?.map((comment: Comment) => {

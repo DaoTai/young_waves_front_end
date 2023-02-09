@@ -26,6 +26,7 @@ const GlobalStyle = () => {
             },
             a: {
                color: theme.palette.primary.main,
+               fontWeight: 500,
                textDecoration: "none",
                transition: "0.3s ease all",
                "&:hover": {

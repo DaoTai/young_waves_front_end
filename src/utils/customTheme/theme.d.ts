@@ -7,6 +7,8 @@ declare module "@mui/material/styles" {
          bgGradient: string;
          bg: string;
          bgGray: string;
+         link: string;
+         white: string;
       };
    }
    // allow configuration using `createTheme`
@@ -17,6 +19,8 @@ declare module "@mui/material/styles" {
          bgGradient: string;
          bg: string;
          bgGray: string;
+         link: string;
+         white: string;
       };
    }
 }
