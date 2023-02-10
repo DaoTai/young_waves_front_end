@@ -6,6 +6,9 @@ import {
    GET_POSTS,
    GET_POSTS_SUCCESS,
    GET_POSTS_FAILURE,
+   GET_OWNER_POSTS,
+   GET_OWNER_POSTS_SUCCESS,
+   GET_OWNER_POSTS_FAILURE,
 } from "../../../../utils/constants";
 import { Action } from "../../../../utils/interfaces/Action";
 

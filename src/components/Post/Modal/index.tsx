@@ -11,30 +11,31 @@ import {
 } from "@mui/material";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { useDispatch } from "react-redux";
-import { createPost } from "../../../redux-saga/redux/actions";
 import { CloseButton, ImageInput } from "../../index";
 import { MyBox } from "./styles";
 
-const MyModal = (props, ref: any) => {
+const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
    const theme = useTheme();
-   const dispatch = useDispatch();
    const [open, setOpen] = useState(false);
    const [images, setImages] = useState<string[]>([]);
    const [post, setPost] = useState<string>("");
    const [status, setStatus] = useState<string>("");
+   useImperativeHandle(ref, () => ({
+      handleOpen,
+      handleClose,
+      images: images,
+      post: post,
+      status: status,
+      setImages,
+      setPost,
+      setStatus,
+   }));
+
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
-
-   const handleSubmit = (e: React.FormEvent<EventTarget>) => {
-      e.preventDefault();
-      dispatch(createPost({ body: post.trim(), attachments: images, status: status.trim() }));
-      handleClose();
-   };
-
    const handleSetImages = (files: any) => {
       setImages(files);
    };
-
    const handleRemoveImage = (index: number) => {
       setImages((prev: string[]) => {
          const newState = [...prev];
@@ -43,24 +44,22 @@ const MyModal = (props, ref: any) => {
       });
    };
 
-   useEffect(() => {}, [images, post]);
-
-   useImperativeHandle(ref, () => ({
-      handleOpen,
-      handleClose,
-   }));
+   const handleSubmit = () => {
+      onSubmit();
+      handleClose();
+   };
 
    return (
       <Modal open={open} onClose={handleClose}>
          <MyBox>
             {/* Heading */}
-            <Typography variant="h4" component="h2" textAlign="center">
+            <Typography variant="h3" component="h2" textAlign="center" pb={1}>
                Create new post
             </Typography>
             <CloseButton onClick={handleClose} size="large" />
 
-            <Box>
-               <form onSubmit={handleSubmit}>
+            <Box borderTop={1} pt={2}>
+               <form>
                   <TextField
                      variant="outlined"
                      label="Status"
@@ -91,11 +90,11 @@ const MyModal = (props, ref: any) => {
                   <ImageInput multiple onChange={handleSetImages} />
                   <Button
                      fullWidth
-                     type="submit"
                      size="large"
                      variant="contained"
                      endIcon={<Send />}
-                     sx={{ marginTop: 2, color: theme.myColor.white }}>
+                     sx={{ marginTop: 2, color: theme.myColor.white }}
+                     onClick={handleSubmit}>
                      Create
                   </Button>
                </form>

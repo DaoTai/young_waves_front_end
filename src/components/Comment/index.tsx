@@ -17,14 +17,18 @@ const MyComment = ({ comment }: { comment: Comment }) => {
                      style={{ width: "40px", height: "40px", borderRadius: "50%" }}
                   />
                </Link>
-               <Box bgcolor="#eee" p={1} borderRadius={4}>
-                  <Link to={`/user/profile/${comment.user._id}`}>
-                     <Typography variant="subtitle1">{comment.user.fullName}</Typography>
-                  </Link>
-                  <Chip label={comment.body} />
-
-                  <Typography variant="body2" color={theme.myColor.textSecondary}>
-                     {dateFormat(comment.updatedAt, " mmmm dS, yyyy, h:MM TT")}
+               <Box flexGrow={2} bgcolor={theme.myColor.bgGray} p={1} borderRadius={2}>
+                  <Stack display=" flex" flexDirection="row" alignItems="center" gap={2} pb={1}>
+                     <Link to={`/user/profile/${comment.user._id}`}>{comment.user.fullName}</Link>
+                     <Typography
+                        variant="body2"
+                        component="span"
+                        color={theme.myColor.textSecondary}>
+                        {dateFormat(comment.updatedAt, " mmmm dS, yyyy, h:MM TT")}
+                     </Typography>
+                  </Stack>
+                  <Typography variant="body1" pb={1}>
+                     {comment.body}
                   </Typography>
                </Box>
             </Stack>

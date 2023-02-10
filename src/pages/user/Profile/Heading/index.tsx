@@ -9,14 +9,12 @@ import Avatar from "./Avatar";
 const Heading = () => {
    const navigate = useNavigate();
    const { isLoading, payload } = useSelector(profileState$);
-
    const posts$ = useSelector(postsState$);
    const totalPost = useMemo(() => {
       const posts = posts$?.payload?.data as IPost[] | [];
       const ownPostLength = posts.filter((post) => post?.author?._id === payload?.data?._id).length;
       return ownPostLength;
-   }, [payload]);
-   console.log(totalPost);
+   }, [posts$, payload]);
    return (
       <Grid container p={1} borderBottom={1} justifyContent="flex-start" alignItems="center">
          <Grid item xs={12} md={3}>

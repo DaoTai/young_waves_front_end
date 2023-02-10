@@ -1,26 +1,13 @@
-import { Box, Card, CardContent, Typography, useTheme } from "@mui/material";
-import { useEffect, useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { postState$, postsState$ } from "../../../../redux-saga/redux/selectors";
-import { getPosts } from "../../../../redux-saga/redux/actions";
+import { Box, Card, CardContent, TextField, Typography, useTheme } from "@mui/material";
+
 import { Post } from "../../../../utils/interfaces/Post";
 import { Spinner } from "../../../../components";
 import Actions from "./Actions";
 import Heading from "./Heading";
 import Images from "./Images";
 import { Profile } from "../../../../utils/interfaces/Profile";
-const News = () => {
+const News = ({ listNews }: { listNews: Post[] }) => {
    const theme = useTheme();
-   const dispatch = useDispatch();
-   const { isLoading, action, payload } = useSelector(postsState$);
-   const post$ = useSelector(postState$);
-   const { data } = payload as { status: string; data: Post[] & [] };
-   const listNews = useMemo(() => {
-      return data;
-   }, [post$, data]);
-   useEffect(() => {
-      dispatch(getPosts());
-   }, []);
    return (
       <>
          {listNews?.map((news: Post) => {
@@ -32,7 +19,7 @@ const News = () => {
                         status={news?.status as string}
                         author={news?.author as Profile}
                         createdAt={news?.createdAt as string}
-                        idNews={news?._id}
+                        news={news}
                      />
                      {/* Images */}
                      {news?.attachments.length > 0 && (
@@ -51,8 +38,6 @@ const News = () => {
                </Box>
             );
          })}
-         {/* Spinner */}
-         <Spinner show={isLoading} />
       </>
    );
 };

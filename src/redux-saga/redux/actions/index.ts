@@ -109,7 +109,18 @@ export const getPostsFailure = (payload: any) => ({
    type: CONSTANTS.GET_POSTS_FAILURE,
    payload,
 });
-// Post
+
+export const getOwnerPosts = (idUser: string) => ({ type: CONSTANTS.GET_OWNER_POSTS, id: idUser });
+export const getOwnerPostsSuccess = (payload: Array<Post>) => ({
+   type: CONSTANTS.GET_OWNER_POSTS_SUCCESS,
+   payload,
+});
+export const getOwnerPostsFailure = (payload: any) => ({
+   type: CONSTANTS.GET_OWNER_POSTS_FAILURE,
+   payload,
+});
+
+// Posts
 export const getPost = (id: string) => ({ type: CONSTANTS.GET_POST, payload: id });
 export const getPostSuccess = (payload: Post) => ({
    type: CONSTANTS.GET_POST_SUCCESS,
@@ -120,6 +131,7 @@ export const getPostFailure = (payload: any) => ({
    payload,
 });
 
+// Post
 export const createPost = (payload: Partial<Post>) => ({ type: CONSTANTS.CREATE_POST, payload });
 export const createPostSuccess = (payload: Partial<Post>) => ({
    type: CONSTANTS.CREATE_POST_SUCCESS,
@@ -129,6 +141,20 @@ export const createPostFailure = (payload: any) => ({
    type: CONSTANTS.CREATE_POST_FAILURE,
    payload,
 });
+
+export const updatePost = (payload: { id: string; data: Partial<Post> }) => ({
+   type: CONSTANTS.UPDATE_POST,
+   payload,
+});
+export const updatePostSuccess = (payload: Partial<Post>) => ({
+   type: CONSTANTS.UPDATE_POST_SUCCESS,
+   payload,
+});
+export const updatePostFailure = (payload: any) => ({
+   type: CONSTANTS.UPDATE_POST_FAILURE,
+   payload,
+});
+
 // Comment
 export const createComment = (payload: { id: string; comment: string }) => ({
    type: CONSTANTS.CREATE_COMMENT,

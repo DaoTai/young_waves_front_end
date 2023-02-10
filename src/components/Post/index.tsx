@@ -1,28 +1,57 @@
 import { Avatar, Grid, Stack } from "@mui/material";
-import { useRef } from "react";
-import { useSelector } from "react-redux";
-import { signInState$ } from "../../redux-saga/redux/selectors";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { signInState$, profileState$ } from "../../redux-saga/redux/selectors";
 import { Profile } from "../../utils/interfaces/Profile";
+import { ModalRef } from "../../utils/interfaces/Props";
 import MyInput from "../BaseInput";
+import { createPost } from "../../redux-saga/redux/actions";
 import Image from "../Image";
 import Modal from "./Modal";
-interface ModalRef {
-   handleOpen: () => void;
-   handleClose: () => void;
-}
+
 const Post = () => {
+   const dispatch = useDispatch();
+   const user$ = useSelector(profileState$);
    const {
       isLoading,
       payload: { data },
    } = useSelector(signInState$);
    const { payload }: { payload: Profile } = data;
+   const [user, setUser] = useState({
+      avatar: "",
+      fullName: "",
+   });
    const modalRef = useRef<ModalRef>({
       handleOpen: () => {},
       handleClose: () => {},
+      images: [],
+      post: "",
+      status: "",
+      setImages: () => {},
+      setPost: () => {},
+      setStatus: () => {},
    });
 
+   useEffect(() => {
+      if (user$.payload.data) {
+         setUser(user$.payload.data);
+      } else {
+         setUser(payload);
+      }
+   }, [payload, user$]);
    const handleFocus = () => {
       modalRef.current.handleOpen();
+   };
+
+   const handleSubmit = () => {
+      const { post, images, status } = modalRef.current;
+      dispatch(
+         createPost({
+            body: post.trim(),
+            attachments: images,
+            status: status.trim(),
+         })
+      );
    };
 
    return (
@@ -36,19 +65,19 @@ const Post = () => {
          sx={{ gap: 4 }}>
          <Grid item>
             <Image
-               src={payload.avatar}
+               src={user?.avatar}
                style={{ borderRadius: "50%", width: "40px", height: "40px" }}
             />
          </Grid>
          <Grid item flexGrow={2}>
             <MyInput
                readOnly
-               placeholder={`Hi ${payload.fullName}, what do you think?`}
+               placeholder={`Hi ${user?.fullName}, what do you think?`}
                sx={{ width: "100%", borderRadius: 5 }}
                onClick={handleFocus}
             />
          </Grid>
-         <Modal idUser={payload._id as string} ref={modalRef} />
+         <Modal onSubmit={handleSubmit} ref={modalRef} />
       </Grid>
    );
 };

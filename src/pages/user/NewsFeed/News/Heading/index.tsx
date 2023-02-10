@@ -11,24 +11,28 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import dateFormat from "dateformat";
-import { Image } from "../../../../../components";
-import { Profile } from "../../../../../utils/interfaces/Profile";
-const Heading = ({
-   status,
-   idNews = "",
-   author,
-   createdAt = "",
-}: {
-   status?: string;
-   idNews: string;
-   author: Profile;
-   createdAt: string;
-}) => {
+import { Image, PostModal } from "../../../../../components";
+import { updatePost } from "../../../../../redux-saga/redux/actions";
+import { HeadingNewsProps, ModalRef } from "../../../../../utils/interfaces/Props";
+const Heading = ({ news, author, createdAt = "" }: HeadingNewsProps) => {
    const theme = useTheme();
-   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+   const dispatch = useDispatch();
+   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+   const modalRef = useRef<ModalRef>({
+      handleOpen: () => {},
+      handleClose: () => {},
+      images: [],
+      post: "",
+      status: "",
+      setImages: () => {},
+      setPost: () => {},
+      setStatus: () => {},
+   });
+
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
       setAnchorEl(event.currentTarget);
@@ -38,7 +42,26 @@ const Heading = ({
    };
 
    const handleCopyLinkPost = () => {
-      navigator.clipboard.writeText(`${window.location.origin}/news/${idNews}`);
+      navigator.clipboard.writeText(`${window.location.origin}/news/${news._id}`);
+   };
+
+   const handleShowModal = () => {
+      handleClose();
+      const { setImages, setPost, setStatus, handleOpen } = modalRef.current;
+      handleOpen();
+      setImages(news?.attachments);
+      setPost(news.body);
+      setStatus(news.status);
+   };
+
+   const handleSubmit = () => {
+      const { images, post, status } = modalRef.current;
+      const data = {
+         attachments: images,
+         body: post,
+         status,
+      };
+      dispatch(updatePost({ id: news._id, data }));
    };
 
    const open = Boolean(anchorEl);
@@ -63,9 +86,9 @@ const Heading = ({
             title={<Link to={`/user/profile/${author?._id}`}>{author?.fullName}</Link>}
             subheader={
                <>
-                  {status && (
+                  {news?.status && (
                      <Typography pr={1} variant="body2" component="span">
-                        I'm feeling {status?.toLocaleLowerCase()}
+                        I'm feeling {news?.status?.toLocaleLowerCase()}
                      </Typography>
                   )}
                   <Chip label={dateFormat(createdAt, "mmmm dS, yyyy, h:MM TT")} />
@@ -89,7 +112,8 @@ const Heading = ({
                      bgcolor: "transparent",
                      color: theme.myColor.link,
                   }}
-                  startIcon={<ModeEditIcon />}>
+                  startIcon={<ModeEditIcon />}
+                  onClick={handleShowModal}>
                   <Typography variant="body2">Edit</Typography>
                </Button>
                <Button
@@ -105,6 +129,9 @@ const Heading = ({
                </Button>
             </Stack>
          </Popover>
+
+         {/* Modal */}
+         <PostModal onSubmit={handleSubmit} ref={modalRef} />
       </>
    );
 };

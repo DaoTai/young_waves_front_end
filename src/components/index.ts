@@ -5,6 +5,7 @@ export { default as ImageInput } from "./ImageInput";
 export { default as CloseButton } from "./CloseButton";
 export { default as Comment } from "./Comment";
 export { default as Post } from "./Post";
+export { default as PostModal } from "./Post/Modal";
 export { default as GlobalStyle } from "./GolbalStyle";
 export { default as NavLink } from "./NavLink";
 export { default as Fragment } from "./Fragment";

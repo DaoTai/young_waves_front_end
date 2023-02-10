@@ -38,10 +38,9 @@ function* signUpSaga(action: { type: string; payload: SignUp }) {
 }
 
 // Sign-out
-function* signOutSaga(action) {
+function* signOutSaga() {
    try {
       const res = yield call(api.auth.logOutUser);
-      console.log(res);
       if (res.status === 200) {
          yield put(ACTIONS.signOutSuccess());
       } else {
@@ -105,6 +104,17 @@ function* getPostsSaga() {
       yield put(ACTIONS.getPostsFailure(err));
    }
 }
+
+// Get owner posts
+function* getOwnerPostsSaga(action: { type: string; id: string }) {
+   try {
+      const res = yield call(api.post.getOwnerPosts, action.id);
+      yield put(ACTIONS.getPostsSuccess(res));
+   } catch (err) {
+      yield put(ACTIONS.getPostsFailure(err));
+   }
+}
+
 // Get detail post
 function* getPostSaga(action: { type: string; payload: string }) {
    try {
@@ -116,12 +126,23 @@ function* getPostSaga(action: { type: string; payload: string }) {
 }
 
 // Create new post
-function* createPost(action: { type: string; payload: string }) {
+function* createPost(action: { type: string; payload: Partial<Post> }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
       yield put(ACTIONS.createPostSuccess(res));
    } catch (err) {
       yield put(ACTIONS.createPostFailure(err));
+   }
+}
+
+// Update post
+function* updatePost(action: { type: string; payload: { id: string; data: Partial<Post> } }) {
+   try {
+      const { id, data } = action.payload;
+      yield call(api.post.updatePost, id, data);
+      yield put(ACTIONS.updatePostSuccess(action.payload.data));
+   } catch (err) {
+      yield put(ACTIONS.updatePostFailure(err));
    }
 }
 
@@ -145,8 +166,11 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),
       takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
       takeLatest(CONSTANTS.GET_POSTS, getPostsSaga),
+      takeLatest(CONSTANTS.GET_OWNER_POSTS, getOwnerPostsSaga),
       takeLatest(CONSTANTS.GET_POST, getPostSaga),
       takeLatest(CONSTANTS.CREATE_POST, createPost),
+      takeLatest(CONSTANTS.UPDATE_POST, updatePost),
+      takeLatest(CONSTANTS.UPDATE_POST_SUCCESS, getPostsSaga),
       takeLatest(CONSTANTS.CREATE_COMMENT, createComment),
    ]);
 }

@@ -23,7 +23,6 @@ const Detail = () => {
       payload: { data },
    } = useSelector(postState$);
    const { id, indexImage } = useParams();
-   const params = useParams();
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const { post, comments } = (data as { post: Post; comments: Comment[] }) ?? {};
@@ -48,9 +47,11 @@ const Detail = () => {
       <>
          <Modal open={open} onClose={handleClose}>
             <MyBox>
+               <Typography variant="h3" textAlign="center">
+                  Post of {post?.author?.fullName}
+               </Typography>
                <CloseButton onClick={handleClose} size="large" />
-
-               <Grid mt={3} container>
+               <Grid pt={3} borderTop={1} container>
                   {/* Images */}
                   {post?.attachments?.length ? (
                      <Grid item md={6} xs={12} position="relative" height="100%">
@@ -90,7 +91,7 @@ const Detail = () => {
                   <Grid item md={post?.attachments?.length > 0 ? 6 : 12} xs={12} pl={4}>
                      <Heading
                         author={post?.author as Profile}
-                        idNews={post?._id}
+                        news={post}
                         createdAt={post?.createdAt as string}
                      />
                      <Box mb={1} pb={1} sx={{ borderBottom: "1px solid #333" }}>

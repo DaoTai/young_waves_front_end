@@ -60,6 +60,21 @@ const postReducer = (state = INIT_STATE.post, action: MyAction) => {
             payload: newState,
             action: action.type,
          };
+      case UPDATE_POST_SUCCESS:
+         const newPost = { ...state.payload.data.post, ...action.payload };
+         const newPayload = {
+            ...state.payload,
+            data: {
+               comments: [...state.payload.data.comments],
+               post: newPost,
+            },
+         };
+         return {
+            ...state,
+            isLoading: false,
+            payload: newPayload,
+            action: action.type,
+         };
       case CREATE_COMMENT_FAILURE:
       case UPDATE_POST_FAILURE:
       case GET_POST_FAILURE:
