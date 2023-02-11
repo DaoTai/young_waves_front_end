@@ -15,6 +15,7 @@ export interface HeadingNewsProps {
    news: Post;
    author: Profile;
    createdAt: string;
+   indexNews: number;
 }
 
 export interface ModalRef {

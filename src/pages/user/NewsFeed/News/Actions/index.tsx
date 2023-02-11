@@ -9,6 +9,13 @@ import { MyIconButton } from "./styles";
 const Actions = ({ likes, comments, id }: { likes: string[]; comments: Comment[]; id: string }) => {
    const navigate = useNavigate();
    const [like, setLike] = useState<boolean>(false);
+   const handleNavigate = () => {
+      if (window.location.pathname.includes("/user/profile")) {
+         navigate(`/user/news/${id}`);
+      } else {
+         navigate(`/news/${id}`);
+      }
+   };
    return (
       <>
          {/* Actions */}
@@ -30,10 +37,7 @@ const Actions = ({ likes, comments, id }: { likes: string[]; comments: Comment[]
                />
             </Stack>
             {/* Comments */}
-            <Stack
-               flexDirection="column"
-               justifyContent="space-between"
-               onClick={() => navigate(`/news/${id}`)}>
+            <Stack flexDirection="column" justifyContent="space-between" onClick={handleNavigate}>
                <Chip variant="outlined" label={`${comments?.length} comments`} />
                <MyIconButton>
                   <CommentIcon />

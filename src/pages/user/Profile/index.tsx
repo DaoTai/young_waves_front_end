@@ -2,10 +2,12 @@ import { Box, Grid, Stack } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 import { Post, Spinner } from "../../../components";
 import { getProfile, getOwnerPosts } from "../../../redux-saga/redux/actions";
-import { signInState$, postsState$ } from "../../../redux-saga/redux/selectors";
+import { ownerPostsState$, profileState$ } from "../../../redux-saga/redux/selectors";
+import { Post as IPost } from "../../../utils/interfaces/Post";
+import { UPDATE_PROFILE_SUCCESS } from "../../../utils/constants";
 import News from "../NewsFeed/News";
 import Heading from "./Heading";
 import Introduction from "./Introduction";
@@ -14,24 +16,20 @@ import Navigation from "./Navigation";
 const Profile = () => {
    const dispatch = useDispatch();
    const { id } = useParams();
-   const {
-      isLoading,
-      payload: { data },
-   } = useSelector(signInState$);
-   const posts$ = useSelector(postsState$);
-   const ownerPosts = posts$.payload?.data;
+   const ownerPosts$ = useSelector(ownerPostsState$);
+   const profile$ = useSelector(profileState$);
+   const ownerPosts = ownerPosts$.payload?.data as Array<IPost>;
    const listNews = useMemo(() => {
       return ownerPosts;
-   }, [posts$, ownerPosts]);
+   }, [ownerPosts$, ownerPosts, profile$?.action]);
    useEffect(() => {
-      dispatch(
-         getProfile({
-            id: id as string,
-            accessToken: data.accessToken,
-         })
-      );
-      dispatch(getOwnerPosts(id as string));
-   }, [data, dispatch]);
+      if (ownerPosts.length === 0 || profile$?.action === UPDATE_PROFILE_SUCCESS) {
+         dispatch(getOwnerPosts(id as string));
+      }
+      if (!profile$.payload?.data?._id || profile$?.action === UPDATE_PROFILE_SUCCESS) {
+         dispatch(getProfile(id as string));
+      }
+   }, [ownerPosts$?.action, profile$?.action, dispatch]);
    return (
       <>
          <Helmet>
@@ -53,7 +51,8 @@ const Profile = () => {
                </Grid>
             </Grid>
          </Stack>
-         <Spinner show={isLoading} />
+         <Spinner show={ownerPosts$.isLoading || profile$.isLoading} />
+         <Outlet />
       </>
    );
 };

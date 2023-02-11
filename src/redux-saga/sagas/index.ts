@@ -1,4 +1,4 @@
-import { all, call, delay, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, takeEvery, takeLatest, take } from "redux-saga/effects";
 import * as api from "../../apis";
 import * as CONSTANTS from "../../utils/constants";
 import * as ACTIONS from "../redux/actions";
@@ -52,13 +52,9 @@ function* signOutSaga() {
 }
 
 // Profile
-function* getProfileSaga(action: {
-   type: string;
-   payload: Profile & { id: string; accessToken: string };
-}) {
+function* getProfileSaga(action: { type: string; payload: string }) {
    try {
-      const { id } = action.payload;
-      const res = yield call(api.user.getProfile, id);
+      const res = yield call(api.user.getProfile, action.payload);
       if (res.status === 200) {
          yield put(ACTIONS.getProfileSuccess(res));
       }
@@ -109,9 +105,9 @@ function* getPostsSaga() {
 function* getOwnerPostsSaga(action: { type: string; id: string }) {
    try {
       const res = yield call(api.post.getOwnerPosts, action.id);
-      yield put(ACTIONS.getPostsSuccess(res));
+      yield put(ACTIONS.getOwnerPostsSuccess(res));
    } catch (err) {
-      yield put(ACTIONS.getPostsFailure(err));
+      yield put(ACTIONS.getOwnerPostsFailure(err));
    }
 }
 
@@ -126,7 +122,7 @@ function* getPostSaga(action: { type: string; payload: string }) {
 }
 
 // Create new post
-function* createPost(action: { type: string; payload: Partial<Post> }) {
+function* createPostSaga(action: { type: string; payload: Post }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
       yield put(ACTIONS.createPostSuccess(res));
@@ -136,18 +132,32 @@ function* createPost(action: { type: string; payload: Partial<Post> }) {
 }
 
 // Update post
-function* updatePost(action: { type: string; payload: { id: string; data: Partial<Post> } }) {
+function* updatePostSaga(action: {
+   type: string;
+   payload: { id: string; data: Partial<Post>; index: number };
+}) {
    try {
       const { id, data } = action.payload;
-      yield call(api.post.updatePost, id, data);
-      yield put(ACTIONS.updatePostSuccess(action.payload.data));
+      const { author, ...updateData } = data;
+      yield call(api.post.updatePost, id, updateData);
+      yield put(ACTIONS.updatePostSuccess(action.payload));
    } catch (err) {
       yield put(ACTIONS.updatePostFailure(err));
    }
 }
 
+// Delete post
+function* deletePostSaga(action: { type: string; payload: string }) {
+   try {
+      yield call(api.post.deletePost, action.payload);
+      yield put(ACTIONS.deletePostSuccess(action.payload));
+   } catch (err) {
+      yield put(ACTIONS.deletePostFailure(err));
+   }
+}
+
 // Create comment
-function* createComment(action: { type: string; payload: { id: string; comment: string } }) {
+function* createCommentSaga(action: { type: string; payload: { id: string; comment: string } }) {
    try {
       const res = yield call(api.comment.createComment, action.payload);
       yield put(ACTIONS.createCommentSuccess(res));
@@ -168,9 +178,9 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.GET_POSTS, getPostsSaga),
       takeLatest(CONSTANTS.GET_OWNER_POSTS, getOwnerPostsSaga),
       takeLatest(CONSTANTS.GET_POST, getPostSaga),
-      takeLatest(CONSTANTS.CREATE_POST, createPost),
-      takeLatest(CONSTANTS.UPDATE_POST, updatePost),
-      takeLatest(CONSTANTS.UPDATE_POST_SUCCESS, getPostsSaga),
-      takeLatest(CONSTANTS.CREATE_COMMENT, createComment),
+      takeLatest(CONSTANTS.CREATE_POST, createPostSaga),
+      takeLatest(CONSTANTS.UPDATE_POST, updatePostSaga),
+      takeLatest(CONSTANTS.DELETE_POST, deletePostSaga),
+      takeLatest(CONSTANTS.CREATE_COMMENT, createCommentSaga),
    ]);
 }

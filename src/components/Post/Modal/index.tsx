@@ -45,8 +45,13 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
    };
 
    const handleSubmit = () => {
-      onSubmit();
-      handleClose();
+      if (post) {
+         onSubmit();
+         setImages([]);
+         setPost("");
+         setStatus("");
+         handleClose();
+      }
    };
 
    return (
@@ -54,7 +59,7 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
          <MyBox>
             {/* Heading */}
             <Typography variant="h3" component="h2" textAlign="center" pb={1}>
-               Create new post
+               Your post
             </Typography>
             <CloseButton onClick={handleClose} size="large" />
 

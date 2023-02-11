@@ -1,16 +1,15 @@
-import { Box, Card, CardContent, TextField, Typography, useTheme } from "@mui/material";
-
+import { Box, Card, CardContent, Typography, useTheme } from "@mui/material";
+import { memo } from "react";
 import { Post } from "../../../../utils/interfaces/Post";
-import { Spinner } from "../../../../components";
+import { Profile } from "../../../../utils/interfaces/Profile";
 import Actions from "./Actions";
 import Heading from "./Heading";
 import Images from "./Images";
-import { Profile } from "../../../../utils/interfaces/Profile";
 const News = ({ listNews }: { listNews: Post[] }) => {
    const theme = useTheme();
    return (
       <>
-         {listNews?.map((news: Post) => {
+         {listNews?.map((news: Post, index) => {
             return (
                <Box key={news?._id}>
                   <Card sx={{ pl: 2, pr: 2 }}>
@@ -20,9 +19,10 @@ const News = ({ listNews }: { listNews: Post[] }) => {
                         author={news?.author as Profile}
                         createdAt={news?.createdAt as string}
                         news={news}
+                        indexNews={index}
                      />
                      {/* Images */}
-                     {news?.attachments.length > 0 && (
+                     {news?.attachments?.length > 0 && (
                         <Images id={news?._id} attachments={news?.attachments} />
                      )}
                      {/* Body */}
@@ -42,4 +42,4 @@ const News = ({ listNews }: { listNews: Post[] }) => {
    );
 };
 
-export default News;
+export default memo(News);

@@ -34,16 +34,18 @@ export const GET_OWNER_POSTS_FAILURE = `${GET_OWNER_POSTS}_FAILURE`;
 export const CREATE_OWNER_POST = "CREATE_OWNER_POST";
 export const CREATE_OWNER_POST_SUCCESS = `${CREATE_OWNER_POST}_SUCCESS`;
 export const CREATE_OWNER_POST_FAILURE = `${CREATE_OWNER_POST}_FAILURE`;
-export const GET_POSTS = "GET_POSTS";
-export const GET_POSTS_SUCCESS = `${GET_POSTS}_SUCCESS`;
-export const GET_POSTS_FAILURE = `${GET_POSTS}_FAILURE`;
-export const CREATE_POST = "CREATE_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const UPDATE_POST_SUCCESS = `${UPDATE_POST}_SUCCESS`;
 export const UPDATE_POST_FAILURE = `${UPDATE_POST}_FAILURE`;
+
+export const GET_POSTS = "GET_POSTS";
+export const GET_POSTS_SUCCESS = `${GET_POSTS}_SUCCESS`;
+export const GET_POSTS_FAILURE = `${GET_POSTS}_FAILURE`;
+
 export const DELETE_POST = "DELETE_POST";
 export const DELETE_POST_SUCCESS = `${DELETE_POST}_SUCCESS`;
 export const DELETE_POST_FAILURE = `${DELETE_POST}_FAILURE`;
+export const CREATE_POST = "CREATE_POST";
 export const CREATE_POST_SUCCESS = `${CREATE_POST}_SUCCESS`;
 export const CREATE_POST_FAILURE = `${CREATE_POST}_FAILURE`;
 export const CREATE_COMMENT = "CREATE_COMMENT";
@@ -82,6 +84,16 @@ export const INIT_STATE = {
             comments: [],
          },
       },
+   },
+   modalRef: {
+      handleOpen: () => {},
+      handleClose: () => {},
+      images: [],
+      post: "",
+      status: "",
+      setImages: () => {},
+      setPost: () => {},
+      setStatus: () => {},
    },
 };
 

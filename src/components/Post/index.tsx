@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { signInState$, profileState$ } from "../../redux-saga/redux/selectors";
 import { Profile } from "../../utils/interfaces/Profile";
 import { ModalRef } from "../../utils/interfaces/Props";
+import { INIT_STATE } from "../../utils/constants";
 import MyInput from "../BaseInput";
 import { createPost } from "../../redux-saga/redux/actions";
 import Image from "../Image";
@@ -21,16 +22,7 @@ const Post = () => {
       avatar: "",
       fullName: "",
    });
-   const modalRef = useRef<ModalRef>({
-      handleOpen: () => {},
-      handleClose: () => {},
-      images: [],
-      post: "",
-      status: "",
-      setImages: () => {},
-      setPost: () => {},
-      setStatus: () => {},
-   });
+   const modalRef = useRef<ModalRef>(INIT_STATE.modalRef);
 
    useEffect(() => {
       if (user$.payload.data) {

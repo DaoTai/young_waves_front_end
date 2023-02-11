@@ -53,7 +53,7 @@ export const signOutFailure = (payload: string) => ({
 // Actions PROFILE
 // GET
 
-export const getProfile = (payload: { id: string; accessToken: string }) => ({
+export const getProfile = (payload: string) => ({
    type: CONSTANTS.GET_PROFILE,
    payload,
 });
@@ -142,16 +142,29 @@ export const createPostFailure = (payload: any) => ({
    payload,
 });
 
-export const updatePost = (payload: { id: string; data: Partial<Post> }) => ({
+export const updatePost = (payload: { id: string; index: number; data: Partial<Post> }) => ({
    type: CONSTANTS.UPDATE_POST,
    payload,
 });
-export const updatePostSuccess = (payload: Partial<Post>) => ({
+export const updatePostSuccess = (payload: Partial<Post> & { index: number }) => ({
    type: CONSTANTS.UPDATE_POST_SUCCESS,
    payload,
 });
 export const updatePostFailure = (payload: any) => ({
    type: CONSTANTS.UPDATE_POST_FAILURE,
+   payload,
+});
+
+export const deletePost = (payload: string) => ({
+   type: CONSTANTS.DELETE_POST,
+   payload,
+});
+export const deletePostSuccess = (payload: string) => ({
+   type: CONSTANTS.DELETE_POST_SUCCESS,
+   payload,
+});
+export const deletePostFailure = (payload: any) => ({
+   type: CONSTANTS.DELETE_POST_FAILURE,
    payload,
 });
 

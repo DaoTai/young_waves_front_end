@@ -56,9 +56,9 @@ const userRoutes: Array<Route> = [
    },
    {
       path: "news",
-      component: Fragment as React.FC,
+      component: Profile,
       children: [
-         { path: ":id/", component: NewsDetail },
+         { path: ":id", component: NewsDetail },
          { path: ":id/:indexImage", component: NewsDetail },
       ],
    },

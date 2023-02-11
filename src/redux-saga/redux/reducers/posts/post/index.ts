@@ -5,6 +5,9 @@ import {
    UPDATE_POST,
    UPDATE_POST_SUCCESS,
    UPDATE_POST_FAILURE,
+   DELETE_POST,
+   DELETE_POST_SUCCESS,
+   DELETE_POST_FAILURE,
    CREATE_COMMENT,
    CREATE_COMMENT_SUCCESS,
    CREATE_COMMENT_FAILURE,
@@ -33,6 +36,7 @@ const postReducer = (state = INIT_STATE.post, action: MyAction) => {
       case GET_POST:
       case CREATE_COMMENT:
       case UPDATE_POST:
+      case DELETE_POST:
          return {
             ...state,
             isLoading: true,
@@ -75,6 +79,15 @@ const postReducer = (state = INIT_STATE.post, action: MyAction) => {
             payload: newPayload,
             action: action.type,
          };
+
+      case DELETE_POST_SUCCESS:
+         return {
+            ...state,
+            isLoading: false,
+            payload: {},
+            action: action.type,
+         };
+      case DELETE_POST_FAILURE:
       case CREATE_COMMENT_FAILURE:
       case UPDATE_POST_FAILURE:
       case GET_POST_FAILURE:

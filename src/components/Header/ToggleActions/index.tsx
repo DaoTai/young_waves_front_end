@@ -58,10 +58,6 @@ const ToggleActions = () => {
                      <Typography variant="subtitle1"> Profile</Typography>
                   </Option>
 
-                  <Option to="/user/profile/password">
-                     <SecurityIcon fontSize="medium" />
-                     <Typography variant="subtitle1"> Edit password</Typography>
-                  </Option>
                   <Option to="/">
                      <RestoreFromTrashIcon fontSize="medium" />
                      <Typography variant="subtitle1"> Trash</Typography>
