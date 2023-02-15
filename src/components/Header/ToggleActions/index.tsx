@@ -58,7 +58,7 @@ const ToggleActions = () => {
                      <Typography variant="subtitle1"> Profile</Typography>
                   </Option>
 
-                  <Option to="/">
+                  <Option to="/user/trash/posts">
                      <RestoreFromTrashIcon fontSize="medium" />
                      <Typography variant="subtitle1"> Trash</Typography>
                   </Option>

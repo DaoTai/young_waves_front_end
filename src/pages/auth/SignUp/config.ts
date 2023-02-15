@@ -27,13 +27,13 @@ export const textInfoUser: Array<TextField> = [
       autoComplete: "off",
    },
    {
-      name: "address",
+      name: "city",
       type: "text",
-      label: "Address",
+      label: "City",
       variant: "outlined",
       margin: "normal",
       size: "medium",
-      placeholder: "Enter your address",
+      placeholder: "Enter your city",
       required: true,
       fullWidth: true,
       autoComplete: "off",
@@ -111,7 +111,7 @@ export const init: SignUp = {
    validateOnMount: true,
    fullName: "",
    dob: "",
-   address: "",
+   city: "",
    region: "",
    gender: "female",
    email: "",
@@ -126,7 +126,7 @@ export const registerOptions = Yup.object().shape({
       .trim()
       .matches(/^([^0-9]*)$/, "Name is invalid"),
    dob: Yup.string().required(REQUIRED_MSG),
-   address: Yup.string().required(REQUIRED_MSG).trim(),
+   city: Yup.string().required(REQUIRED_MSG).trim(),
    region: Yup.string()
       .required(REQUIRED_MSG)
       .matches(/^([^0-9]*)$/, "Region is invalid"),

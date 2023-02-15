@@ -26,7 +26,13 @@ import { updatePost, deletePost } from "../../../../../redux-saga/redux/actions"
 import { signInState$ } from "../../../../../redux-saga/redux/selectors";
 import { HeadingNewsProps, ModalRef } from "../../../../../utils/interfaces/Props";
 import { INIT_STATE } from "../../../../../utils/constants";
-const Heading = ({ news, author, createdAt = "", indexNews }: HeadingNewsProps) => {
+const Heading = ({
+   news,
+   author,
+   createdAt = "",
+   indexNews,
+   showAction = false,
+}: HeadingNewsProps) => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const {
@@ -67,7 +73,7 @@ const Heading = ({ news, author, createdAt = "", indexNews }: HeadingNewsProps) 
          body: post,
          status,
       };
-      dispatch(updatePost({ id: news._id, data, index: indexNews }));
+      dispatch(updatePost({ id: news._id, data, index: indexNews as number }));
    }, []);
 
    const handleDelete = (id: string) => {
@@ -84,14 +90,21 @@ const Heading = ({ news, author, createdAt = "", indexNews }: HeadingNewsProps) 
                      src={author?.avatar}
                      srcSet={author?.avatar}
                      alt="avatar"
-                     style={{ borderRadius: "50%", width: "40px", height: "40px" }}
+                     style={{
+                        borderRadius: "50%",
+                        width: "40px",
+                        height: "40px",
+                        objectFit: "cover",
+                     }}
                   />
                </Link>
             }
             action={
-               <IconButton onClick={handleClick}>
-                  <MoreVertIcon />
-               </IconButton>
+               showAction && (
+                  <IconButton onClick={handleClick}>
+                     <MoreVertIcon />
+                  </IconButton>
+               )
             }
             title={
                <Typography variant="body1">
@@ -124,7 +137,7 @@ const Heading = ({ news, author, createdAt = "", indexNews }: HeadingNewsProps) 
                horizontal: "left",
             }}>
             <Stack sx={{ gap: 1 }}>
-               {idUser === news.author?._id && (
+               {idUser === news?.author?._id && (
                   <>
                      <Button
                         sx={{
@@ -146,7 +159,10 @@ const Heading = ({ news, author, createdAt = "", indexNews }: HeadingNewsProps) 
                            color: theme.myColor.link,
                         }}
                         startIcon={<DeleteIcon />}
-                        onClick={() => setOpenDialog(true)}>
+                        onClick={() => {
+                           setOpenDialog(true);
+                           handleClose();
+                        }}>
                         <Typography variant="body2">Delete</Typography>
                      </Button>
                   </>
@@ -168,13 +184,18 @@ const Heading = ({ news, author, createdAt = "", indexNews }: HeadingNewsProps) 
 
          {/* Dialog */}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-            <DialogTitle></DialogTitle>
+            <DialogTitle textAlign="center">Confirm</DialogTitle>
             <DialogContent>
                <DialogContentText>Do you agree to delete this post?</DialogContentText>
             </DialogContent>
-            <DialogActions>
-               <Button onClick={() => setOpenDialog(false)}>Disagree</Button>
-               <Button type="submit" onClick={() => handleDelete(news._id)}>
+            <DialogActions sx={{ justifyContent: "space-between" }}>
+               <Button
+                  variant="outlined"
+                  sx={{ backgroundColor: theme.myColor.white }}
+                  onClick={() => setOpenDialog(false)}>
+                  Cancel
+               </Button>
+               <Button variant="contained" type="submit" onClick={() => handleDelete(news._id)}>
                   Agree
                </Button>
             </DialogActions>

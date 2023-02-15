@@ -11,6 +11,7 @@ import {
    CREATE_COMMENT,
    CREATE_COMMENT_SUCCESS,
    CREATE_COMMENT_FAILURE,
+   CREATE_LIKE_SUCCESS,
    INIT_STATE,
 } from "../../../../../utils/constants";
 import { Action } from "../../../../../utils/interfaces/Action";
@@ -64,22 +65,6 @@ const postReducer = (state = INIT_STATE.post, action: MyAction) => {
             payload: newState,
             action: action.type,
          };
-      case UPDATE_POST_SUCCESS:
-         const newPost = { ...state.payload.data.post, ...action.payload };
-         const newPayload = {
-            ...state.payload,
-            data: {
-               comments: [...state.payload.data.comments],
-               post: newPost,
-            },
-         };
-         return {
-            ...state,
-            isLoading: false,
-            payload: newPayload,
-            action: action.type,
-         };
-
       case DELETE_POST_SUCCESS:
          return {
             ...state,
@@ -87,6 +72,19 @@ const postReducer = (state = INIT_STATE.post, action: MyAction) => {
             payload: {},
             action: action.type,
          };
+      case UPDATE_POST_SUCCESS:
+         console.log("Payload: ", action.payload);
+         console.log("State: ", state.payload);
+         return {
+            ...state,
+            isLoading: false,
+         };
+      // case CREATE_LIKE_SUCCESS:
+      //    console.log("payload: ", action.payload.data);
+      //    console.log(state.payload);
+      //    return {
+      //       ...state,
+      //    };
       case DELETE_POST_FAILURE:
       case CREATE_COMMENT_FAILURE:
       case UPDATE_POST_FAILURE:

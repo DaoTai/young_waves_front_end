@@ -51,14 +51,12 @@ const Editing = () => {
    useEffect(() => {
       let timerId = 0;
       // If network slow, payload?.data'll undefined. So we shoud assign in Object
-      const { fullName, dob, address, region, gender, email, _id } = Object(
-         payload?.data
-      ) as Profile;
+      const { fullName, dob, city, region, gender, email, _id } = Object(payload?.data) as Profile;
       setValues({
          _id,
          fullName,
          dob,
-         address,
+         city,
          region,
          gender,
          email,

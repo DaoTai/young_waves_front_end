@@ -9,7 +9,7 @@ const Home = () => {
             <title>Young Waves</title>
          </Helmet>
          <Header />
-         <Container maxWidth="md" sx={{ marginTop: 8, padding: "24px 0" }}>
+         <Container sx={{ marginTop: 7, padding: "24px 0" }}>
             <Outlet />
          </Container>
       </div>

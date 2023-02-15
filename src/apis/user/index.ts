@@ -1,6 +1,11 @@
 import {} from "../../utils/interfaces/Auth";
 import { Profile } from "../../utils/interfaces/Profile";
 import axiosInstance from "./axios";
+
+export const getAllUser = async () => {
+   return await axiosInstance.get("/all");
+};
+
 export const getProfile = async (id: string) => {
    return await axiosInstance.get(`/${id}`);
 };

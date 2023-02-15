@@ -24,6 +24,7 @@ export const WrapFileInput = styled("div")({
    transition: "0.3s ease all",
    "&:hover": {
       borderColor: "#333",
+      backgroundColor: "#fff",
    },
    "& input": {
       cursor: "pointer",

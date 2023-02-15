@@ -5,15 +5,16 @@ import { Outlet } from "react-router-dom";
 import { Post, Spinner } from "../../../components";
 import { getPosts } from "../../../redux-saga/redux/actions";
 import { postsState$, postState$ } from "../../../redux-saga/redux/selectors";
+import { GET_POSTS_SUCCESS } from "../../../utils/constants";
 import News from "./News";
 const NewsFeed = () => {
    const dispatch = useDispatch();
-   const { isLoading, payload } = useSelector(postsState$);
-   const check = useSelector(postState$);
+   const { isLoading, payload, action } = useSelector(postsState$);
+   const post$ = useSelector(postState$);
    const { data } = payload as { status: string; data: any };
    useEffect(() => {
       dispatch(getPosts());
-   }, [check]);
+   }, []);
    return (
       <>
          <Stack direction="column" sx={{ gap: 1 }}>

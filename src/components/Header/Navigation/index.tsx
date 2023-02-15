@@ -1,5 +1,5 @@
 import HomeIcon from "@mui/icons-material/Home";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import ExploreIcon from "@mui/icons-material/Explore";
 import SearchIcon from "@mui/icons-material/Search";
 import { Container, InputAdornment, Stack } from "@mui/material";
 import NavLink from "../../NavLink";
@@ -12,9 +12,9 @@ const Navigation = () => {
                <NavLink to="/">
                   <HomeIcon fontSize="large" />
                </NavLink>
-               {/* <NavLink to="/">
-                  <PeopleAltIcon fontSize="large" />
-               </NavLink> */}
+               <NavLink to="/user/explore">
+                  <ExploreIcon fontSize="large" />
+               </NavLink>
             </Stack>
             <Search
                placeholder="Search..."

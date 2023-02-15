@@ -25,7 +25,7 @@ const GlobalStyle = () => {
                color: theme.myColor.text,
             },
             a: {
-               color: theme.palette.primary.main,
+               color: theme.myColor.text,
                fontWeight: 500,
                textDecoration: "none",
                transition: "0.3s ease all",
@@ -35,12 +35,6 @@ const GlobalStyle = () => {
             },
             div: {
                transition: "0.3s ease all",
-            },
-            img: {
-               transition: "0.3s ease-in all",
-               "&:hover": {
-                  opacity: 0.8,
-               },
             },
          })}
       />

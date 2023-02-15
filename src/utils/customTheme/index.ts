@@ -33,7 +33,15 @@ export const customTheme = createTheme({
       },
       MuiTextField: {
          styleOverrides: {
-            root: { color: "#333" },
+            root: {
+               color: "#333",
+               "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.3)",
+               },
+               "&:focus": {
+                  backgroundColor: "rgba(255,255,255,0.3)",
+               },
+            },
          },
       },
       MuiTypography: {

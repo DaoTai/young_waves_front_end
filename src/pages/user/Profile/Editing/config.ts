@@ -14,8 +14,8 @@ export const updateUserOptions = Yup.object().shape({
       .trim()
       .matches(/^([^0-9]*)$/, "Name is invalid"),
    dob: Yup.string().required(REQUIRED_MSG),
-   address: Yup.string().required(REQUIRED_MSG).trim(),
-   region: Yup.string()
+   city: Yup.string().required(REQUIRED_MSG).trim(),
+   z: Yup.string()
       .required(REQUIRED_MSG)
       .matches(/^([^0-9]*)$/, "Region is invalid"),
    gender: Yup.string().required(REQUIRED_MSG),

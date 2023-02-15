@@ -141,6 +141,7 @@ function* updatePostSaga(action: {
       const { author, ...updateData } = data;
       yield call(api.post.updatePost, id, updateData);
       yield put(ACTIONS.updatePostSuccess(action.payload));
+      yield put(ACTIONS.getPosts());
    } catch (err) {
       yield put(ACTIONS.updatePostFailure(err));
    }
@@ -166,6 +167,68 @@ function* createCommentSaga(action: { type: string; payload: { id: string; comme
    }
 }
 
+// Like
+// function* createLikeSaga(action: { type: string; payload: string }) {
+//    try {
+//       const res = yield call(api.like.handleLike, action.payload);
+//       yield put(ACTIONS.createLikeSuccess(res));
+//       yield put(ACTIONS.getPosts());
+//    } catch (err) {
+//       yield put(ACTIONS.createCommentFailure(err));
+//    }
+// }
+
+// Get all user
+function* getAllUserSaga() {
+   try {
+      const res = yield call(api.user.getAllUser);
+      yield put(ACTIONS.getAllUserSuccess(res));
+   } catch (err) {
+      yield put(ACTIONS.getAllUserFailure(err));
+   }
+}
+
+// Get trash posts
+function* getTrashPosts() {
+   try {
+      const res = yield call(api.post.getTrashPosts);
+      yield put(ACTIONS.getTrashPostsSuccess(res.data));
+   } catch (err) {
+      yield ACTIONS.getTrashPostsFailure(err);
+   }
+}
+
+// Get detail trash post
+function* getDetailTrashPost(action: { type: string; payload: string }) {
+   try {
+      const res = yield call(api.post.getDetailTrashPost, action.payload);
+      yield put(ACTIONS.getPostSuccess(res));
+   } catch (err) {
+      yield put(ACTIONS.getPostFailure(err));
+   }
+}
+
+// Restore post
+function* restorePost(action: { type: string; payload: string }) {
+   try {
+      yield call(api.post.restorePost, action.payload);
+      yield put(ACTIONS.restorePostSuccess(action.payload));
+   } catch (err) {
+      yield put(ACTIONS.restorePostFailure(err));
+   }
+}
+
+// Force delete
+function* forceDeletePost(action: { type: string; payload: string }) {
+   try {
+      const res = yield call(api.post.forceDeletePost, action.payload);
+      console.log(res);
+      yield put(ACTIONS.forceDeletePostSuccess(action.payload));
+   } catch (err) {
+      yield put(ACTIONS.forceDeletePostFailure(err));
+   }
+}
+
 // Combine saga
 export default function* rootSaga() {
    yield all([
@@ -182,5 +245,11 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.UPDATE_POST, updatePostSaga),
       takeLatest(CONSTANTS.DELETE_POST, deletePostSaga),
       takeLatest(CONSTANTS.CREATE_COMMENT, createCommentSaga),
+      // takeLatest(CONSTANTS.CREATE_LIKE, createLikeSaga),
+      takeLatest(CONSTANTS.GET_ALL_USER, getAllUserSaga),
+      takeLatest(CONSTANTS.GET_TRASH_POSTS, getTrashPosts),
+      takeLatest(CONSTANTS.GET_TRASH_POST, getDetailTrashPost),
+      takeLatest(CONSTANTS.RESTORE_POST, restorePost),
+      takeLatest(CONSTANTS.FORCE_DELETE_POST, forceDeletePost),
    ]);
 }

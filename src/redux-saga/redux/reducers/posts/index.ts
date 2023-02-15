@@ -1,4 +1,5 @@
 import * as CONSTANTS from "../../../../utils/constants";
+import { Like } from "../../../../utils/interfaces/Like";
 import { Post } from "../../../../utils/interfaces/Post";
 interface Payload {
    data: Array<Post>;
@@ -6,13 +7,14 @@ interface Payload {
 }
 interface MyAction {
    type: string;
-   payload: Payload;
+   payload: Payload & string;
 }
 
 const postsReducer = (state = CONSTANTS.INIT_STATE.posts, action: MyAction) => {
    switch (action.type) {
       case CONSTANTS.GET_POSTS:
       case CONSTANTS.CREATE_POST:
+      case CONSTANTS.DELETE_POST:
          return {
             ...state,
             isLoading: true,
@@ -30,6 +32,16 @@ const postsReducer = (state = CONSTANTS.INIT_STATE.posts, action: MyAction) => {
          return {
             isLoading: false,
             payload: { ...state.payload, data: data },
+            action: action.type,
+         };
+      case CONSTANTS.DELETE_POST_SUCCESS:
+         const deletedId = action.payload;
+         const newPostsAfterDeleted = state.payload.data.filter((post: Post) => {
+            return post._id !== deletedId;
+         });
+         return {
+            isLoading: false,
+            payload: { ...state.payload, data: newPostsAfterDeleted },
             action: action.type,
          };
       case CONSTANTS.GET_POSTS_FAILURE:

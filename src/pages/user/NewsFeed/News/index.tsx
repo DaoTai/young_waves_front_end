@@ -11,7 +11,7 @@ const News = ({ listNews }: { listNews: Post[] }) => {
       <>
          {listNews?.map((news: Post, index) => {
             return (
-               <Box key={news?._id}>
+               <Box key={index}>
                   <Card sx={{ pl: 2, pr: 2 }}>
                      {/* Heading */}
                      <Heading
@@ -20,6 +20,7 @@ const News = ({ listNews }: { listNews: Post[] }) => {
                         createdAt={news?.createdAt as string}
                         news={news}
                         indexNews={index}
+                        showAction
                      />
                      {/* Images */}
                      {news?.attachments?.length > 0 && (

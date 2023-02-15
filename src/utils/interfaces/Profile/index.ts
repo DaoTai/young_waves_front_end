@@ -5,11 +5,12 @@ export interface Profile {
    isAdmin: boolean;
    fullName: string;
    region: string;
-   address: string;
    dob: string;
+   city: string;
    gender: string;
    email: string;
    avatar: string;
+   createdAt?: string;
 }
 
 export interface ChangePassword {

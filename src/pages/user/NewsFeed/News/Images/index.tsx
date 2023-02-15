@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import OverlayBackground from "../../../../../components/OverlayBackground";
 
 const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) => {
-   const columns = 5;
+   const columns = 4;
    const navigate = useNavigate();
    const handleNavigate = (index: number) => {
       if (window.location.pathname.includes("/user/profile")) {

@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { CloseButton, Comment as MyComment, Spinner } from "../../../../../components";
 import { getPost } from "../../../../../redux-saga/redux/actions";
-import { postState$ } from "../../../../../redux-saga/redux/selectors";
+import { postState$, ownerPostsState$ } from "../../../../../redux-saga/redux/selectors";
 import { Comment, Post } from "../../../../../utils/interfaces/Post";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 import Heading from "../Heading";

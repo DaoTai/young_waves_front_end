@@ -13,6 +13,7 @@
       "@emotion/styled": "^11.10.5",
       "@mui/icons-material": "^5.11.0",
       "@mui/material": "^5.11.6",
+      "@mui/x-data-grid": "^5.17.23",
       "@types/react-redux": "^7.1.25",
       "@types/react-slick": "^0.23.10",
       "@types/redux-saga": "^0.10.5",

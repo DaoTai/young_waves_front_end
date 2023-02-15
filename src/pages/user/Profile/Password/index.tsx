@@ -74,7 +74,8 @@ const Password = () => {
       }
    }, [isLoading, payload, action, error, dispatch]);
    const handleConfirm = () => {
-      handleSubmit(), setOpenDialog(false);
+      handleSubmit();
+      setOpenDialog(false);
    };
    return (
       <>
@@ -82,7 +83,10 @@ const Password = () => {
             <title>Change password | Young Waves</title>
          </Helmet>
          <Box bgcolor="#fff" p={3}>
-            <Button startIcon={<ArrowBackIosIcon />} onClick={() => navigate("/user/profile/edit")}>
+            <Button
+               variant="outlined"
+               startIcon={<ArrowBackIosIcon />}
+               onClick={() => navigate("/user/profile/edit")}>
                Back
             </Button>
             <Typography variant="h4" mb={2} textAlign="center">
@@ -140,8 +144,10 @@ const Password = () => {
             <DialogContent>
                <DialogContentText>Do you agree to change password?</DialogContentText>
             </DialogContent>
-            <DialogActions>
-               <Button onClick={() => setOpenDialog(false)}>Disagree</Button>
+            <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
+               <Button variant="outlined" onClick={() => setOpenDialog(false)}>
+                  Cancel
+               </Button>
                <Button type="submit" onClick={handleConfirm}>
                   Agree
                </Button>

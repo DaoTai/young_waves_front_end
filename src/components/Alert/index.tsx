@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { AlertColor, AlertTitle } from "@mui/material";
 import { AlertProps } from "../../utils/interfaces/Props";
 import { MyAlert } from "./styles";
@@ -14,4 +15,4 @@ const Alert = ({ show, msg, title = "Error", mode = "error", onClose }: AlertPro
    );
 };
 
-export default Alert;
+export default memo(Alert);

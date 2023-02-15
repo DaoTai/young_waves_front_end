@@ -1,7 +1,17 @@
 import { Fragment } from "../components";
 import { SignIn, SignUp } from "../pages/auth";
 import Error from "../pages/error";
-import { Editing, NewsFeed, Profile, EditingPassword, NewsDetail } from "../pages/user";
+import {
+   Editing,
+   NewsFeed,
+   Profile,
+   EditingPassword,
+   NewsDetail,
+   Explore,
+   Anonymous,
+   TrashPosts,
+   TrashDetail,
+} from "../pages/user";
 import Route from "./interface";
 const commonRoutes: Array<Route> = [
    {
@@ -52,6 +62,22 @@ const userRoutes: Array<Route> = [
          { path: ":id", component: Profile },
          { path: "edit", component: Editing },
          { path: "password", component: EditingPassword },
+      ],
+   },
+   {
+      path: "explore",
+      component: Fragment as React.FC,
+      children: [
+         { path: "", component: Explore },
+         { path: ":id", component: Anonymous },
+      ],
+   },
+   {
+      path: "trash",
+      component: Fragment as React.FC,
+      children: [
+         { path: "posts", component: TrashPosts },
+         { path: "posts/:id", component: TrashDetail },
       ],
    },
    {

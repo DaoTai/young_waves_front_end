@@ -6,6 +6,7 @@ import {
    CREATE_POST_SUCCESS,
    UPDATE_POST_SUCCESS,
    DELETE_POST_SUCCESS,
+   CREATE_LIKE_SUCCESS,
 } from "../../../../../utils/constants";
 import { Post } from "../../../../../utils/interfaces/Post";
 
@@ -42,21 +43,22 @@ const ownerPostsReducer = (state = INIT_STATE.posts, action: MyAction) => {
          };
       case UPDATE_POST_SUCCESS:
          const currentState = [...state.payload.data] as Array<Post>;
-         const post: Post = action.payload.data;
-         if (post.author._id === currentState[0].author._id) {
-            const value = action.payload.data as any;
-            currentState.splice(action.payload.index, 1, value);
-         }
+         const value = action.payload.data as any;
+         currentState.splice(action.payload.index, 1, value);
          return {
+            ...state,
             isLoading: false,
-            payload: { ...state.payload, data: currentState },
-            action: action.type,
          };
       case DELETE_POST_SUCCESS:
          const filterData = [...state.payload.data].filter(
             (post: Post) => post._id !== action.payload
          );
          return { ...state, payload: { ...state.payload, data: filterData }, action: action.type };
+      case CREATE_LIKE_SUCCESS:
+         return {
+            ...state,
+            action: action.type,
+         };
       case GET_OWNER_POSTS_FAILURE:
          return {
             ...state,

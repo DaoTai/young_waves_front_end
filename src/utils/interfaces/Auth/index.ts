@@ -27,7 +27,7 @@ export interface SignUp {
    validateOnMount?: boolean;
    fullName: string;
    region: string;
-   address: string;
+   city: string;
    email: string;
    username: string;
    password: string;

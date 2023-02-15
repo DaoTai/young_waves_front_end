@@ -58,7 +58,7 @@ const Post = () => {
          <Grid item>
             <Image
                src={user?.avatar}
-               style={{ borderRadius: "50%", width: "40px", height: "40px" }}
+               style={{ borderRadius: "50%", width: "40px", height: "40px", objectFit: "cover" }}
             />
          </Grid>
          <Grid item flexGrow={2}>

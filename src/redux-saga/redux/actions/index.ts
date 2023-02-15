@@ -3,6 +3,7 @@ import { SignIn, SignUp } from "../../../utils/interfaces/Auth";
 import { Profile, ChangePassword } from "../../../utils/interfaces/Profile";
 import { Post } from "../../../utils/interfaces/Post";
 import { Comment } from "../../../utils/interfaces/Comment";
+import { Like } from "../../../utils/interfaces/Like";
 
 // Actions SIGN-IN
 export const signIn = (payload: SignIn) => ({
@@ -120,7 +121,59 @@ export const getOwnerPostsFailure = (payload: any) => ({
    payload,
 });
 
-// Posts
+// Trash posts
+export const getTrashPosts = () => ({ type: CONSTANTS.GET_TRASH_POSTS });
+export const getTrashPostsSuccess = (payload: {
+   posts: Post[];
+   perPage: number;
+   maxPages: number;
+}) => ({
+   type: CONSTANTS.GET_TRASH_POSTS_SUCCESS,
+   payload,
+});
+export const getTrashPostsFailure = (payload: any) => ({
+   type: CONSTANTS.GET_TRASH_POSTS_FAILURE,
+   payload,
+});
+
+export const getTrashPost = (payload: string) => {
+   return {
+      type: CONSTANTS.GET_TRASH_POST,
+      payload,
+   };
+};
+
+export const forceDeletePost = (payload: string) => ({
+   type: CONSTANTS.FORCE_DELETE_POST,
+   payload,
+});
+
+export const forceDeletePostSuccess = (payload: string) => ({
+   type: CONSTANTS.FORCE_DELETE_POST_SUCCESS,
+   payload,
+});
+
+export const forceDeletePostFailure = (payload: any) => ({
+   type: CONSTANTS.FORCE_DELETE_POST_FAILURE,
+   payload,
+});
+
+export const restorePost = (payload: string) => ({
+   type: CONSTANTS.RESTORE_POST,
+   payload,
+});
+
+export const restorePostSuccess = (payload: string) => ({
+   type: CONSTANTS.RESTORE_POST_SUCCESS,
+   payload,
+});
+
+export const restorePostFailure = (payload: any) => ({
+   type: CONSTANTS.RESTORE_POST_FAILURE,
+   payload,
+});
+
+// Post
 export const getPost = (id: string) => ({ type: CONSTANTS.GET_POST, payload: id });
 export const getPostSuccess = (payload: Post) => ({
    type: CONSTANTS.GET_POST_SUCCESS,
@@ -131,7 +184,6 @@ export const getPostFailure = (payload: any) => ({
    payload,
 });
 
-// Post
 export const createPost = (payload: Partial<Post>) => ({ type: CONSTANTS.CREATE_POST, payload });
 export const createPostSuccess = (payload: Partial<Post>) => ({
    type: CONSTANTS.CREATE_POST_SUCCESS,
@@ -179,5 +231,36 @@ export const createCommentSuccess = (payload: string) => ({
 });
 export const createCommentFailure = (payload: any) => ({
    type: CONSTANTS.CREATE_COMMENT_FAILURE,
+   payload,
+});
+
+// Like
+export const createLike = (payload: string) => ({
+   type: CONSTANTS.CREATE_LIKE,
+   payload,
+});
+export const createLikeSuccess = (payload: Like) => ({
+   type: CONSTANTS.CREATE_LIKE_SUCCESS,
+   payload,
+});
+export const createLikeFailure = (payload: any) => ({
+   type: CONSTANTS.CREATE_LIKE_FAILURE,
+   payload,
+});
+
+// Users
+export const getAllUser = () => ({
+   type: CONSTANTS.GET_ALL_USER,
+});
+export const getAllUserSuccess = (payload: {
+   users: Array<Profile>;
+   currentPage: number;
+   maxPage: number;
+}) => ({
+   type: CONSTANTS.GET_ALL_USER_SUCCESS,
+   payload,
+});
+export const getAllUserFailure = (payload: any) => ({
+   type: CONSTANTS.GET_ALL_USER_FAILURE,
    payload,
 });

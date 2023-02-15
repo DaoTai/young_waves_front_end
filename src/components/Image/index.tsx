@@ -1,13 +1,14 @@
-import { Stack, useTheme } from "@mui/material";
+import { Stack, useTheme, styled } from "@mui/material";
 import { forwardRef } from "react";
 import Images from "../../assets/images";
 
-const Image = ({ src, srcSet, borderGd, ...props }, ref) => {
+const Image = ({ src, srcSet, borderGd, circle = false, ...props }, ref) => {
    const theme = useTheme();
-   const style = {
-      width: "100%",
-      height: "100%",
-   };
+
+   const MyImg = styled("img")((theme) => ({
+      borderRadius: "50%",
+      objectFit: "cover",
+   }));
 
    const borderGradient = {
       borderRadius: "50%",
@@ -16,8 +17,12 @@ const Image = ({ src, srcSet, borderGd, ...props }, ref) => {
    };
 
    return (
-      <Stack alignItems="center" justifyContent="center" sx={style}>
-         <img ref={ref} src={src || Images.anonymous} {...props}  />
+      <Stack alignItems="center" justifyContent="center">
+         {circle ? (
+            <MyImg ref={ref} src={src || Images.anonymous} {...props} />
+         ) : (
+            <img ref={ref} src={src || Images.anonymous} {...props} />
+         )}
       </Stack>
    );
 };
