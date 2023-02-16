@@ -1,11 +1,15 @@
 // For validate
 export const REQUIRED_MSG = "Please fill out this field";
 export const LENGTH_PASSWORD = 6;
+export const LENGTH_USERNAME = 6;
 
 // For time
 export const TIME_ALERT = 5000;
 
 // For REDUX-SAGA
+export const SHOW_ALERT = "SHOW_ALERT";
+export const HIDE_ALERT = "HIDE_ALERT";
+
 export const SIGN_IN = "SIGN_IN";
 export const SIGN_IN_SUCCESS = `${SIGN_IN}_SUCCESS`;
 export const SIGN_IN_FAILURE = `${SIGN_IN}_FAILURE`;
@@ -88,6 +92,10 @@ export const GET_ALL_USER_FAILURE = `${GET_ALL_USER}_FAILURE`;
 
 // For init state
 export const INIT_STATE = {
+   alert: {
+      isShow: false,
+      payload: {},
+   },
    signUp: {
       isLoading: false,
       payload: {},
@@ -95,10 +103,6 @@ export const INIT_STATE = {
    signIn: {
       isLoading: false,
       payload: {},
-   },
-   signOut: {
-      isLoading: false,
-      payload: "",
    },
    profile: {
       isLoading: false,

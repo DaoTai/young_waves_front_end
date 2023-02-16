@@ -18,11 +18,9 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Alert, Spinner } from "../../../../components";
+import { Spinner } from "../../../../components";
 import { changePasswordProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$, signInState$ } from "../../../../redux-saga/redux/selectors";
-import { CHANGE_PASSWORD_PROFILE_SUCCESS, TIME_ALERT } from "../../../../utils/constants";
-import { AlertProps } from "../../../../utils/interfaces/Props";
 import { changePasswordPassword, init, textFields } from "./config";
 const Password = () => {
    const dispatch = useDispatch();
@@ -35,13 +33,8 @@ const Password = () => {
          },
       },
    } = useSelector(signInState$);
-   const [show, setShow] = useState<boolean>(false);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
-   const [props, setProps] = useState<Partial<AlertProps>>({
-      msg: "",
-      title: "",
-      mode: "error",
-   });
+
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm } = useFormik(
       {
          initialValues: init,
@@ -52,26 +45,7 @@ const Password = () => {
       }
    );
    useEffect(() => {
-      if (!isLoading && !!values.newPassword) {
-         setShow(true);
-         let timerId = 0;
-         if (action === CHANGE_PASSWORD_PROFILE_SUCCESS) {
-            setProps({
-               msg: "Create new password successfully",
-               title: "Success",
-               mode: "success",
-            });
-            resetForm();
-         } else {
-            setProps({
-               msg: error,
-               title: "Failure",
-               mode: "error",
-            });
-         }
-         timerId = setTimeout(() => setShow(false), TIME_ALERT);
-         return () => clearTimeout(timerId);
-      }
+      resetForm();
    }, [isLoading, payload, action, error, dispatch]);
    const handleConfirm = () => {
       handleSubmit();
@@ -156,8 +130,6 @@ const Password = () => {
 
          {/* Spinner */}
          <Spinner show={isLoading} />
-         {/* Alert */}
-         <Alert show={show} onClose={() => setShow(false)} {...props} />
       </>
    );
 };

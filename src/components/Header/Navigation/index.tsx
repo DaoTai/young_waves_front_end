@@ -1,10 +1,10 @@
-import HomeIcon from "@mui/icons-material/Home";
 import ExploreIcon from "@mui/icons-material/Explore";
-import SearchIcon from "@mui/icons-material/Search";
-import { Container, InputAdornment, Stack } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+
+import { Container, Stack, useTheme } from "@mui/material";
 import NavLink from "../../NavLink";
-import Search from "../../BaseInput";
 const Navigation = () => {
+   const theme = useTheme();
    return (
       <Container maxWidth="md">
          <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -16,14 +16,6 @@ const Navigation = () => {
                   <ExploreIcon fontSize="large" />
                </NavLink>
             </Stack>
-            <Search
-               placeholder="Search..."
-               endAdornment={
-                  <InputAdornment position="end">
-                     <SearchIcon />
-                  </InputAdornment>
-               }
-            />
          </Stack>
       </Container>
    );

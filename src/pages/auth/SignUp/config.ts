@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { TextField, RadioField, SignUp } from "../../../utils/interfaces/Auth";
-import { REQUIRED_MSG, LENGTH_PASSWORD } from "../../../utils/constants";
+import { REQUIRED_MSG, LENGTH_PASSWORD, LENGTH_USERNAME } from "../../../utils/constants";
 export const textInfoUser: Array<TextField> = [
    {
       name: "fullName",
@@ -123,6 +123,7 @@ export const init: SignUp = {
 export const registerOptions = Yup.object().shape({
    fullName: Yup.string()
       .required(REQUIRED_MSG)
+      .min(3, "Full name is least 3 characters")
       .trim()
       .matches(/^([^0-9]*)$/, "Name is invalid"),
    dob: Yup.string().required(REQUIRED_MSG),
@@ -132,7 +133,11 @@ export const registerOptions = Yup.object().shape({
       .matches(/^([^0-9]*)$/, "Region is invalid"),
    gender: Yup.string().required(REQUIRED_MSG),
    email: Yup.string().email("Email is invalid").required(REQUIRED_MSG).trim(),
-   username: Yup.string().required(REQUIRED_MSG).trim(),
+   username: Yup.string()
+      .matches(/^\S*$/, "Please do not use any spaces")
+      .min(LENGTH_USERNAME, `User name is least ${LENGTH_USERNAME} characters`)
+      .required(REQUIRED_MSG)
+      .trim(),
    password: Yup.string()
       .required(REQUIRED_MSG)
       .matches(/^\S*$/, "Please do not use any spaces")

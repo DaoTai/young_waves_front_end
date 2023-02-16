@@ -1,23 +1,30 @@
-import { all, call, delay, put, takeEvery, takeLatest, take } from "redux-saga/effects";
+import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../../apis";
 import * as CONSTANTS from "../../utils/constants";
-import * as ACTIONS from "../redux/actions";
 import { SignIn, SignUp } from "../../utils/interfaces/Auth";
-import { Profile } from "../../utils/interfaces/Profile";
 import { Post } from "../../utils/interfaces/Post";
+import { Profile } from "../../utils/interfaces/Profile";
+import * as ACTIONS from "../redux/actions";
 // Saga
 // Sign-in
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
-      const data = yield call(api.auth.signInUser, action.payload);
-      if (data.status === 200) {
-         yield put(ACTIONS.signInSuccess(data));
+      const res = yield call(api.auth.signInUser, action.payload);
+      if (res.status === 200) {
+         yield put(ACTIONS.signInSuccess(res));
          const { password, ...localUser } = action.payload;
+         // Remember username to login
          action.payload.isRemember
             ? localStorage.setItem("user", JSON.stringify(localUser))
             : localStorage.removeItem("user");
       } else {
-         yield put(ACTIONS.signInFailure(data as string));
+         yield put(ACTIONS.signInFailure(res as string));
+         yield put(
+            ACTIONS.showAlert({
+               title: "Sign in",
+               message: res?.message,
+            })
+         );
       }
    } catch (err) {
       yield put(ACTIONS.signInFailure(err as string));
@@ -30,10 +37,16 @@ function* signUpSaga(action: { type: string; payload: SignUp }) {
       if (data.status === 200) {
          yield put(ACTIONS.signUpSuccess(data));
       } else {
-         yield put(ACTIONS.signUpFailure(data));
+         yield put(
+            ACTIONS.showAlert({
+               title: "Sign up",
+               message: "Sign up failed",
+            })
+         );
+         yield put(ACTIONS.signUpFailure("Sign up failed"));
       }
    } catch (err) {
-      yield put(ACTIONS.signUpFailure(err as string));
+      yield put(ACTIONS.signUpFailure("Failed"));
    }
 }
 
@@ -69,8 +82,22 @@ function* updateProfileSaga(action: { type: string; payload: Profile }) {
       const res = yield call(api.user.updateProfile, action.payload);
       if (res.status === 200) {
          yield put(ACTIONS.updateProfileSuccess(res));
+         yield put(
+            ACTIONS.showAlert({
+               message: "Update successfully",
+               title: "Profile",
+               mode: "success",
+            })
+         );
       } else {
-         yield put(ACTIONS.updateProfileFailure(res));
+         yield put(
+            ACTIONS.showAlert({
+               message: "Update failed",
+               title: "Profile",
+               mode: "error",
+            })
+         );
+         yield put(ACTIONS.updateProfileFailure(res.toString()));
       }
    } catch (err) {
       yield put(ACTIONS.updateProfileFailure(err as string));
@@ -83,7 +110,21 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
       const res = yield call(api.user.changePasswordProfile, action.payload);
       if (res.status === 200) {
          yield put(ACTIONS.changePasswordProfileSuccess(res));
+         yield put(
+            ACTIONS.showAlert({
+               message: "Change password successfully",
+               title: "Password",
+               mode: "success",
+            })
+         );
       } else {
+         yield put(
+            ACTIONS.showAlert({
+               message: "Change password failed",
+               title: "Password",
+               mode: "error",
+            })
+         );
          yield put(ACTIONS.changePasswordProfileFailure(res));
       }
    } catch (err) {
@@ -125,7 +166,28 @@ function* getPostSaga(action: { type: string; payload: string }) {
 function* createPostSaga(action: { type: string; payload: Post }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
-      yield put(ACTIONS.createPostSuccess(res));
+      if (res.status === 200) {
+         yield put(ACTIONS.createPostSuccess(res));
+      } else {
+         if (res.status === 413) {
+            yield put(
+               ACTIONS.showAlert({
+                  title: "Create post",
+                  message: "Data is invalid",
+                  mode: "warning",
+               })
+            );
+         } else {
+            yield put(
+               ACTIONS.showAlert({
+                  title: "Create post",
+                  message: "Create post failed",
+                  mode: "error",
+               })
+            );
+         }
+         yield put(ACTIONS.createPostFailure("Create post failed"));
+      }
    } catch (err) {
       yield put(ACTIONS.createPostFailure(err));
    }
@@ -213,6 +275,13 @@ function* restorePost(action: { type: string; payload: string }) {
    try {
       yield call(api.post.restorePost, action.payload);
       yield put(ACTIONS.restorePostSuccess(action.payload));
+      yield put(
+         ACTIONS.showAlert({
+            message: "Restore successfully",
+            title: "Post",
+            mode: "success",
+         })
+      );
    } catch (err) {
       yield put(ACTIONS.restorePostFailure(err));
    }
@@ -222,8 +291,14 @@ function* restorePost(action: { type: string; payload: string }) {
 function* forceDeletePost(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.post.forceDeletePost, action.payload);
-      console.log(res);
       yield put(ACTIONS.forceDeletePostSuccess(action.payload));
+      yield put(
+         ACTIONS.showAlert({
+            message: "Delete successfully",
+            title: "Post",
+            mode: "success",
+         })
+      );
    } catch (err) {
       yield put(ACTIONS.forceDeletePostFailure(err));
    }

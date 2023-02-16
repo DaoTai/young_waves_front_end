@@ -12,7 +12,7 @@ const ImageInput = ({
 }) => {
    const handleGetImages = (files: any) => {
       if (Array.isArray(files)) {
-         const fileImages = files.filter((file: any) => !file.type.includes("mp"));
+         const fileImages = files.filter((file: any) => file.type.includes("image"));
          const fileBases = fileImages.map((file: any) => file.base64);
          onChange(fileBases as any);
       } else {

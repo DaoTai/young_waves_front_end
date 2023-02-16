@@ -25,7 +25,7 @@ const GlobalStyle = () => {
                color: theme.myColor.text,
             },
             a: {
-               color: theme.myColor.text,
+               color: theme.myColor.link,
                fontWeight: 500,
                textDecoration: "none",
                transition: "0.3s ease all",

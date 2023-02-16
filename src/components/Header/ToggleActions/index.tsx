@@ -2,23 +2,18 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
-import SecurityIcon from "@mui/icons-material/Security";
 import { Box, ToggleButton, Typography } from "@mui/material";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../../redux-saga/redux/actions";
-import { signInState$, signOutState$ } from "../../../redux-saga/redux/selectors";
-import { SIGN_OUT_SUCCESS } from "../../../utils/constants";
+import { signInState$ } from "../../../redux-saga/redux/selectors";
 
 import Spinner from "../../Spinner";
 import { Option, OptionButton, ToggleOptions } from "../styles";
 import { Anchor } from "./types";
 const ToggleActions = () => {
-   const navigate = useNavigate();
    const dispatch = useDispatch();
-   const { payload } = useSelector(signInState$);
-   const signOut$ = useSelector(signOutState$);
+   const { isLoading, payload } = useSelector(signInState$);
    const [show, setShow] = useState(false);
    const toggleDrawer =
       (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -35,12 +30,6 @@ const ToggleActions = () => {
    const handleSignOut = () => {
       dispatch(signOut());
    };
-
-   useEffect(() => {
-      if (signOut$.action === SIGN_OUT_SUCCESS) {
-         window.location.replace("/auth/sign-in");
-      }
-   }, [signOut$.action]);
 
    return (
       <>
@@ -73,9 +62,8 @@ const ToggleActions = () => {
          </ToggleButton>
 
          {/* Spinner */}
-         <Spinner show={signOut$.isLoading} />
+         <Spinner show={isLoading} />
          {/* When log out success */}
-         {/* {signOut$.action === SIGN_OUT_SUCCESS && <Navigate to="/auth/sign-in" />} */}
       </>
    );
 };

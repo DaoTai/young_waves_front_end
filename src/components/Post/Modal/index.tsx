@@ -9,8 +9,7 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { useDispatch } from "react-redux";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { CloseButton, ImageInput } from "../../index";
 import { MyBox } from "./styles";
 
@@ -34,7 +33,7 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
    const handleSetImages = (files: any) => {
-      setImages(files);
+      setImages((prev) => [...prev, ...files]);
    };
    const handleRemoveImage = (index: number) => {
       setImages((prev: string[]) => {
@@ -86,7 +85,7 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
                   />
                   <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
                      {images?.map((item, index) => (
-                        <ImageListItem key={item} sx={{ mb: 1, minHeight: "40vh" }}>
+                        <ImageListItem key={index} sx={{ mb: 1, minHeight: "40vh" }}>
                            <CloseButton onClick={() => handleRemoveImage(index)} />
                            <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
                         </ImageListItem>

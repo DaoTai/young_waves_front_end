@@ -18,14 +18,16 @@ import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, DateTimePicker, Spinner } from "../../../components";
-import { signUp } from "../../../redux-saga/redux/actions";
-import { signUpState$ } from "../../../redux-saga/redux/selectors";
-import { TIME_ALERT } from "../../../utils/constants";
+import { hideAlert, signUp } from "../../../redux-saga/redux/actions";
+import { alert$, signUpState$ } from "../../../redux-saga/redux/selectors";
+import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, radioFields, registerOptions, textFields } from "./config";
 const SignUp = () => {
    const theme = useTheme();
-   const dispatch = useDispatch();
    const navigate = useNavigate();
+   const alert = useSelector(alert$);
+   const { title, mode, message } = alert.payload as AlertProps;
+   const dispatch = useDispatch();
    const { isLoading, payload } = useSelector(signUpState$);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
@@ -35,26 +37,26 @@ const SignUp = () => {
             dispatch(signUp(values));
          },
       });
-   const [showAlert, setShowAlert] = useState<boolean>(false);
-   const [msg, setMsg] = useState<string>("");
+
    const [countries, setCountries] = useState([]);
+   useEffect(() => {
+      return () => {
+         dispatch(hideAlert());
+      };
+   }, []);
 
    useEffect(() => {
-      if (!isLoading && payload.status) {
-         if (payload.status === 200) {
-            navigate("/auth/sign-in");
-         } else {
-            setShowAlert(true);
-            setMsg(payload.message);
-            const timerId = setTimeout(() => {
-               setShowAlert(false);
-            }, TIME_ALERT);
-            return () => {
-               clearTimeout(timerId);
-            };
-         }
+      if (payload?.status === 200) {
+         navigate("/auth/sign-in");
+         return () => {
+            // Assign status in order to be permitted backed sign-up page from sign-in
+            // Cuz if status == 200, navigate always execute!!
+            if (payload.status) {
+               payload.status = 0;
+            }
+         };
       }
-   }, [isLoading, payload, dispatch]);
+   }, [payload]);
 
    // useEffect(() => {
    //    fetch("https://restcountries.com/v3.1/all")
@@ -70,11 +72,18 @@ const SignUp = () => {
    //       })
    //       .catch((err) => console.error(err));
    // }, []);
+
+   // if (payload?.status === 200) {
+   //    return <Navigate to="/auth/sign-in" />;
+   // }
+
    return (
       <div id="sign-up">
          <Helmet>
             <title>Sign up</title>
          </Helmet>
+         {/* Alert */}
+         {alert?.isShow && <Alert title={title} mode={mode} message={message} />}
          {/* Body */}
          <Box p={4} paddingTop={1} paddingBottom={2}>
             {/* Form */}
@@ -152,9 +161,6 @@ const SignUp = () => {
             </Box>
          </Box>
 
-         {/* Alert */}
-
-         <Alert show={showAlert} msg={msg} onClose={() => setShowAlert(false)} />
          {/* Spinner */}
          {isLoading && <Spinner show={isLoading} />}
       </div>

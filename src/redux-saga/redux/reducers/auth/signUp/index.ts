@@ -24,6 +24,7 @@ const signUpReducer = (state = INIT_STATE.signUp, action: Action) => {
             isLoading: false,
             payload: action.payload,
          };
+
       default:
          return state;
    }

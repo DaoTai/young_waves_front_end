@@ -1,6 +1,6 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { Route, Routes } from "react-router-dom";
-import { GlobalStyle, AuthProtect } from "./components";
+import { AuthProtect, GlobalStyle } from "./components";
 import { AuthLayout } from "./pages/auth";
 import Home from "./pages/home";
 import { authRoutes, commonRoutes, errorRoutes, userRoutes } from "./routes";
@@ -8,7 +8,6 @@ import { authRoutes, commonRoutes, errorRoutes, userRoutes } from "./routes";
 function App() {
    return (
       <>
-         {/* Spinner */}
          <CssBaseline />
          <GlobalStyle />
          {/* Routing */}

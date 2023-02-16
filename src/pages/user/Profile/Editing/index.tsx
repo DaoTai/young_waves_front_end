@@ -1,5 +1,5 @@
-import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import {
    Box,
    Button,
@@ -13,25 +13,22 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, DateTimePicker, Spinner } from "../../../../components";
+import { useNavigate } from "react-router-dom";
+import { DateTimePicker, Spinner } from "../../../../components";
 import { updateProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
-import { TIME_ALERT, UPDATE_PROFILE_SUCCESS } from "../../../../utils/constants";
-import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { Profile } from "../../../../utils/interfaces/Profile";
-import { updateUserOptions, init } from "./config";
+import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import Avatar from "../Heading/Avatar";
+import { init, updateUserOptions } from "./config";
 
 const Editing = () => {
    const { isLoading, payload, action, error } = useSelector(profileState$);
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const [showAlert, setShowAlert] = useState<boolean>(false);
-   const [msg, setMsg] = useState<string>("");
    const {
       values,
       errors,
@@ -49,7 +46,6 @@ const Editing = () => {
       },
    });
    useEffect(() => {
-      let timerId = 0;
       // If network slow, payload?.data'll undefined. So we shoud assign in Object
       const { fullName, dob, city, region, gender, email, _id } = Object(payload?.data) as Profile;
       setValues({
@@ -61,20 +57,7 @@ const Editing = () => {
          gender,
          email,
       });
-      if (!isLoading && !!values.fullName) {
-         if (action === UPDATE_PROFILE_SUCCESS) {
-            setShowAlert(true);
-            setMsg("Edited succesfully");
-         } else {
-            setShowAlert(true);
-            setMsg("Edited failed");
-         }
-         timerId = setTimeout(() => setShowAlert(false), TIME_ALERT);
-      }
-      return () => {
-         clearTimeout(timerId);
-      };
-   }, [isLoading, payload, dispatch]);
+   }, [isLoading, payload, dispatch, action]);
 
    return (
       <>
@@ -163,16 +146,6 @@ const Editing = () => {
             </form>
          </Box>
 
-         {/* Password modal */}
-
-         {/* Alert */}
-         <Alert
-            show={showAlert}
-            title="Success"
-            mode="success"
-            msg={msg}
-            onClose={() => setShowAlert(false)}
-         />
          {/* Spinner */}
          <Spinner show={isLoading} />
       </>
@@ -180,3 +153,6 @@ const Editing = () => {
 };
 
 export default Editing;
+function useCallbacks(arg0: () => void, arg1: never[]) {
+   throw new Error("Function not implemented.");
+}

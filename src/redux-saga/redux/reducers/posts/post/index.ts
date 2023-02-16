@@ -73,8 +73,6 @@ const postReducer = (state = INIT_STATE.post, action: MyAction) => {
             action: action.type,
          };
       case UPDATE_POST_SUCCESS:
-         console.log("Payload: ", action.payload);
-         console.log("State: ", state.payload);
          return {
             ...state,
             isLoading: false,

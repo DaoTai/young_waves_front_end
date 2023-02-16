@@ -65,7 +65,7 @@ const Heading = ({
       setStatus(news.status);
    };
 
-   const handleSubmit = useCallback(() => {
+   const handleUpdate = useCallback(() => {
       const { images, post, status } = modalRef.current;
       const data = {
          ...news,
@@ -202,7 +202,7 @@ const Heading = ({
          </Dialog>
 
          {/* Modal */}
-         <PostModal onSubmit={handleSubmit} ref={modalRef} />
+         <PostModal onSubmit={handleUpdate} ref={modalRef} />
       </>
    );
 };

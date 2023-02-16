@@ -10,22 +10,23 @@ import {
    useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { Alert, Spinner } from "../../../components";
-import { signIn } from "../../../redux-saga/redux/actions";
-import { signInState$ } from "../../../redux-saga/redux/selectors";
+import { Link, Navigate } from "react-router-dom";
+import { Spinner, Alert } from "../../../components";
+import { signIn, showAlert, hideAlert } from "../../../redux-saga/redux/actions";
+import { alert$, signInState$ } from "../../../redux-saga/redux/selectors";
 import { TIME_ALERT } from "../../../utils/constants";
+import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
+   const alert = useSelector(alert$);
+   const { title, mode, message } = alert.payload as AlertProps;
    const { isLoading, payload } = useSelector(signInState$);
-   const navigate = useNavigate();
-   const [msg, setMsg] = useState<string>("");
-   const [showAlert, setShowAlert] = useState<boolean>(false);
+
    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
       initialValues: init,
       validationSchema: signInOptions,
@@ -35,32 +36,22 @@ const SignIn = () => {
    });
 
    useEffect(() => {
-      // When success
-      if (!isLoading && payload.status) {
-         if (payload.status === 200) {
-            navigate("/", {
-               replace: true,
-            });
-         }
-         // When failed
-         else {
-            setShowAlert(true);
-            setMsg(payload.message);
-            const timerId = setTimeout(() => {
-               setShowAlert(false);
-            }, TIME_ALERT);
-            return () => {
-               clearTimeout(timerId);
-            };
-         }
-      }
-   }, [isLoading, payload, dispatch]);
+      // Hide alert when unmount cuz it can be showed in sign up if using Alert for parent component
+      return () => {
+         dispatch(hideAlert());
+      };
+   }, []);
+   if (payload?.status == 200) {
+      return <Navigate to="/" replace />;
+   }
 
    return (
       <div id="sign-in">
          <Helmet>
             <title>Sign in</title>
          </Helmet>
+         {/* Alert */}
+         {alert?.isShow && <Alert title={title} mode={mode} message={message} />}
          {/* Body */}
          <Box p={4} paddingTop={4} paddingBottom={4}>
             {/* Form */}
@@ -125,19 +116,22 @@ const SignIn = () => {
                   label="Remember me"
                />
                <Typography>
-                  <Link to="/">Forgot password?</Link>
+                  <Link color={theme.myColor.link} to="/">
+                     Forgot password?
+                  </Link>
                </Typography>
             </Stack>
+            {/* Suggestions  */}
             <Box textAlign="center" mt={2}>
                <Typography variant="subtitle1" component="b" mr={1}>
                   Not a member?
                </Typography>
-               <Link to="/auth/sign-up">Sign up</Link>
+               <Link color={theme.myColor.link} to="/auth/sign-up">
+                  Sign up
+               </Link>
             </Box>
          </Box>
 
-         {/* Alert */}
-         <Alert show={showAlert} msg={msg} onClose={() => setShowAlert(false)} />
          {/* Spinner */}
          <Spinner show={isLoading} />
       </div>

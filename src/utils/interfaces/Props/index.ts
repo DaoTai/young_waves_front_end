@@ -3,11 +3,9 @@ import { Post } from "../Post";
 import { Profile } from "../Profile";
 
 export interface AlertProps {
-   show: boolean;
-   msg?: string;
    title?: string;
+   message: string;
    mode?: AlertColor;
-   onClose: () => void;
 }
 
 export interface HeadingNewsProps {

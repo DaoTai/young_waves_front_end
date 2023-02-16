@@ -4,6 +4,17 @@ import { Profile, ChangePassword } from "../../../utils/interfaces/Profile";
 import { Post } from "../../../utils/interfaces/Post";
 import { Comment } from "../../../utils/interfaces/Comment";
 import { Like } from "../../../utils/interfaces/Like";
+import { AlertProps } from "../../../utils/interfaces/Props";
+
+// Actions show/hide alert
+export const showAlert = (payload: AlertProps) => ({
+   type: CONSTANTS.SHOW_ALERT,
+   payload,
+});
+
+export const hideAlert = () => ({
+   type: CONSTANTS.HIDE_ALERT,
+});
 
 // Actions SIGN-IN
 export const signIn = (payload: SignIn) => ({

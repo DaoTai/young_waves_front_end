@@ -23,11 +23,17 @@ const Heading = () => {
       return ownPostLength;
    }, [posts$, payload]);
    return (
-      <Grid container p={1} justifyContent="flex-start" alignItems="center" overflow="hidden">
-         <Grid item xs={12} md={3}>
+      <Grid
+         container
+         p={1}
+         spacing={2}
+         justifyContent="flex-start"
+         alignItems="center"
+         overflow="hidden">
+         <Grid item>
             <Avatar image={payload?.data?.avatar} />
          </Grid>
-         <Grid item ml={2} xs={12} md={5}>
+         <Grid item>
             <Typography
                variant="h4"
                fontWeight={600}
