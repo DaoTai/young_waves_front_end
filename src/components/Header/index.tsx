@@ -1,13 +1,16 @@
-import { AppBar, Toolbar, Grid } from "@mui/material";
-
+import { AppBar, Toolbar, Grid, ThemeProvider, createTheme, Switch, useTheme } from "@mui/material";
+import { customTheme } from "../../utils/customTheme";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
 import Actions from "./ToggleActions";
 import Search from "./Search";
 import SwitchTheme from "./SwitchTheme";
+import { useState } from "react";
 const Header = () => {
+   const theme = useTheme();
+
    return (
-      <AppBar position="fixed" sx={{ backgroundColor: "#f5f5f5" }}>
+      <AppBar position="fixed" sx={{ bgcolor: theme.myColor.white, boxShadow: 1 }}>
          <Toolbar>
             <Grid
                container
@@ -29,9 +32,7 @@ const Header = () => {
                </Grid>
 
                {/* Switch button change theme */}
-               <Grid item>
-                  <SwitchTheme />
-               </Grid>
+               <Grid item>{/* <SwitchTheme /> */}</Grid>
 
                {/* Toggle */}
                <Grid item>

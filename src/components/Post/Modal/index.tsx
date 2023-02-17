@@ -80,7 +80,7 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
                      required
                      fullWidth
                      multiline
-                     rows={10}
+                     rows={5}
                      onChange={(e) => setPost(e.target.value)}
                   />
                   <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">

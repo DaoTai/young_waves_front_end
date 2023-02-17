@@ -8,7 +8,7 @@ import {
    EditingPassword,
    NewsDetail,
    Explore,
-   Anonymous,
+   Member,
    TrashPosts,
    TrashDetail,
 } from "../pages/user";
@@ -69,7 +69,7 @@ const userRoutes: Array<Route> = [
       component: Fragment as React.FC,
       children: [
          { path: "", component: Explore },
-         { path: ":id", component: Anonymous },
+         { path: ":id", component: Member },
       ],
    },
    {

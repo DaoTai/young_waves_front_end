@@ -1,7 +1,8 @@
 import { Box, Card, CardContent, Typography, useTheme } from "@mui/material";
 import { memo } from "react";
-import { Post } from "../../../../utils/interfaces/Post";
+import { Post, Comment } from "../../../../utils/interfaces/Post";
 import { Profile } from "../../../../utils/interfaces/Profile";
+import { PostBody } from "../../../../components";
 import Actions from "./Actions";
 import Heading from "./Heading";
 import Images from "./Images";
@@ -11,7 +12,7 @@ const News = ({ listNews }: { listNews: Post[] }) => {
       <>
          {listNews?.length === 0 ? (
             <Typography variant="h6" textAlign="center" color={theme.myColor.textSecondary}>
-               Empty news
+               No post
             </Typography>
          ) : (
             listNews?.map((news: Post, index) => {
@@ -32,12 +33,7 @@ const News = ({ listNews }: { listNews: Post[] }) => {
                            <Images id={news?._id} attachments={news?.attachments} />
                         )}
                         {/* Body */}
-                        <CardContent
-                           sx={{ pl: 1, mb: 1, bgcolor: theme.myColor.bgGray, borderRadius: 2 }}>
-                           <Typography variant="body1" color={theme.myColor.text} paragraph>
-                              {news?.body}
-                           </Typography>
-                        </CardContent>
+                        <PostBody>{news?.body}</PostBody>
                         {/* Actions */}
                         <Actions likes={news?.likes} comments={news?.comments} id={news?._id} />
                      </Card>

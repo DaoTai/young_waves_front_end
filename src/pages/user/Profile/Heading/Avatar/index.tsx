@@ -17,7 +17,15 @@ const Avatar = ({ image, ...props }: { image: string; props?: any }) => {
    return (
       <>
          <WrapAvatar>
-            <Image ref={imageRef} src={image} circle srcSet={image} alt="avatar" />
+            <Image
+               ref={imageRef}
+               src={image}
+               circle
+               srcSet={image}
+               alt="avatar"
+               boxShadow={1}
+               border={1}
+            />
             <ImageInput onChange={handleChange} />
          </WrapAvatar>
          {/* Spinner */}

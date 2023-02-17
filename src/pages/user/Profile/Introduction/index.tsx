@@ -1,16 +1,13 @@
-import { Box, Stack, Tooltip, Typography, useTheme } from "@mui/material";
-import React from "react";
-import dateFormat from "dateformat";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import HandshakeIcon from "@mui/icons-material/Handshake";
 import CakeIcon from "@mui/icons-material/Cake";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PublicIcon from "@mui/icons-material/Public";
-import { useSelector } from "react-redux";
-import { profileState$ } from "../../../../redux-saga/redux/selectors";
+import { memo } from "react";
+import { Box, Stack, Tooltip, Typography, useTheme } from "@mui/material";
+import dateFormat from "dateformat";
 import { Profile } from "../../../../utils/interfaces/Profile";
 const Introduction = ({ user }: { user: Partial<Profile> }) => {
    const theme = useTheme();
-
    return (
       <Box p={1} mb={1} boxShadow={1} borderRadius={1} bgcolor={theme.myColor.white}>
          <Typography variant="h5" textAlign="center" p={1} borderBottom={1}>
@@ -52,4 +49,4 @@ const Introduction = ({ user }: { user: Partial<Profile> }) => {
    );
 };
 
-export default Introduction;
+export default memo(Introduction);

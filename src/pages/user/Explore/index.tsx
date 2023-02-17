@@ -1,11 +1,12 @@
-import { Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
+import Search from "../../../components/Header/Search";
 import { usersState$, signInState$ } from "../../../redux-saga/redux/selectors";
 import { getAllUser } from "../../../redux-saga/redux/actions";
 import Card from "./Card";
 import { Profile } from "../../../utils/interfaces/Profile";
-import { Helmet } from "react-helmet-async";
 
 const Explore = () => {
    const dispatch = useDispatch();
@@ -30,15 +31,18 @@ const Explore = () => {
          <Helmet>
             <title>Explore | Young Waves</title>
          </Helmet>
-         <Grid container spacing={2} alignItems="stretch">
-            {anonymouses?.map((user) => {
-               return (
-                  <Grid key={user._id} item lg={4} md={4} xs={12}>
-                     <Card user={user} />
-                  </Grid>
-               );
-            })}
-         </Grid>
+         <Container maxWidth="md">
+            <Search />
+            <Grid container spacing={2} mt={2} alignItems="stretch">
+               {anonymouses?.map((user) => {
+                  return (
+                     <Grid key={user._id} item lg={4} md={4} xs={12}>
+                        <Card user={user} />
+                     </Grid>
+                  );
+               })}
+            </Grid>
+         </Container>
       </>
    );
 };

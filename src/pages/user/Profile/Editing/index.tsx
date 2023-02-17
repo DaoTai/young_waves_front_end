@@ -3,6 +3,7 @@ import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import {
    Box,
    Button,
+   Container,
    FormControl,
    FormControlLabel,
    FormLabel,
@@ -65,14 +66,16 @@ const Editing = () => {
             <title>Edit profile| Young Waves</title>
          </Helmet>
          {/* Content */}
-         <Box>
+         <Container maxWidth="md">
             <Stack flexDirection="row" justifyContent="space-between">
                <Button
+                  variant="outlined"
                   startIcon={<ArrowBackIosIcon />}
                   onClick={() => navigate(`/user/profile/${values._id}`)}>
                   Back
                </Button>
                <Button
+                  variant="outlined"
                   endIcon={<ChangeCircleIcon />}
                   onClick={() => navigate("/user/profile/password")}>
                   Change Password
@@ -144,7 +147,7 @@ const Editing = () => {
                   Update
                </Button>
             </form>
-         </Box>
+         </Container>
 
          {/* Spinner */}
          <Spinner show={isLoading} />

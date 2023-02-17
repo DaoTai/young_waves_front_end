@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Stack, TextField } from "@mui/material";
+import { Box, Button, Grid, Stack, TextField, useTheme } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { createComment } from "../../../../../../redux-saga/redux/actions";
 import { profileState$, signInState$ } from "../../../../../../redux-saga/redux/selectors";
 import { Post } from "../../../../../../utils/interfaces/Post";
 const CommentField = ({ post }: { post: Post }) => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const { id } = useParams();
    const [newComment, setNewComment] = useState<string>("");
@@ -32,19 +33,39 @@ const CommentField = ({ post }: { post: Post }) => {
    };
 
    return (
-      <Box pt={2} pb={2} sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Stack
+         mt={2}
+         mb={2}
+         gap={1}
+         flexDirection="row"
+         justifyContent="space-between"
+         alignItems="center"
+         flexWrap="nowrap">
          <TextField
             fullWidth
             variant="standard"
             placeholder="Write your comment"
             value={newComment}
+            autoComplete="off"
+            spellCheck={false}
+            sx={{
+               color: theme.myColor.textSecondary,
+               padding: "12px 4px 4px",
+               backgroundColor: theme.myColor.bg,
+               borderRadius: 1,
+            }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
             onKeyDown={handleEnter}
          />
          {newComment && (
-            <Button endIcon={<SendIcon />} sx={{ cursor: "pointer" }} onClick={handleSubmit} />
+            <Button
+               variant="outlined"
+               endIcon={<SendIcon />}
+               sx={{ cursor: "pointer", padding: 1 }}
+               onClick={handleSubmit}
+            />
          )}
-      </Box>
+      </Stack>
    );
 };
 

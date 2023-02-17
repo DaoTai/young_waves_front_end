@@ -3,6 +3,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import {
    Box,
    Button,
+   Container,
    Dialog,
    DialogActions,
    DialogContent,
@@ -56,7 +57,7 @@ const Password = () => {
          <Helmet>
             <title>Change password | Young Waves</title>
          </Helmet>
-         <Box bgcolor="#fff" p={3}>
+         <Container maxWidth="md">
             <Button
                variant="outlined"
                startIcon={<ArrowBackIosIcon />}
@@ -106,7 +107,7 @@ const Password = () => {
                   </Button>
                </Stack>
             </form>
-         </Box>
+         </Container>
 
          {/* Dialog confirm */}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>

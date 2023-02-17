@@ -82,9 +82,10 @@ export const CREATE_COMMENT = "CREATE_COMMENT";
 export const CREATE_COMMENT_SUCCESS = `${CREATE_COMMENT}_SUCCESS`;
 export const CREATE_COMMENT_FAILURE = `${CREATE_COMMENT}_FAILURE`;
 
-export const CREATE_LIKE = "CREATE_LIKE";
-export const CREATE_LIKE_SUCCESS = `${CREATE_LIKE}_SUCCESS`;
-export const CREATE_LIKE_FAILURE = `${CREATE_LIKE}_FAILURE`;
+export const HANDLE_LIKE = "CREATE_LIKE";
+export const CREATE_LIKE_SUCCESS = `CREATE_LIKE_SUCCESS`;
+export const UNLIKE_SUCCESS = `UNLIKE_SUCCESS`;
+export const HANDLE_LIKE_FAILURE = `${HANDLE_LIKE}_FAILURE`;
 
 export const GET_ALL_USER = "GET_ALL_USER";
 export const GET_ALL_USER_SUCCESS = `${GET_ALL_USER}_SUCCESS`;
@@ -118,16 +119,13 @@ export const INIT_STATE = {
    post: {
       isLoading: false,
       payload: {
-         data: {
-            post: {},
-            comments: [],
-         },
+         post: {},
+         comments: [],
       },
    },
    trashPosts: {
       isLoading: false,
       payload: {
-         status: 0,
          posts: [],
          currentPage: 0,
          maxPage: 0,

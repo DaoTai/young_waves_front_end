@@ -246,16 +246,22 @@ export const createCommentFailure = (payload: any) => ({
 });
 
 // Like
-export const createLike = (payload: string) => ({
-   type: CONSTANTS.CREATE_LIKE,
+export const handleLike = (payload: string) => ({
+   type: CONSTANTS.HANDLE_LIKE,
    payload,
 });
-export const createLikeSuccess = (payload: Like) => ({
+export const createLikeSuccess = (payload: string) => ({
    type: CONSTANTS.CREATE_LIKE_SUCCESS,
    payload,
 });
-export const createLikeFailure = (payload: any) => ({
-   type: CONSTANTS.CREATE_LIKE_FAILURE,
+
+export const unLikeSuccess = (payload: string) => ({
+   type: CONSTANTS.UNLIKE_SUCCESS,
+   payload,
+});
+
+export const handleLikeFailure = (payload: any) => ({
+   type: CONSTANTS.HANDLE_LIKE_FAILURE,
    payload,
 });
 

@@ -90,12 +90,8 @@ const Heading = ({
                      src={author?.avatar}
                      srcSet={author?.avatar}
                      alt="avatar"
-                     style={{
-                        borderRadius: "50%",
-                        width: "40px",
-                        height: "40px",
-                        objectFit: "cover",
-                     }}
+                     borderRadius="50%"
+                     objectFit="cover"
                   />
                </Link>
             }

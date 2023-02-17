@@ -9,7 +9,7 @@ export interface Post {
    deletedAt?: string;
    author: Partial<Profile>;
    likes: Array<Like>;
-   comments: Array<Comment>;
+   comments: Array<string>;
    attachments: Array<string>;
 }
 export interface Comment {

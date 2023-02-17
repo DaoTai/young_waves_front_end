@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { SIGN_OUT_SUCCESS } from "../../../utils/constants";
 import { signInReducer, signUpReducer } from "./auth";
 import alertReducer from "./alert";
 import { profileReducer } from "./user";
@@ -19,4 +20,6 @@ const rootReducer = combineReducers({
    users: usersReducer,
 });
 
-export default rootReducer;
+// hande reset all reducer when sign out success
+export default (state, action) =>
+   rootReducer(action.type === SIGN_OUT_SUCCESS ? undefined : state, action);

@@ -1,7 +1,9 @@
+import { Profile } from "../Profile";
 export interface Comment {
-   user: string;
+   _id: string;
+   user: Partial<Profile>;
    post: string;
    body: string;
-   createdAt?: string;
-   updatedAt?: string;
+   createdAt: string;
+   updatedAt: string;
 }

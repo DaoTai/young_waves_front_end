@@ -156,7 +156,7 @@ function* getOwnerPostsSaga(action: { type: string; id: string }) {
 function* getPostSaga(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.post.getDetailPost, action.payload);
-      yield put(ACTIONS.getPostSuccess(res));
+      yield put(ACTIONS.getPostSuccess(res.data));
    } catch (err) {
       yield put(ACTIONS.getPostFailure(err));
    }
@@ -223,22 +223,29 @@ function* deletePostSaga(action: { type: string; payload: string }) {
 function* createCommentSaga(action: { type: string; payload: { id: string; comment: string } }) {
    try {
       const res = yield call(api.comment.createComment, action.payload);
-      yield put(ACTIONS.createCommentSuccess(res));
+      yield put(ACTIONS.createCommentSuccess(res.data));
    } catch (err) {
       yield put(ACTIONS.createCommentFailure(err));
    }
 }
 
 // Like
-// function* createLikeSaga(action: { type: string; payload: string }) {
-//    try {
-//       const res = yield call(api.like.handleLike, action.payload);
-//       yield put(ACTIONS.createLikeSuccess(res));
-//       yield put(ACTIONS.getPosts());
-//    } catch (err) {
-//       yield put(ACTIONS.createCommentFailure(err));
-//    }
-// }
+function* createLikeSaga(action: { type: string; payload: string }) {
+   try {
+      const res = yield call(api.like.handleLike, action.payload);
+      if (res.status === 200) {
+         // Like post
+         yield put(ACTIONS.createLikeSuccess(res.data));
+      }
+      if (res.status === 201) {
+         // Unlike post
+         yield put(ACTIONS.unLikeSuccess(res.data));
+      }
+      yield put(ACTIONS.getPosts());
+   } catch (err) {
+      yield put(ACTIONS.createCommentFailure(err));
+   }
+}
 
 // Get all user
 function* getAllUserSaga() {
@@ -264,7 +271,7 @@ function* getTrashPosts() {
 function* getDetailTrashPost(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.post.getDetailTrashPost, action.payload);
-      yield put(ACTIONS.getPostSuccess(res));
+      yield put(ACTIONS.getPostSuccess(res.data));
    } catch (err) {
       yield put(ACTIONS.getPostFailure(err));
    }
@@ -320,7 +327,7 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.UPDATE_POST, updatePostSaga),
       takeLatest(CONSTANTS.DELETE_POST, deletePostSaga),
       takeLatest(CONSTANTS.CREATE_COMMENT, createCommentSaga),
-      // takeLatest(CONSTANTS.CREATE_LIKE, createLikeSaga),
+      takeLatest(CONSTANTS.HANDLE_LIKE, createLikeSaga),
       takeLatest(CONSTANTS.GET_ALL_USER, getAllUserSaga),
       takeLatest(CONSTANTS.GET_TRASH_POSTS, getTrashPosts),
       takeLatest(CONSTANTS.GET_TRASH_POST, getDetailTrashPost),

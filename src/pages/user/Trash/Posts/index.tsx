@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "../../../../components";
@@ -41,7 +42,6 @@ const TrashPosts = () => {
 
    const [idDelete, setIdDelete] = useState<string>("");
    useEffect(() => {
-      console.log("Dispatch");
       dispatch(getTrashPosts());
    }, []);
 
@@ -65,6 +65,9 @@ const TrashPosts = () => {
 
    return (
       <>
+         <Helmet>
+            <title>Trash | Young Waves</title>
+         </Helmet>
          <TableContainer component={Paper} sx={{ overflowX: "scroll" }}>
             <Table>
                <TableHead>

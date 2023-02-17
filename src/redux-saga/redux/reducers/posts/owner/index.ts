@@ -7,8 +7,11 @@ import {
    UPDATE_POST_SUCCESS,
    DELETE_POST_SUCCESS,
    CREATE_LIKE_SUCCESS,
+   UNLIKE_SUCCESS,
+   CREATE_COMMENT_SUCCESS,
 } from "../../../../../utils/constants";
-import { Post } from "../../../../../utils/interfaces/Post";
+import { Like } from "../../../../../utils/interfaces/Like";
+import { Post, Comment } from "../../../../../utils/interfaces/Post";
 
 interface Payload {
    data: Array<Post>;
@@ -55,9 +58,49 @@ const ownerPostsReducer = (state = INIT_STATE.posts, action: MyAction) => {
          );
          return { ...state, payload: { ...state.payload, data: filterData }, action: action.type };
       case CREATE_LIKE_SUCCESS:
+         const newLike = action.payload as Like;
+         const likedPosts = state.payload.data?.map((post: Post) => {
+            // Find post contains like in it's list like
+            if (post._id === newLike.post) {
+               // Add like in list like
+               post.likes.unshift(newLike);
+            }
+            return post;
+         });
+         return {
+            isLoading: false,
+            payload: { ...state.payload, data: likedPosts },
+            action: action.type,
+         };
+      case UNLIKE_SUCCESS:
+         const unLike = action.payload as Like;
+         const unLikeNewPosts = state.payload.data?.map((post: Post) => {
+            // Find post contains like in it's list like
+            if (post._id === unLike.post) {
+               // Remove like in list like
+               post.likes = post.likes.filter((like) => like._id !== unLike._id);
+            }
+            return post;
+         });
+         return {
+            isLoading: false,
+            payload: { ...state.payload, data: unLikeNewPosts },
+            action: action.type,
+         };
+      case CREATE_COMMENT_SUCCESS:
+         const newComment = action.payload as Comment;
+         const addedCommentPosts = state.payload.data?.map((post: Post) => {
+            // Find post contains comment in it's list comment
+            if (post._id === newComment.post) {
+               // Add comment in list comment
+               post.comments.push(newComment._id);
+            }
+            return post;
+         });
          return {
             ...state,
-            action: action.type,
+            isLoading: false,
+            payload: { ...state.payload, data: addedCommentPosts },
          };
       case GET_OWNER_POSTS_FAILURE:
          return {

@@ -10,14 +10,13 @@ import {
    useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
-import { Spinner, Alert } from "../../../components";
-import { signIn, showAlert, hideAlert } from "../../../redux-saga/redux/actions";
+import { Alert, Spinner } from "../../../components";
+import { hideAlert, signIn } from "../../../redux-saga/redux/actions";
 import { alert$, signInState$ } from "../../../redux-saga/redux/selectors";
-import { TIME_ALERT } from "../../../utils/constants";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, signInOptions } from "./config";
 const SignIn = () => {

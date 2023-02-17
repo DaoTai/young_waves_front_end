@@ -9,7 +9,7 @@ import { Profile } from "../../../../utils/interfaces/Profile";
 import Introduction from "../../Profile/Introduction";
 import { Post } from "../../../../utils/interfaces/Post";
 import News from "../../NewsFeed/News";
-const Anonymous = () => {
+const Member = () => {
    const { id } = useParams();
    const [user, setUser] = useState<Partial<Profile>>({});
    const [show, setShow] = useState<boolean>(false);
@@ -45,4 +45,4 @@ const Anonymous = () => {
    );
 };
 
-export default Anonymous;
+export default Member;

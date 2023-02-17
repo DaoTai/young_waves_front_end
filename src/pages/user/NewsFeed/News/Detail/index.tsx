@@ -7,10 +7,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { CloseButton, Comment as MyComment, Spinner } from "../../../../../components";
+import { CloseButton, Comment as MyComment, Spinner, PostBody } from "../../../../../components";
 import { getPost } from "../../../../../redux-saga/redux/actions";
 import { postState$, ownerPostsState$ } from "../../../../../redux-saga/redux/selectors";
-import { Comment, Post } from "../../../../../utils/interfaces/Post";
+import { Comment } from "../../../../../utils/interfaces/Comment";
+import { Post } from "../../../../../utils/interfaces/Post";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 import Heading from "../Heading";
 import CommentField from "./CommentField";
@@ -18,14 +19,11 @@ import { settings } from "./config";
 import { ButtonSlide, MyBox } from "./styles";
 
 const Detail = () => {
-   const {
-      isLoading,
-      payload: { data },
-   } = useSelector(postState$);
+   const { isLoading, payload } = useSelector(postState$);
    const { id, indexImage } = useParams();
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const { post, comments } = (data as { post: Post; comments: Comment[] }) ?? {};
+   const { post, comments } = (payload as { post: Post; comments: Comment[] }) ?? {};
    const [open, setOpen] = useState(true);
    const sliderRef = useRef<Slider | null>(null);
    useEffect(() => {
@@ -94,18 +92,14 @@ const Detail = () => {
                         news={post}
                         createdAt={post?.createdAt as string}
                      />
-                     <Box mb={1} pb={1} sx={{ borderBottom: "1px solid #333" }}>
-                        <Typography variant="body1" color="text.secondary">
-                           {post?.body}
-                        </Typography>
-                     </Box>
+                     <PostBody bt={1}>{post?.body}</PostBody>
 
                      {/* Action comments */}
                      <CommentField post={post} />
                      {/* List comments */}
                      <Box>
-                        {comments?.map((comment: Comment) => {
-                           return <MyComment key={comment._id} comment={comment} />;
+                        {comments?.map((comment: Comment, index) => {
+                           return <MyComment key={index} comment={comment} />;
                         })}
                      </Box>
                   </Grid>

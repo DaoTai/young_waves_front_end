@@ -2,13 +2,13 @@ import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { CardActions, Checkbox, Chip, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createLike } from "../../../../../redux-saga/redux/actions";
-import { signInState$ } from "../../../../../redux-saga/redux/selectors";
+import { handleLike } from "../../../../../redux-saga/redux/actions";
+import { signInState$, ownerPostsState$ } from "../../../../../redux-saga/redux/selectors";
 import { Like } from "../../../../../utils/interfaces/Like";
-import { Comment } from "../../../../../utils/interfaces/Post";
+import { Comment, Post } from "../../../../../utils/interfaces/Post";
 import { MyIconButton } from "./styles";
 const Actions = ({
    likes = [],
@@ -16,7 +16,7 @@ const Actions = ({
    id,
 }: {
    likes: Like[];
-   comments: Comment[];
+   comments: string[];
    id: string;
 }) => {
    const navigate = useNavigate();
@@ -25,15 +25,23 @@ const Actions = ({
       isLoading,
       payload: { data },
    } = useSelector(signInState$);
+   const ownerPosts$ = useSelector(ownerPostsState$);
    const idUser = data?.payload._id;
+   const ownerPosts = ownerPosts$?.payload?.data;
    const [like, setLike] = useState<boolean>(false);
-   // const [totalLike, setTotalLike] = useState(likes.length);
+
+   const totalLikes = useMemo(() => {
+      return likes?.length > 1 ? likes?.length + " likes" : likes?.length + " like";
+   }, [likes, ownerPosts$]);
    useEffect(() => {
+      const owner = ownerPosts.map((post: Post) => post.author._id);
       const authors = likes.map((like) => like.author);
-      if (authors.includes(idUser)) {
+      if (authors.includes(idUser) && owner.includes(idUser)) {
          setLike(true);
       }
-   }, []);
+   }, [ownerPosts, likes]);
+
+   // Navigate to profile
    const handleNavigate = () => {
       if (window.location.pathname.includes("/user/profile")) {
          navigate(`/user/news/${id}`);
@@ -41,30 +49,29 @@ const Actions = ({
          navigate(`/news/${id}`);
       }
    };
-   const handleLike = () => {
-      setLike(!like);
 
-      dispatch(createLike(id));
+   // Like post
+   const clickLike = () => {
+      setLike(!like);
+      dispatch(handleLike(id));
    };
+
    return (
       <>
          {/* Actions */}
          <CardActions sx={{ pl: 0, gap: 12 }}>
             {/* Likes */}
-            {/* <Stack flexDirection="column" justifyContent="space-between">
-               <Chip
-                  variant="outlined"
-                  label={`${totalLike} likes`}
-               />
+            <Stack flexDirection="column" justifyContent="space-between">
+               <Chip variant="outlined" label={totalLikes} />
                <Checkbox
                   sx={{ padding: "14px" }}
                   icon={<FavoriteBorderIcon />}
                   checked={like}
                   onChange={() => setLike(!like)}
-                  onClick={handleLike}
+                  onClick={clickLike}
                   checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}
                />
-            </Stack> */}
+            </Stack>
             {/* Comments */}
             <Stack flexDirection="column" justifyContent="space-between" onClick={handleNavigate}>
                <Chip variant="outlined" label={`${comments?.length} comments`} />

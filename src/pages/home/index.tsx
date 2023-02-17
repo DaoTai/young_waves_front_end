@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box, Container, useTheme } from "@mui/material";
 import { useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Outlet } from "react-router-dom";
@@ -8,6 +8,7 @@ import { showAlert, hideAlert } from "../../redux-saga/redux/actions";
 import { Header, Alert } from "../../components";
 import { AlertProps } from "../../utils/interfaces/Props";
 const Home = () => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const { isShow, payload } = useSelector(alert$);
    const { title, mode, message } = payload as AlertProps;
@@ -17,7 +18,7 @@ const Home = () => {
       };
    }, []);
    return (
-      <div>
+      <Box bgcolor={theme.myColor.bg} minHeight="100vh">
          <Helmet>
             <title>Young Waves</title>
          </Helmet>
@@ -26,7 +27,7 @@ const Home = () => {
             <Outlet />
          </Container>
          {isShow && <Alert title={title} mode={mode} message={message} />}
-      </div>
+      </Box>
    );
 };
 

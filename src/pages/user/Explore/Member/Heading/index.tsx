@@ -7,11 +7,17 @@ import { Image } from "../../../../../components";
 
 const Heading = ({ avatar, fullName }: { avatar: string; fullName: string }) => {
    return (
-      <Grid container p={1} justifyContent="flex-start" alignItems="center" overflow="hidden">
-         <Grid item xs={12} md={3}>
-            <Image src={avatar} circle width="180px" height="180px" />
+      <Grid
+         container
+         p={1}
+         spacing={2}
+         justifyContent="flex-start"
+         alignItems="center"
+         overflow="hidden">
+         <Grid item>
+            <Image src={avatar} circle width="180px" height="180px" boxShadow={2} border={1} />
          </Grid>
-         <Grid item ml={2} xs={12} md={5}>
+         <Grid item>
             <Typography
                variant="h4"
                fontWeight={600}
