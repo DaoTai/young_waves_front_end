@@ -6,8 +6,8 @@ export const WrapAvatar = styled(Button)((theme) => ({
    backgroundColor: "transparent !important",
    transition: "0.2s ease all",
    img: {
-      width: "200px",
-      height: "200px",
+      width: "220px",
+      height: "220px",
    },
 
    ".image-input": {

@@ -266,8 +266,9 @@ export const handleLikeFailure = (payload: any) => ({
 });
 
 // Users
-export const getAllUser = () => ({
+export const getAllUser = (payload?: { page?: number; name?: string }) => ({
    type: CONSTANTS.GET_ALL_USER,
+   payload,
 });
 export const getAllUserSuccess = (payload: {
    users: Array<Profile>;

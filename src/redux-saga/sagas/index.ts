@@ -22,7 +22,7 @@ function* signInSaga(action: { type: string; payload: SignIn }) {
          yield put(
             ACTIONS.showAlert({
                title: "Sign in",
-               message: res?.message,
+               message: "Server not working",
             })
          );
       }
@@ -248,9 +248,9 @@ function* createLikeSaga(action: { type: string; payload: string }) {
 }
 
 // Get all user
-function* getAllUserSaga() {
+function* getAllUserSaga(action: { type: string; payload: { page?: number; name?: string } }) {
    try {
-      const res = yield call(api.user.getAllUser);
+      const res = yield call(api.user.getAllUser, action.payload);
       yield put(ACTIONS.getAllUserSuccess(res));
    } catch (err) {
       yield put(ACTIONS.getAllUserFailure(err));

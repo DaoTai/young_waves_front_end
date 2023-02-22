@@ -1,5 +1,5 @@
-import { AlertTitle } from "@mui/material";
-import { memo, useEffect } from "react";
+import { Snackbar, Typography } from "@mui/material";
+import { memo } from "react";
 import { useDispatch } from "react-redux";
 import { hideAlert } from "../../redux-saga/redux/actions";
 import { TIME_ALERT } from "../../utils/constants";
@@ -10,19 +10,21 @@ const Alert = ({ message, title = "Error", mode = "error" }: AlertProps) => {
    const onClose = () => {
       dispatch(hideAlert());
    };
-   useEffect(() => {
-      const timerId = setTimeout(() => {
-         onClose();
-      }, TIME_ALERT);
-      return () => {
-         clearTimeout(timerId);
-      };
-   }, []);
+
    return (
-      <MyAlert severity={mode} closeText="Close" variant="outlined" onClose={onClose}>
-         <AlertTitle>{title}</AlertTitle>
-         {message}
-      </MyAlert>
+      <Snackbar
+         open
+         autoHideDuration={TIME_ALERT}
+         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+         message={message}
+         onClose={onClose}>
+         <MyAlert severity={mode} closeText="Close" variant="outlined" onClose={onClose}>
+            <Typography variant="body1" fontWeight={600}>
+               {title}
+            </Typography>
+            {message}
+         </MyAlert>
+      </Snackbar>
    );
 };
 

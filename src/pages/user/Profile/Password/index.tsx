@@ -11,8 +11,10 @@ import {
    DialogTitle,
    Grid,
    Input,
+   Paper,
    Stack,
    Typography,
+   useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
@@ -24,6 +26,7 @@ import { changePasswordProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$, signInState$ } from "../../../../redux-saga/redux/selectors";
 import { changePasswordPassword, init, textFields } from "./config";
 const Password = () => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const { isLoading, payload, action, error } = useSelector(profileState$);
@@ -67,46 +70,48 @@ const Password = () => {
             <Typography variant="h4" mb={2} textAlign="center">
                Change Password
             </Typography>
-            <form autoComplete="off" onSubmit={handleSubmit}>
-               <Grid container spacing={2}>
-                  {textFields.map((props: any, i: number) => {
-                     return (
-                        <Grid key={i} item xs={12}>
-                           <label htmlFor={props.name} style={{ fontWeight: 500 }}>
-                              {props.label}
-                           </label>
-                           <Input
-                              {...props}
-                              id={props.name}
-                              value={values[props.name] || ""}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={errors[props.name] && touched[props.name]}
-                           />
-                           <Typography variant="subtitle2" color="error">
-                              {errors[props.name] && touched[props.name]
-                                 ? errors[props.name]
-                                 : null}
-                           </Typography>
-                        </Grid>
-                     );
-                  })}
-               </Grid>
+            <Box p={2} bgcolor={theme.myColor.bgGray}>
+               <form autoComplete="off" onSubmit={handleSubmit}>
+                  <Grid container spacing={2}>
+                     {textFields.map((props: any, i: number) => {
+                        return (
+                           <Grid key={i} item xs={12}>
+                              <label htmlFor={props.name} style={{ fontWeight: 500 }}>
+                                 {props.label}
+                              </label>
+                              <Input
+                                 {...props}
+                                 id={props.name}
+                                 value={values[props.name] || ""}
+                                 onChange={handleChange}
+                                 onBlur={handleBlur}
+                                 error={errors[props.name] && touched[props.name]}
+                              />
+                              <Typography variant="subtitle2" color="error">
+                                 {errors[props.name] && touched[props.name]
+                                    ? errors[props.name]
+                                    : null}
+                              </Typography>
+                           </Grid>
+                        );
+                     })}
+                  </Grid>
 
-               {/* Actions */}
-               <Stack flexDirection="row" justifyContent="space-between" mt={2}>
-                  <Button
-                     startIcon={<RestartAltIcon />}
-                     size="large"
-                     variant="outlined"
-                     onClick={() => resetForm()}>
-                     Reset
-                  </Button>
-                  <Button size="large" variant="contained" onClick={() => setOpenDialog(true)}>
-                     Confirm
-                  </Button>
-               </Stack>
-            </form>
+                  {/* Actions */}
+                  <Stack flexDirection="row" justifyContent="space-between" mt={2}>
+                     <Button
+                        startIcon={<RestartAltIcon />}
+                        size="large"
+                        variant="outlined"
+                        onClick={() => resetForm()}>
+                        Reset
+                     </Button>
+                     <Button size="large" variant="contained" onClick={() => setOpenDialog(true)}>
+                        Confirm
+                     </Button>
+                  </Stack>
+               </form>
+            </Box>
          </Container>
 
          {/* Dialog confirm */}

@@ -1,11 +1,7 @@
-import { AppBar, Toolbar, Grid, ThemeProvider, createTheme, Switch, useTheme } from "@mui/material";
-import { customTheme } from "../../utils/customTheme";
+import { AppBar, Grid, Toolbar, useTheme } from "@mui/material";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
 import Actions from "./ToggleActions";
-import Search from "./Search";
-import SwitchTheme from "./SwitchTheme";
-import { useState } from "react";
 const Header = () => {
    const theme = useTheme();
 
@@ -27,9 +23,7 @@ const Header = () => {
                </Grid>
 
                {/* Search */}
-               <Grid item>
-                  <Search />
-               </Grid>
+               <Grid item></Grid>
 
                {/* Switch button change theme */}
                <Grid item>{/* <SwitchTheme /> */}</Grid>
