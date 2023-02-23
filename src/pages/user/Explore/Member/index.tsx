@@ -9,6 +9,7 @@ import { Profile } from "../../../../utils/interfaces/Profile";
 import Introduction from "../../Profile/Introduction";
 import { Post } from "../../../../utils/interfaces/Post";
 import News from "../../NewsFeed/News";
+import { Helmet } from "react-helmet-async";
 const Member = () => {
    const { id } = useParams();
    const [user, setUser] = useState<Partial<Profile>>({});
@@ -27,6 +28,9 @@ const Member = () => {
 
    return (
       <>
+         <Helmet>
+            <title>{user?.fullName || "Profile"} | Young Waves</title>
+         </Helmet>
          <Stack flexDirection="column" sx={{ gap: 1 }}>
             <Box boxShadow={1} borderRadius={1} bgcolor="#fff">
                <Heading avatar={user?.avatar as string} fullName={user?.fullName as string} />

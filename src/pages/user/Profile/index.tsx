@@ -44,7 +44,7 @@ const Profile = () => {
    return (
       <>
          <Helmet>
-            <title>Profile | Young Waves</title>
+            <title>{profile$.payload?.data?.fullName || "Profile"} | Young Waves</title>
          </Helmet>
 
          <Stack flexDirection="column" sx={{ gap: 1 }}>

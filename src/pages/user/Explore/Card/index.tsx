@@ -1,15 +1,15 @@
-import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import ExploreIcon from "@mui/icons-material/Explore";
-import PublicIcon from "@mui/icons-material/Public";
-import MaleIcon from "@mui/icons-material/Man";
 import FemaleIcon from "@mui/icons-material/Face2";
-import { Box, Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
+import MaleIcon from "@mui/icons-material/Man";
+import PublicIcon from "@mui/icons-material/Public";
+import { Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Image } from "../../../../components";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { MyCard } from "./style";
 const User = ({ user }: { user: Profile }) => {
    const theme = useTheme();
+
    return (
       <MyCard boxShadow={1} borderRadius={4} bgcolor={theme.myColor.white} overflow="hidden">
          <CardContent>
@@ -18,8 +18,8 @@ const User = ({ user }: { user: Profile }) => {
                srcSet={user.avatar}
                objectFit="cover"
                circle
-               height="300px"
-               width="300px"
+               height="280px"
+               width="280px"
                border="1px dashed #ccc"
                alt="avatar"
             />

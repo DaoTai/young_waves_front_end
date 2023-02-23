@@ -35,6 +35,7 @@ const Actions = ({
    }, [likes, ownerPosts$]);
    useEffect(() => {
       const owner = ownerPosts.map((post: Post) => post.author._id);
+      // Exist user in list like
       const authors = likes.map((like) => like.author);
       if (authors.includes(idUser) && owner.includes(idUser)) {
          setLike(true);

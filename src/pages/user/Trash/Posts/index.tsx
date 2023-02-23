@@ -11,7 +11,9 @@ import {
    Table,
    TableBody,
    TableCell,
+   TableCellProps,
    TableContainer,
+   TableFooter,
    TableHead,
    TableRow,
    Typography,
@@ -25,7 +27,6 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "../../../../components";
 import { forceDeletePost, getTrashPosts, restorePost } from "../../../../redux-saga/redux/actions";
 import { trashPostsState$ } from "../../../../redux-saga/redux/selectors";
-import { FORCE_DELETE_POST_SUCCESS } from "../../../../utils/constants";
 import { Post } from "../../../../utils/interfaces/Post";
 const TrashPosts = () => {
    const theme = useTheme();
@@ -44,6 +45,33 @@ const TrashPosts = () => {
    useEffect(() => {
       dispatch(getTrashPosts());
    }, []);
+
+   const tableCells = [
+      {
+         name: "Orders",
+         align: "left",
+      },
+      {
+         name: "Summary",
+         align: "left",
+      },
+      {
+         name: "Created time",
+         align: "left",
+      },
+      {
+         name: "Deleted time",
+         align: "left",
+      },
+      {
+         name: "Detail",
+         align: "left",
+      },
+      {
+         name: "Options",
+         align: "center",
+      },
+   ];
 
    const handleShowDetail = (id: string) => {
       navigate(`/user/trash/posts/${id}`);
@@ -72,36 +100,19 @@ const TrashPosts = () => {
             <Table>
                <TableHead>
                   <TableRow sx={{ bgcolor: theme.myColor.link }}>
-                     <TableCell
-                        align="left"
-                        sx={{ fontWeight: 600, fontSize: 16, lineHeight: 1.8 }}>
-                        Orders
-                     </TableCell>
-                     <TableCell
-                        align="left"
-                        sx={{ fontWeight: 600, fontSize: 16, lineHeight: 1.8 }}>
-                        Summary
-                     </TableCell>
-                     <TableCell
-                        align="left"
-                        sx={{ fontWeight: 600, fontSize: 16, lineHeight: 1.8 }}>
-                        Created time
-                     </TableCell>
-                     <TableCell
-                        align="left"
-                        sx={{ fontWeight: 600, fontSize: 16, lineHeight: 1.8 }}>
-                        Deleted time
-                     </TableCell>
-                     <TableCell
-                        align="left"
-                        sx={{ fontWeight: 600, fontSize: 16, lineHeight: 1.8 }}>
-                        Detail
-                     </TableCell>
-                     <TableCell
-                        align="center"
-                        sx={{ fontWeight: 600, fontSize: 16, lineHeight: 1.8 }}>
-                        Options
-                     </TableCell>
+                     {tableCells.map((cell, index) => (
+                        <TableCell
+                           key={index}
+                           align={cell.align as TableCellProps["align"]}
+                           sx={{
+                              color: theme.myColor.white,
+                              fontWeight: 600,
+                              fontSize: 16,
+                              lineHeight: 2,
+                           }}>
+                           {cell.name}
+                        </TableCell>
+                     ))}
                   </TableRow>
                </TableHead>
                <TableBody>

@@ -9,12 +9,17 @@ const BaseInput = styled(Input)(({ theme }) => ({
    },
    "&:focus-within": {
       borderColor: theme.palette.primary.light,
+      backgroundColor: theme.myColor.white,
    },
    input: {
+      padding: "8px",
       letterSpacing: 1.25,
       caretColor: theme.palette.primary.main,
       "&:placeholder-shown": {
          paddingLeft: "2px",
+      },
+      "&:focus": {
+         backgroundColor: theme.myColor.white,
       },
    },
 }));
