@@ -9,7 +9,7 @@ interface Payload {
 }
 interface MyAction {
    type: string;
-   payload: Comment | Payload;
+   payload: Comment | Payload | any;
 }
 
 const postReducer = (state = CONSTANTS.INIT_STATE.post, action: MyAction) => {
@@ -18,6 +18,7 @@ const postReducer = (state = CONSTANTS.INIT_STATE.post, action: MyAction) => {
       case CONSTANTS.CREATE_COMMENT:
       case CONSTANTS.UPDATE_POST:
       case CONSTANTS.DELETE_POST:
+      case CONSTANTS.DELETE_COMMENT:
          return {
             ...state,
             isLoading: true,
@@ -53,6 +54,21 @@ const postReducer = (state = CONSTANTS.INIT_STATE.post, action: MyAction) => {
             action: action.type,
          };
 
+      case CONSTANTS.DELETE_COMMENT_SUCCESS:
+         const deletedComment = action.payload?.idComment;
+         const deletedNewComments = state.payload.comments.filter((comment: Comment) => {
+            return comment._id !== deletedComment;
+         });
+         return {
+            ...state,
+            isLoading: false,
+            payload: {
+               ...state.payload,
+               comments: deletedNewComments,
+            },
+            action: action.type,
+         };
+
       case CONSTANTS.UPDATE_POST_SUCCESS:
          return {
             ...state,
@@ -77,6 +93,7 @@ const postReducer = (state = CONSTANTS.INIT_STATE.post, action: MyAction) => {
       case CONSTANTS.CREATE_COMMENT_FAILURE:
       case CONSTANTS.UPDATE_POST_FAILURE:
       case CONSTANTS.GET_POST_FAILURE:
+      case CONSTANTS.DELETE_COMMENT_FAILURE:
          return {
             ...state,
             isLoading: false,

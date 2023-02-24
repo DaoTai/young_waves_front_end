@@ -12,8 +12,8 @@ export const Logo = styled(Link)(({ theme }) => {
          },
       },
       svg: {
-         filter: "drop-shadow(1px 1px 1px red)",
-         transition: "all 0.2s linear",
+         filter: "drop-shadow(1px 1px 1px #333)",
+         transition: "all 0.3s linear",
          "&:hover": {
             filter: "constrast(200%)",
             transform: "rotate(120deg)",

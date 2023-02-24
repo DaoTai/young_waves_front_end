@@ -1,16 +1,19 @@
 import { Cyclone as CycloneIcon } from "@mui/icons-material";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, useTheme } from "@mui/material";
 
 import { Logo } from "../styles";
 const MyLogo = () => {
+   const theme = useTheme();
    return (
       <Logo to="/">
-         <Stack direction="row" alignItems="flex-end" sx={{ gap: 1 }}>
-            <CycloneIcon fontSize="large" color="secondary" />
+         <Stack direction="row" alignItems="flex-end" sx={{ gap: 2 }}>
+            <CycloneIcon fontSize="large" color="primary" />
             <Typography
-               variant="h5"
+               variant="h4"
                color="primary"
-               sx={{ textShadow: "2px 2px 2px rgba(0,0,0,0.2)" }}>
+               sx={{
+                  textShadow: `1px 1px 1px ${theme.palette.primary.main}`,
+               }}>
                Young Waves
             </Typography>
          </Stack>

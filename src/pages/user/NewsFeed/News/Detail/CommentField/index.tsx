@@ -1,12 +1,10 @@
-import { Box, Button, Grid, Stack, TextField, useTheme } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { Button, Stack, TextField, useTheme } from "@mui/material";
 
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Image } from "../../../../../../components";
 import { createComment } from "../../../../../../redux-saga/redux/actions";
-import { profileState$, signInState$ } from "../../../../../../redux-saga/redux/selectors";
 import { Post } from "../../../../../../utils/interfaces/Post";
 const CommentField = ({ post }: { post: Post }) => {
    const theme = useTheme();
@@ -27,7 +25,7 @@ const CommentField = ({ post }: { post: Post }) => {
    };
 
    const handleEnter = (e: React.KeyboardEvent) => {
-      if (e.which === 13) {
+      if (e.which === 13 || e.code == "Enter") {
          handleSubmit();
       }
    };

@@ -6,3 +6,9 @@ export const createComment = async (payload) => {
       comment: comment,
    });
 };
+
+// [DELETE] comments:/:id/:idComment
+export const deleteComment = async (payload: { idPost: string; idComment: string }) => {
+   const { idPost, idComment } = payload;
+   return await axios.delete(`/${idPost}/${idComment}`);
+};

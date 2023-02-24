@@ -1,15 +1,15 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Fab, Grid, Modal, Typography } from "@mui/material";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { CloseButton, Comment as MyComment, Spinner, PostBody } from "../../../../../components";
-import { getPost } from "../../../../../redux-saga/redux/actions";
-import { postState$, ownerPostsState$ } from "../../../../../redux-saga/redux/selectors";
+import { CloseButton, Comment as MyComment, PostBody, Spinner } from "../../../../../components";
+import { getPost, deleteComment } from "../../../../../redux-saga/redux/actions";
+import { postState$ } from "../../../../../redux-saga/redux/selectors";
 import { Comment } from "../../../../../utils/interfaces/Comment";
 import { Post } from "../../../../../utils/interfaces/Post";
 import { Profile } from "../../../../../utils/interfaces/Profile";
@@ -17,6 +17,7 @@ import Heading from "../Heading";
 import CommentField from "./CommentField";
 import { settings } from "./config";
 import { ButtonSlide, MyBox } from "./styles";
+import { string } from "yup";
 
 const Detail = () => {
    const { isLoading, payload } = useSelector(postState$);
@@ -39,6 +40,10 @@ const Detail = () => {
    const handleClose = () => {
       setOpen(false);
       navigate(-1);
+   };
+
+   const handleDeleteComment = async (idComment: string) => {
+      dispatch(deleteComment({ idComment, idPost: post._id }));
    };
 
    return (
@@ -86,7 +91,13 @@ const Detail = () => {
 
                   {/* Content */}
 
-                  <Grid item md={post?.attachments?.length > 0 ? 6 : 12} xs={12} pl={4}>
+                  <Grid
+                     item
+                     md={post?.attachments?.length > 0 ? 6 : 12}
+                     xs={12}
+                     pl={2}
+                     pr={2}
+                     boxShadow={1}>
                      <Heading
                         author={post?.author as Profile}
                         news={post}
@@ -99,7 +110,13 @@ const Detail = () => {
                      {/* List comments */}
                      <Box>
                         {comments?.map((comment: Comment, index) => {
-                           return <MyComment key={index} comment={comment} />;
+                           return (
+                              <MyComment
+                                 key={index}
+                                 comment={comment}
+                                 handleDelete={handleDeleteComment}
+                              />
+                           );
                         })}
                      </Box>
                   </Grid>

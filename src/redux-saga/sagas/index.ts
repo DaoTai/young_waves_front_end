@@ -6,6 +6,7 @@ import { Post } from "../../utils/interfaces/Post";
 import { Profile } from "../../utils/interfaces/Profile";
 import * as ACTIONS from "../redux/actions";
 // Saga
+
 // Sign-in
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
@@ -229,6 +230,36 @@ function* createCommentSaga(action: { type: string; payload: { id: string; comme
    }
 }
 
+// Delete comment
+function* deleteCommentSaga(action: {
+   type: string;
+   payload: { idPost: string; idComment: string };
+}) {
+   try {
+      const res = yield call(api.comment.deleteComment, action.payload);
+      if (res.status === 200) {
+         yield put(ACTIONS.deleteCommentSuccess(action.payload));
+         yield put(
+            ACTIONS.showAlert({
+               title: "Success",
+               message: "Delete comment successfully!",
+               mode: "success",
+            })
+         );
+      } else {
+         yield put(
+            ACTIONS.showAlert({
+               title: "Failure",
+               message: "Delete comment failed!",
+               mode: "error",
+            })
+         );
+      }
+   } catch (err) {
+      yield put(ACTIONS.deleteCommentFailure(err));
+   }
+}
+
 // Like
 function* createLikeSaga(action: { type: string; payload: string }) {
    try {
@@ -243,7 +274,7 @@ function* createLikeSaga(action: { type: string; payload: string }) {
       }
       yield put(ACTIONS.getPosts());
    } catch (err) {
-      yield put(ACTIONS.createCommentFailure(err));
+      yield put(ACTIONS.handleLikeFailure(err));
    }
 }
 
@@ -327,6 +358,7 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.UPDATE_POST, updatePostSaga),
       takeLatest(CONSTANTS.DELETE_POST, deletePostSaga),
       takeLatest(CONSTANTS.CREATE_COMMENT, createCommentSaga),
+      takeLatest(CONSTANTS.DELETE_COMMENT, deleteCommentSaga),
       takeLatest(CONSTANTS.HANDLE_LIKE, createLikeSaga),
       takeLatest(CONSTANTS.GET_ALL_USER, getAllUserSaga),
       takeLatest(CONSTANTS.GET_TRASH_POSTS, getTrashPosts),

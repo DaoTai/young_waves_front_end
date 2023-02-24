@@ -42,7 +42,6 @@ const Heading = ({
    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
    const modalRef = useRef<ModalRef>(INIT_STATE.modalRef);
-   const open = Boolean(anchorEl);
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
       setAnchorEl(event.currentTarget);
@@ -125,7 +124,7 @@ const Heading = ({
             sx={{ pl: 0 }}
          />
          <Popover
-            open={open}
+            open={!!anchorEl}
             anchorEl={anchorEl}
             onClose={handleClose}
             anchorOrigin={{

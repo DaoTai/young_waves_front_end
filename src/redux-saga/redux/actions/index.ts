@@ -245,11 +245,26 @@ export const createCommentFailure = (payload: any) => ({
    payload,
 });
 
+export const deleteComment = (payload: { idPost: string; idComment: string }) => ({
+   type: CONSTANTS.DELETE_COMMENT,
+   payload,
+});
+
+export const deleteCommentSuccess = (payload: { idPost: string; idComment: string }) => ({
+   type: CONSTANTS.DELETE_COMMENT_SUCCESS,
+   payload,
+});
+export const deleteCommentFailure = (payload: any) => ({
+   type: CONSTANTS.DELETE_COMMENT_FAILURE,
+   payload,
+});
+
 // Like
 export const handleLike = (payload: string) => ({
    type: CONSTANTS.HANDLE_LIKE,
    payload,
 });
+
 export const createLikeSuccess = (payload: string) => ({
    type: CONSTANTS.CREATE_LIKE_SUCCESS,
    payload,
