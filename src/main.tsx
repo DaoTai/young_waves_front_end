@@ -9,15 +9,15 @@ import App from "./App";
 
 import { customTheme } from "./utils/customTheme";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-   <React.StrictMode>
-      <Provider store={store}>
-         <ThemeProvider theme={customTheme}>
-            <HelmetProvider>
-               <Router>
-                  <App />
-               </Router>
-            </HelmetProvider>
-         </ThemeProvider>
-      </Provider>
-   </React.StrictMode>
+   // <React.StrictMode>
+   <Provider store={store}>
+      <ThemeProvider theme={customTheme}>
+         <HelmetProvider>
+            <Router>
+               <App />
+            </Router>
+         </HelmetProvider>
+      </ThemeProvider>
+   </Provider>
+   // </React.StrictMode>
 );

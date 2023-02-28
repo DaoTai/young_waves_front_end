@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import Images from "../../assets/images";
 
 const Image = (
-   { src, srcSet, borderGd, circle = false, width = "52px", height = "52px", ...props },
+   { src, srcSet, borderGd, circle = false, width = "56px", height = "56px", ...props },
    ref
 ) => {
    const theme = useTheme();
@@ -13,6 +13,7 @@ const Image = (
       objectFit: "cover",
       width: width,
       height: height,
+      boxShadow: "1px 1px 4px rgba(0,0,0,0.2)",
    }));
 
    const borderGradient = {

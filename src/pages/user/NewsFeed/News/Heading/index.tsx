@@ -2,6 +2,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import InfoIcon from "@mui/icons-material/Info";
 import {
    Button,
    CardHeader,
@@ -179,9 +180,12 @@ const Heading = ({
 
          {/* Dialog */}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-            <DialogTitle textAlign="center">Confirm</DialogTitle>
+            <DialogTitle display="flex" justifyContent="center" alignItems="center">
+               Confirm delete
+               <InfoIcon color="info" />
+            </DialogTitle>
             <DialogContent>
-               <DialogContentText>Do you agree to delete this post?</DialogContentText>
+               <DialogContentText>Are you sure want to delete this post?</DialogContentText>
             </DialogContent>
             <DialogActions sx={{ justifyContent: "space-between" }}>
                <Button

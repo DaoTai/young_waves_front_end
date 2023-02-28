@@ -6,13 +6,13 @@ import { PostBody } from "../../../../components";
 import Actions from "./Actions";
 import Heading from "./Heading";
 import Images from "./Images";
-const News = ({ listNews }: { listNews: Post[] }) => {
+const News = ({ listNews, emptyMsg = "No post" }: { listNews: Post[]; emptyMsg?: string }) => {
    const theme = useTheme();
    return (
       <>
          {listNews?.length === 0 ? (
             <Typography variant="h6" textAlign="center" color={theme.myColor.textSecondary}>
-               No post
+               {emptyMsg}
             </Typography>
          ) : (
             listNews?.map((news: Post, index) => {

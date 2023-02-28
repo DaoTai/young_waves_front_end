@@ -1,14 +1,13 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Box, Fab, Grid, Modal, Typography } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { Box, Fab, Grid, Modal, Typography, useTheme } from "@mui/material";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
 import { CloseButton, Comment as MyComment, PostBody, Spinner } from "../../../../../components";
-import { getPost, deleteComment } from "../../../../../redux-saga/redux/actions";
+import { editComment } from "../../../../../apis/comment";
+import { getPost, deleteComment, showAlert } from "../../../../../redux-saga/redux/actions";
 import { postState$ } from "../../../../../redux-saga/redux/selectors";
 import { Comment } from "../../../../../utils/interfaces/Comment";
 import { Post } from "../../../../../utils/interfaces/Post";
@@ -16,10 +15,11 @@ import { Profile } from "../../../../../utils/interfaces/Profile";
 import Heading from "../Heading";
 import CommentField from "./CommentField";
 import { settings } from "./config";
-import { ButtonSlide, MyBox } from "./styles";
-import { string } from "yup";
-
+import { ButtonSlide, MyBox, Container } from "./styles";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 const Detail = () => {
+   const theme = useTheme();
    const { isLoading, payload } = useSelector(postState$);
    const { id, indexImage } = useParams();
    const dispatch = useDispatch();
@@ -29,35 +29,68 @@ const Detail = () => {
    const sliderRef = useRef<Slider | null>(null);
    useEffect(() => {
       id && dispatch(getPost(id as string));
-      const timerId = setTimeout(() => {
-         sliderRef.current?.slickGoTo(Number(indexImage));
-      }, 0);
-      return () => {
-         clearTimeout(timerId);
-      };
-   }, [indexImage]);
+      if (indexImage) {
+         const timerId = setTimeout(() => {
+            sliderRef.current?.slickGoTo(Number(indexImage), false);
+         }, 0);
+         return () => {
+            clearTimeout(timerId);
+         };
+      }
+   }, [indexImage, id]);
 
    const handleClose = () => {
       setOpen(false);
       navigate(-1);
    };
 
-   const handleDeleteComment = async (idComment: string) => {
+   const handleDeleteComment = useCallback(async (idComment: string) => {
       dispatch(deleteComment({ idComment, idPost: post._id }));
-   };
+   }, []);
+
+   const handleEditComment = useCallback(async (idComment: string, updatedComment: string) => {
+      const payload = {
+         idComment,
+         idPost: post._id,
+         updatedComment: updatedComment.trim(),
+      };
+      const res = await editComment(payload);
+      if (res.status === 200) {
+         dispatch(
+            showAlert({
+               title: "Success",
+               mode: "success",
+               message: res.data.msg,
+            })
+         );
+      } else {
+         dispatch(
+            showAlert({
+               title: "Failed",
+               mode: "warning",
+               message: "Update comment failed",
+            })
+         );
+      }
+   }, []);
 
    return (
       <>
          <Modal open={open} onClose={handleClose}>
             <MyBox>
-               <Typography variant="h3" textAlign="center">
+               <Typography
+                  variant="h3"
+                  textAlign="center"
+                  p={2}
+                  borderBottom={1}
+                  sx={{ backgroundColor: theme.myColor.white }}>
                   Post of {post?.author?.fullName}
                </Typography>
                <CloseButton onClick={handleClose} size="large" />
-               <Grid pt={3} borderTop={1} container>
+               <Container container>
                   {/* Images */}
                   {post?.attachments?.length ? (
-                     <Grid item md={6} xs={12} position="relative" height="100%">
+                     <Grid item md={8} xs={12} position="relative" height="100%" overflow="hidden">
                         <Slider ref={sliderRef} {...settings}>
                            {post?.attachments.map((img, index) => (
                               <div key={index}>
@@ -72,41 +105,55 @@ const Detail = () => {
                               </div>
                            ))}
                         </Slider>
-                        <ButtonSlide>
-                           <Fab
-                              sx={{ color: "#d3d3d3", backgroundColor: "rgba(255,255,255,0.3)" }}
-                              size="medium"
-                              onClick={() => sliderRef.current?.slickPrev()}>
-                              <ArrowBackIosIcon />
-                           </Fab>
-                           <Fab
-                              sx={{ color: "#d3d3d3", backgroundColor: "rgba(255,255,255,0.3)" }}
-                              size="medium"
-                              onClick={() => sliderRef.current?.slickNext()}>
-                              <ArrowForwardIosIcon />
-                           </Fab>
-                        </ButtonSlide>
+                        {post?.attachments?.length > 1 && (
+                           <ButtonSlide>
+                              <Fab
+                                 sx={{
+                                    color: theme.myColor.textSecondary,
+                                    backgroundColor: theme.myColor.white,
+                                 }}
+                                 size="medium"
+                                 onClick={() => sliderRef.current?.slickPrev()}>
+                                 <ArrowBackIosIcon />
+                              </Fab>
+                              <Fab
+                                 sx={{
+                                    color: theme.myColor.textSecondary,
+                                    backgroundColor: theme.myColor.white,
+                                 }}
+                                 size="medium"
+                                 onClick={() => sliderRef.current?.slickNext()}>
+                                 <ArrowForwardIosIcon />
+                              </Fab>
+                           </ButtonSlide>
+                        )}
                      </Grid>
                   ) : null}
 
                   {/* Content */}
-
                   <Grid
                      item
-                     md={post?.attachments?.length > 0 ? 6 : 12}
+                     md={post?.attachments?.length > 0 ? 4 : 12}
                      xs={12}
                      pl={2}
                      pr={2}
-                     boxShadow={1}>
+                     boxShadow={1}
+                     sx={{
+                        maxHeight: "80vh",
+                        background: theme.myColor.white,
+                        overflowY: "scroll",
+                     }}>
                      <Heading
                         author={post?.author as Profile}
                         news={post}
                         createdAt={post?.createdAt as string}
                      />
-                     <PostBody bt={1}>{post?.body}</PostBody>
+                     <PostBody bt={1} backgroundColor={theme.myColor.white}>
+                        {post?.body}
+                     </PostBody>
 
                      {/* Action comments */}
-                     <CommentField post={post} />
+                     <CommentField />
                      {/* List comments */}
                      <Box>
                         {comments?.map((comment: Comment, index) => {
@@ -114,13 +161,14 @@ const Detail = () => {
                               <MyComment
                                  key={index}
                                  comment={comment}
+                                 handleEdit={handleEditComment}
                                  handleDelete={handleDeleteComment}
                               />
                            );
                         })}
                      </Box>
                   </Grid>
-               </Grid>
+               </Container>
             </MyBox>
          </Modal>
          <Spinner show={isLoading} />

@@ -22,7 +22,7 @@ const NewsFeed = () => {
             <News listNews={data} />
          </Stack>
          {/* Spinner */}
-         <Spinner show={isLoading} />
+         {/* <Spinner show={isLoading} /> */}
          <Outlet />
       </>
    );

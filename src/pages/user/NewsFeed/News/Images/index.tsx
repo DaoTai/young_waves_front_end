@@ -1,4 +1,4 @@
-import { ImageList, ImageListItem } from "@mui/material";
+import { ImageList, ImageListItem, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import OverlayBackground from "../../../../../components/OverlayBackground";
 
@@ -12,6 +12,7 @@ const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) 
          navigate(`/news/${id}/${index}`);
       }
    };
+
    return (
       <>
          <ImageList sx={{ mt: 0, minHeight: "35vh" }} variant="standard" cols={columns} gap={8}>
