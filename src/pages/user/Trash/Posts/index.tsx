@@ -1,4 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from "@mui/icons-material/Info";
 import RestoreIcon from "@mui/icons-material/Restore";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
@@ -6,6 +7,7 @@ import {
    Dialog,
    DialogActions,
    DialogContent,
+   DialogTitle,
    Paper,
    Stack,
    Table,
@@ -13,7 +15,6 @@ import {
    TableCell,
    TableCellProps,
    TableContainer,
-   TableFooter,
    TableHead,
    TableRow,
    Typography,
@@ -131,6 +132,13 @@ const TrashPosts = () => {
                            <Button
                               variant="outlined"
                               endIcon={<VisibilityIcon />}
+                              sx={{
+                                 color: theme.myColor.white,
+                                 bgcolor: theme.palette.warning.dark,
+                                 "&:hover": {
+                                    color: theme.myColor.text,
+                                 },
+                              }}
                               onClick={() => handleShowDetail(post?._id)}>
                               Watch
                            </Button>
@@ -138,16 +146,29 @@ const TrashPosts = () => {
                         <TableCell>
                            <Stack flexDirection="row" justifyContent="space-evenly">
                               <Button
-                                 color="success"
                                  variant="outlined"
                                  endIcon={<RestoreIcon />}
+                                 sx={{
+                                    color: theme.myColor.white,
+                                    bgcolor: theme.palette.success.main,
+                                    "&:hover": {
+                                       color: theme.myColor.text,
+                                    },
+                                 }}
                                  onClick={() => handleRestore(post?._id)}>
                                  Restore
                               </Button>
                               <Button
-                                 color="error"
                                  variant="contained"
                                  endIcon={<DeleteIcon />}
+                                 sx={{
+                                    color: theme.myColor.white,
+                                    bgcolor: theme.palette.error.main,
+                                    "&:hover": {
+                                       color: theme.myColor.text,
+                                       bgcolor: theme.palette.error.main,
+                                    },
+                                 }}
                                  onClick={() => handleOpenDialog(post?._id)}>
                                  Delete
                               </Button>
@@ -161,9 +182,10 @@ const TrashPosts = () => {
 
          {/* Dialog */}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-            <Typography variant="h5" p={2} borderBottom={1} textAlign="center">
+            <DialogTitle display="flex" justifyContent="center" alignItems="center">
                Confirm delete
-            </Typography>
+               <InfoIcon color="info" />
+            </DialogTitle>
             <DialogContent sx={{ minWidth: "30vw" }}>
                <Typography color={theme.myColor.text} textAlign="center">
                   Do you sure you want to delete this post ?

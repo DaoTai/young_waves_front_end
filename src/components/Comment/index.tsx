@@ -13,6 +13,7 @@ import {
    DialogContentText,
    DialogTitle,
    InputBase,
+   ListItem,
    Popover,
    Stack,
    Typography,
@@ -27,12 +28,12 @@ import { Comment } from "../../utils/interfaces/Comment";
 import Image from "../Image";
 const MyComment = ({
    comment,
-   handleDelete,
-   handleEdit,
+   handleDelete = () => {},
+   handleEdit = () => {},
 }: {
    comment: Comment;
-   handleDelete: (id: string) => void;
-   handleEdit: (id: string, updatedComment: string) => void;
+   handleDelete?: (id: string) => void;
+   handleEdit?: (id: string, updatedComment: string) => void;
 }) => {
    const theme = useTheme();
    const { payload } = useSelector(signInState$);
@@ -175,14 +176,28 @@ const MyComment = ({
                }}>
                <Stack>
                   <Button
-                     startIcon={<EditIcon />}
-                     sx={{ pl: 1, pr: 1, bgcolor: "transparent", boxShadow: 1 }}
+                     startIcon={<EditIcon color="primary" />}
+                     sx={{
+                        pl: 1,
+                        pr: 1,
+                        bgcolor: "transparent",
+                        "&:hover": {
+                           background: theme.myColor.bg,
+                        },
+                     }}
                      onClick={enableEditComment}>
                      Edit
                   </Button>
                   <Button
-                     startIcon={<DeleteIcon />}
-                     sx={{ pl: 1, pr: 1, bgcolor: "transparent", boxShadow: 1 }}
+                     startIcon={<DeleteIcon color="primary" />}
+                     sx={{
+                        pl: 1,
+                        pr: 1,
+                        bgcolor: "transparent",
+                        "&:hover": {
+                           background: theme.myColor.bg,
+                        },
+                     }}
                      onClick={showDialog}>
                      Delete
                   </Button>
