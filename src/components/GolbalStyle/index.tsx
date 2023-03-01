@@ -23,6 +23,7 @@ const GlobalStyle = () => {
                textRendering: "optimizeSpeed",
                // backgroundColor: theme.myColor.bg,
                color: theme.myColor.text,
+               boxSizing: "border-box",
             },
             a: {
                color: theme.myColor.link,

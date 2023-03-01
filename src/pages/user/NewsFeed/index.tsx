@@ -6,6 +6,7 @@ import { Post, Spinner } from "../../../components";
 import { getPosts } from "../../../redux-saga/redux/actions";
 import { postsState$ } from "../../../redux-saga/redux/selectors";
 import News from "./News";
+import ChatBox from "../Chat/ChatBox";
 const NewsFeed = () => {
    const dispatch = useDispatch();
    const { isLoading, payload, action } = useSelector(postsState$);
@@ -23,6 +24,9 @@ const NewsFeed = () => {
          </Stack>
          {/* Spinner */}
          {/* <Spinner show={isLoading} /> */}
+
+         {/* Chat */}
+         <ChatBox />
          <Outlet />
       </>
    );
