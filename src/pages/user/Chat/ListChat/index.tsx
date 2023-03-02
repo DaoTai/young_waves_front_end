@@ -1,9 +1,9 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, List, ListItem, Paper, Stack, TextField, Typography, useTheme } from "@mui/material";
-import { useCallback, useState, useRef } from "react";
+import { Box, List, ListItem, Stack, Typography, useTheme } from "@mui/material";
+import { useState, useContext } from "react";
+import { BaseInput, Image } from "../../../../components";
+import { ChatContext } from "../../../../Contexts";
 import { Profile } from "../../../../utils/interfaces/Profile";
-import { Image, BaseInput } from "../../../../components";
-import ChatBox from "../ChatBox";
 interface Chat extends Partial<Profile> {
    lastText: string;
 }
@@ -30,16 +30,13 @@ const chats: Array<Chat> = [
    },
 ];
 
-const ListChat = () => {
+const ListChat = ({ onClose }: { onClose: () => void }) => {
+   const chatContext = useContext(ChatContext);
    const theme = useTheme();
-   const containerChatBoxesRef = useRef<HTMLDivElement>(null);
-   const [showChatBox, setShowChatBox] = useState<boolean>(true);
-   const onCloseChatBox = useCallback(() => {
-      setShowChatBox(false);
-   }, []);
-
-   const handleShowChatBoxes = () => {};
-
+   const handleClickChatItem = () => {
+      chatContext?.handleShowChatBox();
+      onClose();
+   };
    return (
       <>
          <Stack p={2} gap={2} minWidth="25vw" maxHeight="70vh" overflow="scroll">
@@ -66,7 +63,7 @@ const ListChat = () => {
                      pl={1}
                      mb={1}
                      borderRadius={4}
-                     onClick={handleShowChatBoxes}
+                     onClick={handleClickChatItem}
                      sx={{
                         cursor: "pointer",
                         "&:hover": {
@@ -86,9 +83,6 @@ const ListChat = () => {
                ))}
             </Box>
          </Stack>
-
-         {/* Chat box */}
-         <ChatBox visibility={showChatBox} onClose={onCloseChatBox} />
       </>
    );
 };

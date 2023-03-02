@@ -56,7 +56,7 @@ const Header = () => {
                         vertical: "bottom",
                         horizontal: "left",
                      }}>
-                     <ListChat />
+                     <ListChat onClose={handleCloseListChat} />
                   </Popover>
                </Grid>
 

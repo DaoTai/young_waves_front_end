@@ -1,8 +1,8 @@
-import { Paper, styled, Stack } from "@mui/material";
+import { Paper, styled, Stack, Avatar } from "@mui/material";
 
 export const MyChatBox = styled(Paper)(({ theme }) => ({
    position: "fixed",
-   right: "5%",
+   right: 0,
    bottom: 0,
    width: "328px",
    height: "455px",
@@ -38,7 +38,7 @@ export const Heading = styled(Stack)(({ theme }) => ({
 }));
 
 export const Body = styled(Stack)(({ theme }) => ({
-   padding: "50px 0",
+   padding: "55px 0",
    maxHeight: "100%",
    overflowY: "scroll",
 }));
@@ -73,5 +73,24 @@ export const Footer = styled(Stack)(({ theme }) => ({
          boxShadow: "0px 0px 2px rgba(0,0,0,0.3)",
          opacity: 0.8,
       },
+   },
+}));
+
+export const Floating = styled(Avatar)(({ theme }) => ({
+   position: "fixed",
+   bottom: 15,
+   right: 15,
+   padding: 2,
+   zIndex: 99999,
+   width: 56,
+   height: 56,
+   borderRadius: "50%",
+   cursor: "pointer",
+   boxShadow: "1px 0px 4px rgba(0,0,0,0.2)",
+   img: {
+      borderRadius: "50%",
+   },
+   "&:hover": {
+      opacity: 0.8,
    },
 }));

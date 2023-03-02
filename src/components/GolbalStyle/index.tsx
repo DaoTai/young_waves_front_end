@@ -37,6 +37,9 @@ const GlobalStyle = () => {
             div: {
                transition: "0.3s ease all",
             },
+            ".css-x15wq9": {
+               width: "unset !important",
+            },
          })}
       />
    );
