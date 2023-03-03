@@ -144,11 +144,12 @@ const TrashPosts = () => {
                            </Button>
                         </TableCell>
                         <TableCell>
-                           <Stack flexDirection="row" justifyContent="space-evenly">
+                           <Stack flexDirection="row" gap={2} flexWrap={"wrap"}>
                               <Button
                                  variant="outlined"
                                  endIcon={<RestoreIcon />}
                                  sx={{
+                                    flex: "1 1 0",
                                     color: theme.myColor.white,
                                     bgcolor: theme.palette.success.main,
                                     "&:hover": {
@@ -162,6 +163,7 @@ const TrashPosts = () => {
                                  variant="contained"
                                  endIcon={<DeleteIcon />}
                                  sx={{
+                                    flex: "1 1 0",
                                     color: theme.myColor.white,
                                     bgcolor: theme.palette.error.main,
                                     "&:hover": {

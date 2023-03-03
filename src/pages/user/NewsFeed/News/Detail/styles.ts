@@ -9,7 +9,7 @@ export const MyBox = styled(Box)(({ theme }) => ({
    maxWidth: "90vw",
    maxHeight: "95vh",
    overflow: "auto",
-   background: "linear-gradient(180deg, rgba(0,0,0,0.5), #000)",
+   background: "#000",
    border: "1px solid #000",
    borderRadius: 2,
    paddingBottom: 0,

@@ -3,7 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { AuthProtect, GlobalStyle } from "./components";
 import { AuthLayout } from "./pages/auth";
 import Home from "./pages/home";
-import { authRoutes, commonRoutes, errorRoutes, userRoutes } from "./routes";
+import { AdminContainer } from "./pages/admin";
+import { authRoutes, commonRoutes, errorRoutes, userRoutes, adminRoutes } from "./routes";
 
 function App() {
    return (
@@ -29,6 +30,28 @@ function App() {
                   </AuthProtect>
                }>
                {userRoutes?.map((route, i) => {
+                  const Page = route.component;
+                  const children = route.children;
+                  return (
+                     <Route key={i} path={route.path} element={<Page />}>
+                        {children?.map((child, i) => {
+                           const ChildrenPage = child.component;
+                           return <Route key={i} path={child.path} element={<ChildrenPage />} />;
+                        })}
+                     </Route>
+                  );
+               })}
+            </Route>
+
+            {/* Admins pages */}
+            <Route
+               path="/admin"
+               element={
+                  <AuthProtect>
+                     <AdminContainer />
+                  </AuthProtect>
+               }>
+               {adminRoutes?.map((route, i) => {
                   const Page = route.component;
                   const children = route.children;
                   return (

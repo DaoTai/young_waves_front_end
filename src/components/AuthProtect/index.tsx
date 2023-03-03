@@ -7,7 +7,7 @@ const AuthProtect = ({ children }) => {
    const user$ = useSelector(signInState$);
    return (
       <>
-         {user$.payload?.data && children ? (
+         {user$.payload?.data ? (
             <ChatProvider>{children}</ChatProvider>
          ) : (
             <Navigate to="/auth/sign-in" />

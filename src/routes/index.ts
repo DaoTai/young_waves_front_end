@@ -1,6 +1,7 @@
 import { Fragment } from "../components";
 import { SignIn, SignUp } from "../pages/auth";
 import Error from "../pages/error";
+import { AdminContainer } from "../pages/admin";
 import {
    Editing,
    NewsFeed,
@@ -88,6 +89,14 @@ const userRoutes: Array<Route> = [
          { path: ":id/:indexImage", component: NewsDetail },
       ],
    },
+];
+
+export const adminRoutes: Array<Route> = [
+   {
+      path: "",
+      component: Fragment,
+   },
+   ...userRoutes,
 ];
 
 export { authRoutes, commonRoutes, userRoutes, errorRoutes };

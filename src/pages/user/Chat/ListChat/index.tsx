@@ -1,7 +1,8 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, List, ListItem, Stack, Typography, useTheme } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { BaseInput, Image } from "../../../../components";
+import { useDebounce } from "../../../../hooks";
 import { ChatContext } from "../../../../Contexts";
 import { Profile } from "../../../../utils/interfaces/Profile";
 interface Chat extends Partial<Profile> {
@@ -33,10 +34,23 @@ const chats: Array<Chat> = [
 const ListChat = ({ onClose }: { onClose: () => void }) => {
    const chatContext = useContext(ChatContext);
    const theme = useTheme();
+   const [listChat, setListChat] = useState<Array<Chat>>(chats);
+   const [searchValue, setSearchValue] = useState<string>("");
+   const debouncedValue = useDebounce(searchValue.trim(), 500);
    const handleClickChatItem = () => {
       chatContext?.handleShowChatBox();
       onClose();
    };
+   useEffect(() => {
+      if (debouncedValue) {
+         setListChat(() =>
+            chats.filter((chat) => chat.fullName?.toLowerCase().includes(debouncedValue))
+         );
+      } else {
+         setListChat(chats);
+      }
+   }, [debouncedValue]);
+
    return (
       <>
          <Stack p={2} gap={2} minWidth="25vw" maxHeight="70vh" overflow="scroll">
@@ -49,13 +63,15 @@ const ListChat = ({ onClose }: { onClose: () => void }) => {
             <BaseInput
                placeholder="Looking up your chat"
                fullWidth
+               value={searchValue}
                endAdornment={<SearchIcon />}
+               onChange={(e) => setSearchValue(e.target.value)}
                sx={{ bgcolor: theme.myColor.bgGray }}
             />
 
             {/* List chat */}
             <Box>
-               {chats.map((chat, index) => (
+               {listChat.map((chat, index) => (
                   <Stack
                      key={index}
                      flexDirection="row"

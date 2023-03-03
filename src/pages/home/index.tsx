@@ -1,16 +1,12 @@
 import { Box, Container, useTheme } from "@mui/material";
-import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { ChatProvider } from "../../Contexts/Providers";
-import { ChatContext } from "../../Contexts";
-import { Alert, Header, ChatBox } from "../../components";
+import { Alert, Header } from "../../components";
 import { alert$ } from "../../redux-saga/redux/selectors";
 import { AlertProps } from "../../utils/interfaces/Props";
 const Home = () => {
    const theme = useTheme();
-   const chatContext = useContext(ChatContext);
    const { isShow, payload } = useSelector(alert$);
    const { title, mode, message } = payload as AlertProps;
    return (
