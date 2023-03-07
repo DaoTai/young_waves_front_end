@@ -6,7 +6,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { handleLike } from "../../../../../redux-saga/redux/actions";
-import { signInState$, ownerPostsState$ } from "../../../../../redux-saga/redux/selectors";
+import { authState$, ownerPostsState$ } from "../../../../../redux-saga/redux/selectors";
 import { Like } from "../../../../../utils/interfaces/Like";
 import { Comment, Post } from "../../../../../utils/interfaces/Post";
 import { MyIconButton } from "./styles";
@@ -24,7 +24,7 @@ const Actions = ({
    const {
       isLoading,
       payload: { data },
-   } = useSelector(signInState$);
+   } = useSelector(authState$);
    const ownerPosts$ = useSelector(ownerPostsState$);
    const idUser = data?.payload._id;
    const ownerPosts = ownerPosts$?.payload?.data;

@@ -31,25 +31,6 @@ function* signInSaga(action: { type: string; payload: SignIn }) {
       yield put(ACTIONS.signInFailure(err as string));
    }
 }
-// Sign-up
-function* signUpSaga(action: { type: string; payload: SignUp }) {
-   try {
-      const data = yield call(api.auth.signUpUser, action.payload);
-      if (data.status === 200) {
-         yield put(ACTIONS.signUpSuccess(data));
-      } else {
-         yield put(
-            ACTIONS.showAlert({
-               title: "Sign up",
-               message: "Sign up failed",
-            })
-         );
-         yield put(ACTIONS.signUpFailure("Sign up failed"));
-      }
-   } catch (err) {
-      yield put(ACTIONS.signUpFailure("Failed"));
-   }
-}
 
 // Sign-out
 function* signOutSaga() {
@@ -346,7 +327,6 @@ function* forceDeletePost(action: { type: string; payload: string }) {
 export default function* rootSaga() {
    yield all([
       takeLatest(CONSTANTS.SIGN_IN, signInSaga),
-      takeLatest(CONSTANTS.SIGN_UP, signUpSaga),
       takeLatest(CONSTANTS.GET_PROFILE, getProfileSaga),
       takeLatest(CONSTANTS.SIGN_OUT, signOutSaga),
       takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),

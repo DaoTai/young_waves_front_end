@@ -78,6 +78,7 @@ const Detail = () => {
       <>
          <Modal open={open} onClose={handleClose}>
             <MyBox>
+               {/* Title */}
                <Typography
                   variant="h3"
                   textAlign="center"
@@ -87,6 +88,7 @@ const Detail = () => {
                   Post of {post?.author?.fullName}
                </Typography>
                <CloseButton onClick={handleClose} size="large" />
+               {/* Body */}
                <Container container>
                   {/* Images */}
                   {post?.attachments?.length ? (
@@ -152,7 +154,7 @@ const Detail = () => {
                         {post?.body}
                      </PostBody>
 
-                     {/* Action comments */}
+                     {/* Add new comment */}
                      <CommentField />
                      {/* List comments */}
                      <Box>

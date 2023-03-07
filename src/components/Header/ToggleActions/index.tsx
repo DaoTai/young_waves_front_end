@@ -6,14 +6,14 @@ import { Box, ToggleButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../../redux-saga/redux/actions";
-import { signInState$ } from "../../../redux-saga/redux/selectors";
+import { authState$ } from "../../../redux-saga/redux/selectors";
 
 import Spinner from "../../Spinner";
 import { Option, OptionButton, ToggleOptions } from "../styles";
 import { Anchor } from "./types";
 const ToggleActions = () => {
    const dispatch = useDispatch();
-   const { isLoading, payload } = useSelector(signInState$);
+   const { isLoading, payload } = useSelector(authState$);
    const [show, setShow] = useState(false);
    const toggleDrawer =
       (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {

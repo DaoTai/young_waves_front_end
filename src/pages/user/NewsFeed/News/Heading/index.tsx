@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import dateFormat from "dateformat";
 import { Image, PostModal } from "../../../../../components";
 import { updatePost, deletePost } from "../../../../../redux-saga/redux/actions";
-import { signInState$ } from "../../../../../redux-saga/redux/selectors";
+import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { HeadingNewsProps, ModalRef } from "../../../../../utils/interfaces/Props";
 import { INIT_STATE } from "../../../../../utils/constants";
 const Heading = ({
@@ -38,7 +38,7 @@ const Heading = ({
    const dispatch = useDispatch();
    const {
       payload: { data },
-   } = useSelector(signInState$);
+   } = useSelector(authState$);
    const idUser = data?.payload?._id;
    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
    const [openDialog, setOpenDialog] = useState<boolean>(false);

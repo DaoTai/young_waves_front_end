@@ -17,46 +17,55 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { signUpUser } from "../../../apis/auth";
 import { Alert, DateTimePicker, Spinner } from "../../../components";
-import { hideAlert, signUp } from "../../../redux-saga/redux/actions";
-import { alert$, signUpState$ } from "../../../redux-saga/redux/selectors";
+import { hideAlert, showAlert } from "../../../redux-saga/redux/actions";
+import { alert$ } from "../../../redux-saga/redux/selectors";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, radioFields, registerOptions, textFields } from "./config";
 const SignUp = () => {
    const theme = useTheme();
+   const dispatch = useDispatch();
    const navigate = useNavigate();
    const alert = useSelector(alert$);
+   const [countries, setCountries] = useState([]);
+   const [loading, setLoading] = useState<boolean>(false);
    const { title, mode, message } = alert.payload as AlertProps;
-   const dispatch = useDispatch();
-   const { isLoading, payload } = useSelector(signUpState$);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
          initialValues: init,
          validationSchema: registerOptions,
-         onSubmit: (values) => {
-            dispatch(signUp(values));
+         onSubmit: async (values) => {
+            setLoading(true);
+            try {
+               const res = await signUpUser(values);
+               if (res.status === 200) {
+                  navigate("/auth/sign-in");
+               } else {
+                  dispatch(
+                     showAlert({
+                        title: "Sign up",
+                        message: "Sign up failed",
+                     })
+                  );
+               }
+               setLoading(false);
+            } catch (err) {
+               dispatch(
+                  showAlert({
+                     title: "Sign up",
+                     message: "Sign up failed",
+                  })
+               );
+            }
          },
       });
 
-   const [countries, setCountries] = useState([]);
    useEffect(() => {
       return () => {
          dispatch(hideAlert());
       };
    }, []);
-
-   useEffect(() => {
-      if (payload?.status === 200) {
-         navigate("/auth/sign-in");
-         return () => {
-            // Assign status in order to be permitted backed sign-up page from sign-in
-            // Cuz if status == 200, navigate always execute!!
-            if (payload.status) {
-               payload.status = 0;
-            }
-         };
-      }
-   }, [payload]);
 
    // useEffect(() => {
    //    fetch("https://restcountries.com/v3.1/all")
@@ -162,7 +171,7 @@ const SignUp = () => {
          </Box>
 
          {/* Spinner */}
-         {isLoading && <Spinner show={isLoading} />}
+         {loading && <Spinner show={loading} />}
       </div>
    );
 };

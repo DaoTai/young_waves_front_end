@@ -1,17 +1,16 @@
 import { combineReducers } from "redux";
 import { SIGN_OUT_SUCCESS } from "../../../utils/constants";
-import { signInReducer, signUpReducer } from "./auth";
 import alertReducer from "./alert";
-import { profileReducer } from "./user";
+import authReducer from "./auth";
 import postsReducer from "./posts";
+import ownerPostsReducer from "./posts/owner";
 import postReducer from "./posts/post";
 import trashPostsReducer from "./posts/trash";
-import ownerPostsReducer from "./posts/owner";
+import { profileReducer } from "./user";
 import usersReducer from "./users";
 const rootReducer = combineReducers({
    alert: alertReducer,
-   signIn: signInReducer,
-   signUp: signUpReducer,
+   auth: authReducer,
    profile: profileReducer,
    posts: postsReducer,
    trashPosts: trashPostsReducer,

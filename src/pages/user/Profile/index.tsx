@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
 import { Post, Spinner } from "../../../components";
 import { getOwnerPosts, getProfile } from "../../../redux-saga/redux/actions";
-import { ownerPostsState$, profileState$, signInState$ } from "../../../redux-saga/redux/selectors";
+import { ownerPostsState$, profileState$, authState$ } from "../../../redux-saga/redux/selectors";
 import { UPDATE_PROFILE_SUCCESS } from "../../../utils/constants";
 import { Post as IPost } from "../../../utils/interfaces/Post";
 import News from "../NewsFeed/News";
@@ -22,17 +22,13 @@ const Profile = () => {
             payload: { _id },
          },
       },
-   } = useSelector(signInState$);
+   } = useSelector(authState$);
    const profile$ = useSelector(profileState$);
    const ownerPosts = ownerPosts$.payload?.data as Array<IPost>;
 
    useEffect(() => {
-      if (ownerPosts.length == 0) {
-         dispatch(getOwnerPosts(id as string));
-      }
-      if (!profile$?.payload?.data?._id) {
-         dispatch(getProfile(id as string));
-      }
+      dispatch(getOwnerPosts(id as string));
+      !profile$?.payload?.data?._id && dispatch(getProfile(id as string));
    }, []);
 
    useLayoutEffect(() => {

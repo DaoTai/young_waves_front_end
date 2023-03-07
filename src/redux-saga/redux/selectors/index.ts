@@ -1,6 +1,5 @@
 export const alert$ = (state) => state.alert;
-export const signInState$ = (state) => state.signIn;
-export const signUpState$ = (state) => state.signUp;
+export const authState$ = (state) => state.auth;
 export const profileState$ = (state) => state.profile;
 export const postsState$ = (state) => state.posts;
 export const trashPostsState$ = (state) => state.trashPosts;

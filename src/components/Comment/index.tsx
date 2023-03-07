@@ -23,7 +23,7 @@ import dateFormat from "dateformat";
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { signInState$ } from "../../redux-saga/redux/selectors";
+import { authState$ } from "../../redux-saga/redux/selectors";
 import { Comment } from "../../utils/interfaces/Comment";
 import Image from "../Image";
 const MyComment = ({
@@ -36,7 +36,7 @@ const MyComment = ({
    handleEdit?: (id: string, updatedComment: string) => void;
 }) => {
    const theme = useTheme();
-   const { payload } = useSelector(signInState$);
+   const { payload } = useSelector(authState$);
    const idUser = payload?.data?.payload?._id;
    const commentRef = useRef<HTMLDivElement>();
    const bodyCommentRef = useRef<string>(comment?.body);

@@ -1,7 +1,7 @@
 import { Avatar, Grid, Stack } from "@mui/material";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { signInState$, profileState$ } from "../../redux-saga/redux/selectors";
+import { authState$, profileState$ } from "../../redux-saga/redux/selectors";
 import { Profile } from "../../utils/interfaces/Profile";
 import { ModalRef } from "../../utils/interfaces/Props";
 import { INIT_STATE } from "../../utils/constants";
@@ -16,7 +16,7 @@ const Post = () => {
    const {
       isLoading,
       payload: { data },
-   } = useSelector(signInState$);
+   } = useSelector(authState$);
    const { payload }: { payload: Profile } = data;
    const [user, setUser] = useState({
       avatar: "",

@@ -3,7 +3,7 @@ import { Button, Grid, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { postsState$, profileState$, signInState$ } from "../../../../redux-saga/redux/selectors";
+import { postsState$, profileState$, authState$ } from "../../../../redux-saga/redux/selectors";
 import { Post as IPost } from "../../../../utils/interfaces/Post";
 import Avatar from "./Avatar";
 const Heading = () => {
@@ -16,10 +16,12 @@ const Heading = () => {
             payload: { _id },
          },
       },
-   } = useSelector(signInState$);
+   } = useSelector(authState$);
    const totalPost = useMemo(() => {
       const posts = posts$?.payload?.data as IPost[] | [];
-      const ownPostLength = posts.filter((post) => post?.author?._id === payload?.data?._id).length;
+      const ownPostLength = posts?.filter(
+         (post) => post?.author?._id === payload?.data?._id
+      ).length;
       return ownPostLength;
    }, [posts$, payload]);
    return (

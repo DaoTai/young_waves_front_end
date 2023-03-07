@@ -32,22 +32,6 @@ export const signInFailure = (payload: string) => ({
    payload,
 });
 
-// Actions SIGN-UP
-export const signUp = (payload: SignUp) => ({
-   type: CONSTANTS.SIGN_UP,
-   payload,
-});
-
-export const signUpSuccess = (payload: SignUp) => ({
-   type: CONSTANTS.SIGN_UP_SUCCESS,
-   payload,
-});
-
-export const signUpFailure = (payload: string) => ({
-   type: CONSTANTS.SIGN_UP_FAILURE,
-   payload,
-});
-
 // Actions LogOut
 export const signOut = () => ({
    type: CONSTANTS.SIGN_OUT,

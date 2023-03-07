@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { Alert, Spinner } from "../../../components";
 import { hideAlert, signIn } from "../../../redux-saga/redux/actions";
-import { alert$, signInState$ } from "../../../redux-saga/redux/selectors";
+import { alert$, authState$ } from "../../../redux-saga/redux/selectors";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
@@ -24,7 +24,7 @@ const SignIn = () => {
    const dispatch = useDispatch();
    const alert = useSelector(alert$);
    const { title, mode, message } = alert.payload as AlertProps;
-   const { isLoading, payload } = useSelector(signInState$);
+   const { isLoading, payload } = useSelector(authState$);
 
    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
       initialValues: init,

@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "../../../../components";
 import { changePasswordProfile } from "../../../../redux-saga/redux/actions";
-import { profileState$, signInState$ } from "../../../../redux-saga/redux/selectors";
+import { profileState$, authState$ } from "../../../../redux-saga/redux/selectors";
 import { changePasswordPassword, init, textFields } from "./config";
 const Password = () => {
    const theme = useTheme();
@@ -36,7 +36,7 @@ const Password = () => {
             payload: { _id },
          },
       },
-   } = useSelector(signInState$);
+   } = useSelector(authState$);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
 
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm } = useFormik(
