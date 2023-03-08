@@ -7,34 +7,31 @@ import {
    TextField,
    Box,
    Typography,
+   SelectChangeEvent,
+   AutocompleteInputChangeReason,
 } from "@mui/material";
 import { useState, useEffect, useMemo, memo } from "react";
+import dateFormat from "dateformat";
 import { Dob } from "../../utils/interfaces/DateTimePicker";
 import { MyFormControl } from "./styles";
 const DateTimePicker = ({
    onChange = () => {},
    name = "",
-   value,
+   value = String(new Date()),
 }: {
    name?: string;
    value?: string;
-   onChange?: any;
+   onChange?: (...args) => void;
 }) => {
+   console.log();
    const [dob, setDob] = useState<Dob>(() => {
-      const formatValue = value && value.split("-");
-      if (Array.isArray(formatValue)) {
-         return {
-            date: formatValue[0],
-            month: formatValue[1],
-            year: formatValue[2],
-         };
-      } else {
-         return {
-            date: "1",
-            month: String(new Date().getMonth() + 1),
-            year: String(new Date().getFullYear()),
-         };
-      }
+      const convertedValue = dateFormat(value, "m d yyyy").split(" ") as Array<string>;
+      const formatValue = {
+         date: convertedValue[0],
+         month: convertedValue[1],
+         year: convertedValue[2],
+      };
+      return formatValue;
    });
 
    const listDate = useMemo(() => {
@@ -47,17 +44,17 @@ const DateTimePicker = ({
             case 8:
             case 10:
             case 12:
-               return [...Array(31).keys()].map((i) => i + 1);
+               return [...Array(31).keys()].map((i) => String(i + 1));
             case 4:
             case 6:
             case 9:
             case 11:
-               return [...Array(30).keys()].map((i) => i + 1);
+               return [...Array(30).keys()].map((i) => String(i + 1));
             case 2:
                if (dob.year && +dob.year % 4 == 0) {
-                  return [...Array(29).keys()].map((i) => i + 1);
+                  return [...Array(29).keys()].map((i) => String(i + 1));
                } else {
-                  return [...Array(28).keys()].map((i) => i + 1);
+                  return [...Array(28).keys()].map((i) => String(i + 1));
                }
             default:
                throw new Error("Invalid value");
@@ -82,7 +79,7 @@ const DateTimePicker = ({
       return listYears;
    }, []);
    // Handle get value
-   const handleChange = (e: any) => {
+   const handleChange = (e: SelectChangeEvent) => {
       setDob((prev: Dob) => {
          const key = e.target.name as keyof Dob;
          return {
@@ -106,7 +103,7 @@ const DateTimePicker = ({
             <MyFormControl fullWidth>
                <InputLabel>Date</InputLabel>
                <Select label="Date" name="date" value={dob?.date} onChange={handleChange}>
-                  {listDate?.map((date: any) => (
+                  {listDate?.map((date: string) => (
                      <MenuItem key={date} value={date}>
                         {date}
                      </MenuItem>
@@ -141,7 +138,7 @@ const DateTimePicker = ({
                         year: String(new Date().getFullYear()),
                      }));
                }}
-               onChange={(event: any, newValue: string | null) => {
+               onChange={(event, newValue: string | null) => {
                   setDob((prev) => ({
                      ...prev,
                      year: newValue,

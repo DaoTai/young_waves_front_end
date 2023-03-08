@@ -23,7 +23,7 @@ export interface ModalRef {
    images: string[];
    post: string;
    status: string;
-   setImages: any;
-   setPost: any;
-   setStatus: any;
+   setImages: (value: string | string[]) => void;
+   setPost: (value: string) => void;
+   setStatus: (value: string | undefined) => void;
 }

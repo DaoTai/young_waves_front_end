@@ -23,7 +23,7 @@ function* signInSaga(action: { type: string; payload: SignIn }) {
          yield put(
             ACTIONS.showAlert({
                title: "Sign in",
-               message: "Server not working",
+               message: res.message || "Server not working",
             })
          );
       }
@@ -52,6 +52,8 @@ function* getProfileSaga(action: { type: string; payload: string }) {
       const res = yield call(api.user.getProfile, action.payload);
       if (res.status === 200) {
          yield put(ACTIONS.getProfileSuccess(res));
+      } else {
+         yield put(ACTIONS.getProfileFailure("Get profile failed"));
       }
    } catch (err) {
       yield put(ACTIONS.getProfileFailure(err as string));

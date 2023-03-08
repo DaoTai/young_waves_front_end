@@ -13,7 +13,7 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { CloseButton, ImageInput } from "../../index";
 import { MyBox } from "./styles";
 
-const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
+const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref) => {
    const theme = useTheme();
    const [open, setOpen] = useState(false);
    const [images, setImages] = useState<string[]>([]);
@@ -32,7 +32,7 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref: any) => {
 
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
-   const handleSetImages = (files: any) => {
+   const handleSetImages = (files) => {
       setImages((prev) => [...prev, ...files]);
    };
    const handleRemoveImage = (index: number) => {

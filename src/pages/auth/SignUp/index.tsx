@@ -1,19 +1,22 @@
 import { Send } from "@mui/icons-material";
 import {
+   BaseTextFieldProps,
    Box,
    Button,
    FormControl,
    FormControlLabel,
    FormLabel,
    Grid,
+   InputBaseProps,
    Radio,
    RadioGroup,
    TextField,
+   TextFieldProps,
    Typography,
    useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -146,7 +149,7 @@ const SignUp = () => {
 
                   {/* Time fields */}
                   <Grid item md={6} xs={12}>
-                     <DateTimePicker name="dob" onChange={setFieldValue} />
+                     <DateTimePicker name="dob" value="" onChange={setFieldValue} />
                   </Grid>
                </Grid>
 

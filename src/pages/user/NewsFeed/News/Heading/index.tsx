@@ -61,8 +61,8 @@ const Heading = ({
       const { setImages, setPost, setStatus, handleOpen } = modalRef.current;
       handleOpen();
       setImages(news?.attachments);
-      setPost(news.body);
-      setStatus(news.status);
+      setPost(news?.body);
+      setStatus(news?.status);
    };
 
    const handleUpdate = useCallback(() => {

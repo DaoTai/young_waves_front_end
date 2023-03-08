@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { REQUIRED_MSG, LENGTH_PASSWORD } from "../../../utils/constants";
 import { SignIn } from "../../../utils/interfaces/Auth";
 export const init: SignIn = {
-   username: JSON.parse(localStorage.getItem("user") as string)?.username || "",
+   username: "",
    password: "",
    isRemember: JSON.parse(localStorage.getItem("user") as string)?.isRemember || false,
 };

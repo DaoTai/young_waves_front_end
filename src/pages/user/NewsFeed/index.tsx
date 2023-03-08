@@ -9,8 +9,7 @@ import { postsState$ } from "../../../redux-saga/redux/selectors";
 import News from "./News";
 const NewsFeed = () => {
    const dispatch = useDispatch();
-   const { isLoading, payload, action } = useSelector(postsState$);
-   const { data } = payload as { status: string; data: any };
+   const { payload } = useSelector(postsState$);
 
    useEffect(() => {
       dispatch(getPosts());
@@ -20,7 +19,7 @@ const NewsFeed = () => {
          <Stack direction="column" sx={{ gap: 1 }}>
             {/* <Weather /> */}
             <Post />
-            <News listNews={data} />
+            <News listNews={payload?.data} />
          </Stack>
          {/* Spinner */}
          {/* <Spinner show={isLoading} /> */}

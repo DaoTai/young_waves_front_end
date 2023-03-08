@@ -27,10 +27,9 @@ const Profile = () => {
    const ownerPosts = ownerPosts$.payload?.data as Array<IPost>;
 
    useEffect(() => {
-      dispatch(getOwnerPosts(id as string));
+      id && dispatch(getOwnerPosts(id as string));
       !profile$?.payload?.data?._id && dispatch(getProfile(id as string));
    }, []);
-
    useLayoutEffect(() => {
       // Chưa xử lý thay đổi UI khi update post => redux-reducer
       if (profile$?.action === UPDATE_PROFILE_SUCCESS) {

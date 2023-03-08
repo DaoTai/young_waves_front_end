@@ -26,15 +26,21 @@ const SignIn = () => {
    const { title, mode, message } = alert.payload as AlertProps;
    const { isLoading, payload } = useSelector(authState$);
 
-   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
-      initialValues: init,
-      validationSchema: signInOptions,
-      onSubmit: (values) => {
-         dispatch(signIn(values));
-      },
-   });
+   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
+      useFormik({
+         initialValues: init,
+         validationSchema: signInOptions,
+         onSubmit: (values) => {
+            dispatch(signIn(values));
+         },
+      });
 
    useEffect(() => {
+      if (localStorage.getItem("user")) {
+         const userNameLocal = JSON.parse(localStorage.getItem("user") as string)?.username;
+         setFieldValue("username", userNameLocal);
+      }
+
       // Hide alert when unmount cuz it can be showed in sign up if using Alert for parent component
       return () => {
          dispatch(hideAlert());

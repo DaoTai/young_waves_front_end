@@ -10,10 +10,10 @@ const ImageInput = ({
    multiple?: boolean;
    onChange: (e: React.FormEvent<EventTarget>) => void;
 }) => {
-   const handleGetImages = (files: any) => {
+   const handleGetImages = (files) => {
       if (Array.isArray(files)) {
-         const fileImages = files.filter((file: any) => file.type.includes("image"));
-         const fileBases = fileImages.map((file: any) => file.base64);
+         const fileImages = files.filter((file) => file.type.includes("image"));
+         const fileBases = fileImages.map((file) => file.base64);
          onChange(fileBases as any);
       } else {
          if (!files.type.includes("mp")) {
