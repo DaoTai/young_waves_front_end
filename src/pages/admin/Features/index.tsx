@@ -1,6 +1,7 @@
 import React from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import AddReactionIcon from "@mui/icons-material/AddReaction";
 import { Button, Divider, List, ListItem, Typography, useTheme } from "@mui/material";
 import { WrapFeatures } from "./style";
@@ -12,6 +13,7 @@ const Features = ({ onClick }: { onClick: (name: TYPE_FEATURES) => void }) => {
       { name: FEATURES_ADMIN.users, label: "Users", Icon: <PeopleAltIcon /> },
       { name: FEATURES_ADMIN.statistical, label: "Statistical", Icon: <EqualizerIcon /> },
       { name: FEATURES_ADMIN.authorization, label: "Authorization", Icon: <AddReactionIcon /> },
+      { name: FEATURES_ADMIN.trashes, label: "Trashes", Icon: <RestoreFromTrashIcon /> },
    ];
 
    return (

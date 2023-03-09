@@ -5,8 +5,9 @@ import { profileState$ } from "../../../../../redux-saga/redux/selectors";
 import { Image, ImageInput, Spinner } from "../../../../../components";
 import { WrapAvatar } from "../styles";
 import { useSelector } from "react-redux";
+import { Avatar } from "@mui/material";
 
-const Avatar = ({ image, ...props }: { image: string; props?: any }) => {
+const MyAvatar = ({ image, ...props }: { image?: string; props?: any }) => {
    const dispatch = useDispatch();
    const { isLoading, payload } = useSelector(profileState$);
    const imageRef = useRef(Object(null));
@@ -17,7 +18,7 @@ const Avatar = ({ image, ...props }: { image: string; props?: any }) => {
    return (
       <>
          <WrapAvatar>
-            <Image ref={imageRef} src={image} circle srcSet={image} alt="avatar" boxShadow={1} />
+            <Avatar ref={imageRef} src={image} alt="avatar" sx={{ width: 220, height: 220 }} />
             <ImageInput onChange={handleChange} />
          </WrapAvatar>
          {/* Spinner */}
@@ -26,4 +27,4 @@ const Avatar = ({ image, ...props }: { image: string; props?: any }) => {
    );
 };
 
-export default Avatar;
+export default MyAvatar;

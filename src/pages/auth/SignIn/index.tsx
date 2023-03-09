@@ -47,7 +47,11 @@ const SignIn = () => {
       };
    }, []);
    if (payload?.status == 200) {
-      return <Navigate to="/" replace />;
+      return payload?.data?.user?.isAdmin ? (
+         <Navigate to="/admin" replace />
+      ) : (
+         <Navigate to="/" replace />
+      );
    }
 
    return (

@@ -19,18 +19,8 @@ interface ISocket extends Socket {
    // surname?: string;
 }
 
-const chats = [
-   {
-      user: false,
-      text: "Hello guy",
-   },
-   {
-      user: true,
-      text: "What's up man",
-   },
-];
 const host = "http://localhost:8001";
-const ChatBox = ({ visibility, data = chats, onClose = () => {} }: MyChatBoxProps) => {
+const ChatBox = ({ visibility, data = [], onClose = () => {} }: MyChatBoxProps) => {
    const bodyRef = useRef<HTMLDivElement>(null);
    const messageRef = useRef<HTMLDivElement>();
    const socketRef = useRef<Socket>();

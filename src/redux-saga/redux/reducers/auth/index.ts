@@ -10,7 +10,7 @@ import {
 import { SignInPayload } from "../../../../utils/interfaces/Action";
 
 const authInReducer = (
-   state = INIT_STATE.signIn,
+   state = INIT_STATE.auth,
    action: { type: string; payload: SignInPayload }
 ) => {
    switch (action.type) {

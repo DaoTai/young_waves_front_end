@@ -1,7 +1,6 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import {
-   Box,
    Button,
    Container,
    FormControl,
@@ -10,15 +9,15 @@ import {
    Grid,
    Radio,
    RadioGroup,
-   TextField,
+   TextField
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { DateTimePicker, Spinner } from "../../../../components";
+import { Spinner } from "../../../../components";
 import { updateProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -38,7 +37,6 @@ const Editing = () => {
       handleChange,
       handleSubmit,
       setValues,
-      setFieldValue,
    } = useFormik({
       initialValues: init,
       validationSchema: updateUserOptions,
@@ -133,7 +131,10 @@ const Editing = () => {
 
                   {/* Time fields */}
                   <Grid item md={6} xs={12}>
-                     <DateTimePicker name="dob" value={values?.dob} onChange={setFieldValue} />
+                     {/* {values?.dob && (
+                        <DateTimePicker name="dob" value={values.dob} onChange={setFieldValue} />
+                     )} */}
+                     <TextField fullWidth name="dob" value={values.dob} />
                   </Grid>
                </Grid>
 

@@ -26,7 +26,7 @@ const Actions = ({
       payload: { data },
    } = useSelector(authState$);
    const ownerPosts$ = useSelector(ownerPostsState$);
-   const idUser = data?.payload._id;
+   const idUser = data?.user?._id;
    const ownerPosts = ownerPosts$?.payload?.data;
    const [like, setLike] = useState<boolean>(false);
 

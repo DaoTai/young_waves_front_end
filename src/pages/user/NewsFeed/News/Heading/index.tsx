@@ -39,7 +39,7 @@ const Heading = ({
    const {
       payload: { data },
    } = useSelector(authState$);
-   const idUser = data?.payload?._id;
+   const idUser = data?.user?._id;
    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
    const modalRef = useRef<ModalRef>(INIT_STATE.modalRef);

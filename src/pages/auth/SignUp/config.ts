@@ -119,6 +119,15 @@ export const init: SignUp = {
    password: "",
    confirmedPassword: "",
 };
+export const initDetail = {
+   fullName: "",
+   dob: "",
+   city: "",
+   region: "",
+   gender: "female",
+   email: "",
+   username: "",
+};
 
 export const registerOptions = Yup.object().shape({
    fullName: Yup.string()

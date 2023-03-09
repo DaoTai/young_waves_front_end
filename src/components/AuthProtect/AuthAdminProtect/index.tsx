@@ -6,7 +6,7 @@ const AuthAdminProtect = ({ children }) => {
    const {
       payload: { data },
    } = useSelector(authState$);
-   const isAdmin = data?.payload?.isAdmin;
+   const isAdmin = data?.user?.isAdmin;
    return <>{isAdmin ? children : <Navigate to="/auth/sign-in" />}</>;
 };
 

@@ -17,21 +17,31 @@ import { MyFormControl } from "./styles";
 const DateTimePicker = ({
    onChange = () => {},
    name = "",
-   value = String(new Date()),
+   value,
 }: {
    name?: string;
    value?: string;
    onChange?: (...args) => void;
 }) => {
-   console.log();
    const [dob, setDob] = useState<Dob>(() => {
-      const convertedValue = dateFormat(value, "m d yyyy").split(" ") as Array<string>;
-      const formatValue = {
-         date: convertedValue[0],
-         month: convertedValue[1],
-         year: convertedValue[2],
-      };
-      return formatValue;
+      if (!value) {
+         const now = String(new Date());
+         const convertedValue = dateFormat(now, "m d yyyy").split(" ") as Array<string>;
+         const formatValue = {
+            date: convertedValue[0],
+            month: convertedValue[1],
+            year: convertedValue[2],
+         };
+         return formatValue;
+      } else {
+         const convertedValue = dateFormat(value, "m d yyyy").split(" ") as Array<string>;
+         const formatValue = {
+            date: convertedValue[0],
+            month: convertedValue[1],
+            year: convertedValue[2],
+         };
+         return formatValue;
+      }
    });
 
    const listDate = useMemo(() => {
@@ -60,7 +70,7 @@ const DateTimePicker = ({
                throw new Error("Invalid value");
          }
       } catch (err) {
-         console.log("Error: ", err);
+         console.error(err);
       }
    }, [dob.month, dob.year]);
 

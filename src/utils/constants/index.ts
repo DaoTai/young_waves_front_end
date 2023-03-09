@@ -105,11 +105,7 @@ export const INIT_STATE = {
       isShow: false,
       payload: {},
    },
-   signUp: {
-      isLoading: false,
-      payload: {},
-   },
-   signIn: {
+   auth: {
       isLoading: false,
       payload: {},
    },

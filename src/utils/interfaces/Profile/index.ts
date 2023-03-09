@@ -11,6 +11,8 @@ export interface Profile {
    email: string;
    avatar: string;
    createdAt?: string;
+   deletedAt?: string;
+   updatedAt?: string;
 }
 
 export interface ChangePassword {

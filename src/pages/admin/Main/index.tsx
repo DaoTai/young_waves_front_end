@@ -10,6 +10,7 @@ import Features from "../Features";
 import Authorization from "../Authorization";
 import Statistical from "../Statistical";
 import Users from "../Users";
+import Trashes from "../Trashes";
 const ContainerAdmin = () => {
    const theme = useTheme();
    const { isShow, payload } = useSelector(alert$);
@@ -19,6 +20,7 @@ const ContainerAdmin = () => {
       authorization: <Authorization />,
       statistical: <Statistical />,
       users: <Users />,
+      trashes: <Trashes />,
    };
    const onClick = (name: TYPE_FEATURES) => {
       setFeature(name);
@@ -41,7 +43,7 @@ const ContainerAdmin = () => {
                   <Features onClick={onClick} />
                </Grid>
                <Grid item lg={10} md={10} sm={10} xs={12}>
-                  <Container maxWidth="lg" sx={{ marginTop: 7, background: theme.myColor.bg }}>
+                  <Container maxWidth="lg" sx={{ paddingTop: 10, background: theme.myColor.bg }}>
                      {Feature[feature]}
                   </Container>
                </Grid>

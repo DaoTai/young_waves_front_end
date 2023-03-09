@@ -33,7 +33,7 @@ const Password = () => {
    const {
       payload: {
          data: {
-            payload: { _id },
+            user: { _id },
          },
       },
    } = useSelector(authState$);
