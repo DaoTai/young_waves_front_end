@@ -1,13 +1,12 @@
-import { Avatar, Grid, Stack } from "@mui/material";
-import { useState, useMemo, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { Avatar, Grid } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../redux-saga/redux/selectors";
+import { INIT_STATE } from "../../utils/constants";
 import { Profile } from "../../utils/interfaces/Profile";
 import { ModalRef } from "../../utils/interfaces/Props";
-import { INIT_STATE } from "../../utils/constants";
 import MyInput from "../BaseInput";
-import { createPost } from "../../redux-saga/redux/actions";
-import Image from "../Image";
 import Modal from "./Modal";
 
 const Post = () => {
@@ -17,7 +16,7 @@ const Post = () => {
       isLoading,
       payload: { data },
    } = useSelector(authState$);
-   const { payload }: { payload: Profile } = data;
+   const auth = data?.user;
    const [user, setUser] = useState({
       avatar: "",
       fullName: "",
@@ -28,9 +27,9 @@ const Post = () => {
       if (user$.payload.data) {
          setUser(user$.payload.data);
       } else {
-         setUser(payload);
+         setUser(auth);
       }
-   }, [payload, user$]);
+   }, [auth, user$]);
    const handleFocus = () => {
       modalRef.current.handleOpen();
    };
@@ -56,7 +55,7 @@ const Post = () => {
          borderRadius={2}
          sx={{ gap: 4 }}>
          <Grid item>
-            <Image src={user?.avatar} borderRadius="50%" objectFit="cover" />
+            <Avatar src={user?.avatar} />
          </Grid>
          <Grid item flexGrow={2}>
             <MyInput

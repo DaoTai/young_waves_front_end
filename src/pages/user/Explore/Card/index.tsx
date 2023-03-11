@@ -2,9 +2,8 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import FemaleIcon from "@mui/icons-material/Face2";
 import MaleIcon from "@mui/icons-material/Man";
 import PublicIcon from "@mui/icons-material/Public";
-import { Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
+import { Avatar, Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Image } from "../../../../components";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { MyCard } from "./style";
 const User = ({ user }: { user: Profile }) => {
@@ -13,15 +12,11 @@ const User = ({ user }: { user: Profile }) => {
    return (
       <MyCard boxShadow={1} borderRadius={4} bgcolor={theme.myColor.white} overflow="hidden">
          <CardContent>
-            <Image
+            <Avatar
                src={user.avatar}
                srcSet={user.avatar}
-               objectFit="cover"
-               circle
-               height="280px"
-               width="280px"
-               border="1px dashed #ccc"
                alt="avatar"
+               sx={{ border: "1px dashed #ccc", width: 100, height: 100 }}
             />
             <Stack gap={2}>
                <Stack flexDirection="row" alignItems="center" gap={1}>

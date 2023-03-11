@@ -1,5 +1,5 @@
 import { Box, Container, useTheme, Grid } from "@mui/material";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
 import { Alert, Header } from "../../../components";
@@ -16,10 +16,15 @@ const ContainerAdmin = () => {
    const { isShow, payload } = useSelector(alert$);
    const { title, mode, message } = payload as AlertProps;
    const [feature, setFeature] = useState<TYPE_FEATURES>("users");
+
+   // Go to trashes
+   const goToTrashes = useCallback(() => {
+      setFeature("trashes");
+   }, []);
    const Feature: Record<TYPE_FEATURES, React.ReactNode> = {
       authorization: <Authorization />,
       statistical: <Statistical />,
-      users: <Users />,
+      users: <Users goToTrashes={goToTrashes} />,
       trashes: <Trashes />,
    };
    const onClick = (name: TYPE_FEATURES) => {
@@ -30,26 +35,18 @@ const ContainerAdmin = () => {
          <Helmet>
             <title>Young Waves | Admin</title>
          </Helmet>
-         <Box>
-            <Header />
-            <Grid container pt={1} minHeight="100vh">
-               <Grid
-                  item
-                  lg={2}
-                  md={2}
-                  sm={2}
-                  xs={12}
-                  sx={{ background: theme.myColor.bgGradient }}>
-                  <Features onClick={onClick} />
-               </Grid>
-               <Grid item lg={10} md={10} sm={10} xs={12}>
-                  <Container maxWidth="lg" sx={{ paddingTop: 10, background: theme.myColor.bg }}>
-                     {Feature[feature]}
-                  </Container>
-               </Grid>
+         <Header />
+         <Grid container minHeight="100vh" mt={7}>
+            <Grid item lg={2} md={2} sm={2} xs={12} sx={{ background: theme.myColor.bgGradient }}>
+               <Features onClick={onClick} />
             </Grid>
-            {isShow && <Alert title={title} mode={mode} message={message} />}
-         </Box>
+            <Grid item lg={10} md={10} sm={10} xs={12}>
+               <Container maxWidth="lg" sx={{ pb: 2, pt: 2 }}>
+                  {Feature[feature]}
+               </Container>
+            </Grid>
+         </Grid>
+         {isShow && <Alert title={title} mode={mode} message={message} />}
       </>
    );
 };

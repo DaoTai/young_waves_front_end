@@ -1,11 +1,10 @@
+import { Avatar } from "@mui/material";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ImageInput, Spinner } from "../../../../../components";
 import { updateProfile } from "../../../../../redux-saga/redux/actions";
 import { profileState$ } from "../../../../../redux-saga/redux/selectors";
-import { Image, ImageInput, Spinner } from "../../../../../components";
 import { WrapAvatar } from "../styles";
-import { useSelector } from "react-redux";
-import { Avatar } from "@mui/material";
 
 const MyAvatar = ({ image, ...props }: { image?: string; props?: any }) => {
    const dispatch = useDispatch();

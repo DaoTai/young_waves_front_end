@@ -17,7 +17,7 @@ const Features = ({ onClick }: { onClick: (name: TYPE_FEATURES) => void }) => {
    ];
 
    return (
-      <WrapFeatures sx={{ marginTop: 7, pt: 2, pb: 2 }}>
+      <WrapFeatures>
          <Typography variant="h4" textAlign="center" color="#fff">
             Admin
          </Typography>

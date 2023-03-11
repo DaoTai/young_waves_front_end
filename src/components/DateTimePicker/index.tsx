@@ -11,7 +11,6 @@ import {
    AutocompleteInputChangeReason,
 } from "@mui/material";
 import { useState, useEffect, useMemo, memo } from "react";
-import dateFormat from "dateformat";
 import { Dob } from "../../utils/interfaces/DateTimePicker";
 import { MyFormControl } from "./styles";
 const DateTimePicker = ({
@@ -20,27 +19,24 @@ const DateTimePicker = ({
    value,
 }: {
    name?: string;
-   value?: string;
+   value: string;
    onChange?: (...args) => void;
 }) => {
    const [dob, setDob] = useState<Dob>(() => {
-      if (!value) {
-         const now = String(new Date());
-         const convertedValue = dateFormat(now, "m d yyyy").split(" ") as Array<string>;
-         const formatValue = {
-            date: convertedValue[0],
-            month: convertedValue[1],
-            year: convertedValue[2],
+      if (value) {
+         const splitValue = value.split("-");
+         return {
+            date: splitValue[0],
+            month: splitValue[1],
+            year: splitValue[2],
          };
-         return formatValue;
       } else {
-         const convertedValue = dateFormat(value, "m d yyyy").split(" ") as Array<string>;
-         const formatValue = {
-            date: convertedValue[0],
-            month: convertedValue[1],
-            year: convertedValue[2],
+         const now = new Date();
+         return {
+            date: String(now.getDate()),
+            month: String(now.getMonth() + 1),
+            year: String(now.getFullYear()),
          };
-         return formatValue;
       }
    });
 
@@ -148,10 +144,10 @@ const DateTimePicker = ({
                         year: String(new Date().getFullYear()),
                      }));
                }}
-               onChange={(event, newValue: string | null) => {
-                  setDob((prev) => ({
+               onChange={(event, newValue = String(new Date().getFullYear())) => {
+                  setDob((prev: Dob) => ({
                      ...prev,
-                     year: newValue,
+                     year: newValue as string,
                   }));
                }}
                renderInput={(params) => <TextField {...params} label="Year" />}

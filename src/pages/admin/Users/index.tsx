@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
    Avatar,
    Box,
@@ -22,18 +22,17 @@ import {
    useTheme,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import dateformat from "dateformat";
 import * as api from "../../../apis";
+import { showAlert } from "../../../redux-saga/redux/actions";
 import { Profile } from "../../../utils/interfaces/Profile";
 import DetailUser from "./Detail";
 
-const Users = () => {
+const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const theme = useTheme();
-   const detailRef = useRef({
-      handleOpen: () => {},
-      handleClose: () => {},
-   });
+   const dispatch = useDispatch();
    const [users, setUsers] = useState<Profile[] | []>([]);
    const [user, setUser] = useState<Profile>();
    const [role, setRole] = useState<string>("User");
@@ -62,8 +61,6 @@ const Users = () => {
          width: 160,
          flex: 1,
          renderCell(params) {
-            console.log(params);
-
             return (
                <Stack
                   flexDirection="row"
@@ -85,6 +82,13 @@ const Users = () => {
          flex: 1,
       },
       {
+         field: "createdAt",
+         headerName: "Joined time",
+         width: 70,
+         flex: 1,
+         valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+      },
+      {
          field: "gender",
          headerName: "Gender",
          width: 130,
@@ -95,6 +99,9 @@ const Users = () => {
       {
          field: "detail",
          headerName: "Detail",
+         headerAlign: "center",
+         sortable: false,
+         disableColumnMenu: true,
          width: 200,
          flex: 1,
          renderCell(params) {
@@ -109,6 +116,9 @@ const Users = () => {
       {
          field: "delete",
          headerName: "Option",
+         headerAlign: "center",
+         sortable: false,
+         disableColumnMenu: true,
          width: 200,
          flex: 1,
          renderCell(params) {
@@ -140,21 +150,41 @@ const Users = () => {
    };
 
    // handle delete user
-   const handleDeleteUser = () => {
-      console.log("Delete: ", user);
+   const handleDeleteUser = async () => {
+      const res = await api.admin.deleteUser(user?._id as string);
+      if (res.status === 200) {
+         dispatch(
+            showAlert({
+               title: "Success",
+               message: `Delete ${user?.fullName} successfully!`,
+               mode: "success",
+            })
+         );
+         setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
+      } else {
+         dispatch(
+            showAlert({
+               title: "Failure",
+               message: `Delete ${user?.fullName} failed!`,
+               mode: "info",
+            })
+         );
+      }
       setShowDialog(false);
    };
    return (
       <>
-         <Helmet>Admin | Users</Helmet>
          <Typography variant="h3" textAlign="center" letterSpacing={2}>
             Users
          </Typography>
-         {/* Select role & Searching */}
+         {/* Select role  */}
          <Stack p={2} flexDirection="row" justifyContent="space-between" gap={2}>
             <Tooltip title="Trash Store">
                <Fab color="info">
-                  <RestoreFromTrashIcon sx={{ color: theme.palette.primary.main }} />
+                  <RestoreFromTrashIcon
+                     sx={{ color: theme.palette.primary.main }}
+                     onClick={goToTrashes}
+                  />
                </Fab>
             </Tooltip>
             <FormControl sx={{ width: 200 }}>
@@ -184,7 +214,7 @@ const Users = () => {
          {user && <DetailUser user={user} open={showDetail} onClose={onClose} />}
 
          {/* Dialog confirm delete */}
-         <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
+         <Dialog fullWidth open={showDialog} onClose={() => setShowDialog(false)}>
             <DialogTitle id="alert-dialog-title">
                Are you sure to delete <b>{user?.fullName}</b>?
             </DialogTitle>
@@ -197,7 +227,7 @@ const Users = () => {
                <Button variant="outlined" onClick={() => setShowDialog(false)}>
                   Disagree
                </Button>
-               <Button variant="contained" onClick={handleDeleteUser} autoFocus>
+               <Button variant="contained" color="error" onClick={handleDeleteUser} autoFocus>
                   Agree
                </Button>
             </DialogActions>

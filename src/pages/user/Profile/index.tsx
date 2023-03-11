@@ -16,13 +16,6 @@ const Profile = () => {
    const dispatch = useDispatch();
    const { id } = useParams();
    const ownerPosts$ = useSelector(ownerPostsState$);
-   const {
-      payload: {
-         data: {
-            user: { _id },
-         },
-      },
-   } = useSelector(authState$);
    const profile$ = useSelector(profileState$);
    const ownerPosts = ownerPosts$.payload?.data as Array<IPost>;
 
@@ -52,8 +45,7 @@ const Profile = () => {
                   <Introduction user={profile$.payload?.data} />
                </Grid>
                <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
-                  {/* If this profile is mine, show post box */}
-                  {profile$.payload?.data?._id === _id && <Post />}
+                  <Post />
                   {/* Display posts */}
                   <News listNews={ownerPosts} />
                </Grid>

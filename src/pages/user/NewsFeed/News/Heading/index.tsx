@@ -1,12 +1,12 @@
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
+   Avatar,
    Button,
    CardHeader,
-   Chip,
    Dialog,
    DialogActions,
    DialogContent,
@@ -18,15 +18,15 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import React, { useState, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import dateFormat from "dateformat";
-import { Image, PostModal } from "../../../../../components";
-import { updatePost, deletePost } from "../../../../../redux-saga/redux/actions";
+import React, { useCallback, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { PostModal } from "../../../../../components";
+import { deletePost, updatePost } from "../../../../../redux-saga/redux/actions";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
-import { HeadingNewsProps, ModalRef } from "../../../../../utils/interfaces/Props";
 import { INIT_STATE } from "../../../../../utils/constants";
+import { HeadingNewsProps, ModalRef } from "../../../../../utils/interfaces/Props";
 const Heading = ({
    news,
    author,
@@ -85,13 +85,12 @@ const Heading = ({
       <>
          <CardHeader
             avatar={
-               <Link to={`/user/profile/${author?._id}`}>
-                  <Image
+               <Link to={`/user/explore/${author?._id}`}>
+                  <Avatar
                      src={author?.avatar}
                      srcSet={author?.avatar}
                      alt="avatar"
-                     borderRadius="50%"
-                     objectFit="cover"
+                     sx={{ width: 50, height: 50 }}
                   />
                </Link>
             }
@@ -104,7 +103,7 @@ const Heading = ({
             }
             title={
                <Typography variant="body1">
-                  <Link to={`/user/profile/${author?._id}`}>{author?.fullName}</Link>
+                  <Link to={`/user/explore/${author?._id}`}>{author?.fullName}</Link>
                </Typography>
             }
             subheader={

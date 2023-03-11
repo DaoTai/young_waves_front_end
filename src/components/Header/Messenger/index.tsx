@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-import { ListChat } from "../../../pages/user/Chat";
+import { Conversations } from "../../../pages/user/Chat";
 
 const Messenger = () => {
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,7 +49,7 @@ const Messenger = () => {
                vertical: "bottom",
                horizontal: "left",
             }}>
-            <ListChat onClose={handleCloseListChat} />
+            <Conversations onClose={handleCloseListChat} />
          </Popover>
       </>
    );

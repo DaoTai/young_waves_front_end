@@ -1,1 +1,1 @@
-export { default as ListChat } from "./ListChat";
+export { default as Conversations } from "./Conversations";

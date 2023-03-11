@@ -1,9 +1,9 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, List, ListItem, Stack, Typography, useTheme } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
-import { BaseInput, Image } from "../../../../components";
-import { useDebounce } from "../../../../hooks";
+import { Avatar, Box, List, ListItem, Stack, Typography, useTheme } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { BaseInput } from "../../../../components";
 import { ChatContext } from "../../../../Contexts";
+import { useDebounce } from "../../../../hooks";
 import { Profile } from "../../../../utils/interfaces/Profile";
 interface Chat extends Partial<Profile> {
    lastText: string;
@@ -31,7 +31,7 @@ const chats: Array<Chat> = [
    },
 ];
 
-const ListChat = ({ onClose }: { onClose: () => void }) => {
+const Conversations = ({ onClose }: { onClose: () => void }) => {
    const chatContext = useContext(ChatContext);
    const theme = useTheme();
    const [listChat, setListChat] = useState<Array<Chat>>(chats);
@@ -75,6 +75,7 @@ const ListChat = ({ onClose }: { onClose: () => void }) => {
                   <Stack
                      key={index}
                      flexDirection="row"
+                     alignItems="center"
                      boxShadow={2}
                      pl={1}
                      mb={1}
@@ -86,7 +87,7 @@ const ListChat = ({ onClose }: { onClose: () => void }) => {
                            backgroundColor: theme.myColor.bgGray,
                         },
                      }}>
-                     <Image src={chat.avatar} circle />
+                     <Avatar src={chat.avatar} sx={{ width: 50, height: 50 }} />
                      <List>
                         <ListItem>
                            <Typography variant="subtitle1">{chat.fullName}</Typography>
@@ -103,4 +104,4 @@ const ListChat = ({ onClose }: { onClose: () => void }) => {
    );
 };
 
-export default ListChat;
+export default Conversations;

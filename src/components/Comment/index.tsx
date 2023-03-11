@@ -3,6 +3,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
+   Avatar,
    Box,
    Button,
    ButtonBase,
@@ -13,19 +14,17 @@ import {
    DialogContentText,
    DialogTitle,
    InputBase,
-   ListItem,
    Popover,
    Stack,
    Typography,
    useTheme,
 } from "@mui/material";
 import dateFormat from "dateformat";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { authState$ } from "../../redux-saga/redux/selectors";
 import { Comment } from "../../utils/interfaces/Comment";
-import Image from "../Image";
 const MyComment = ({
    comment,
    handleDelete = () => {},
@@ -37,7 +36,7 @@ const MyComment = ({
 }) => {
    const theme = useTheme();
    const { payload } = useSelector(authState$);
-   const idUser = payload?.data?.payload?._id;
+   const idUser = payload?.data?.user?._id;
    const commentRef = useRef<HTMLDivElement>();
    const bodyCommentRef = useRef<string>(comment?.body);
    const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
@@ -103,14 +102,13 @@ const MyComment = ({
       <>
          <Stack marginBottom={2} flexDirection="row" alignItems="flex-start" sx={{ gap: 2 }}>
             {/* Avatar */}
-            <Link to={`/user/profile/${comment?.user?._id}`}>
-               <Image
-                  srcSet={comment?.user.avatar}
-                  src={comment?.user.avatar}
-                  width="40px"
-                  height="40px"
-                  circle
-               />
+            <Link
+               to={
+                  idUser === comment?.user?._id
+                     ? `/user/profile/${idUser}`
+                     : `/user/explore/${comment?.user?._id}`
+               }>
+               <Avatar sizes="large" srcSet={comment?.user.avatar} src={comment?.user.avatar} />
             </Link>
             {/* Content */}
             <Box flexGrow={2} bgcolor={theme.myColor.bgGray} p={1} borderRadius={2}>
@@ -118,7 +116,12 @@ const MyComment = ({
                <CardHeader
                   title={
                      <Typography variant="body1" component="span">
-                        <Link to={`/user/profile/${comment?.user._id}`}>
+                        <Link
+                           to={
+                              idUser === comment?.user?._id
+                                 ? `/user/profile/${idUser}`
+                                 : `/user/explore/${comment?.user?._id}`
+                           }>
                            {comment?.user.fullName}
                         </Link>
                      </Typography>

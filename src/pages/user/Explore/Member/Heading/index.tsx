@@ -1,9 +1,8 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { Button, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Image } from "../../../../../components";
 
 const Heading = ({ avatar, fullName }: { avatar: string; fullName: string }) => {
    return (
@@ -15,7 +14,7 @@ const Heading = ({ avatar, fullName }: { avatar: string; fullName: string }) => 
          alignItems="center"
          overflow="hidden">
          <Grid item>
-            <Image src={avatar} circle width="180px" height="180px" boxShadow={2} border={1} />
+            <Avatar src={avatar} sx={{ width: 100, height: 100, boxShadow: 1, border: 1 }} />
          </Grid>
          <Grid item>
             <Typography
