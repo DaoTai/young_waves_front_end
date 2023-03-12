@@ -108,7 +108,6 @@ export const radioFields: Array<RadioField> = [
 
 // Initial value formik
 export const init: SignUp = {
-   validateOnMount: true,
    fullName: "",
    dob: "",
    city: "",

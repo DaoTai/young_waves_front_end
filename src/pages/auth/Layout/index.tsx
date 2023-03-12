@@ -3,22 +3,27 @@ import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
    const MyGrid = styled(Grid)(({ theme }) => ({
-      minHeight: "100vh",
       background: theme.myColor.bgGradient,
+      position: "fixed",
+      inset: 0,
    }));
-   const WrapForm = styled(Grid)({
-      backgroundColor: "#fff",
+   const WrapForm = styled(Grid)(({ theme }) => ({
+      backgroundColor: theme.myColor.white,
       boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-      maxHeight: "90vh",
+      maxHeight: "100%",
       overflow: "overlay",
       transition: "0.3s linear all",
       "& > #sign-in": {
          width: "40vw",
+         maxWidth: "100%",
       },
       "& > #sign-up": {
-         width: "70vw",
+         width: "80vw",
+         maxWidth: "100%",
+         height: "90vh",
+         maxHeight: "100%",
       },
-   });
+   }));
    return (
       <>
          <MyGrid container justifyContent="center" alignItems="center">

@@ -166,47 +166,55 @@ const UserTrashes = () => {
 
    // handle restore user
    const handleRestoreUser = async (idUser: string) => {
-      const res = await api.admin.restoreTrashedUser(idUser);
-      if (res.status === 200) {
-         dispatch(
-            showAlert({
-               title: "Success",
-               message: "Restore user successfully",
-               mode: "success",
-            })
-         );
-         setUsers((prev) => prev.filter((user) => user._id !== idUser));
-      } else {
-         dispatch(
-            showAlert({
-               title: "Failure",
-               message: "Restore user failed",
-               mode: "error",
-            })
-         );
+      try {
+         const res = await api.admin.restoreTrashedUser(idUser);
+         if (res.status === 200) {
+            dispatch(
+               showAlert({
+                  title: "Success",
+                  message: "Restore user successfully",
+                  mode: "success",
+               })
+            );
+            setUsers((prev) => prev.filter((user) => user._id !== idUser));
+         } else {
+            dispatch(
+               showAlert({
+                  title: "Failure",
+                  message: "Restore user failed",
+                  mode: "error",
+               })
+            );
+         }
+      } catch (err) {
+         console.log(err);
       }
    };
 
    // handle force delete user
    const handleForceDeleteUser = async () => {
-      const res = await api.admin.forceDeleteUser(user?._id as string);
-      if (res.status === 200) {
-         dispatch(
-            showAlert({
-               title: "Success",
-               message: `Force delete ${user?.fullName} successfully`,
-               mode: "success",
-            })
-         );
-         setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
-      } else {
-         dispatch(
-            showAlert({
-               title: "Failure",
-               message: `Force delete ${user?.fullName} failed`,
-               mode: "error",
-            })
-         );
+      try {
+         const res = await api.admin.forceDeleteUser(user?._id as string);
+         if (res.status === 200) {
+            dispatch(
+               showAlert({
+                  title: "Success",
+                  message: `Force delete ${user?.fullName} successfully`,
+                  mode: "success",
+               })
+            );
+            setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
+         } else {
+            dispatch(
+               showAlert({
+                  title: "Failure",
+                  message: `Force delete ${user?.fullName} failed`,
+                  mode: "error",
+               })
+            );
+         }
+      } catch (err) {
+         console.log(err);
       }
       setShowDialog(false);
    };

@@ -7,7 +7,7 @@ import { alert$ } from "../../../redux-saga/redux/selectors";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { TYPE_FEATURES } from "../../../utils/types";
 import Features from "../Features";
-import Authorization from "../Authorization";
+import AddMember from "../AddMember";
 import Statistical from "../Statistical";
 import Users from "../Users";
 import Trashes from "../Trashes";
@@ -22,7 +22,7 @@ const ContainerAdmin = () => {
       setFeature("trashes");
    }, []);
    const Feature: Record<TYPE_FEATURES, React.ReactNode> = {
-      authorization: <Authorization />,
+      addMember: <AddMember />,
       statistical: <Statistical />,
       users: <Users goToTrashes={goToTrashes} />,
       trashes: <Trashes />,

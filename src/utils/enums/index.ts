@@ -1,6 +1,5 @@
-import { TYPE_FEATURES } from "../types";
 export enum FEATURES_ADMIN {
-   authorization = "authorization",
+   addMember = "addMember",
    statistical = "statistical",
    users = "users",
    trashes = "trashes",

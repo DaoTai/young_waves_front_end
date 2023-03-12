@@ -29,3 +29,10 @@ export const restoreTrashedUser = async (idUser: string) => {
 export const forceDeleteUser = async (idUser: string) => {
    return await axiosInstance.delete(`/users/${idUser}/force-delete`);
 };
+
+// [PATCH] admin/authorization/:id
+export const authorizeUser = async (idUser: string, isAdmin: boolean) => {
+   return await axiosInstance.patch(`/authorization/${idUser}`, {
+      isAdmin,
+   });
+};

@@ -34,6 +34,7 @@ export interface SignUp {
    confirmedPassword: string;
    gender: string;
    dob: string;
+   isAdmin?: boolean;
 }
 export interface SignIn {
    username: string;

@@ -1,6 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import {
    Avatar,
    Box,
@@ -76,6 +77,12 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          },
       },
       {
+         field: "username",
+         headerName: "Username",
+         width: 70,
+         flex: 1,
+      },
+      {
          field: "region",
          headerName: "Region",
          width: 70,
@@ -113,9 +120,29 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             );
          },
       },
+
+      {
+         field: "authorize",
+         headerName: "Authorize",
+         headerAlign: "center",
+         sortable: false,
+         disableColumnMenu: true,
+         width: 200,
+         flex: 1,
+         renderCell(params) {
+            return (
+               <Tooltip title={params.row.isAdmin ? "Authorize to user" : "Authorize to admin"}>
+                  <PersonAddIcon
+                     sx={{ flex: 1, cursor: "pointer", color: theme.myColor.link }}
+                     onClick={() => handleAuthorize(params.row)}
+                  />
+               </Tooltip>
+            );
+         },
+      },
       {
          field: "delete",
-         headerName: "Option",
+         headerName: "Delete",
          headerAlign: "center",
          sortable: false,
          disableColumnMenu: true,
@@ -151,27 +178,62 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
 
    // handle delete user
    const handleDeleteUser = async () => {
-      const res = await api.admin.deleteUser(user?._id as string);
-      if (res.status === 200) {
-         dispatch(
-            showAlert({
-               title: "Success",
-               message: `Delete ${user?.fullName} successfully!`,
-               mode: "success",
-            })
-         );
-         setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
-      } else {
-         dispatch(
-            showAlert({
-               title: "Failure",
-               message: `Delete ${user?.fullName} failed!`,
-               mode: "info",
-            })
-         );
+      try {
+         const res = await api.admin.deleteUser(user?._id as string);
+         if (res.status === 200) {
+            dispatch(
+               showAlert({
+                  title: "Success",
+                  message: `Delete ${user?.fullName} successfully!`,
+                  mode: "success",
+               })
+            );
+            setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
+         } else {
+            dispatch(
+               showAlert({
+                  title: "Failure",
+                  message: `Delete ${user?.fullName} failed!`,
+                  mode: "info",
+               })
+            );
+         }
+      } catch (err) {
+         console.log(err);
       }
       setShowDialog(false);
    };
+
+   // handle authorize user
+   const handleAuthorize = async (user: Profile) => {
+      try {
+         const res = await api.admin.authorizeUser(user._id as string, user.isAdmin);
+         if (res.status === 200) {
+            const message = user?.isAdmin
+               ? user.fullName + " becomed user"
+               : user.fullName + " becomed admin";
+            dispatch(
+               showAlert({
+                  title: "Success",
+                  message,
+                  mode: "success",
+               })
+            );
+            setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
+         } else {
+            dispatch(
+               showAlert({
+                  title: "Failure",
+                  message: `Authorize ${user?.fullName} failed!`,
+                  mode: "error",
+               })
+            );
+         }
+      } catch (err) {
+         console.log(err);
+      }
+   };
+
    return (
       <>
          <Typography variant="h3" textAlign="center" letterSpacing={2}>
@@ -206,6 +268,13 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   getRowId={(row) => row._id}
                   loading={isLoading}
                   hideFooterSelectedRowCount
+                  components={{
+                     NoRowsOverlay: () => (
+                        <Typography p={2} textAlign="center">
+                           Empty list
+                        </Typography>
+                     ),
+                  }}
                />
             </Box>
          )}
