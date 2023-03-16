@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Profile } from "../../utils/interfaces/Profile";
 import axiosInstance from "./axios";
 
 // [GET] admin/users
@@ -35,4 +36,11 @@ export const authorizeUser = async (idUser: string, isAdmin: boolean) => {
    return await axiosInstance.patch(`/authorization/${idUser}`, {
       isAdmin,
    });
+};
+
+// [PATCH] admin/users/:id
+export const editUser = async (user: Partial<Profile>) => {
+   console.log(user);
+
+   return await axiosInstance.patch(`/users/${user._id}`, user);
 };

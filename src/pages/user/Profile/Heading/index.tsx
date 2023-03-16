@@ -1,5 +1,5 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, useTheme } from "@mui/material";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,10 @@ import { postsState$, profileState$, authState$ } from "../../../../redux-saga/r
 import { Post as IPost } from "../../../../utils/interfaces/Post";
 import Avatar from "./Avatar";
 const Heading = () => {
+   const theme = useTheme();
    const navigate = useNavigate();
    const { isLoading, payload } = useSelector(profileState$);
+
    const posts$ = useSelector(postsState$);
    const {
       payload: {
@@ -47,7 +49,13 @@ const Heading = () => {
             </Typography>
             {_id === payload?.data?._id && (
                <Button
-                  sx={{ mt: 2 }}
+                  sx={{
+                     mt: 2,
+                     color: theme.myColor.white,
+                     "&:hover": {
+                        color: theme.myColor.text,
+                     },
+                  }}
                   variant="outlined"
                   endIcon={<EditIcon />}
                   onClick={() => navigate("/user/profile/edit")}>

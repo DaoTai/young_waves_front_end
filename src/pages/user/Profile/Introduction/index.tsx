@@ -1,10 +1,12 @@
 import CakeIcon from "@mui/icons-material/Cake";
+import FemaleIcon from "@mui/icons-material/Female";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import MaleIcon from "@mui/icons-material/Male";
 import PublicIcon from "@mui/icons-material/Public";
-import { memo } from "react";
-import { Box, Stack, Tooltip, Typography, useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 import dateFormat from "dateformat";
+import { memo } from "react";
 import { Profile } from "../../../../utils/interfaces/Profile";
 const Introduction = ({ user }: { user: Partial<Profile> }) => {
    const theme = useTheme();
@@ -14,33 +16,31 @@ const Introduction = ({ user }: { user: Partial<Profile> }) => {
             Introduction
          </Typography>
          <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
-            <Tooltip title="Date of birth" placement="left" arrow>
-               <CakeIcon />
-            </Tooltip>
+            {user?.gender?.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
+            <Typography variant="body1" component="b" pl={1}>
+               {user?.gender?.toUpperCase()}
+            </Typography>
+         </Stack>
+         <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
+            <CakeIcon />
             <Typography variant="body1" component="b" pl={1}>
                {user?.dob}
             </Typography>
          </Stack>
          <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
-            <Tooltip title="Time joined" placement="left" arrow>
-               <HandshakeIcon />
-            </Tooltip>
+            <HandshakeIcon />
             <Typography variant="body1" component="b" pl={1}>
                {dateFormat(user?.createdAt, " mmmm dS, yyyy")}
             </Typography>
          </Stack>
          <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
-            <Tooltip title="City" placement="left" arrow>
-               <LocationOnIcon />
-            </Tooltip>
+            <LocationOnIcon />
             <Typography variant="body1" component="b" pl={1}>
                {user?.city} city
             </Typography>
          </Stack>
          <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
-            <Tooltip title="Region" placement="left" arrow>
-               <PublicIcon />
-            </Tooltip>
+            <PublicIcon />
             <Typography variant="body1" component="b" pl={1}>
                {user?.region}
             </Typography>

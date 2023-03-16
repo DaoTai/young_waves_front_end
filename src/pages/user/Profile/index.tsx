@@ -20,8 +20,8 @@ const Profile = () => {
    const ownerPosts = ownerPosts$.payload?.data as Array<IPost>;
 
    useEffect(() => {
-      id && dispatch(getOwnerPosts(id as string));
-      !profile$?.payload?.data?._id && dispatch(getProfile(id as string));
+      dispatch(getOwnerPosts(id as string));
+      dispatch(getProfile(id as string));
    }, []);
    useLayoutEffect(() => {
       // Chưa xử lý thay đổi UI khi update post => redux-reducer
@@ -35,16 +35,15 @@ const Profile = () => {
             <title>{profile$.payload?.data?.fullName || "Profile"} | Young Waves</title>
          </Helmet>
 
-         <Stack flexDirection="column" sx={{ gap: 1 }}>
+         <Stack flexDirection="column">
             <Box boxShadow={1} borderRadius={1} bgcolor="#fff">
                <Heading />
-               {/* <Navigation home={`/user/profile/${profile$.payload?.data?._id}`} /> */}
             </Box>
             <Grid container pt={1} spacing={1}>
                <Grid item xs={12} md={4}>
                   <Introduction user={profile$.payload?.data} />
                </Grid>
-               <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
+               <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 1 }}>
                   <Post />
                   {/* Display posts */}
                   <News listNews={ownerPosts} />

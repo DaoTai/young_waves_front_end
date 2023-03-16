@@ -246,14 +246,14 @@ function* deleteCommentSaga(action: {
 // Like
 function* createLikeSaga(action: { type: string; payload: string }) {
    try {
-      const res = yield call(api.like.handleLike, action.payload);
-      if (res.status === 200) {
-         // Like post
-         yield put(ACTIONS.createLikeSuccess(res.data));
-      }
+      const res = yield call(api.post.likePost, action.payload);
       if (res.status === 201) {
+         // Like post
+         yield put(ACTIONS.createLikeSuccess(action.payload));
+      }
+      if (res.status === 204) {
          // Unlike post
-         yield put(ACTIONS.unLikeSuccess(res.data));
+         yield put(ACTIONS.unLikeSuccess(action.payload));
       }
       yield put(ACTIONS.getPosts());
    } catch (err) {

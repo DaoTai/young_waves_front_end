@@ -75,6 +75,12 @@ const UserTrashes = () => {
          },
       },
       {
+         field: "username",
+         headerName: "Username",
+         width: 70,
+         flex: 1,
+      },
+      {
          field: "region",
          headerName: "Region",
          width: 70,
@@ -232,7 +238,7 @@ const UserTrashes = () => {
                </FormControl>
             </Stack>
             {users && (
-               <Box width="100%" height={500}>
+               <Box width="100%" overflow="overlay" height={500}>
                   <DataGrid
                      rows={users as Array<Profile>}
                      columns={columns}

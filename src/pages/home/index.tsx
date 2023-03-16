@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { Alert, Header } from "../../components";
+import { HEIGHT_HEADER } from "../../utils/constants";
 import { alert$ } from "../../redux-saga/redux/selectors";
 import { AlertProps } from "../../utils/interfaces/Props";
 const Home = () => {
@@ -16,7 +17,14 @@ const Home = () => {
          </Helmet>
          <Box bgcolor={theme.myColor.bg} minHeight="100vh">
             <Header />
-            <Container sx={{ marginTop: 7, padding: "24px 0" }}>
+            <Container
+               sx={{
+                  position: "relative",
+                  top: HEIGHT_HEADER,
+
+                  pb: 2,
+                  pt: 1,
+               }}>
                <Outlet />
             </Container>
             {isShow && <Alert title={title} mode={mode} message={message} />}

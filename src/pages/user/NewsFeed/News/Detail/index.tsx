@@ -30,6 +30,8 @@ const Detail = () => {
    useEffect(() => {
       id && dispatch(getPost(id as string));
       if (indexImage) {
+         console.log(sliderRef.current);
+
          const timerId = setTimeout(() => {
             sliderRef.current?.slickGoTo(Number(indexImage), false);
          }, 0);

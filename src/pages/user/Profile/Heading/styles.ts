@@ -1,11 +1,13 @@
 import { styled } from "@mui/material";
 import { Button } from "@mui/material";
-export const WrapAvatar = styled(Button)((theme) => ({
+export const WrapAvatar = styled(Button)(({ theme }) => ({
    position: "relative",
    cursor: "pointer",
    backgroundColor: "transparent !important",
    transition: "0.2s ease all",
-
+   ".admin": {
+      border: `4px solid ${theme.palette.primary.main}`,
+   },
    ".image-input": {
       position: "absolute",
       top: "50%",

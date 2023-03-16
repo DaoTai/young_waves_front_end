@@ -142,15 +142,16 @@ const Explore = () => {
             {/* Search */}
             <MySearch
                fullWidth
+               autoComplete="off"
                value={search}
                spellCheck={false}
                placeholder="Search..."
                sx={{
+                  mt: 1,
                   border: 1,
                   borderColor: theme.myColor.textSecondary,
-                  borderRadius: 12,
-                  p: 1,
-                  pl: 2,
+                  borderRadius: 2,
+                  p: 0.5,
                }}
                endAdornment={
                   <Stack flexDirection="row" alignItems="center">
@@ -168,7 +169,7 @@ const Explore = () => {
             {/* Category options */}
             <Tabs
                value={tab}
-               sx={{ mt: 2, mb: 2, bgcolor: theme.myColor.white }}
+               sx={{ mt: 1, bgcolor: theme.myColor.white }}
                onChange={handleChangeTabPanel}>
                <Tab value="users" label="Users" />
                <Tab value="posts" label="Posts" />

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { styled, Fab, SwipeableDrawer, Button } from "@mui/material";
+import NavLink from "../NavLink";
 export const Logo = styled(Link)(({ theme }) => {
    return {
       "&:hover": {
@@ -22,16 +23,19 @@ export const Logo = styled(Link)(({ theme }) => {
    };
 });
 
-export const Option = styled(Link)(({ theme }) => ({
+export const Option = styled(NavLink)(({ theme }) => ({
    display: "inline-flex",
    alignItems: "center",
    gap: 4,
    padding: 8,
    boxShadow: "1px 1px 1px rgb(0 0 0 / 40%)",
    width: "100%",
-   color: "pink",
+   color: theme.myColor.text,
    position: "relative",
    transition: "all 0.2s linear",
+   "&.active .MuiTypography-root": {
+      color: theme.myColor.link,
+   },
    "&:hover": {
       color: "#fff",
       backgroundColor: theme.palette.primary.main,
@@ -53,9 +57,12 @@ export const OptionButton = styled(Button)(({ theme }) => ({
    padding: 8,
    boxShadow: "1px 1px 1px rgb(0 0 0 / 40%)",
    width: "100%",
-   color: "pink",
+   color: theme.myColor.text,
    position: "relative",
    transition: "all 0.2s linear",
+   "&.active ": {
+      backgroundColor: theme.myColor.link,
+   },
    "&:hover": {
       color: "#fff",
       backgroundColor: theme.palette.primary.main,

@@ -45,3 +45,6 @@ export const deletePost = async (id: string) => {
 export const forceDeletePost = async (id: string) => {
    return await axios.delete(`/${id}/force-delete`);
 };
+export const likePost = async (id: string) => {
+   return await axios.post(`/likes/${id}`);
+};

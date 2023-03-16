@@ -1,4 +1,5 @@
 import { memo, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
    FormControl,
    FormControlLabel,
@@ -15,6 +16,8 @@ import {
 import { useFormik } from "formik";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { MyBox } from "../../../../components/Post/Modal/styles";
+import * as api from "../../../../apis";
+import { showAlert } from "../../../../redux-saga/redux/actions";
 import { initDetail, radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { updateUserOptions } from "../../../user/Profile/Editing/config";
 import { ImageInput, CloseButton, DateTimePicker } from "../../../../components";
@@ -28,6 +31,7 @@ const DetailUser = ({
    open: boolean;
    onClose: () => void;
 }) => {
+   const dispatch = useDispatch();
    const [avatar, setAvatar] = useState<string>("");
    const {
       values,
@@ -41,7 +45,26 @@ const DetailUser = ({
    } = useFormik({
       initialValues: initDetail,
       validationSchema: updateUserOptions,
-      onSubmit: (values) => {},
+      onSubmit: async (values: Partial<Profile>) => {
+         const res = await api.admin.editUser({ ...values, avatar });
+         if (res.status === 200) {
+            dispatch(
+               showAlert({
+                  title: "Success",
+                  message: "Update user successfully",
+                  mode: "success",
+               })
+            );
+         } else {
+            dispatch(
+               showAlert({
+                  title: "Failure",
+                  message: "Update user failed",
+                  mode: "error",
+               })
+            );
+         }
+      },
    });
    useEffect(() => {
       setValues(user);

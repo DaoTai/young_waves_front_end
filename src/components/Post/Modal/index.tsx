@@ -81,16 +81,19 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref) => {
                      fullWidth
                      multiline
                      rows={5}
+                     sx={{ mb: 2 }}
                      onChange={(e) => setPost(e.target.value)}
                   />
-                  <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
-                     {images?.map((item, index) => (
-                        <ImageListItem key={index} sx={{ mb: 1, minHeight: "40vh" }}>
-                           <CloseButton onClick={() => handleRemoveImage(index)} />
-                           <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
-                        </ImageListItem>
-                     ))}
-                  </ImageList>
+                  {images.length > 0 && (
+                     <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
+                        {images?.map((item, index) => (
+                           <ImageListItem key={index} sx={{ mb: 1, minHeight: "40vh" }}>
+                              <CloseButton onClick={() => handleRemoveImage(index)} />
+                              <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
+                           </ImageListItem>
+                        ))}
+                     </ImageList>
+                  )}
                   <ImageInput multiple onChange={handleSetImages} />
                   <Button
                      fullWidth

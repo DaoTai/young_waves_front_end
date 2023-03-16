@@ -3,16 +3,16 @@ import { styled } from "@mui/material";
 const MyLink = styled(NavLink)(({ theme }) => ({
    display: "block",
    alignItems: "center",
-   color: "pink",
+   color: theme.palette.primary.light,
    padding: 4,
    position: "relative",
    transition: "all 0.2s linear",
    "&.active": {
-      color: "hotpink",
+      color: theme.myColor.link,
       fontWeight: "bold",
    },
    "&:hover": {
-      color: "hotpink",
+      color: theme.myColor.link,
       "&:after": {
          transform: "scaleX(1)",
       },

@@ -1,10 +1,10 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { Route, Routes } from "react-router-dom";
 import { AuthProtect, GlobalStyle } from "./components";
+import { AdminContainer } from "./pages/admin";
 import { AuthLayout } from "./pages/auth";
 import Home from "./pages/home";
-import { AdminContainer } from "./pages/admin";
-import { authRoutes, commonRoutes, errorRoutes, userRoutes, adminRoutes } from "./routes";
+import { adminRoutes, authRoutes, commonRoutes, errorRoutes, userRoutes } from "./routes";
 
 function App() {
    return (

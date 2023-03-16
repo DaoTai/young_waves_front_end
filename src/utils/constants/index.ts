@@ -1,3 +1,4 @@
+export const HEIGHT_HEADER = 70;
 // For validate
 export const REQUIRED_MSG = "Please fill out this field";
 export const LENGTH_PASSWORD = 6;

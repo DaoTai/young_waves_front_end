@@ -90,7 +90,7 @@ const Heading = ({
                      src={author?.avatar}
                      srcSet={author?.avatar}
                      alt="avatar"
-                     sx={{ width: 50, height: 50 }}
+                     sx={{ width: 50, height: 50, boxShadow: 1 }}
                   />
                </Link>
             }

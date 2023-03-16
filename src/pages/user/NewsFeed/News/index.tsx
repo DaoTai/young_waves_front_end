@@ -35,7 +35,7 @@ const News = ({ listNews, emptyMsg = "No post" }: { listNews: Post[]; emptyMsg?:
                         {/* Body */}
                         <PostBody>{news?.body}</PostBody>
                         {/* Actions */}
-                        <Actions likes={news?.likes} comments={news?.comments} id={news?._id} />
+                        <Actions news={news} />
                      </Card>
                   </Box>
                );

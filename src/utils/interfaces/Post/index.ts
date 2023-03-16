@@ -8,7 +8,7 @@ export interface Post {
    updatedAt?: string;
    deletedAt?: string;
    author: Partial<Profile>;
-   likes: Array<Like>;
+   likes: Array<string>;
    comments: Array<string>;
    attachments: Array<string>;
 }

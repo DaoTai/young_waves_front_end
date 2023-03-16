@@ -55,7 +55,7 @@ const Post = () => {
          borderRadius={2}
          sx={{ gap: 4 }}>
          <Grid item>
-            <Avatar src={user?.avatar} />
+            <Avatar src={user?.avatar} sx={{ width: 50, height: 50, boxShadow: 1 }} />
          </Grid>
          <Grid item flexGrow={2}>
             <MyInput

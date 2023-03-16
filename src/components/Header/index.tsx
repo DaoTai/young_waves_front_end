@@ -1,5 +1,5 @@
 import { AppBar, Grid, Toolbar, useTheme } from "@mui/material";
-
+import { HEIGHT_HEADER } from "../../utils/constants";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
 import Actions from "./ToggleActions";
@@ -8,7 +8,7 @@ const Header = () => {
    const theme = useTheme();
 
    return (
-      <AppBar position="fixed" sx={{ bgcolor: theme.myColor.white, boxShadow: 1 }}>
+      <AppBar sx={{ bgcolor: theme.myColor.white, boxShadow: 1, height: HEIGHT_HEADER }}>
          <Toolbar>
             <Grid
                container

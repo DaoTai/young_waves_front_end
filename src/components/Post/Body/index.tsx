@@ -7,10 +7,9 @@ const Body = ({ children, ...props }) => {
       <Typography
          variant="body1"
          color={theme.myColor.text}
-         minHeight="10vh"
+         minHeight="5vh"
          p={1}
          borderRadius={1}
-         border={1}
          borderColor={theme.myColor.textSecondary}
          {...props}>
          {children}

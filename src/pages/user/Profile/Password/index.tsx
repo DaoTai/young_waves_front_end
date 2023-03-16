@@ -1,5 +1,9 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import SendIcon from "@mui/icons-material/Send";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
+import KeyIcon from "@mui/icons-material/Key";
 import {
    Box,
    Button,
@@ -14,6 +18,7 @@ import {
    Paper,
    Stack,
    Typography,
+   Fab,
    useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
@@ -60,17 +65,21 @@ const Password = () => {
          <Helmet>
             <title>Change password | Young Waves</title>
          </Helmet>
-         <Container maxWidth="md">
-            <Button
-               variant="outlined"
-               startIcon={<ArrowBackIosIcon />}
+         <Container maxWidth="md" sx={{ backgroundColor: theme.myColor.white, pt: 1 }}>
+            <Fab
+               size="medium"
+               sx={{
+                  boxShadow: 1,
+                  bgcolor: theme.myColor.white,
+               }}
                onClick={() => navigate("/user/profile/edit")}>
-               Back
-            </Button>
+               <ArrowBackIosIcon />
+            </Fab>
+
             <Typography variant="h4" mb={2} textAlign="center">
                Change Password
             </Typography>
-            <Box p={2} bgcolor={theme.myColor.bgGray}>
+            <Box p={2} bgcolor={theme.myColor.white}>
                <form autoComplete="off" onSubmit={handleSubmit}>
                   <Grid container spacing={2}>
                      {textFields.map((props: any, i: number) => {
@@ -100,13 +109,17 @@ const Password = () => {
                   {/* Actions */}
                   <Stack flexDirection="row" justifyContent="space-between" mt={2}>
                      <Button
-                        startIcon={<RestartAltIcon />}
+                        endIcon={<RestartAltIcon />}
                         size="large"
                         variant="outlined"
                         onClick={() => resetForm()}>
                         Reset
                      </Button>
-                     <Button size="large" variant="contained" onClick={() => setOpenDialog(true)}>
+                     <Button
+                        size="large"
+                        variant="contained"
+                        endIcon={<CheckIcon />}
+                        onClick={() => setOpenDialog(true)}>
                         Confirm
                      </Button>
                   </Stack>
@@ -125,10 +138,13 @@ const Password = () => {
                <DialogContentText>Do you agree to change password?</DialogContentText>
             </DialogContent>
             <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-               <Button variant="outlined" onClick={() => setOpenDialog(false)}>
+               <Button
+                  variant="outlined"
+                  endIcon={<ClearIcon />}
+                  onClick={() => setOpenDialog(false)}>
                   Cancel
                </Button>
-               <Button type="submit" onClick={handleConfirm}>
+               <Button type="submit" endIcon={<SendIcon />} onClick={handleConfirm}>
                   Agree
                </Button>
             </DialogActions>

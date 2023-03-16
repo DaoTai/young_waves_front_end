@@ -6,7 +6,7 @@ const MyLogo = () => {
    const theme = useTheme();
    return (
       <Logo to="/">
-         <Stack direction="row" alignItems="flex-end" sx={{ gap: 2 }}>
+         <Stack direction="row" alignItems="center" sx={{ gap: 2 }}>
             <CycloneIcon fontSize="large" color="primary" />
             <Typography
                variant="h4"

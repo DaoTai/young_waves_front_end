@@ -1,8 +1,9 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
+import KeyIcon from "@mui/icons-material/Key";
 import {
    Button,
    Container,
+   Fab,
    FormControl,
    FormControlLabel,
    FormLabel,
@@ -10,6 +11,7 @@ import {
    Radio,
    RadioGroup,
    TextField,
+   useTheme,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
@@ -26,6 +28,7 @@ import Avatar from "../Heading/Avatar";
 import { init, updateUserOptions } from "./config";
 
 const Editing = () => {
+   const theme = useTheme();
    const { isLoading, payload, action, error } = useSelector(profileState$);
    const dispatch = useDispatch();
    const navigate = useNavigate();
@@ -65,17 +68,19 @@ const Editing = () => {
             <title>Edit profile| Young Waves</title>
          </Helmet>
          {/* Content */}
-         <Container maxWidth="md">
+         <Container maxWidth="md" sx={{ backgroundColor: theme.myColor.white, pt: 1 }}>
             <Stack flexDirection="row" justifyContent="space-between">
+               <Fab
+                  size="medium"
+                  sx={{
+                     boxShadow: 1,
+                     bgcolor: theme.myColor.white,
+                  }}>
+                  <ArrowBackIosIcon onClick={() => navigate(`/user/profile/${values._id}`)} />
+               </Fab>
                <Button
                   variant="outlined"
-                  startIcon={<ArrowBackIosIcon />}
-                  onClick={() => navigate(`/user/profile/${values._id}`)}>
-                  Back
-               </Button>
-               <Button
-                  variant="outlined"
-                  endIcon={<ChangeCircleIcon />}
+                  startIcon={<KeyIcon />}
                   onClick={() => navigate("/user/profile/password")}>
                   Change Password
                </Button>

@@ -1,6 +1,6 @@
 import ExploreIcon from "@mui/icons-material/Explore";
-import FemaleIcon from "@mui/icons-material/Face2";
-import MaleIcon from "@mui/icons-material/Man";
+import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
 import PublicIcon from "@mui/icons-material/Public";
 import { Avatar, Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -16,9 +16,9 @@ const User = ({ user }: { user: Profile }) => {
                src={user.avatar}
                srcSet={user.avatar}
                alt="avatar"
-               sx={{ border: "1px dashed #ccc", width: 100, height: 100 }}
+               sx={{ border: "1px dashed #ccc", margin: "0 auto", width: 240, height: 240 }}
             />
-            <Stack gap={2}>
+            <Stack mt={2} gap={1}>
                <Stack flexDirection="row" alignItems="center" gap={1}>
                   {user?.gender.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
                   <Typography variant="body1" component="span" m={0}>
@@ -36,8 +36,32 @@ const User = ({ user }: { user: Profile }) => {
                </Stack>
 
                <Link to={`${user?._id}`}>
-                  <Button fullWidth variant="outlined" startIcon={<ExploreIcon />} sx={{ p: 1 }}>
-                     <Typography variant="body1">Explore</Typography>
+                  <Button
+                     fullWidth
+                     variant="outlined"
+                     startIcon={<ExploreIcon />}
+                     sx={{
+                        p: 1,
+                        color: theme.myColor.white,
+                        transition: "all 0.3 linear",
+
+                        "&:hover": {
+                           color: theme.myColor.text,
+                           ".css-uilowj-MuiTypography-root": {
+                              color: theme.myColor.text,
+                           },
+                        },
+                     }}>
+                     <Typography
+                        variant="body1"
+                        sx={{
+                           color: theme.myColor.white,
+                           "&:hover": {
+                              color: theme.myColor.text,
+                           },
+                        }}>
+                        Explore
+                     </Typography>
                   </Button>
                </Link>
             </Stack>

@@ -26,34 +26,33 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
    const [countries, setCountries] = useState([]);
    const [loading, setLoading] = useState<boolean>(false);
    const { title, mode, message } = alert.payload as AlertProps;
-   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
-      useFormik({
-         initialValues: init,
-         validationSchema: registerOptions,
-         enableReinitialize: false,
-         validateOnMount: false,
-         onSubmit: async (values, actions) => {
-            setLoading(true);
-            try {
-               const res = await signUpUser({ ...values, isAdmin });
-               if (res.status === 200) {
-                  dispatch(
-                     showAlert({
-                        title: "Sign up",
-                        message: "Sign up successfully",
-                        mode: "success",
-                     })
-                  );
-               } else {
-                  dispatch(
-                     showAlert({
-                        title: "Sign up",
-                        message: "Sign up failed",
-                     })
-                  );
-               }
-               setLoading(false);
-            } catch (err) {
+   const {
+      values,
+      errors,
+      touched,
+      handleBlur,
+      handleChange,
+      handleSubmit,
+      setFieldValue,
+      handleReset,
+   } = useFormik({
+      initialValues: init,
+      validationSchema: registerOptions,
+      enableReinitialize: false,
+      validateOnMount: false,
+      onSubmit: async (values, e) => {
+         setLoading(true);
+         try {
+            const res = await signUpUser({ ...values, isAdmin });
+            if (res.status === 200) {
+               dispatch(
+                  showAlert({
+                     title: "Sign up",
+                     message: "Sign up successfully",
+                     mode: "success",
+                  })
+               );
+            } else {
                dispatch(
                   showAlert({
                      title: "Sign up",
@@ -61,8 +60,17 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
                   })
                );
             }
-         },
-      });
+            setLoading(false);
+         } catch (err) {
+            dispatch(
+               showAlert({
+                  title: "Sign up",
+                  message: "Sign up failed",
+               })
+            );
+         }
+      },
+   });
    useEffect(() => {
       return () => {
          dispatch(hideAlert());

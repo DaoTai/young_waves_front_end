@@ -15,16 +15,38 @@ const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) 
 
    return (
       <>
-         <ImageList sx={{ mt: 0, minHeight: "35vh" }} variant="standard" cols={columns} gap={8}>
+         <ImageList
+            sx={{ mt: 0, minHeight: "35vh", borderBottom: 1, pt: 1, pb: 1 }}
+            variant="standard"
+            cols={columns}
+            gap={8}>
             {attachments?.map((item, index, arr) => {
                if (index < columns) {
                   return index === columns - 1 ? (
-                     <ImageListItem key={index} onClick={() => handleNavigate(index)}>
-                        <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
+                     <ImageListItem
+                        key={index}
+                        sx={{
+                           img: {
+                              borderRadius: 4,
+                              cursor: "pointer",
+                              boxShadow: 1,
+                           },
+                        }}
+                        onClick={() => handleNavigate(index)}>
+                        <img src={item} srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
                         <OverlayBackground amount={arr.length - columns} />
                      </ImageListItem>
                   ) : (
-                     <ImageListItem key={index} onClick={() => handleNavigate(index)}>
+                     <ImageListItem
+                        key={index}
+                        sx={{
+                           img: {
+                              borderRadius: 4,
+                              cursor: "pointer",
+                              boxShadow: 1,
+                           },
+                        }}
+                        onClick={() => handleNavigate(index)}>
                         <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
                      </ImageListItem>
                   );

@@ -1,7 +1,7 @@
 import React from "react";
-import { styled, Typography } from "@mui/material";
+import { styled, Typography, Paper } from "@mui/material";
 const OverlayBackground = ({ amount }: { amount?: number }) => {
-   const MyDiv = styled("div")({
+   const MyDiv = styled(Paper)({
       position: "absolute",
       inset: "0 0 0 0",
       backgroundColor: "rgba(0,0,0,0.5)",
@@ -11,7 +11,7 @@ const OverlayBackground = ({ amount }: { amount?: number }) => {
       cursor: "pointer",
    });
    return (
-      <MyDiv>
+      <MyDiv sx={{ borderRadius: 4 }}>
          <Typography
             variant="h4"
             textAlign="center"

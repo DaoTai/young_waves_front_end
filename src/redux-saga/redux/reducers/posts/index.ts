@@ -46,33 +46,33 @@ const postsReducer = (state = CONSTANTS.INIT_STATE.posts, action: MyAction) => {
             action: action.type,
          };
       case CONSTANTS.CREATE_LIKE_SUCCESS:
-         const newLike = action.payload as Like;
-         const likedPosts = state.payload.data?.map((post: Post) => {
-            // Find post contains like in it's list like
-            if (post._id === newLike.post) {
-               // Add like in list like
-               post.likes.unshift(newLike);
+         let idPost = action.payload;
+         const likedPosts = state.payload.data.map((post: Post) => {
+            if (post._id === idPost) {
+               const idLike = Math.random() * 100;
+               post.likes.push(String(idLike));
+               return post;
             }
             return post;
          });
+
          return {
             isLoading: false,
-            payload: { ...state.payload, data: likedPosts },
+            payload: { ...state.payload, likedPosts },
             action: action.type,
          };
       case CONSTANTS.UNLIKE_SUCCESS:
-         const unLike = action.payload as Like;
-         const unLikeNewPosts = state.payload.data?.map((post: Post) => {
-            // Find post contains like in it's list like
-            if (post._id === unLike.post) {
-               // Remove like in list like
-               post.likes = post.likes.filter((like) => like._id !== unLike._id);
+         let idPostUnlike = action.payload;
+         const unlikedPosts = state.payload.data.map((post: Post) => {
+            if (post._id === idPostUnlike) {
+               post.likes.pop();
+               return post;
             }
             return post;
          });
          return {
             isLoading: false,
-            payload: { ...state.payload, data: unLikeNewPosts },
+            payload: { ...state.payload, data: unlikedPosts },
             action: action.type,
          };
       case CONSTANTS.CREATE_COMMENT_SUCCESS:
