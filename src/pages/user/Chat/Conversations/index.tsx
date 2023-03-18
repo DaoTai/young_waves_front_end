@@ -1,6 +1,22 @@
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import SearchIcon from "@mui/icons-material/Search";
-import { Avatar, Box, List, ListItem, Stack, Typography, useTheme } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import {
+   Avatar,
+   Box,
+   Fab,
+   List,
+   ListItem,
+   Pagination,
+   Paper,
+   Stack,
+   Typography,
+   useTheme,
+} from "@mui/material";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { usersState$ } from "../../../../redux-saga/redux/selectors";
+import { getAllUser } from "../../../../redux-saga/redux/actions";
 import { BaseInput } from "../../../../components";
 import { ChatContext } from "../../../../Contexts";
 import { useDebounce } from "../../../../hooks";
@@ -34,22 +50,36 @@ const chats: Array<Chat> = [
 const Conversations = ({ onClose }: { onClose: () => void }) => {
    const chatContext = useContext(ChatContext);
    const theme = useTheme();
-   const [listChat, setListChat] = useState<Array<Chat>>(chats);
+   const dispatch = useDispatch();
+   const {
+      payload: { currentPage, maxPage, users },
+   } = useSelector(usersState$);
+   const [listChat, setListChat] = useState<Array<Profile>>(users);
    const [searchValue, setSearchValue] = useState<string>("");
+   const [page, setPage] = useState<number>(currentPage);
    const debouncedValue = useDebounce(searchValue.trim(), 500);
    const handleClickChatItem = () => {
       chatContext?.handleShowChatBox();
       onClose();
    };
+
+   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
+      setPage(page);
+      dispatch(getAllUser({ page }));
+   };
    useEffect(() => {
       if (debouncedValue) {
          setListChat(() =>
-            chats.filter((chat) => chat.fullName?.toLowerCase().includes(debouncedValue))
+            users.filter((chat) => chat.fullName?.toLowerCase().includes(debouncedValue))
          );
       } else {
-         setListChat(chats);
+         setListChat(users);
       }
    }, [debouncedValue]);
+
+   useEffect(() => {
+      setListChat(users);
+   }, [users]);
 
    return (
       <>
@@ -58,7 +88,6 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
             <Typography variant="h5" fontWeight={700}>
                Chat
             </Typography>
-
             {/* Search box */}
             <BaseInput
                placeholder="Looking up your chat"
@@ -92,13 +121,21 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
                         <ListItem>
                            <Typography variant="subtitle1">{chat.fullName}</Typography>
                         </ListItem>
-                        <ListItem>
-                           <Typography>{chat.lastText}</Typography>
-                        </ListItem>
+                        <ListItem>{/* <Typography>{chat.lastText}</Typography> */}</ListItem>
                      </List>
                   </Stack>
                ))}
             </Box>
+            <Pagination
+               page={page}
+               count={maxPage}
+               shape="rounded"
+               size="large"
+               sx={{ margin: "0 auto" }}
+               onChange={(event: ChangeEvent<unknown>, page: number) =>
+                  handleChangePage(event, page)
+               }
+            />
          </Stack>
       </>
    );

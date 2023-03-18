@@ -16,10 +16,14 @@ const Introduction = ({ user }: { user: Partial<Profile> }) => {
             Introduction
          </Typography>
          <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
-            {user?.gender?.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
-            <Typography variant="body1" component="b" pl={1}>
-               {user?.gender?.toUpperCase()}
-            </Typography>
+            {user?.gender?.toLowerCase() !== "other" && (
+               <>
+                  {user?.gender?.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
+                  <Typography variant="body1" component="b" pl={1}>
+                     {user?.gender?.toUpperCase()}
+                  </Typography>
+               </>
+            )}
          </Stack>
          <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
             <CakeIcon />

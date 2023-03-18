@@ -102,6 +102,10 @@ export const radioFields: Array<RadioField> = [
             label: "Male",
             value: "male",
          },
+         {
+            label: "Other",
+            value: "other",
+         },
       ],
    },
 ];
@@ -135,9 +139,10 @@ export const registerOptions = Yup.object().shape({
       .trim()
       .matches(/^([^0-9]*)$/, "Name is invalid"),
    dob: Yup.string().required(REQUIRED_MSG),
-   city: Yup.string().required(REQUIRED_MSG).trim(),
+   city: Yup.string().required(REQUIRED_MSG).min(2).trim(),
    region: Yup.string()
       .required(REQUIRED_MSG)
+      .min(2)
       .matches(/^([^0-9]*)$/, "Region is invalid"),
    gender: Yup.string().required(REQUIRED_MSG),
    email: Yup.string().email("Email is invalid").required(REQUIRED_MSG).trim(),

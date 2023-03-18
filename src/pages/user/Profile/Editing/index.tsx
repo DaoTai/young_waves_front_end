@@ -24,7 +24,6 @@ import { updateProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
-import Avatar from "../Heading/Avatar";
 import { init, updateUserOptions } from "./config";
 
 const Editing = () => {
@@ -89,7 +88,7 @@ const Editing = () => {
                <Grid container spacing={2}>
                   {/* Avatar */}
                   <Grid item sm={12} xs={12} display="flex" justifyContent="center">
-                     <Avatar image={payload?.data?.avatar} />
+                     {/* <Avatar image={payload?.data?.avatar} /> */}
                   </Grid>
                   {/* Text fields */}
                   {textInfoUser.map((props: any, i: number) => {

@@ -1,29 +1,24 @@
 import { Avatar } from "@mui/material";
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ImageInput, Spinner } from "../../../../../components";
+import { useDispatch } from "react-redux";
+import { ImageInput } from "../../../../../components";
 import { updateProfile } from "../../../../../redux-saga/redux/actions";
-import { profileState$ } from "../../../../../redux-saga/redux/selectors";
+import { Profile } from "../../../../../utils/interfaces/Profile";
 import { WrapAvatar } from "../styles";
 
-const MyAvatar = ({ image, ...props }: { image?: string; props?: any }) => {
+const AvatarProfile = ({ user }: { user: Profile }) => {
    const dispatch = useDispatch();
-   const { isLoading, payload } = useSelector(profileState$);
    const imageRef = useRef(Object(null));
-   const handleChange = (file) => {
+   const onChange = (file) => {
       imageRef.current.src = file;
-      dispatch(updateProfile({ avatar: file, _id: Object(payload?.data)._id }));
+      dispatch(updateProfile({ avatar: file, _id: user._id }));
    };
    return (
-      <>
-         <WrapAvatar>
-            <Avatar ref={imageRef} src={image} alt="avatar" sx={{ width: 220, height: 220 }} />
-            <ImageInput onChange={handleChange} />
-         </WrapAvatar>
-         {/* Spinner */}
-         <Spinner show={isLoading} />
-      </>
+      <WrapAvatar>
+         <Avatar src={user?.avatar} sx={{ width: 200, height: 200 }}></Avatar>
+         <ImageInput onChange={onChange} />
+      </WrapAvatar>
    );
 };
 
-export default MyAvatar;
+export default AvatarProfile;

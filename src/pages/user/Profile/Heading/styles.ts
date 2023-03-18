@@ -10,15 +10,18 @@ export const WrapAvatar = styled(Button)(({ theme }) => ({
    },
    ".image-input": {
       position: "absolute",
-      top: "50%",
-      bottom: "50%",
-      transform: "scale(0,0)",
+      bottom: "15%",
+      right: "-5px",
+      transform: "translate(5px,-15%) ",
       transition: "0.2s ease all",
+      "& > div": {
+         backgroundColor: theme.myColor.white,
+      },
    },
    "&:hover": {
-      opacity: 0.8,
+      filter: "contrast(110%)",
       ".image-input": {
-         transform: "scale(1,1)",
+         // transform: "scale(1,1)",
       },
    },
 }));

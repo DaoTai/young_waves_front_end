@@ -11,6 +11,7 @@ import * as ACTIONS from "../redux/actions";
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
       const res = yield call(api.auth.signInUser, action.payload);
+
       if (res.status === 200) {
          yield put(ACTIONS.signInSuccess(res));
          const { password, ...localUser } = action.payload;
