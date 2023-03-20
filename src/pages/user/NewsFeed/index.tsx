@@ -16,7 +16,7 @@ const NewsFeed = () => {
    }, []);
    return (
       <>
-         <Stack direction="column" sx={{ gap: 1 }}>
+         <Stack direction="column" sx={{ gap: 2 }}>
             {/* <Weather /> */}
             <Post />
             <News listNews={payload?.data} />

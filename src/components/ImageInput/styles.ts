@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { Fab, styled } from "@mui/material";
 import ImageIcon from "../../assets/images/image-icon.png";
 export const MyLabel = styled("label")({
    marginTop: 8,
@@ -20,6 +20,7 @@ export const WrapFileInput = styled("div")({
    margin: "auto",
    borderRadius: "99px",
    border: "1px solid transparent",
+   backgroundColor: "#fff",
    boxShadow: "0 0 6px rgba(0,0,0,0.3)",
    transition: "0.3s ease all",
    "&:hover": {

@@ -21,9 +21,8 @@ const Home = () => {
                sx={{
                   position: "relative",
                   top: HEIGHT_HEADER,
-
                   pb: 2,
-                  pt: 1,
+                  pt: 2,
                }}>
                <Outlet />
             </Container>

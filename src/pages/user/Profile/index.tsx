@@ -20,35 +20,37 @@ const Profile = () => {
    const { payload } = useSelector(authState$);
    const ownerPosts$ = useSelector(ownerPostsState$);
    const profile$ = useSelector(profileState$);
+
    const ownerPosts = ownerPosts$.payload?.data as Array<IPost>;
    const idAuth = payload?.data?.user?._id as IProfile;
-   const idUser = profile$?.payload?.data?._id;
+   const idUser = profile$?.payload?._id;
+
    useEffect(() => {
       id === String(idAuth) &&
          dispatch(getOwnerPosts(id as string)) &&
          dispatch(getProfile(id as string));
    }, [id]);
-   useLayoutEffect(() => {
-      // Chưa xử lý thay đổi UI khi update post => redux-reducer
-      if (profile$?.action === UPDATE_PROFILE_SUCCESS) {
-         dispatch(getOwnerPosts(id as string));
-      }
-   }, [profile$]);
+   // useLayoutEffect(() => {
+   //    // Chưa xử lý thay đổi UI khi update post => redux-reducer
+   //    if (profile$?.action === UPDATE_PROFILE_SUCCESS) {
+   //       dispatch(getOwnerPosts(id as string));
+   //    }
+   // }, [profile$]);
    return (
       <>
          <Helmet>
-            <title>{profile$.payload?.data?.fullName || "Profile"} | Young Waves</title>
+            <title>{profile$.payload?.fullName || "Profile"} | Young Waves</title>
          </Helmet>
 
          <Stack flexDirection="column">
             <Box boxShadow={1} borderRadius={1} bgcolor="#fff" overflow="hidden">
-               <Heading user={profile$.payload?.data} />
+               <Heading user={profile$.payload} />
             </Box>
-            <Grid container pt={1} spacing={1}>
+            <Grid container pt={2} spacing={2}>
                <Grid item xs={12} md={4}>
-                  <Introduction user={profile$.payload?.data} />
+                  <Introduction user={profile$.payload} />
                </Grid>
-               <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 1 }}>
+               <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
                   {idAuth == idUser && <Post />}
                   {/* Display posts */}
                   <News listNews={ownerPosts} />

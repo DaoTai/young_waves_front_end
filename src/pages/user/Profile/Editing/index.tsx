@@ -1,6 +1,8 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import KeyIcon from "@mui/icons-material/Key";
+import SendIcon from "@mui/icons-material/Send";
 import {
+   Box,
    Button,
    Container,
    Fab,
@@ -8,6 +10,7 @@ import {
    FormControlLabel,
    FormLabel,
    Grid,
+   Paper,
    Radio,
    RadioGroup,
    TextField,
@@ -15,22 +18,23 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { DateTimePicker, Spinner } from "../../../../components";
+import { DateTimePicker, ImageInput, Spinner } from "../../../../components";
 import { updateProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { init, updateUserOptions } from "./config";
-
+import Avatar from "../Heading/Avatar";
 const Editing = () => {
    const theme = useTheme();
    const { isLoading, payload, action, error } = useSelector(profileState$);
    const dispatch = useDispatch();
    const navigate = useNavigate();
+   const imageRef = useRef(Object(null));
    const {
       values,
       errors,
@@ -49,7 +53,7 @@ const Editing = () => {
    });
    useEffect(() => {
       // If network slow, payload?.data'll undefined. So we shoud assign in Object
-      const { fullName, dob, city, region, gender, email, _id } = Object(payload?.data) as Profile;
+      const { fullName, dob, city, region, gender, email, _id } = Object(payload) as Profile;
       setValues({
          _id,
          fullName,
@@ -60,6 +64,10 @@ const Editing = () => {
          email,
       });
    }, [isLoading, payload, dispatch, action]);
+   const handleChangeCoverPicture = (file) => {
+      imageRef.current.src = file;
+      dispatch(updateProfile({ coverPicture: file, _id: payload._id }));
+   };
 
    return (
       <>
@@ -67,15 +75,18 @@ const Editing = () => {
             <title>Edit profile| Young Waves</title>
          </Helmet>
          {/* Content */}
-         <Container maxWidth="md" sx={{ backgroundColor: theme.myColor.white, pt: 1 }}>
+         <Container
+            maxWidth="lg"
+            sx={{ backgroundColor: theme.myColor.white, pt: 2, pb: 2, minHeight: "100vh" }}>
             <Stack flexDirection="row" justifyContent="space-between">
                <Fab
                   size="medium"
                   sx={{
                      boxShadow: 1,
                      bgcolor: theme.myColor.white,
-                  }}>
-                  <ArrowBackIosIcon onClick={() => navigate(`/user/profile/${values._id}`)} />
+                  }}
+                  onClick={() => navigate(`/user/profile/${values._id}`)}>
+                  <ArrowBackIosIcon />
                </Fab>
                <Button
                   variant="outlined"
@@ -85,10 +96,50 @@ const Editing = () => {
                </Button>
             </Stack>
             <form autoComplete="off" onSubmit={handleSubmit}>
-               <Grid container spacing={2}>
-                  {/* Avatar */}
-                  <Grid item sm={12} xs={12} display="flex" justifyContent="center">
-                     {/* <Avatar image={payload?.data?.avatar} /> */}
+               <Grid container pt={2} spacing={2}>
+                  <Grid
+                     item
+                     sm={12}
+                     xs={12}
+                     gap={4}
+                     rowSpacing={2}
+                     display="flex"
+                     justifyContent="center"
+                     alignItems="flex-start">
+                     {/* Avatar */}
+                     <Avatar user={payload} variant="square" borderRadius={2} />
+                     {/* Cover picture */}
+                     <Box
+                        width="100%"
+                        minHeight={350}
+                        alignItems="center"
+                        overflow="hidden"
+                        position="relative"
+                        borderRadius={2}
+                        sx={
+                           payload?.coverPicture
+                              ? {
+                                   backgroundImage: `url(${payload?.coverPicture})`,
+                                   backgroundPosition: "center",
+                                   backgroundSize: "cover",
+                                   backgroundRepeat: "no-repeat",
+                                }
+                              : {
+                                   backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)`,
+                                }
+                        }>
+                        <Fab
+                           size="small"
+                           sx={{
+                              backgroundColor: theme.myColor.white,
+                              position: "absolute",
+                              top: 5,
+                              right: 5,
+                              boxShadow: "none",
+                           }}>
+                           <ImageInput onChange={handleChangeCoverPicture} />
+                        </Fab>
+                     </Box>
                   </Grid>
                   {/* Text fields */}
                   {textInfoUser.map((props: any, i: number) => {
@@ -148,7 +199,8 @@ const Editing = () => {
                   type="submit"
                   size="large"
                   variant="contained"
-                  sx={{ marginTop: 2 }}>
+                  endIcon={<SendIcon />}
+                  sx={{ fontSize: 18, marginTop: 2, fontWeight: 500, color: theme.myColor.white }}>
                   Update
                </Button>
             </form>

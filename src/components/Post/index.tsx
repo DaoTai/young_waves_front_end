@@ -24,8 +24,8 @@ const Post = () => {
    const modalRef = useRef<ModalRef>(INIT_STATE.modalRef);
 
    useEffect(() => {
-      if (user$.payload.data) {
-         setUser(user$.payload.data);
+      if (Object.keys(user$.payload).length > 0) {
+         setUser(user$.payload);
       } else {
          setUser(auth);
       }

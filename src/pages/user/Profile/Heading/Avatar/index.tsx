@@ -1,13 +1,30 @@
-import { Avatar } from "@mui/material";
+import { Avatar, useTheme } from "@mui/material";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ImageInput } from "../../../../../components";
 import { updateProfile } from "../../../../../redux-saga/redux/actions";
+import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 import { WrapAvatar } from "../styles";
 
-const AvatarProfile = ({ user }: { user: Profile }) => {
+const AvatarProfile = ({
+   user,
+   variant = "circular",
+   borderRadius,
+}: {
+   user: Profile;
+   variant?: "rounded" | "square" | "circular";
+   borderRadius?: number | string;
+}) => {
    const dispatch = useDispatch();
+   const theme = useTheme();
+   const {
+      payload: {
+         data: {
+            user: { _id },
+         },
+      },
+   } = useSelector(authState$);
    const imageRef = useRef(Object(null));
    const onChange = (file) => {
       imageRef.current.src = file;
@@ -15,8 +32,16 @@ const AvatarProfile = ({ user }: { user: Profile }) => {
    };
    return (
       <WrapAvatar>
-         <Avatar src={user?.avatar} sx={{ width: 200, height: 200 }}></Avatar>
-         <ImageInput onChange={onChange} />
+         <Avatar
+            variant={variant}
+            src={user?.avatar}
+            sx={{
+               width: 200,
+               height: 200,
+               border: 0.5,
+               borderRadius,
+            }}></Avatar>
+         {_id === user?._id && <ImageInput onChange={onChange} />}
       </WrapAvatar>
    );
 };

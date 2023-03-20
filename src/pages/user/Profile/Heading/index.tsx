@@ -1,12 +1,14 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
+import { Box, Button, Fab, Grid, Typography, useTheme } from "@mui/material";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { ImageInput } from "../../../../components";
 import Avatar from "./Avatar";
-const Heading = ({ user }: { user: Profile }) => {
+import { updateProfile } from "../../../../redux-saga/redux/actions";
+const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
    const theme = useTheme();
    const navigate = useNavigate();
    const {
@@ -16,26 +18,54 @@ const Heading = ({ user }: { user: Profile }) => {
          },
       },
    } = useSelector(authState$);
+   const dispatch = useDispatch();
+   const imageRef = useRef(Object(null));
+   const handleChangeCoverPicture = (file) => {
+      imageRef.current.src = file;
+      dispatch(updateProfile({ coverPicture: file, _id: user._id }));
+   };
+
    return (
       <Grid
          container
          p={1}
-         gap={3}
+         gap={4}
          width="100%"
-         height={300}
-         justifyContent="flex-start"
+         minHeight={350}
          alignItems="center"
          overflow="hidden"
-         position="relative">
-         {/* Cover picture */}
-         <Box sx={{ position: "absolute", zIndex: 0, inset: 0 }}>
-            <img src={user?.coverPicture} width="100%" />
-            <ImageInput onChange={() => console.log(123)} />
-         </Box>
-         <Grid item position="relative" zIndex={2}>
+         position="relative"
+         sx={
+            user?.coverPicture
+               ? {
+                    backgroundImage: `url(${user?.coverPicture})`,
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                 }
+               : { backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)` }
+         }>
+         {/* Button change cover picture */}
+         {_id === user?._id && (
+            <Fab
+               size="small"
+               sx={{
+                  backgroundColor: theme.myColor.white,
+                  position: "absolute",
+                  top: 5,
+                  right: 5,
+                  transform: "translate(-5px, 5px)",
+                  boxShadow: "none",
+               }}>
+               <ImageInput onChange={handleChangeCoverPicture} />
+            </Fab>
+         )}
+         {/* Avatar */}
+         <Grid item>
             <Avatar user={user} />
          </Grid>
-         <Grid item position="relative" zIndex={2}>
+         {/* Name & total posts */}
+         <Grid item>
             <Typography
                variant="h4"
                fontWeight={600}

@@ -11,42 +11,42 @@ import { Profile } from "../../../../utils/interfaces/Profile";
 const Introduction = ({ user }: { user: Partial<Profile> }) => {
    const theme = useTheme();
    return (
-      <Box p={1} mb={1} boxShadow={1} borderRadius={1} bgcolor={theme.myColor.white}>
+      <Box p={1} boxShadow={1} borderRadius={1} bgcolor={theme.myColor.white}>
          <Typography variant="h5" textAlign="center" p={1} borderBottom={1}>
             Introduction
          </Typography>
-         <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
+         <Stack flexDirection="row" alignItems="center" p={1}>
             {user?.gender?.toLowerCase() !== "other" && (
                <>
                   {user?.gender?.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
                   <Typography variant="body1" component="b" pl={1}>
-                     {user?.gender?.toUpperCase()}
+                     Gender: {user?.gender?.toLowerCase()}
                   </Typography>
                </>
             )}
          </Stack>
-         <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
+         <Stack flexDirection="row" alignItems="center" p={1}>
             <CakeIcon />
             <Typography variant="body1" component="b" pl={1}>
-               {user?.dob}
+               Birthday: {user?.dob}
             </Typography>
          </Stack>
-         <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
+         <Stack flexDirection="row" alignItems="center" p={1}>
             <HandshakeIcon />
             <Typography variant="body1" component="b" pl={1}>
-               {dateFormat(user?.createdAt, " mmmm dS, yyyy")}
+               Joined from: {dateFormat(user?.createdAt, " mmmm dS, yyyy")}
             </Typography>
          </Stack>
-         <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
+         <Stack flexDirection="row" alignItems="center" p={1}>
             <LocationOnIcon />
             <Typography variant="body1" component="b" pl={1}>
-               {user?.city} city
+               City: {user?.city}
             </Typography>
          </Stack>
-         <Stack flexDirection="row" alignItems="center" pt={1} pb={2}>
+         <Stack flexDirection="row" alignItems="center" p={1}>
             <PublicIcon />
             <Typography variant="body1" component="b" pl={1}>
-               {user?.region}
+               Region: {user?.region}
             </Typography>
          </Stack>
       </Box>

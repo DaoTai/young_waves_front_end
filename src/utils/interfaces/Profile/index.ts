@@ -10,7 +10,6 @@ export interface Profile {
    gender: string;
    email: string;
    avatar: string;
-   totalPosts: number;
    friends: Array<string>;
    createdAt?: string;
    deletedAt?: string;

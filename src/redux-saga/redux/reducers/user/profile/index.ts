@@ -11,7 +11,10 @@ import {
    CHANGE_PASSWORD_PROFILE_FAILURE,
 } from "../../../../../utils/constants";
 import { Action } from "../../../../../utils/interfaces/Action";
-const profileReducer = (state = INIT_STATE.profile, action: Action) => {
+const profileReducer = (
+   state = INIT_STATE.profile,
+   action: { type: string; payload: { data: Object; status: number; message?: string } }
+) => {
    switch (action.type) {
       case GET_PROFILE:
       case UPDATE_PROFILE:
@@ -26,8 +29,9 @@ const profileReducer = (state = INIT_STATE.profile, action: Action) => {
          return {
             ...state,
             isLoading: false,
-            payload: action.payload,
+            payload: { ...state.payload, ...action.payload.data },
             action: action.type,
+            status: action.payload.status,
          };
 
       case GET_PROFILE_FAILURE:
@@ -40,7 +44,7 @@ const profileReducer = (state = INIT_STATE.profile, action: Action) => {
             action: action.type,
          };
       default:
-         return state;
+         return { ...state, isLoading: false };
    }
 };
 
