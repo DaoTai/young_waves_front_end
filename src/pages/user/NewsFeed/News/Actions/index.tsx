@@ -44,7 +44,7 @@ const Actions = ({ news }: { news: Post }) => {
          <CardActions sx={{ pl: 0, gap: 12 }}>
             {/* Likes */}
             <Stack flexDirection="column" justifyContent="space-between">
-               <Chip variant="outlined" label={totalLikes} />
+               {news.likes?.length > 0 && <Chip variant="outlined" label={totalLikes} />}
                <Checkbox
                   sx={{ padding: "14px" }}
                   icon={<FavoriteBorderIcon />}
@@ -56,7 +56,9 @@ const Actions = ({ news }: { news: Post }) => {
             </Stack>
             {/* Comments */}
             <Stack flexDirection="column" justifyContent="space-between" onClick={handleNavigate}>
-               <Chip variant="outlined" label={`${news.comments?.length} comments`} />
+               {news.comments?.length > 0 && (
+                  <Chip variant="outlined" label={`${news.comments?.length} comments`} />
+               )}
                <MyIconButton>
                   <CommentIcon />
                </MyIconButton>

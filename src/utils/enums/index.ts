@@ -7,3 +7,8 @@ export enum FEATURES_ADMIN {
 export enum TRASHES_ADMIN {
    users = "users",
 }
+
+export enum TAB_PROFILE {
+   posts = "posts",
+   friends = "friends",
+}

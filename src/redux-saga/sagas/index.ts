@@ -117,6 +117,17 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
    }
 }
 
+// Add friend
+function* addFriend(action: { type: string; payload: string }) {
+   try {
+      const res = yield call(api.user.addFriend, action.payload);
+      yield put(ACTIONS.addFriendSuccess(action.payload));
+   } catch (err) {
+      console.error(err);
+      yield put(ACTIONS.addFriendFailure(err));
+   }
+}
+
 // Posts
 function* getPostsSaga() {
    try {
@@ -335,6 +346,7 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),
       takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
       takeLatest(CONSTANTS.GET_POSTS, getPostsSaga),
+      takeLatest(CONSTANTS.ADD_FRIEND, addFriend),
       takeLatest(CONSTANTS.GET_OWNER_POSTS, getOwnerPostsSaga),
       takeLatest(CONSTANTS.GET_POST, getPostSaga),
       takeLatest(CONSTANTS.CREATE_POST, createPostSaga),

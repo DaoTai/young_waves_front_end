@@ -95,6 +95,21 @@ export const changePasswordProfileFailure = (payload: any) => ({
    payload,
 });
 
+export const addFriend = (payload: string) => ({
+   type: CONSTANTS.ADD_FRIEND,
+   payload,
+});
+
+export const addFriendSuccess = (payload: string) => ({
+   type: CONSTANTS.ADD_FRIEND_SUCCESS,
+   payload,
+});
+
+export const addFriendFailure = (payload: any) => ({
+   type: CONSTANTS.ADD_FRIEND_FAILURE,
+   payload,
+});
+
 // POSTS
 export const getPosts = () => ({ type: CONSTANTS.GET_POSTS });
 export const getPostsSuccess = (payload: Array<Post>) => ({

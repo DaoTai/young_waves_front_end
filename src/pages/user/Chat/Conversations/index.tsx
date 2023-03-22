@@ -54,6 +54,7 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
    const {
       payload: { currentPage, maxPage, users },
    } = useSelector(usersState$);
+
    const [listChat, setListChat] = useState<Array<Profile>>(users);
    const [searchValue, setSearchValue] = useState<string>("");
    const [page, setPage] = useState<number>(currentPage);
@@ -100,7 +101,7 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
 
             {/* List chat */}
             <Box>
-               {listChat.map((chat, index) => (
+               {listChat?.map((chat, index) => (
                   <Stack
                      key={index}
                      flexDirection="row"

@@ -1,13 +1,14 @@
+import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, Fab, Grid, Typography, useTheme } from "@mui/material";
+import { Button, Fab, Grid, Typography, useTheme } from "@mui/material";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authState$ } from "../../../../redux-saga/redux/selectors";
-import { Profile } from "../../../../utils/interfaces/Profile";
 import { ImageInput } from "../../../../components";
+import { addFriend, updateProfile } from "../../../../redux-saga/redux/actions";
+import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
+import { Profile } from "../../../../utils/interfaces/Profile";
 import Avatar from "./Avatar";
-import { updateProfile } from "../../../../redux-saga/redux/actions";
 const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
    const theme = useTheme();
    const navigate = useNavigate();
@@ -18,11 +19,19 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
          },
       },
    } = useSelector(authState$);
+   const { payload } = useSelector(profileState$);
    const dispatch = useDispatch();
    const imageRef = useRef(Object(null));
+
+   // Change cover picture
    const handleChangeCoverPicture = (file) => {
       imageRef.current.src = file;
       dispatch(updateProfile({ coverPicture: file, _id: user._id }));
+   };
+
+   // Add friend
+   const handleAddFriend = () => {
+      dispatch(addFriend(user._id));
    };
 
    return (
@@ -76,8 +85,12 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
                variant="subtitle1"
                fontWeight={600}
                sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
-               {user?.totalPosts > 1 ? user?.totalPosts + " posts" : user?.totalPosts + " post"}
+               {user?.totalPosts && user?.totalPosts > 1
+                  ? user?.totalPosts + " posts"
+                  : user?.totalPosts + " post"}
             </Typography>
+
+            {/* Show button edit */}
             {_id === user?._id && (
                <Button
                   sx={{
@@ -93,6 +106,20 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
                   endIcon={<EditIcon />}
                   onClick={() => navigate("/user/profile/edit")}>
                   Edit profile
+               </Button>
+            )}
+            {/* Show button add friend */}
+            {_id !== user?._id && !payload?.friends?.includes(user?._id) && (
+               <Button
+                  sx={{
+                     mt: 2,
+                     color: theme.myColor.white,
+                  }}
+                  size="large"
+                  variant="contained"
+                  endIcon={<AddIcon />}
+                  onClick={handleAddFriend}>
+                  Add friend
                </Button>
             )}
          </Grid>
