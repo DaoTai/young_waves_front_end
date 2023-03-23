@@ -2,10 +2,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import AddIcon from "@mui/icons-material/Add";
 import {
    Avatar,
    Box,
    Button,
+   ButtonGroup,
    Dialog,
    DialogActions,
    DialogContent,
@@ -30,7 +32,7 @@ import * as api from "../../../apis";
 import { showAlert } from "../../../redux-saga/redux/actions";
 import { Profile } from "../../../utils/interfaces/Profile";
 import DetailUser from "./Detail";
-
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const theme = useTheme();
    const dispatch = useDispatch();
@@ -44,6 +46,11 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    // close detail modal
    const onClose = useCallback(() => {
       setShowDetail(false);
+   }, []);
+
+   // close confirm delete dialog
+   const onCloseDeleteDialog = useCallback(() => {
+      setShowDialog(false);
    }, []);
 
    useEffect(() => {
@@ -240,15 +247,22 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             Users
          </Typography>
          {/* Select role  */}
-         <Stack p={2} flexDirection="row" justifyContent="space-between" gap={2}>
-            <Tooltip title="Trash Store">
-               <Fab color="info">
-                  <RestoreFromTrashIcon
-                     sx={{ color: theme.palette.primary.main }}
-                     onClick={goToTrashes}
-                  />
-               </Fab>
-            </Tooltip>
+         <Stack mt={2} mb={2} flexDirection="row" justifyContent="space-between" gap={2}>
+            <Stack flexDirection="row" gap={4}>
+               <Tooltip title="Trash Store">
+                  <Fab color="info" size="medium">
+                     <RestoreFromTrashIcon
+                        sx={{ color: theme.palette.primary.main }}
+                        onClick={goToTrashes}
+                     />
+                  </Fab>
+               </Tooltip>
+               <Tooltip title="Add user">
+                  <Fab color="success" size="medium">
+                     <AddIcon sx={{ color: theme.myColor.white }} onClick={goToTrashes} />
+                  </Fab>
+               </Tooltip>
+            </Stack>
             <FormControl sx={{ width: 200 }}>
                <InputLabel id="demo-simple-select-label">Role</InputLabel>
                <Select value={role} label="Selection" onChange={handleChangeRole}>
@@ -259,7 +273,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          </Stack>
 
          {users && (
-            <Box width="100%" height={500}>
+            <Box width="100%" height="100vh">
                <DataGrid
                   rows={users as Array<Profile>}
                   columns={columns}
@@ -270,8 +284,8 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   hideFooterSelectedRowCount
                   components={{
                      NoRowsOverlay: () => (
-                        <Typography p={2} textAlign="center">
-                           Empty list
+                        <Typography p={2} letterSpacing={2} textAlign="center">
+                           No user
                         </Typography>
                      ),
                   }}
@@ -283,24 +297,12 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          {user && <DetailUser user={user} open={showDetail} onClose={onClose} />}
 
          {/* Dialog confirm delete */}
-         <Dialog fullWidth open={showDialog} onClose={() => setShowDialog(false)}>
-            <DialogTitle id="alert-dialog-title">
-               Are you sure to delete <b>{user?.fullName}</b>?
-            </DialogTitle>
-            <DialogContent>
-               <DialogContentText id="alert-dialog-description">
-                  You still can restore user in Trash Store when you deleted
-               </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-               <Button variant="outlined" onClick={() => setShowDialog(false)}>
-                  Disagree
-               </Button>
-               <Button variant="contained" color="error" onClick={handleDeleteUser} autoFocus>
-                  Agree
-               </Button>
-            </DialogActions>
-         </Dialog>
+         <ConfirmDeleteDialog
+            open={showDialog}
+            user={user}
+            onSubmit={handleDeleteUser}
+            onClose={onCloseDeleteDialog}
+         />
       </>
    );
 };

@@ -120,7 +120,8 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
 // Add friend
 function* addFriend(action: { type: string; payload: string }) {
    try {
-      const res = yield call(api.user.addFriend, action.payload);
+      yield call(api.user.addFriend, action.payload);
+      yield call(api.conversation.addConversation, action.payload);
       yield put(ACTIONS.addFriendSuccess(action.payload));
    } catch (err) {
       console.error(err);

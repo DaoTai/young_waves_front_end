@@ -1,4 +1,4 @@
 export interface ChatContext {
    showChatBox: boolean;
-   handleShowChatBox: () => void;
+   handleShowChatBox: (id: string) => void;
 }

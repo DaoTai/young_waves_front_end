@@ -11,7 +11,7 @@ import { Profile } from "../../../../utils/interfaces/Profile";
 const Introduction = ({ user }: { user: Partial<Profile> }) => {
    const theme = useTheme();
    return (
-      <Box p={1} boxShadow={1} borderRadius={1} bgcolor={theme.myColor.white}>
+      <Box p={1} boxShadow={1} borderRadius={2} bgcolor={theme.myColor.white}>
          <Typography variant="h5" textAlign="center" p={1} borderBottom={1}>
             Introduction
          </Typography>

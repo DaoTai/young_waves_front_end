@@ -46,7 +46,7 @@ const Actions = ({ news }: { news: Post }) => {
             <Stack flexDirection="column" justifyContent="space-between">
                {news.likes?.length > 0 && <Chip variant="outlined" label={totalLikes} />}
                <Checkbox
-                  sx={{ padding: "14px" }}
+                  sx={{ padding: "14px", zoom: 1.2 }}
                   icon={<FavoriteBorderIcon />}
                   checked={like}
                   onChange={() => setLike(!like)}

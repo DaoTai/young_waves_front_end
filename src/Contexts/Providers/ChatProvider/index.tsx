@@ -1,23 +1,31 @@
-import { createContext, useState, useCallback, ProviderProps } from "react";
+import { useState, useEffect } from "react";
 import { ChatBox } from "../../../components";
 import { ChatContext } from "../../index";
 const ChatProvider = ({ children }) => {
    const [showChatBox, setShowChatBox] = useState<boolean>(false);
+   const [idConversation, setIdConversation] = useState<string>("");
    const onCloseChatBox = () => {
       setShowChatBox(false);
    };
 
-   const handleShowChatBox = () => {
+   const handleShowChatBox = (id: string) => {
       setShowChatBox(true);
+      id && setIdConversation(id);
    };
+
    const value = {
       showChatBox,
       handleShowChatBox,
    };
+
    return (
       <ChatContext.Provider value={value}>
          {children}
-         <ChatBox visibility={showChatBox} onClose={onCloseChatBox} />
+         <ChatBox
+            visibility={showChatBox}
+            idConversation={idConversation}
+            onClose={onCloseChatBox}
+         />
       </ChatContext.Provider>
    );
 };

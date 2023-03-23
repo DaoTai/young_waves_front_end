@@ -32,31 +32,31 @@ const Friends = () => {
    }, [page]);
    return (
       <Box>
-         <Search
-            fullWidth
-            autoComplete="off"
-            value={value}
-            spellCheck={false}
-            placeholder="Search..."
-            sx={{ border: 1, borderColor: theme.myColor.textSecondary }}
-            endAdornment={
-               <Stack flexDirection="row" alignItems="center">
-                  <ClearButton position="end">
-                     <CloseIcon />
-                  </ClearButton>
-                  <SearchButton position="end">
-                     <SearchIcon />
-                  </SearchButton>
-               </Stack>
-            }
-            onChange={(e) => setValue(e.target.value)}
-         />
          {friends.length > 0 ? (
             <>
+               <Search
+                  fullWidth
+                  autoComplete="off"
+                  value={value}
+                  spellCheck={false}
+                  placeholder="Search..."
+                  sx={{ border: 1, borderColor: theme.myColor.textSecondary }}
+                  endAdornment={
+                     <Stack flexDirection="row" alignItems="center">
+                        <ClearButton position="end">
+                           <CloseIcon />
+                        </ClearButton>
+                        <SearchButton position="end">
+                           <SearchIcon />
+                        </SearchButton>
+                     </Stack>
+                  }
+                  onChange={(e) => setValue(e.target.value)}
+               />
                <Stack mt={1} gap={1} flexDirection="row" flexWrap="wrap">
-                  {friends.map((friend: Profile) => (
+                  {friends.map((friend: Profile, index) => (
                      <Stack
-                        key={friend._id}
+                        key={index}
                         flexDirection="row"
                         gap={2}
                         p={2}
@@ -84,16 +84,28 @@ const Friends = () => {
                </Stack>
 
                {showLoadMore && (
-                  <Button
-                     variant="outlined"
-                     sx={{ display: "block", margin: "16px auto" }}
+                  <Typography
+                     variant="body1"
+                     component="h5"
+                     textAlign="center"
+                     color="primary"
+                     p={1}
+                     sx={{ cursor: "pointer" }}
                      onClick={() => setPage((prev) => prev + 1)}>
                      Load more
-                  </Button>
+                  </Typography>
                )}
             </>
          ) : (
-            <Typography>No friend</Typography>
+            <Typography
+               variant="subtitle1"
+               textAlign="center"
+               p={2}
+               letterSpacing={2}
+               fontSize={18}>
+               No friend <br />
+               <Link to="/user/explore">Let's add friends</Link>
+            </Typography>
          )}
       </Box>
    );

@@ -8,7 +8,7 @@ import { io, Socket } from "socket.io-client";
 import BaseInput from "../BaseInput";
 import { Body, Floating, Footer, Heading, MyChatBox } from "./styles";
 interface MyChatBoxProps {
-   data?: Array<any>;
+   idConversation: string;
    visibility?: boolean;
    onClose?: () => void;
 }
@@ -20,12 +20,14 @@ interface ISocket extends Socket {
 }
 
 const host = "http://localhost:8001";
-const ChatBox = ({ visibility, data = [], onClose = () => {} }: MyChatBoxProps) => {
+const ChatBox = ({ visibility, idConversation, onClose = () => {} }: MyChatBoxProps) => {
+   console.log("hi: ", idConversation);
+
    const bodyRef = useRef<HTMLDivElement>(null);
    const messageRef = useRef<HTMLDivElement>();
    const socketRef = useRef<Socket>();
    const [hide, setHide] = useState<boolean>(false);
-   const [messages, setMessages] = useState(data ?? []);
+   const [messages, setMessages] = useState<any[]>([]);
    const [message, setMessage] = useState<string>("");
    const [id, setId] = useState<string>("");
 
