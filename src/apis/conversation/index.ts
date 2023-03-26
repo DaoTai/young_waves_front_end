@@ -9,3 +9,7 @@ export const addConversation = async (idFriend: string) => {
 export const getAllConversation = async () => {
    return await axiosInstance.get("/");
 };
+
+export const getDetailConversation = async (id: string) => {
+   return await axiosInstance.get(`/${id}`);
+};

@@ -1,9 +1,10 @@
 import { Paper, styled, Stack, Avatar } from "@mui/material";
 
 export const MyChatBox = styled(Paper)(({ theme }) => ({
-   position: "fixed",
-   right: 0,
-   bottom: 0,
+   // position: "fixed",
+   // right: 3,
+   // bottom: 0,
+   position: "relative",
    width: "328px",
    height: "455px",
    maxHeight: "460px",
@@ -38,9 +39,9 @@ export const Heading = styled(Stack)(({ theme }) => ({
 }));
 
 export const Body = styled(Stack)(({ theme }) => ({
-   padding: "55px 0",
+   padding: "55px 0 60px",
    maxHeight: "100%",
-   overflowY: "scroll",
+   overflowY: "auto",
 }));
 
 export const Footer = styled(Stack)(({ theme }) => ({
@@ -53,13 +54,13 @@ export const Footer = styled(Stack)(({ theme }) => ({
    flexDirection: "row",
    justifyContent: "space-between",
    alignItems: "center",
-   boxShadow: "1px 0px 4px rgba(0,0,0,0.2)",
    color: theme.myColor.text,
    backgroundColor: theme.myColor.white,
    ".MuiInputBase-root": {
       boxShadow: "0px 0px 4px rgba(0,0,0,0.1)",
       flexGrow: 2,
-      borderRadius: 12,
+      borderRadius: 0,
+      outlined: 0,
    },
    "#send-icon": {
       color: theme.palette.primary.main,
@@ -68,7 +69,7 @@ export const Footer = styled(Stack)(({ theme }) => ({
       height: 42,
       padding: 8,
       cursor: "pointer",
-      boxShadow: "0px 0px 2px rgba(0,0,0,0.2)",
+      transition: "0.3s linear all",
       "&:hover": {
          boxShadow: "0px 0px 2px rgba(0,0,0,0.3)",
          opacity: 0.8,

@@ -80,7 +80,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
       <>
          {/* Form */}
          <form autoComplete="off" onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
+            <Grid container columnSpacing={2}>
                {/* Text fields */}
                {textFields.map((props: any, i: number) => {
                   return (

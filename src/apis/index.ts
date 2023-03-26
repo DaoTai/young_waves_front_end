@@ -5,3 +5,4 @@ export * as comment from "./comment";
 export * as like from "./like";
 export * as admin from "./admin";
 export * as conversation from "./conversation";
+export * as message from "./message";

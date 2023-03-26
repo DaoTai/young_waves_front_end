@@ -4,7 +4,7 @@ import { Button, Fab, Grid, Typography, useTheme } from "@mui/material";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ImageInput } from "../../../../components";
+import { ImageInput, Spinner } from "../../../../components";
 import { addFriend, updateProfile } from "../../../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -19,7 +19,8 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
          },
       },
    } = useSelector(authState$);
-   const { payload } = useSelector(profileState$);
+   const { isLoading, payload } = useSelector(profileState$);
+   const check = useSelector(profileState$);
    const dispatch = useDispatch();
    const imageRef = useRef(Object(null));
 
@@ -35,95 +36,102 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
    };
 
    return (
-      <Grid
-         container
-         p={1}
-         gap={4}
-         width="100%"
-         minHeight={350}
-         alignItems="center"
-         overflow="hidden"
-         position="relative"
-         sx={
-            user?.coverPicture
-               ? {
-                    backgroundImage: `url(${user?.coverPicture})`,
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                 }
-               : { backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)` }
-         }>
-         {/* Button change cover picture */}
-         {_id === user?._id && (
-            <Fab
-               size="small"
-               sx={{
-                  backgroundColor: theme.myColor.white,
-                  position: "absolute",
-                  top: 5,
-                  right: 5,
-                  transform: "translate(-5px, 5px)",
-                  boxShadow: "none",
-               }}>
-               <ImageInput onChange={handleChangeCoverPicture} />
-            </Fab>
-         )}
-         {/* Avatar */}
-         <Grid item>
-            <Avatar user={user} />
-         </Grid>
-         {/* Name & total posts */}
-         <Grid item>
-            <Typography
-               variant="h4"
-               fontWeight={600}
-               sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
-               {user?.fullName}
-            </Typography>
-            <Typography
-               variant="subtitle1"
-               fontWeight={600}
-               sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
-               {user?.totalPosts && user?.totalPosts > 1
-                  ? user?.totalPosts + " posts"
-                  : user?.totalPosts + " post"}
-            </Typography>
-
-            {/* Show button edit */}
+      <>
+         <Grid
+            container
+            p={1}
+            gap={4}
+            width="100%"
+            minHeight={350}
+            alignItems="center"
+            overflow="hidden"
+            position="relative"
+            sx={
+               user?.coverPicture
+                  ? {
+                       backgroundImage: `url(${user?.coverPicture})`,
+                       backgroundPosition: "center",
+                       backgroundSize: "cover",
+                       backgroundRepeat: "no-repeat",
+                    }
+                  : {
+                       backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)`,
+                    }
+            }>
+            {/* Button change cover picture */}
             {_id === user?._id && (
-               <Button
+               <Fab
+                  size="small"
                   sx={{
-                     mt: 2,
-                     color: theme.myColor.white,
-                     "&:hover": {
-                        color: theme.myColor.text,
-                        backgroundColor: theme.myColor.white,
-                     },
-                  }}
-                  size="large"
-                  variant="outlined"
-                  endIcon={<EditIcon />}
-                  onClick={() => navigate("/user/profile/edit")}>
-                  Edit profile
-               </Button>
+                     backgroundColor: theme.myColor.white,
+                     position: "absolute",
+                     top: 5,
+                     right: 5,
+                     transform: "translate(-5px, 5px)",
+                     boxShadow: "none",
+                  }}>
+                  <ImageInput onChange={handleChangeCoverPicture} />
+               </Fab>
             )}
-            {/* Show button add friend */}
-            {_id !== user?._id && !payload?.friends?.includes(user?._id) && (
-               <Button
-                  sx={{
-                     mt: 2,
-                     color: theme.myColor.white,
-                  }}
-                  size="large"
-                  variant="contained"
-                  endIcon={<AddIcon />}
-                  onClick={handleAddFriend}>
-                  Add friend
-               </Button>
-            )}
+            {/* Avatar */}
+            <Grid item>
+               <Avatar user={user} />
+            </Grid>
+            {/* Name & total posts */}
+            <Grid item>
+               <Typography
+                  variant="h4"
+                  fontWeight={600}
+                  sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
+                  {user?.fullName}
+               </Typography>
+               <Typography
+                  variant="subtitle1"
+                  fontWeight={600}
+                  sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
+                  {user?.totalPosts && user?.totalPosts > 1
+                     ? user?.totalPosts + " posts"
+                     : user?.totalPosts + " post"}
+               </Typography>
+
+               {/* Show button edit */}
+               {_id === user?._id && (
+                  <Button
+                     sx={{
+                        mt: 2,
+                        color: theme.myColor.white,
+                        "&:hover": {
+                           color: theme.myColor.text,
+                           backgroundColor: theme.myColor.white,
+                        },
+                     }}
+                     size="large"
+                     variant="outlined"
+                     endIcon={<EditIcon />}
+                     onClick={() => navigate("/user/profile/edit")}>
+                     Edit profile
+                  </Button>
+               )}
+               {/* Show button add friend */}
+               {_id !== user?._id && !payload?.friends?.includes(user?._id) && (
+                  <Button
+                     sx={{
+                        mt: 2,
+                        color: theme.myColor.white,
+                     }}
+                     size="large"
+                     variant="contained"
+                     endIcon={<AddIcon />}
+                     onClick={handleAddFriend}>
+                     Add friend
+                  </Button>
+               )}
+            </Grid>
          </Grid>
-      </Grid>
+
+         {/* Spinner */}
+         <Spinner show={isLoading} />
+      </>
    );
 };
 

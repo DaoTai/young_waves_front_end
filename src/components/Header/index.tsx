@@ -29,9 +29,6 @@ const Header = () => {
                   <Messenger />
                </Grid>
 
-               {/* Switch button change theme */}
-               <Grid item>{/* <SwitchTheme /> */}</Grid>
-
                {/* Toggle */}
                <Grid item>
                   <Actions />

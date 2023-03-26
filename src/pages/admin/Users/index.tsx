@@ -17,6 +17,7 @@ import {
    FormControl,
    InputLabel,
    MenuItem,
+   Modal,
    Select,
    SelectChangeEvent,
    Stack,
@@ -33,6 +34,7 @@ import { showAlert } from "../../../redux-saga/redux/actions";
 import { Profile } from "../../../utils/interfaces/Profile";
 import DetailUser from "./Detail";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
+import AddMember from "../AddMember";
 const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const theme = useTheme();
    const dispatch = useDispatch();
@@ -42,7 +44,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const [isLoading, setLoading] = useState<boolean>(false);
    const [showDetail, setShowDetail] = useState<boolean>(false);
    const [showDialog, setShowDialog] = useState<boolean>(false);
-
+   const [showModal, setShowModal] = useState<boolean>(false);
    // close detail modal
    const onClose = useCallback(() => {
       setShowDetail(false);
@@ -259,10 +261,15 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                </Tooltip>
                <Tooltip title="Add user">
                   <Fab color="success" size="medium">
-                     <AddIcon sx={{ color: theme.myColor.white }} onClick={goToTrashes} />
+                     <AddIcon
+                        sx={{ color: theme.myColor.white }}
+                        onClick={() => setShowModal(true)}
+                     />
                   </Fab>
                </Tooltip>
             </Stack>
+
+            {/* Roles */}
             <FormControl sx={{ width: 200 }}>
                <InputLabel id="demo-simple-select-label">Role</InputLabel>
                <Select value={role} label="Selection" onChange={handleChangeRole}>
@@ -303,6 +310,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             onSubmit={handleDeleteUser}
             onClose={onCloseDeleteDialog}
          />
+         <Modal open={showModal} onClose={() => setShowModal(false)}>
+            <AddMember onClose={() => setShowModal(false)} />
+         </Modal>
       </>
    );
 };

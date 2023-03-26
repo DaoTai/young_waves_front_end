@@ -22,9 +22,9 @@ const Member = () => {
          const newses = await getOwnerPosts(id as string);
          setUser(profile.data);
          setListNews(newses.data);
+         setShow(false);
       })();
-      setShow(false);
-   }, []);
+   }, [id]);
 
    return (
       <>
