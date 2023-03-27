@@ -1,36 +1,31 @@
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SendIcon from "@mui/icons-material/Send";
-import { Avatar, Chip, ListItem, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Chip, ListItem, Paper, Stack, Typography, useTheme } from "@mui/material";
 import { memo, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
-import * as api from "../../apis";
-import { authState$ } from "../../redux-saga/redux/selectors";
-import { Profile } from "../../utils/interfaces/Profile";
-import BaseInput from "../BaseInput";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
+import * as api from "../../../../apis";
+import { BaseInput } from "../../../../components";
 import { Body, Floating, Footer, Heading, MyChatBox } from "./styles";
+import { Profile } from "../../../../utils/interfaces/Profile";
 interface MyChatBoxProps {
    conversation: Partial<{ idConversation: string; friend: Partial<Profile> }>;
    visibility?: boolean;
    onClose?: (idConversation: string) => void;
 }
 
-interface ISocket extends Socket {
-   name?: string;
-   // other additional attributes here, example:
-   // surname?: string;
-}
-
 interface Message {
-   idConversation: string;
+   idConversation?: string;
    sender: string;
    text: string;
 }
 
 const host = "http://localhost:8001";
 const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyChatBoxProps) => {
+   const theme = useTheme();
    const { payload } = useSelector(authState$);
    const idUser = payload?.data?.user?._id;
    const bodyRef = useRef<HTMLDivElement>(null);
@@ -43,15 +38,24 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
    // Work with socket
    useEffect(() => {
       socketRef.current = io(host);
-      socketRef.current.emit("addUser", idUser);
-
-      socketRef.current.on("getMessage", (dataGot) => {
-         setMessages((oldMsgs) => [...oldMsgs, dataGot]);
+      socketRef.current.emit("addUser", idUser, conversation.idConversation);
+      socketRef.current.on("getMessage", (dataGot: { idSender: string; text: string }) => {
+         if (dataGot.idSender === conversation.friend?._id) {
+            const newMessage: Message = {
+               sender: dataGot.idSender,
+               text: dataGot.text,
+            };
+            setMessages((oldMsgs) => [...oldMsgs, newMessage]);
+         }
       });
       return () => {
          socketRef.current?.disconnect();
       };
    }, []);
+
+   useEffect(() => {
+      // console.log("Messages: ", messages);
+   }, [messages]);
 
    // Call api to get messages
    useEffect(() => {
@@ -80,6 +84,7 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
          socketRef.current?.emit("sendMessage", {
             idSender: idUser,
             idReceiver: conversation.friend?._id,
+            idConversation: conversation.idConversation,
             text: message.trim(),
          });
          try {
@@ -144,17 +149,32 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
                      {/* Body */}
                      <Body ref={bodyRef}>
                         {messages.map((chat, index) => {
-                           return chat.sender === idUser ? (
-                              <Stack key={index} alignItems="flex-end" p={0.25}>
-                                 <Chip
-                                    label={chat.text}
-                                    variant="outlined"
-                                    sx={{ backgroundColor: "pink" }}
-                                 />
-                              </Stack>
-                           ) : (
-                              <Stack key={index} alignItems="flex-start" p={0.25}>
-                                 <Chip label={chat.text} variant="outlined" />
+                           return (
+                              <Stack
+                                 key={index}
+                                 flexWrap="wrap"
+                                 alignItems={chat.sender === idUser ? "flex-end" : "flex-start"}
+                                 p={1.5}>
+                                 <Typography
+                                    variant="body1"
+                                    component={
+                                       chat.text.includes("https://www") ||
+                                       chat.text.includes("http://www")
+                                          ? "a"
+                                          : "div"
+                                    }
+                                    href={chat.text}
+                                    target="_blank"
+                                    p={1}
+                                    borderRadius={4}
+                                    sx={{
+                                       bgcolor:
+                                          chat.sender === idUser
+                                             ? theme.palette.primary.main
+                                             : theme.myColor.bgGray,
+                                    }}>
+                                    {chat.text}
+                                 </Typography>
                               </Stack>
                            );
                         })}

@@ -1,5 +1,4 @@
-import { FormatConversation } from "../../../pages/user/Chat/Conversations";
+import { FormatConversation } from "../../interfaces/Chat";
 export interface ChatContext {
-   showChatBox: boolean;
    handleShowChatBox: (data: Partial<FormatConversation>) => void;
 }

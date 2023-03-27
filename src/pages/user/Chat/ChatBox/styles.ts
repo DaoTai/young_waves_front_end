@@ -6,8 +6,7 @@ export const MyChatBox = styled(Paper)(({ theme }) => ({
    // bottom: 0,
    position: "relative",
    width: "328px",
-   height: "455px",
-   maxHeight: "460px",
+   height: "460px",
    padding: 0,
    boxShadow: theme.shadows[2],
    backgroundColor: theme.myColor.white,
@@ -42,6 +41,7 @@ export const Body = styled(Stack)(({ theme }) => ({
    padding: "55px 0 60px",
    maxHeight: "100%",
    overflowY: "auto",
+   flexDirection: "column",
 }));
 
 export const Footer = styled(Stack)(({ theme }) => ({

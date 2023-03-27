@@ -1,6 +1,6 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Box, Fab, Grid, Modal, Typography, useTheme } from "@mui/material";
+import { Box, Fab, Grid, Modal, Paper, Typography, useTheme } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -80,16 +80,9 @@ const Detail = () => {
       <>
          <Modal open={open} onClose={handleClose}>
             <MyBox>
-               {/* Title */}
-               <Typography
-                  variant="h3"
-                  textAlign="center"
-                  p={2}
-                  borderBottom={1}
-                  sx={{ backgroundColor: theme.myColor.white }}>
-                  Post of {post?.author?.fullName}
-               </Typography>
-               <CloseButton onClick={handleClose} size="large" />
+               <Box p={2} bgcolor={theme.myColor.white}>
+                  <CloseButton onClick={handleClose} size="large" />
+               </Box>
                {/* Body */}
                <Container container>
                   {/* Images */}
@@ -143,7 +136,6 @@ const Detail = () => {
                      pr={2}
                      boxShadow={1}
                      sx={{
-                        maxHeight: "80vh",
                         background: theme.myColor.white,
                         overflowY: "scroll",
                      }}>

@@ -63,10 +63,11 @@ const Friends = () => {
                         boxShadow={2}
                         alignItems="center"
                         justifyContent="space-between"
+                        bgcolor={theme.myColor.white}
                         sx={{
                            width: "calc(50% - 4px)",
                         }}>
-                        <Link to="/">
+                        <Link to={"/user/explore/" + friend._id}>
                            <Avatar
                               variant="square"
                               src={friend.avatar}
@@ -74,7 +75,9 @@ const Friends = () => {
                            />
                         </Link>
                         <Typography flex={2} variant="body1">
-                           <Link to="/" style={{ color: theme.myColor.text }}>
+                           <Link
+                              to={"/user/explore/" + friend._id}
+                              style={{ color: theme.myColor.text }}>
                               {friend.fullName}
                            </Link>
                         </Typography>

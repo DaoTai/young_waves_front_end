@@ -1,11 +1,10 @@
 import { Stack } from "@mui/system";
 import { useState, useEffect } from "react";
-import { ChatBox } from "../../../components";
+import { ChatBox } from "../../../pages/user/Chat";
 import { FormatConversation } from "../../../utils/interfaces/Chat";
 import { Profile } from "../../../utils/interfaces/Profile";
 import { ChatContext } from "../../index";
 const ChatProvider = ({ children }) => {
-   const [showChatBox, setShowChatBox] = useState<boolean>(false);
    const [conversations, setConversations] = useState<Partial<FormatConversation>[]>([]);
    const onCloseChatBox = (idConversation: string) => {
       setConversations((prev) => {
@@ -14,17 +13,15 @@ const ChatProvider = ({ children }) => {
    };
 
    const handleShowChatBox = (data: Partial<FormatConversation>) => {
-      // setShowChatBox(true);
       setConversations((prev) => {
          const showedMessage = prev.some(
             (conversation) => conversation.idConversation === data.idConversation
          );
-         return !showedMessage ? [...prev, data] : prev;
+         return showedMessage ? prev : [...prev, data];
       });
    };
 
    const value = {
-      showChatBox,
       handleShowChatBox,
    };
 
@@ -44,7 +41,6 @@ const ChatProvider = ({ children }) => {
                return (
                   <ChatBox
                      key={conversation.idConversation}
-                     // visibility={showChatBox}
                      conversation={conversation}
                      onClose={onCloseChatBox}
                   />

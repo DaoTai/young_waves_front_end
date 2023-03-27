@@ -1,3 +1,4 @@
+import SendIcon from "@mui/icons-material/Send";
 import { memo, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -12,6 +13,7 @@ import {
    Typography,
    Modal,
    Avatar,
+   useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -22,6 +24,7 @@ import { initDetail, radioFields, textInfoUser } from "../../../auth/SignUp/conf
 import { updateUserOptions } from "../../../user/Profile/Editing/config";
 import { ImageInput, CloseButton, DateTimePicker } from "../../../../components";
 import { WrapAvatar } from "../../../user/Profile/Heading/styles";
+import { Link } from "react-router-dom";
 const DetailUser = ({
    user,
    open,
@@ -31,6 +34,7 @@ const DetailUser = ({
    open: boolean;
    onClose: () => void;
 }) => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const [avatar, setAvatar] = useState<string>("");
    const {
@@ -86,7 +90,13 @@ const DetailUser = ({
             <form autoComplete="off" onSubmit={handleSubmit}>
                <Grid container spacing={2} alignItems="flex-start">
                   {/* Avatar */}
-                  <Grid item md={3} xs={12} display="flex" justifyContent="center">
+                  <Grid
+                     item
+                     md={3}
+                     xs={12}
+                     display="flex"
+                     flexDirection="column"
+                     justifyContent="center">
                      <WrapAvatar>
                         <Avatar
                            variant="square"
@@ -98,8 +108,17 @@ const DetailUser = ({
                               borderRadius: 2,
                            }}
                         />
-                        <ImageInput onChange={handleChangeAvatar} />
                      </WrapAvatar>
+                     <ImageInput onChange={handleChangeAvatar} />
+                     <Typography
+                        variant="body1"
+                        letterSpacing={2}
+                        fontSize={18}
+                        textAlign="center"
+                        mt={2}
+                        sx={{ textDecoration: "underline", color: theme.palette.primary.main }}>
+                        <Link to={`/user/explore/${values._id}`}>Profile</Link>
+                     </Typography>
                   </Grid>
                   <Grid item md={9} xs={12}>
                      <Grid container spacing={2}>
@@ -161,7 +180,8 @@ const DetailUser = ({
                            type="submit"
                            size="large"
                            variant="contained"
-                           sx={{ marginTop: 2 }}>
+                           endIcon={<SendIcon />}
+                           sx={{ marginTop: 2, ml: "auto" }}>
                            Update
                         </Button>
                      </Grid>
