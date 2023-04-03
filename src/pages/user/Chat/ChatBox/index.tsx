@@ -1,7 +1,19 @@
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SendIcon from "@mui/icons-material/Send";
-import { Avatar, Box, Chip, ListItem, Paper, Stack, Typography, useTheme } from "@mui/material";
+import {
+   Avatar,
+   Box,
+   Chip,
+   Input,
+   ListItem,
+   Paper,
+   Stack,
+   TextareaAutosize,
+   TextField,
+   Typography,
+   useTheme,
+} from "@mui/material";
 import { memo, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -26,8 +38,8 @@ interface Message {
 const host = "http://localhost:8001";
 const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyChatBoxProps) => {
    const theme = useTheme();
-   const { payload } = useSelector(authState$);
-   const idUser = payload?.data?.user?._id;
+   const auth$ = useSelector(authState$);
+   const idAuth = auth$.payload?.user?._id;
    const bodyRef = useRef<HTMLDivElement>(null);
    const messageRef = useRef<HTMLDivElement>();
    const socketRef = useRef<Socket>();
@@ -38,24 +50,18 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
    // Work with socket
    useEffect(() => {
       socketRef.current = io(host);
-      socketRef.current.emit("addUser", idUser, conversation.idConversation);
+      socketRef.current.emit("addUser", idAuth, conversation.idConversation);
       socketRef.current.on("getMessage", (dataGot: { idSender: string; text: string }) => {
-         if (dataGot.idSender === conversation.friend?._id) {
-            const newMessage: Message = {
-               sender: dataGot.idSender,
-               text: dataGot.text,
-            };
-            setMessages((oldMsgs) => [...oldMsgs, newMessage]);
-         }
+         const newMessage: Message = {
+            sender: dataGot.idSender,
+            text: dataGot.text,
+         };
+         setMessages((oldMsgs) => [...oldMsgs, newMessage]);
       });
       return () => {
          socketRef.current?.disconnect();
       };
    }, []);
-
-   useEffect(() => {
-      // console.log("Messages: ", messages);
-   }, [messages]);
 
    // Call api to get messages
    useEffect(() => {
@@ -74,15 +80,19 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
 
    // Scroll to bottom when send message
    useEffect(() => {
-      bodyRef.current?.scrollTo(0, 9999);
+      // bodyRef.current?.scrollIntoView({ block: "end", inline: "nearest" });
+      bodyRef.current?.scrollTo(0, 99999999);
+      // bodyRef.current?.scrollIntoView({ behavior: "smooth" });
    }, [messages]);
 
    const toggleHide = () => setHide(!hide);
 
    const handleSendMsg = async () => {
+      bodyRef.current?.scrollTo(0, 99999999);
+      // bodyRef.current?.scrollIntoView({ block: "end", inline: "nearest" });
       if (message.trim()) {
          socketRef.current?.emit("sendMessage", {
-            idSender: idUser,
+            idSender: idAuth,
             idReceiver: conversation.friend?._id,
             idConversation: conversation.idConversation,
             text: message.trim(),
@@ -90,7 +100,7 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
          try {
             const res = await api.message.createMessage({
                idConversation: conversation?.idConversation as string,
-               sender: idUser,
+               sender: idAuth,
                text: message.trim(),
             });
             res.status === 200 && setMessages((prev) => [...prev, res.data]);
@@ -148,36 +158,45 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
 
                      {/* Body */}
                      <Body ref={bodyRef}>
-                        {messages.map((chat, index) => {
-                           return (
-                              <Stack
-                                 key={index}
-                                 flexWrap="wrap"
-                                 alignItems={chat.sender === idUser ? "flex-end" : "flex-start"}
-                                 p={1.5}>
-                                 <Typography
-                                    variant="body1"
-                                    component={
-                                       chat.text.includes("https://www") ||
-                                       chat.text.includes("http://www")
-                                          ? "a"
-                                          : "div"
+                        {messages.length === 0 ? (
+                           <Typography variant="body1" textAlign="center">
+                              You don't have message. <br /> Let's chat each other
+                           </Typography>
+                        ) : (
+                           messages.map((chat, index) => {
+                              return (
+                                 <Stack
+                                    key={index}
+                                    flexDirection="row"
+                                    justifyContent={
+                                       idAuth === chat.sender ? "flex-end" : "flex-start"
                                     }
-                                    href={chat.text}
-                                    target="_blank"
-                                    p={1}
-                                    borderRadius={4}
-                                    sx={{
-                                       bgcolor:
-                                          chat.sender === idUser
-                                             ? theme.palette.primary.main
-                                             : theme.myColor.bgGray,
-                                    }}>
-                                    {chat.text}
-                                 </Typography>
-                              </Stack>
-                           );
-                        })}
+                                    p={1}>
+                                    <Typography
+                                       variant="body1"
+                                       component={chat.text.slice(0, 4) === "http" ? "a" : "p"}
+                                       href={chat.text}
+                                       target="_blank"
+                                       whiteSpace="pre-wrap"
+                                       maxWidth="90%"
+                                       borderRadius={4}
+                                       p={1}
+                                       sx={{
+                                          wordBreak: "break-word",
+                                          bgcolor:
+                                             idAuth === chat.sender
+                                                ? theme.palette.primary.main
+                                                : theme.myColor.bgGray,
+                                          "&[href^='http']": {
+                                             textDecoration: "underline",
+                                          },
+                                       }}>
+                                       {chat.text}
+                                    </Typography>
+                                 </Stack>
+                              );
+                           })
+                        )}
                      </Body>
                      {/* Footer */}
                      <Footer>

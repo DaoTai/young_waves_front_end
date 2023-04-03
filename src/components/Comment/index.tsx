@@ -14,6 +14,7 @@ import {
    DialogContentText,
    DialogTitle,
    InputBase,
+   Paper,
    Popover,
    Stack,
    Typography,
@@ -28,15 +29,15 @@ import { Comment } from "../../utils/interfaces/Comment";
 const MyComment = ({
    comment,
    handleDelete = () => {},
-   handleEdit = () => {},
+   onSubmit = () => {},
 }: {
    comment: Comment;
    handleDelete?: (id: string) => void;
-   handleEdit?: (id: string, updatedComment: string) => void;
+   onSubmit?: (id: string, updatedComment: string) => void;
 }) => {
    const theme = useTheme();
-   const { payload } = useSelector(authState$);
-   const idUser = payload?.data?.user?._id;
+   const auth$ = useSelector(authState$);
+   const idAuth = auth$.payload?.user._id;
    const commentRef = useRef<HTMLDivElement>();
    const bodyCommentRef = useRef<string>(comment?.body);
    const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
@@ -44,10 +45,10 @@ const MyComment = ({
    const [openEditButtons, setOpenEditButtons] = useState<boolean>(false);
    const [value, setValue] = useState<string>(comment.body);
 
+   // Because comment can be empty in first render so must setValue
    useEffect(() => {
-      setValue(comment?.body);
+      setValue(comment.body);
    }, [comment.body]);
-
    // Show Popover to choose options
    const handleShowPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
@@ -89,37 +90,47 @@ const MyComment = ({
 
    // Handle cancel edit comment
    const cancelEditComment = () => {
-      hideEditComment();
       setValue(bodyCommentRef.current);
+      hideEditComment();
    };
 
-   const handleEditComment = () => {
-      handleEdit(comment._id, value);
+   const onSubmitComment = () => {
+      if (value !== comment.body) {
+         onSubmit(comment._id, value);
+      }
       hideEditComment();
    };
 
    return (
       <>
-         <Stack marginBottom={2} flexDirection="row" alignItems="flex-start" sx={{ gap: 2 }}>
+         <Stack marginBottom={2} flexDirection="row" alignItems="flex-start" sx={{ gap: 1 }}>
             {/* Avatar */}
             <Link
                to={
-                  idUser === comment?.user?._id
-                     ? `/user/profile/${idUser}`
+                  idAuth === comment?.user?._id
+                     ? `/user/profile/${auth$.payload?.user._id}`
                      : `/user/explore/${comment?.user?._id}`
                }>
                <Avatar sizes="large" srcSet={comment?.user.avatar} src={comment?.user.avatar} />
             </Link>
             {/* Content */}
-            <Box flexGrow={2} bgcolor={theme.myColor.bgGray} p={1} borderRadius={2}>
+            <Paper sx={{ flex: 2, borderRadius: 2, p: 1 }}>
                {/* Heading */}
                <CardHeader
                   title={
-                     <Typography variant="body1" component="span">
+                     <Typography
+                        variant="body1"
+                        component="span"
+                        sx={{
+                           "&:hover": {
+                              textDecoration: "underline",
+                              textDecorationColor: theme.myColor.link,
+                           },
+                        }}>
                         <Link
                            to={
-                              idUser === comment?.user?._id
-                                 ? `/user/profile/${idUser}`
+                              idAuth === comment?.user?._id
+                                 ? `/user/profile/${auth$.payload?.user._id}`
                                  : `/user/explore/${comment?.user?._id}`
                            }>
                            {comment?.user.fullName}
@@ -127,7 +138,7 @@ const MyComment = ({
                      </Typography>
                   }
                   action={
-                     idUser === comment.user._id && (
+                     idAuth === comment.user._id && (
                         <ButtonBase sx={{ pt: 1, pr: 2, pl: 2, pb: 0 }} onClick={handleShowPopover}>
                            <MoreHorizIcon />
                         </ButtonBase>
@@ -141,7 +152,7 @@ const MyComment = ({
                         {dateFormat(comment?.updatedAt, " mmmm dS, yyyy, h:MM TT")}
                      </Typography>
                   }
-                  sx={{ p: 0, mb: 1 }}
+                  sx={{ p: 0 }}
                />
                {/* Body */}
                <InputBase
@@ -151,6 +162,13 @@ const MyComment = ({
                   maxRows={4}
                   ref={commentRef}
                   value={value}
+                  sx={{
+                     borderBottom: 1,
+                     borderColor: "transparent",
+                     "&:focus-within, &:hover": {
+                        borderColor: theme.palette.primary.main,
+                     },
+                  }}
                   onChange={(e) => setValue(e.target.value)}
                />
                {openEditButtons && (
@@ -161,12 +179,12 @@ const MyComment = ({
                         onClick={cancelEditComment}>
                         Cancel
                      </Button>
-                     <Button variant="contained" onClick={handleEditComment}>
+                     <Button variant="contained" onClick={onSubmitComment}>
                         Update
                      </Button>
                   </Stack>
                )}
-            </Box>
+            </Paper>
 
             {/* Popover options for comment*/}
             <Popover

@@ -33,13 +33,13 @@ const TrashPosts = () => {
    const theme = useTheme();
    const navigate = useNavigate();
    const dispatch = useDispatch();
-   const { isLoading, payload, action } = useSelector(trashPostsState$);
-   const { perPage, maxPage, posts } =
-      (payload as {
-         perPage: number;
-         maxPage: number;
-         posts: Post[];
-      }) ?? {};
+   // const { isLoading, payload, action } = useSelector(trashPostsState$);
+   // const { perPage, maxPage, posts } =
+   //    (payload as {
+   //       perPage: number;
+   //       maxPage: number;
+   //       posts: Post[];
+   //    }) ?? {};
    const [openDialog, setOpenDialog] = useState<boolean>(false);
 
    const [idDelete, setIdDelete] = useState<string>("");
@@ -97,7 +97,7 @@ const TrashPosts = () => {
          <Helmet>
             <title>Trash | Young Waves</title>
          </Helmet>
-         <TableContainer component={Paper} sx={{ overflowX: "scroll" }}>
+         {/* <TableContainer component={Paper} sx={{ overflowX: "scroll" }}>
             <Table>
                <TableHead>
                   <TableRow sx={{ bgcolor: theme.myColor.link }}>
@@ -180,7 +180,7 @@ const TrashPosts = () => {
                   ))}
                </TableBody>
             </Table>
-         </TableContainer>
+         </TableContainer> */}
 
          {/* Dialog */}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
@@ -207,7 +207,7 @@ const TrashPosts = () => {
          </Dialog>
 
          {/* Spinner */}
-         <Spinner show={isLoading} />
+         {/* <Spinner show={isLoading} /> */}
       </>
    );
 };

@@ -3,7 +3,7 @@ import { Button, styled } from "@mui/material";
 export const CloseButton = styled(Button)(({ theme }) => ({
    position: "absolute",
    top: "2%",
-   right: "2%",
+   right: "0",
    zIndex: "99",
    maxHeight: "32px",
    minWidth: "32px",

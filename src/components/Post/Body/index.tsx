@@ -6,6 +6,7 @@ const Body = ({ children, ...props }) => {
    return (
       <Typography
          variant="body1"
+         textAlign="justify"
          color={theme.myColor.text}
          minHeight="5vh"
          p={1}

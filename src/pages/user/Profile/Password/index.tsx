@@ -35,13 +35,7 @@ const Password = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const { isLoading, payload, action, error } = useSelector(profileState$);
-   const {
-      payload: {
-         data: {
-            user: { _id },
-         },
-      },
-   } = useSelector(authState$);
+   const auth$ = useSelector(authState$);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
 
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm } = useFormik(
@@ -49,7 +43,7 @@ const Password = () => {
          initialValues: init,
          validationSchema: changePasswordPassword,
          onSubmit: (values) => {
-            dispatch(changePasswordProfile({ ...values, _id }));
+            dispatch(changePasswordProfile({ ...values, _id: auth$.payload?.user._id }));
          },
       }
    );

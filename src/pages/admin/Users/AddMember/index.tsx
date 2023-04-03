@@ -10,8 +10,8 @@ import {
    useTheme,
 } from "@mui/material";
 import { useState } from "react";
-import Form from "../../auth/SignUp/Form";
-import { CloseButton } from "../../../components";
+import Form from "../../../auth/SignUp/Form";
+import { CloseButton } from "../../../../components";
 const AddMember = ({ onClose }: { onClose: () => void }) => {
    const theme = useTheme();
    const [role, setRole] = useState<string>("User");

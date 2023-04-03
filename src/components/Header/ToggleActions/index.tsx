@@ -42,7 +42,7 @@ const ToggleActions = () => {
                onOpen={toggleDrawer("right", true)}>
                {/* List options */}
                <Box>
-                  <Option to={`/user/profile/${payload?.data?.user._id}`}>
+                  <Option to={`/user/profile/${payload?.user._id}`}>
                      <AccountBoxIcon fontSize="medium" />
                      <Typography variant="subtitle1"> Profile</Typography>
                   </Option>

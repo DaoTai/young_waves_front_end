@@ -1,4 +1,4 @@
-import { Avatar, Grid } from "@mui/material";
+import { Avatar, Grid, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../redux-saga/redux/actions";
@@ -8,41 +8,15 @@ import { Profile } from "../../utils/interfaces/Profile";
 import { ModalRef } from "../../utils/interfaces/Props";
 import MyInput from "../BaseInput";
 import Modal from "./Modal";
-
+import { Post as IPost } from "../../utils/interfaces/Post";
 const Post = () => {
    const dispatch = useDispatch();
+   const [openModal, setOpenModal] = useState(false);
    const user$ = useSelector(profileState$);
-   const {
-      isLoading,
-      payload: { data },
-   } = useSelector(authState$);
-   const auth = data?.user;
-   const [user, setUser] = useState({
-      avatar: "",
-      fullName: "",
-   });
-   const modalRef = useRef<ModalRef>(INIT_STATE.modalRef);
+   const auth$ = useSelector(authState$);
 
-   useEffect(() => {
-      if (Object.keys(user$.payload).length > 0) {
-         setUser(user$.payload);
-      } else {
-         setUser(auth);
-      }
-   }, [auth, user$]);
-   const handleFocus = () => {
-      modalRef.current.handleOpen();
-   };
-
-   const handleSubmit = () => {
-      const { post, images, status } = modalRef.current;
-      dispatch(
-         createPost({
-            body: post.trim(),
-            attachments: images,
-            status: status.trim(),
-         })
-      );
+   const handleSubmit = (post: Partial<IPost>) => {
+      dispatch(createPost(post));
    };
 
    return (
@@ -55,17 +29,23 @@ const Post = () => {
          borderRadius={2}
          sx={{ gap: 4 }}>
          <Grid item>
-            <Avatar src={user?.avatar} sx={{ width: 50, height: 50, boxShadow: 1 }} />
-         </Grid>
-         <Grid item flexGrow={2}>
-            <MyInput
-               readOnly
-               placeholder={`Hi ${user?.fullName}, what do you think?`}
-               sx={{ width: "100%", borderRadius: 5 }}
-               onClick={handleFocus}
+            <Avatar
+               src={user$?.payload?.avatar || auth$?.payload?.user.avatar}
+               sx={{ width: 50, height: 50, boxShadow: 1 }}
             />
          </Grid>
-         <Modal onSubmit={handleSubmit} ref={modalRef} />
+         <Grid
+            item
+            flexGrow={2}
+            sx={{
+               cursor: "text",
+            }}
+            onClick={() => setOpenModal(true)}>
+            <Typography variant="subtitle1" sx={{ color: "#ccc" }}>
+               Hi {user$?.payload?.fullName || auth$?.payload?.user.fullName}. What do you think?
+            </Typography>
+         </Grid>
+         <Modal open={openModal} onClose={() => setOpenModal(false)} onSubmit={handleSubmit} />
       </Grid>
    );
 };

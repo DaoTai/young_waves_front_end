@@ -1,22 +1,13 @@
 import { memo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Box } from "@mui/material";
+import { Backdrop, Box } from "@mui/material";
 const Spinner = ({ show }: { show: boolean }) => {
    return (
       <>
          {show && (
-            <Box
-               sx={{
-                  position: "fixed",
-                  inset: "0 0 0 0",
-                  zIndex: 9999,
-                  backgroundColor: "rgba(0,0,0,0.3)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-               }}>
+            <Backdrop open sx={{ zIndex: 999 }}>
                <CircularProgress />
-            </Box>
+            </Backdrop>
          )}
       </>
    );

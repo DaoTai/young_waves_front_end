@@ -1,9 +1,12 @@
+import { AxiosResponse } from "axios";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../../apis";
 import * as CONSTANTS from "../../utils/constants";
+import { OWNER_POSTS_ACTION, POSTS_ACTION } from "../../utils/enums";
 import { SignIn, SignUp } from "../../utils/interfaces/Auth";
 import { Post } from "../../utils/interfaces/Post";
 import { Profile } from "../../utils/interfaces/Profile";
+import { Comment } from "../../utils/interfaces/Comment";
 import * as ACTIONS from "../redux/actions";
 // Saga
 
@@ -11,9 +14,8 @@ import * as ACTIONS from "../redux/actions";
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
       const res = yield call(api.auth.signInUser, action.payload);
-
       if (res.status === 200) {
-         yield put(ACTIONS.signInSuccess(res));
+         yield put(ACTIONS.signInSuccess(res.data));
          const { password, ...localUser } = action.payload;
          // Remember username to login
          action.payload.isRemember
@@ -123,8 +125,8 @@ function* addFriend(action: { type: string; payload: string }) {
       yield call(api.user.addFriend, action.payload);
       yield call(api.conversation.addConversation, action.payload);
       yield put(ACTIONS.addFriendSuccess(action.payload));
-   } catch (err) {
-      console.error(err);
+   } catch (err: any) {
+      throw new Error(err);
       yield put(ACTIONS.addFriendFailure(err));
    }
 }
@@ -132,10 +134,14 @@ function* addFriend(action: { type: string; payload: string }) {
 // Posts
 function* getPostsSaga() {
    try {
-      const res = yield call(api.post.getPosts);
-      yield put(ACTIONS.getPostsSuccess(res));
-   } catch (err) {
-      yield put(ACTIONS.getPostsFailure(err));
+      const res: AxiosResponse = yield call(api.post.getPosts);
+      if (res.status === 200) {
+         yield put(ACTIONS.getPostsSuccess(res.data));
+      } else {
+         yield put(ACTIONS.getPostsFailure());
+      }
+   } catch (err: any) {
+      throw new Error(err);
    }
 }
 
@@ -143,19 +149,9 @@ function* getPostsSaga() {
 function* getOwnerPostsSaga(action: { type: string; id: string }) {
    try {
       const res = yield call(api.post.getOwnerPosts, action.id);
-      yield put(ACTIONS.getOwnerPostsSuccess(res));
+      yield put(ACTIONS.getOwnerPostsSuccess(res.data));
    } catch (err) {
       yield put(ACTIONS.getOwnerPostsFailure(err));
-   }
-}
-
-// Get detail post
-function* getPostSaga(action: { type: string; payload: string }) {
-   try {
-      const res = yield call(api.post.getDetailPost, action.payload);
-      yield put(ACTIONS.getPostSuccess(res.data));
-   } catch (err) {
-      yield put(ACTIONS.getPostFailure(err));
    }
 }
 
@@ -164,13 +160,13 @@ function* createPostSaga(action: { type: string; payload: Post }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
       if (res.status === 200) {
-         yield put(ACTIONS.createPostSuccess(res));
+         yield put(ACTIONS.createPostSuccess(res.data));
       } else {
          if (res.status === 413) {
             yield put(
                ACTIONS.showAlert({
                   title: "Create post",
-                  message: "Data is invalid",
+                  message: "Data is invalid! Let's try",
                   mode: "warning",
                })
             );
@@ -183,24 +179,17 @@ function* createPostSaga(action: { type: string; payload: Post }) {
                })
             );
          }
-         yield put(ACTIONS.createPostFailure("Create post failed"));
       }
-   } catch (err) {
-      yield put(ACTIONS.createPostFailure(err));
+   } catch (err: any) {
+      throw new Error(err);
    }
 }
 
 // Update post
-function* updatePostSaga(action: {
-   type: string;
-   payload: { id: string; data: Partial<Post>; index: number };
-}) {
+function* updatePostSaga(action: { type: string; payload: Partial<Post> }) {
    try {
-      const { id, data } = action.payload;
-      const { author, ...updateData } = data;
-      yield call(api.post.updatePost, id, updateData);
+      yield call(api.post.updatePost, action.payload);
       yield put(ACTIONS.updatePostSuccess(action.payload));
-      yield put(ACTIONS.getPosts());
    } catch (err) {
       yield put(ACTIONS.updatePostFailure(err));
    }
@@ -217,10 +206,16 @@ function* deletePostSaga(action: { type: string; payload: string }) {
 }
 
 // Create comment
-function* createCommentSaga(action: { type: string; payload: { id: string; comment: string } }) {
+function* createCommentSaga(action: {
+   type: string;
+   payload: { idPost: string; comment: string };
+}) {
    try {
       const res = yield call(api.comment.createComment, action.payload);
-      yield put(ACTIONS.createCommentSuccess(res.data));
+      const newComment = res.data as Comment;
+      yield put(
+         ACTIONS.createCommentSuccess({ idPost: action.payload.idPost, comment: newComment._id })
+      );
    } catch (err) {
       yield put(ACTIONS.createCommentFailure(err));
    }
@@ -233,44 +228,29 @@ function* deleteCommentSaga(action: {
 }) {
    try {
       const res = yield call(api.comment.deleteComment, action.payload);
-      if (res.status === 200) {
-         yield put(ACTIONS.deleteCommentSuccess(action.payload));
-         yield put(
-            ACTIONS.showAlert({
-               title: "Success",
-               message: "Delete comment successfully!",
-               mode: "success",
-            })
-         );
-      } else {
-         yield put(
-            ACTIONS.showAlert({
-               title: "Failure",
-               message: "Delete comment failed!",
-               mode: "error",
-            })
-         );
-      }
+      yield put(ACTIONS.deleteCommentSuccess(action.payload));
    } catch (err) {
       yield put(ACTIONS.deleteCommentFailure(err));
    }
 }
 
-// Like
-function* createLikeSaga(action: { type: string; payload: string }) {
+// Like post
+function* handleLikePost(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.post.likePost, action.payload);
-      if (res.status === 201) {
-         // Like post
-         yield put(ACTIONS.createLikeSuccess(action.payload));
-      }
-      if (res.status === 204) {
-         // Unlike post
-         yield put(ACTIONS.unLikeSuccess(action.payload));
-      }
-      yield put(ACTIONS.getPosts());
+      yield put(ACTIONS.likePostSucess({ idPost: action.payload, idLike: res.data }));
    } catch (err) {
-      yield put(ACTIONS.handleLikeFailure(err));
+      yield put(ACTIONS.likePostFailure(err));
+   }
+}
+
+// Unlike post
+function* handleUnLikePost(action: { type: string; payload: { idPost: string; idLike: string } }) {
+   try {
+      const res = yield call(api.post.unlikePost, action.payload.idPost);
+      yield put(ACTIONS.unLikePostSuccess(action.payload));
+   } catch (err) {
+      yield put(ACTIONS.unLikePostFailure(err));
    }
 }
 
@@ -295,14 +275,14 @@ function* getTrashPosts() {
 }
 
 // Get detail trash post
-function* getDetailTrashPost(action: { type: string; payload: string }) {
-   try {
-      const res = yield call(api.post.getDetailTrashPost, action.payload);
-      yield put(ACTIONS.getPostSuccess(res.data));
-   } catch (err) {
-      yield put(ACTIONS.getPostFailure(err));
-   }
-}
+// function* getDetailTrashPost(action: { type: string; payload: string }) {
+//    try {
+//       const res = yield call(api.post.getDetailTrashPost, action.payload);
+//       yield put(ACTIONS.getPostSuccess(res.data));
+//    } catch (err) {
+//       yield put(ACTIONS.getPostFailure(err));
+//    }
+// }
 
 // Restore post
 function* restorePost(action: { type: string; payload: string }) {
@@ -346,19 +326,18 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.SIGN_OUT, signOutSaga),
       takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),
       takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
-      takeLatest(CONSTANTS.GET_POSTS, getPostsSaga),
+      takeLatest(POSTS_ACTION.GET_POSTS, getPostsSaga),
       takeLatest(CONSTANTS.ADD_FRIEND, addFriend),
-      takeLatest(CONSTANTS.GET_OWNER_POSTS, getOwnerPostsSaga),
-      takeLatest(CONSTANTS.GET_POST, getPostSaga),
-      takeLatest(CONSTANTS.CREATE_POST, createPostSaga),
-      takeLatest(CONSTANTS.UPDATE_POST, updatePostSaga),
-      takeLatest(CONSTANTS.DELETE_POST, deletePostSaga),
-      takeLatest(CONSTANTS.CREATE_COMMENT, createCommentSaga),
-      takeLatest(CONSTANTS.DELETE_COMMENT, deleteCommentSaga),
-      takeLatest(CONSTANTS.HANDLE_LIKE, createLikeSaga),
-      takeLatest(CONSTANTS.GET_ALL_USER, getAllUserSaga),
+      takeLatest(OWNER_POSTS_ACTION.GET_OWNER_POSTS, getOwnerPostsSaga),
+      takeLatest(POSTS_ACTION.CREATE_POST, createPostSaga),
+      takeLatest(POSTS_ACTION.UPDATE_POST, updatePostSaga),
+      takeLatest(POSTS_ACTION.DELETE_POST, deletePostSaga),
+      takeLatest(POSTS_ACTION.COMMENT_POST, createCommentSaga),
+      takeLatest(POSTS_ACTION.DELETE_COMMENT_POST, deleteCommentSaga),
+      takeLatest(POSTS_ACTION.LIKE_POST, handleLikePost),
+      takeLatest(POSTS_ACTION.UNLIKE_POST, handleUnLikePost),
       takeLatest(CONSTANTS.GET_TRASH_POSTS, getTrashPosts),
-      takeLatest(CONSTANTS.GET_TRASH_POST, getDetailTrashPost),
+      // takeLatest(CONSTANTS.GET_TRASH_POST, getDetailTrashPost),
       takeLatest(CONSTANTS.RESTORE_POST, restorePost),
       takeLatest(CONSTANTS.FORCE_DELETE_POST, forceDeletePost),
    ]);

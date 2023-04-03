@@ -30,8 +30,8 @@ export const createPost = async (payload: Post) => {
    return await axios.post(`/`, payload);
 };
 
-export const updatePost = async (id: string, payload: Partial<Post>) => {
-   return await axios.put(`/${id}`, payload);
+export const updatePost = async (payload: Partial<Post>) => {
+   return payload._id && (await axios.put(`/${payload._id}`, payload));
 };
 
 export const restorePost = async (id: string) => {
@@ -46,5 +46,9 @@ export const forceDeletePost = async (id: string) => {
    return await axios.delete(`/${id}/force-delete`);
 };
 export const likePost = async (id: string) => {
-   return await axios.post(`/likes/${id}`);
+   return await axios.post(`/${id}/like`);
+};
+
+export const unlikePost = async (id: string) => {
+   return await axios.post(`/${id}/unlike`);
 };

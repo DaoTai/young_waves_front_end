@@ -1,32 +1,28 @@
 import { Stack } from "@mui/material";
-import { memo, useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { Post, Spinner } from "../../../components";
-import { ChatContext } from "../../../Contexts";
+import { Post } from "../../../components";
 import { getPosts } from "../../../redux-saga/redux/actions";
 import { postsState$ } from "../../../redux-saga/redux/selectors";
 import News from "./News";
 const NewsFeed = () => {
    const dispatch = useDispatch();
-   const { payload } = useSelector(postsState$);
-
+   const posts$ = useSelector(postsState$);
    useEffect(() => {
       dispatch(getPosts());
    }, []);
+
+   //
    return (
       <>
          <Stack direction="column" sx={{ gap: 2 }}>
-            {/* <Weather /> */}
             <Post />
-            <News listNews={payload?.data} />
+            <News posts={posts$.payload} />
          </Stack>
-         {/* Spinner */}
-         {/* <Spinner show={isLoading} /> */}
-
          <Outlet />
       </>
    );
 };
 
-export default memo(NewsFeed);
+export default NewsFeed;

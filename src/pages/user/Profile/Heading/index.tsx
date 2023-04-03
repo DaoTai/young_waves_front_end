@@ -12,15 +12,10 @@ import Avatar from "./Avatar";
 const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
    const theme = useTheme();
    const navigate = useNavigate();
-   const {
-      payload: {
-         data: {
-            user: { _id },
-         },
-      },
-   } = useSelector(authState$);
+   const auth$ = useSelector(authState$);
+   const idAuth = auth$?.payload?.user._id;
    const { isLoading, payload } = useSelector(profileState$);
-   const check = useSelector(profileState$);
+
    const dispatch = useDispatch();
    const imageRef = useRef(Object(null));
 
@@ -59,7 +54,7 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
                     }
             }>
             {/* Button change cover picture */}
-            {_id === user?._id && (
+            {idAuth === user?._id && (
                <Fab
                   size="small"
                   sx={{
@@ -95,7 +90,7 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
                </Typography>
 
                {/* Show button edit */}
-               {_id === user?._id && (
+               {idAuth === user?._id && (
                   <Button
                      sx={{
                         mt: 2,
@@ -113,19 +108,21 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
                   </Button>
                )}
                {/* Show button add friend */}
-               {_id !== user?._id && !payload?.friends?.includes(user?._id) && (
-                  <Button
-                     sx={{
-                        mt: 2,
-                        color: theme.myColor.white,
-                     }}
-                     size="large"
-                     variant="contained"
-                     endIcon={<AddIcon />}
-                     onClick={handleAddFriend}>
-                     Add friend
-                  </Button>
-               )}
+               {idAuth !== user?._id &&
+                  (!payload?.friends?.includes(user?._id) ||
+                     auth$?.payload?.user?.friends.includes(user?._id)) && (
+                     <Button
+                        sx={{
+                           mt: 2,
+                           color: theme.myColor.white,
+                        }}
+                        size="large"
+                        variant="contained"
+                        endIcon={<AddIcon />}
+                        onClick={handleAddFriend}>
+                        Add friend
+                     </Button>
+                  )}
             </Grid>
          </Grid>
 

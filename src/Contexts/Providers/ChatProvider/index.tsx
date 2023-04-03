@@ -1,8 +1,7 @@
 import { Stack } from "@mui/system";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChatBox } from "../../../pages/user/Chat";
 import { FormatConversation } from "../../../utils/interfaces/Chat";
-import { Profile } from "../../../utils/interfaces/Profile";
 import { ChatContext } from "../../index";
 const ChatProvider = ({ children }) => {
    const [conversations, setConversations] = useState<Partial<FormatConversation>[]>([]);

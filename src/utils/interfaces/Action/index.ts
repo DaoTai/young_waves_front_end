@@ -6,11 +6,8 @@ export interface Payload {
 }
 
 export interface SignInPayload {
-   status: number;
-   data: {
-      payload: any;
-      accessToken: string;
-   };
+   payload: null | Profile;
+   accessToken: string;
 }
 
 export interface Action {

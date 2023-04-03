@@ -8,7 +8,7 @@ import Slider from "react-slick";
 
 import { CloseButton, Comment as MyComment, Spinner, PostBody } from "../../../../../components";
 import { getTrashPost } from "../../../../../redux-saga/redux/actions";
-import { postState$ } from "../../../../../redux-saga/redux/selectors";
+// import { postState$ } from "../../../../../redux-saga/redux/selectors";
 import { Post } from "../../../../../utils/interfaces/Post";
 import { Comment } from "../../../../../utils/interfaces/Comment";
 import { settings } from "./config";
@@ -17,11 +17,11 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 const Detail = () => {
    const theme = useTheme();
-   const { isLoading, payload } = useSelector(postState$);
+   // const { isLoading, payload } = useSelector(postState$);
    const { id } = useParams();
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const { post, comments } = (payload as { post: Post; comments: Comment[] }) ?? {};
+   // const { post, comments } = (payload as { post: Post; comments: Comment[] }) ?? {};
    const [open, setOpen] = useState(true);
    const sliderRef = useRef<Slider | null>(null);
    useEffect(() => {
@@ -42,12 +42,12 @@ const Detail = () => {
                   p={2}
                   borderBottom={1}
                   sx={{ backgroundColor: theme.myColor.white }}>
-                  Post of {post?.author?.fullName}
+                  {/* Post of {post?.author?.fullName} */}
                </Typography>
                <CloseButton onClick={handleClose} size="large" />
                <Container container>
                   {/* Images */}
-                  {post?.attachments?.length ? (
+                  {/* {post?.attachments?.length ? (
                      <Grid item md={8} xs={12} position="relative" height="100%" overflow="hidden">
                         <Slider ref={sliderRef} {...settings}>
                            {post?.attachments.map((img, index) => (
@@ -84,12 +84,12 @@ const Detail = () => {
                            </Fab>
                         </ButtonSlide>
                      </Grid>
-                  ) : null}
+                  ) : null} */}
 
                   {/* Content */}
                   <Grid
                      item
-                     md={post?.attachments?.length > 0 ? 4 : 12}
+                     // md={post?.attachments?.length > 0 ? 4 : 12}
                      xs={12}
                      pl={2}
                      pr={2}
@@ -101,11 +101,11 @@ const Detail = () => {
                      }}>
                      <Box m={1} pb={1}>
                         <PostBody bt={1} backgroundColor={theme.myColor.white}>
-                           {post?.body}
+                           {/* {post?.body} */}
                         </PostBody>
                      </Box>
                      {/* List comments */}
-                     <Box mt={2}>
+                     {/* <Box mt={2}>
                         {comments?.length > 0 ? (
                            comments?.map((comment: Comment, index) => {
                               return <MyComment key={index} comment={comment} />;
@@ -113,12 +113,12 @@ const Detail = () => {
                         ) : (
                            <Typography textAlign="center">No comment</Typography>
                         )}
-                     </Box>
+                     </Box> */}
                   </Grid>
                </Container>
             </MyBox>
          </Modal>
-         <Spinner show={isLoading} />
+         {/* <Spinner show={isLoading} /> */}
       </>
    );
 };

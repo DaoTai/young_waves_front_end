@@ -1,12 +1,13 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../redux-saga/redux/store";
+import { Profile } from "../../utils/interfaces/Profile";
 
 let httpClient = (axiosInstance) => {
    axiosInstance.interceptors.request.use(
       function (config) {
-         const authPayload = store.getState()?.auth?.payload;
-         const jsonData = JSON.parse(JSON.stringify(authPayload));
-         const accessToken = jsonData?.data.accessToken;
+         const authPayload: { user: Profile; accessToken: string } =
+            store.getState()?.auth?.payload;
+         const accessToken = authPayload.accessToken;
          config.headers.token = "Bearer " + accessToken;
          return config;
       },

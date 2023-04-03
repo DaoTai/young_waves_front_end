@@ -26,23 +26,20 @@ import { PostModal } from "../../../../../components";
 import { deletePost, updatePost } from "../../../../../redux-saga/redux/actions";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { INIT_STATE } from "../../../../../utils/constants";
-import { HeadingNewsProps, ModalRef } from "../../../../../utils/interfaces/Props";
-const Heading = ({
-   news,
-   author,
-   createdAt = "",
-   indexNews,
-   showAction = false,
-}: HeadingNewsProps) => {
+import { Post } from "../../../../../utils/interfaces/Post";
+
+export interface HeadingNewsProps {
+   post: Post;
+   showAction?: boolean;
+}
+
+const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
    const theme = useTheme();
    const dispatch = useDispatch();
-   const {
-      payload: { data },
-   } = useSelector(authState$);
-   const idUser = data?.user?._id;
+   const auth$ = useSelector(authState$);
    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
-   const modalRef = useRef<ModalRef>(INIT_STATE.modalRef);
+   const [openPostModal, setOpenPostModal] = useState<boolean>(false);
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
       setAnchorEl(event.currentTarget);
@@ -52,28 +49,28 @@ const Heading = ({
    };
 
    const handleCopyLinkPost = () => {
-      navigator.clipboard.writeText(`${window.location.origin}/news/${news._id}`);
+      navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
       handleClose();
    };
 
-   const handleShowModal = () => {
+   const handleShowEditModal = () => {
       handleClose();
-      const { setImages, setPost, setStatus, handleOpen } = modalRef.current;
-      handleOpen();
-      setImages(news?.attachments);
-      setPost(news?.body);
-      setStatus(news?.status);
+      setOpenPostModal(true);
+      // const { setImages, setPost, setStatus, handleOpen } = modalRef.current as ModalRef;
+      // setImages(post?.attachments);
+      // setPost(post?.body);
+      // setStatus(post?.status);
    };
 
-   const handleUpdate = useCallback(() => {
-      const { images, post, status } = modalRef.current;
-      const data = {
-         ...news,
-         attachments: images,
-         body: post,
-         status,
-      };
-      dispatch(updatePost({ id: news._id, data, index: indexNews as number }));
+   const handleUpdate = useCallback(
+      (updatedPost: Partial<Post>) => {
+         dispatch(updatePost({ ...updatedPost, _id: post._id }));
+      },
+      [post]
+   );
+
+   const onClosePostModal = useCallback(() => {
+      setOpenPostModal(false);
    }, []);
 
    const handleDelete = (id: string) => {
@@ -85,10 +82,10 @@ const Heading = ({
       <>
          <CardHeader
             avatar={
-               <Link to={`/user/explore/${author?._id}`}>
+               <Link to={`/user/explore/${post?.author._id}`}>
                   <Avatar
-                     src={author?.avatar}
-                     srcSet={author?.avatar}
+                     src={post?.author.avatar}
+                     srcSet={post?.author.avatar}
                      alt="avatar"
                      sx={{ width: 50, height: 50, boxShadow: 1 }}
                   />
@@ -103,21 +100,21 @@ const Heading = ({
             }
             title={
                <Typography variant="body1">
-                  <Link to={`/user/explore/${author?._id}`}>{author?.fullName}</Link>
+                  <Link to={`/user/explore/${post?.author?._id}`}>{post?.author?.fullName}</Link>
                </Typography>
             }
             subheader={
                <>
-                  {news?.status && (
+                  {post?.status && (
                      <Typography pr={1} variant="body2" component="span">
-                        I'm feeling {news?.status?.toLocaleLowerCase()}
+                        I'm feeling {post?.status?.toLocaleLowerCase()}
                      </Typography>
                   )}
                   <Typography
                      variant="body2"
                      component="span"
                      sx={{ color: theme.myColor.textSecondary }}>
-                     {dateFormat(createdAt, "mmmm dS, yyyy, h:MM TT")}{" "}
+                     {dateFormat(post?.createdAt, "mmmm dS, yyyy, h:MM TT")}{" "}
                   </Typography>
                </>
             }
@@ -132,7 +129,7 @@ const Heading = ({
                horizontal: "left",
             }}>
             <Stack sx={{ gap: 1 }}>
-               {idUser === news?.author?._id && (
+               {auth$.payload.user._id === post?.author?._id && (
                   <>
                      <Button
                         sx={{
@@ -142,7 +139,7 @@ const Heading = ({
                            color: theme.myColor.link,
                         }}
                         startIcon={<ModeEditIcon />}
-                        onClick={handleShowModal}>
+                        onClick={handleShowEditModal}>
                         <Typography variant="body2">Edit</Typography>
                      </Button>
 
@@ -193,14 +190,19 @@ const Heading = ({
                   onClick={() => setOpenDialog(false)}>
                   Cancel
                </Button>
-               <Button variant="contained" type="submit" onClick={() => handleDelete(news._id)}>
+               <Button variant="contained" type="submit" onClick={() => handleDelete(post._id)}>
                   Agree
                </Button>
             </DialogActions>
          </Dialog>
 
          {/* Modal */}
-         <PostModal onSubmit={handleUpdate} ref={modalRef} />
+         <PostModal
+            post={post}
+            open={openPostModal}
+            onClose={onClosePostModal}
+            onSubmit={handleUpdate}
+         />
       </>
    );
 };

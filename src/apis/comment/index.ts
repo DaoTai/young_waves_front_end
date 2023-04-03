@@ -1,20 +1,16 @@
 import axios from "./axios";
 
 // [POST] comments/:id
-export const createComment = async (payload: { id: string; comment: string }) => {
-   const { id, comment } = payload;
-   return await axios.post(`/${id}`, {
-      comment: comment,
-   });
+export const createComment = async (payload: { idPost: string; comment: string }) => {
+   if (payload.idPost) {
+      return await axios.post(`/${payload.idPost}`, {
+         comment: payload.comment,
+      });
+   }
 };
 
 // [PUT] comments/:id/:idComment
-export const editComment = async (payload: {
-   idPost: string;
-   idComment: string;
-   updatedComment: string;
-}) => {
-   const { idPost, idComment, updatedComment } = payload;
+export const editComment = async (idPost: string, idComment: string, updatedComment: string) => {
    return await axios.put(`/${idPost}/${idComment}`, {
       comment: updatedComment,
    });
@@ -22,6 +18,5 @@ export const editComment = async (payload: {
 
 // [DELETE] comments:/:id/:idComment
 export const deleteComment = async (payload: { idPost: string; idComment: string }) => {
-   const { idPost, idComment } = payload;
-   return await axios.delete(`/${idPost}/${idComment}`);
+   return await axios.delete(`/${payload.idPost}/${payload.idComment}`);
 };

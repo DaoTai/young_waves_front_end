@@ -5,16 +5,18 @@ export const MyBox = styled(Box)(({ theme }) => ({
    top: "50%",
    left: "50%",
    transform: "translate(-50%, -50%)",
-   width: "calc(100% - 32px)",
-   maxHeight: "95vh",
+   width: "80vw",
+   maxWidth: "95vw",
+   height: "90vh",
+   maxHeight: "90vh",
    overflowY: "auto",
-   overflowX: "hidden",
-   background: "#000",
-   border: "1px solid #000",
-   borderRadius: 2,
-   paddingBottom: 0,
+   borderRadius: 4,
+   backgroundColor: theme.myColor.white,
    boxShadow:
       "0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%)",
+   "&::-webkit-scrollbar": {
+      display: "none",
+   },
 }));
 
 export const ButtonSlide = styled(ButtonGroup)(({ theme }) => ({

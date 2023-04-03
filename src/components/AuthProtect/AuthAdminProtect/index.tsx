@@ -3,10 +3,8 @@ import { Navigate } from "react-router-dom";
 import { authState$ } from "../../../redux-saga/redux/selectors";
 
 const AuthAdminProtect = ({ children }) => {
-   const {
-      payload: { data },
-   } = useSelector(authState$);
-   const isAdmin = data?.user?.isAdmin;
+   const auth$ = useSelector(authState$);
+   const isAdmin = auth$.payload?.user?.isAdmin;
    return <>{isAdmin ? children : <Navigate to="/auth/sign-in" />}</>;
 };
 

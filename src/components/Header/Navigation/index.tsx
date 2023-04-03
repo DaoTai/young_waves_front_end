@@ -8,7 +8,7 @@ import NavLink from "../../NavLink";
 const Navigation = () => {
    const theme = useTheme();
    const { isLoading, payload } = useSelector(authState$);
-   const isAdmin = payload?.data?.user?.isAdmin;
+   const isAdmin = payload?.user.isAdmin;
    return (
       <Container maxWidth="md">
          <Stack direction="row" justifyContent="space-between" alignItems="center">

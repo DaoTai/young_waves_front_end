@@ -41,7 +41,7 @@ const Member = () => {
                      <Introduction user={user} />
                   </Grid>
                   <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
-                     <News listNews={listNews as Post[]} />
+                     {/* <News listNews={listNews as Post[]} /> */}
                   </Grid>
                </Grid>
             </Stack>

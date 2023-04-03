@@ -16,12 +16,15 @@ import {
 import { Action } from "../../../../../utils/interfaces/Action";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 
-interface StateProfile {
+interface ProfileState {
    isLoading: boolean;
    payload: Partial<Profile>;
+   action?: string;
+   status?: number;
+   error?: string;
 }
 
-const init: StateProfile = {
+const init: ProfileState = {
    isLoading: false,
    payload: {},
 };

@@ -121,9 +121,9 @@ export const INIT_STATE = {
    posts: {
       isLoading: false,
       payload: {
-         status: 0,
          data: [],
       },
+      status: 0,
    },
    post: {
       isLoading: false,
@@ -147,16 +147,16 @@ export const INIT_STATE = {
          status: 0,
       },
    },
-   modalRef: {
-      handleOpen: () => {},
-      handleClose: () => {},
-      images: [],
-      post: "",
-      status: "",
-      setImages: () => {},
-      setPost: () => {},
-      setStatus: () => {},
-   },
+   // modalRef: {
+   //    handleOpen: () => {},
+   //    handleClose: () => {},
+   //    images: [],
+   //    post: "",
+   //    status: "",
+   //    setImages: () => {},
+   //    setPost: () => {},
+   //    setStatus: () => {},
+   // },
 };
 
 // For action redux

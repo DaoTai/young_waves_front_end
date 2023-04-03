@@ -6,13 +6,6 @@ import AddIcon from "@mui/icons-material/Add";
 import {
    Avatar,
    Box,
-   Button,
-   ButtonGroup,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogContentText,
-   DialogTitle,
    Fab,
    FormControl,
    InputLabel,
@@ -34,7 +27,7 @@ import { showAlert } from "../../../redux-saga/redux/actions";
 import { Profile } from "../../../utils/interfaces/Profile";
 import DetailUser from "./Detail";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
-import AddMember from "../AddMember";
+import AddMember from "./AddMember";
 const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const theme = useTheme();
    const dispatch = useDispatch();
@@ -311,7 +304,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             onClose={onCloseDeleteDialog}
          />
          <Modal open={showModal} onClose={() => setShowModal(false)}>
-            <AddMember onClose={() => setShowModal(false)} />
+            <>
+               <AddMember onClose={() => setShowModal(false)} />
+            </>
          </Modal>
       </>
    );

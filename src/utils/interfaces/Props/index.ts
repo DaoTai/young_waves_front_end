@@ -10,7 +10,7 @@ export interface AlertProps {
 
 export interface HeadingNewsProps {
    status?: string;
-   news: Post;
+   post: Post;
    author: Profile;
    createdAt: string;
    indexNews?: number;
@@ -21,7 +21,7 @@ export interface ModalRef {
    handleOpen: () => void;
    handleClose: () => void;
    images: string[];
-   post: string;
+   body: string;
    status: string;
    setImages: (value: string | string[]) => void;
    setPost: (value: string) => void;

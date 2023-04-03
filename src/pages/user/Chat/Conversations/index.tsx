@@ -13,9 +13,7 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
    const chatContext = useContext(ChatContext);
    const theme = useTheme();
    const {
-      payload: {
-         data: { user },
-      },
+      payload: { user },
    } = useSelector(authState$);
 
    const [conversations, setConversations] = useState<Partial<FormatConversation[]>>([]);

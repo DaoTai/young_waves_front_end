@@ -18,13 +18,7 @@ const AvatarProfile = ({
 }) => {
    const dispatch = useDispatch();
    const theme = useTheme();
-   const {
-      payload: {
-         data: {
-            user: { _id },
-         },
-      },
-   } = useSelector(authState$);
+   const auth$ = useSelector(authState$);
    const imageRef = useRef(Object(null));
    const onChange = (file) => {
       imageRef.current.src = file;
@@ -41,7 +35,7 @@ const AvatarProfile = ({
                border: 0.5,
                borderRadius,
             }}></Avatar>
-         {_id === user?._id && <ImageInput onChange={onChange} />}
+         {auth$.payload.user._id === user?._id && <ImageInput onChange={onChange} />}
       </WrapAvatar>
    );
 };

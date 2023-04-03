@@ -1,50 +1,39 @@
-import { Container, Grid, Pagination, Stack, Tab, Tabs, Typography, useTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Container, Grid, Pagination, Stack, Tab, Tabs, Typography, useTheme } from "@mui/material";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useDispatch, useSelector } from "react-redux";
-import { Spinner, BaseInput as MySearch } from "../../../components";
-import { getAllUser } from "../../../redux-saga/redux/actions";
-import { usersState$ } from "../../../redux-saga/redux/selectors";
+import { searchPosts } from "../../../apis/post";
+import { getAllUser } from "../../../apis/user";
+import { BaseInput as MySearch } from "../../../components";
 import { Post } from "../../../utils/interfaces/Post";
 import { Profile } from "../../../utils/interfaces/Profile";
 import { TYPE_SEARCH } from "../../../utils/types";
-import { searchPosts } from "../../../apis/post";
+import News from "../NewsFeed/News";
 import Card from "./Card";
 import { ClearButton, SearchButton } from "./styles";
-import News from "../NewsFeed/News";
 
 const Explore = () => {
    const theme = useTheme();
-   const dispatch = useDispatch();
-   const { isLoading, payload } = useSelector(usersState$);
-   const { users, currentPage, maxPage } =
-      (payload as {
-         users: Profile[];
-         currentPage: number;
-         maxPage: number;
-      }) ?? {};
+   const exploreRef = useRef<HTMLDivElement>(null);
+   const maxPageRef = useRef<number>(0);
    const [tab, setTab] = useState<TYPE_SEARCH>("users");
    const [page, setPage] = useState<number>(1);
+   const [users, setUsers] = useState<Profile[]>([]);
    const [posts, setPosts] = useState<Post[]>([]);
    const [search, setSearch] = useState<string>("");
    useEffect(() => {
       // When search value is empty
-
+      exploreRef.current?.scrollIntoView({ behavior: "smooth" });
       if (tab === "users") {
          // Exist search value
-         if (search.trim()) {
-            dispatch(getAllUser({ name: search.trim(), page }));
-         } else {
-            dispatch(getAllUser({ page }));
-         }
+         handleGetUnqueriedAllUser();
       }
       if (tab === "posts") {
          if (search.trim()) {
             (async () => {
                const res = await searchPosts(search);
-               res.status === 200 && setPosts(res.data);
+               res.status === 200 && setPosts(res.data as Post[]);
             })();
          } else {
             setPosts([]);
@@ -60,11 +49,37 @@ const Explore = () => {
       setPage(page);
    };
 
+   // Get all user has query
+   const handleGetQueriedAllUser = async () => {
+      const res = await getAllUser({
+         name: search.trim(),
+      });
+      const data: {
+         currentPage: number;
+         maxPage: number;
+         users: Profile[];
+      } = res.data;
+      maxPageRef.current = data.maxPage;
+      setUsers(data.users);
+   };
+
+   // Get all user without query
+   const handleGetUnqueriedAllUser = async () => {
+      const res = await getAllUser();
+      const data: {
+         currentPage: number;
+         maxPage: number;
+         users: Profile[];
+      } = res.data;
+      maxPageRef.current = data.maxPage;
+      setUsers(data.users);
+   };
+
    // Do search
-   const handleSearch = () => {
+   const handleSearch = async () => {
       if (search.trim()) {
          if (tab === "users") {
-            dispatch(getAllUser({ name: search.trim() }));
+            handleGetQueriedAllUser();
          }
          if (tab === "posts") {
             (async () => {
@@ -76,12 +91,12 @@ const Explore = () => {
    };
 
    // Clear search value
-   const handleClear = () => {
+   const handleClear = async () => {
       if (search.trim()) {
          setSearch("");
          setPosts([]);
          if (tab === "users") {
-            dispatch(getAllUser());
+            handleGetUnqueriedAllUser();
          }
       }
    };
@@ -99,11 +114,11 @@ const Explore = () => {
       users: (
          <>
             {/* Information search */}
-            <Grid container spacing={2} mt={2} alignItems="stretch">
+            <Grid container spacing={2} alignItems="stretch">
                {users?.length > 0 ? (
                   users?.map((user) => {
                      return (
-                        <Grid key={user._id} item lg={4} md={4} xs={12}>
+                        <Grid key={user._id} item lg={3} md={3} xs={12}>
                            <Card user={user} />
                         </Grid>
                      );
@@ -116,7 +131,7 @@ const Explore = () => {
             </Grid>
             {/* Pagination */}
             <Pagination
-               count={maxPage}
+               count={maxPageRef.current}
                variant="outlined"
                color="primary"
                onChange={(event: ChangeEvent<unknown>, page: number) =>
@@ -138,7 +153,7 @@ const Explore = () => {
          <Helmet>
             <title>Explore | Young Waves</title>
          </Helmet>
-         <Container maxWidth="xl">
+         <Container maxWidth="xl" ref={exploreRef}>
             {/* Search */}
             <MySearch
                fullWidth
@@ -147,8 +162,8 @@ const Explore = () => {
                spellCheck={false}
                placeholder="Search..."
                sx={{
-                  mt: 1,
                   border: 1,
+                  mt: 1,
                   borderColor: theme.myColor.textSecondary,
                   borderRadius: 2,
                   p: 0.5,
@@ -169,7 +184,7 @@ const Explore = () => {
             {/* Category options */}
             <Tabs
                value={tab}
-               sx={{ mt: 1, bgcolor: theme.myColor.white }}
+               sx={{ mt: 2, mb: 2, bgcolor: theme.myColor.white }}
                onChange={handleChangeTabPanel}>
                <Tab value="users" label="Users" />
                <Tab value="posts" label="Posts" />

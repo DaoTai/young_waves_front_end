@@ -9,29 +9,29 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { CloseButton, ImageInput } from "../../index";
 import { MyBox } from "./styles";
+import { Post } from "../../../utils/interfaces/Post";
 
-const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref) => {
+interface ModalPostProps {
+   post?: Post;
+   open: boolean;
+   onClose: () => void;
+   onSubmit: (post: Partial<Post>) => void;
+}
+
+const MyModal = ({ post, open, onClose, onSubmit }: ModalPostProps) => {
    const theme = useTheme();
-   const [open, setOpen] = useState(false);
    const [images, setImages] = useState<string[]>([]);
-   const [post, setPost] = useState<string>("");
+   const [body, setBody] = useState<string>("");
    const [status, setStatus] = useState<string>("");
-   useImperativeHandle(ref, () => ({
-      handleOpen,
-      handleClose,
-      images: images,
-      post: post,
-      status: status,
-      setImages,
-      setPost,
-      setStatus,
-   }));
+   useEffect(() => {
+      setImages(post?.attachments ?? []);
+      setBody(post?.body ?? "");
+      setStatus(post?.status ?? "");
+   }, [post]);
 
-   const handleOpen = () => setOpen(true);
-   const handleClose = () => setOpen(false);
    const handleSetImages = (files) => {
       setImages((prev) => [...prev, ...files]);
    };
@@ -44,23 +44,27 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref) => {
    };
 
    const handleSubmit = () => {
-      if (post) {
-         onSubmit();
+      if (body) {
+         onSubmit({
+            attachments: images,
+            body,
+            status,
+         });
          setImages([]);
-         setPost("");
+         setBody("");
          setStatus("");
-         handleClose();
+         onClose();
       }
    };
 
    return (
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={onClose}>
          <MyBox>
             {/* Heading */}
             <Typography variant="h3" component="h2" textAlign="center" pb={1}>
                Your post
             </Typography>
-            <CloseButton onClick={handleClose} size="large" />
+            <CloseButton onClick={onClose} size="large" />
 
             <Box borderTop={1} pt={2}>
                <form>
@@ -74,7 +78,7 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref) => {
                      onChange={(e) => setStatus(e.target.value)}
                   />
                   <TextField
-                     value={post}
+                     value={body}
                      placeholder="What do you think?"
                      margin="dense"
                      required
@@ -82,7 +86,7 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref) => {
                      multiline
                      rows={5}
                      sx={{ mb: 2 }}
-                     onChange={(e) => setPost(e.target.value)}
+                     onChange={(e) => setBody(e.target.value)}
                   />
                   {images.length > 0 && (
                      <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
@@ -111,4 +115,4 @@ const MyModal = ({ onSubmit }: { onSubmit: () => void }, ref) => {
    );
 };
 
-export default forwardRef(MyModal);
+export default memo(MyModal);

@@ -7,8 +7,16 @@ import {
    DialogTitle,
 } from "@mui/material";
 import { memo } from "react";
+import { Profile } from "../../../../utils/interfaces/Profile";
 
-const ConfirmDeleteDialog = ({ open, user, onClose, onSubmit }) => {
+interface IPropsConfirmDeleteDialog {
+   open: boolean;
+   user: Profile | undefined;
+   onClose: () => void;
+   onSubmit: () => void;
+}
+
+const ConfirmDeleteDialog = ({ open, user, onClose, onSubmit }: IPropsConfirmDeleteDialog) => {
    return (
       <Dialog fullWidth open={open} onClose={onClose}>
          <DialogTitle id="alert-dialog-title">

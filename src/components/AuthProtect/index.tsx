@@ -4,11 +4,13 @@ import { Navigate } from "react-router-dom";
 import { authState$ } from "../../redux-saga/redux/selectors";
 import { ChatProvider } from "../../Contexts/Providers";
 const AuthProtect = ({ children }) => {
-   const user$ = useSelector(authState$);
+   const auth$ = useSelector(authState$);
    return (
       <>
-         {user$?.payload?.data ? (
-            <ChatProvider>{children}</ChatProvider>
+         {auth$?.payload?.accessToken ? (
+            <>
+               <ChatProvider>{children}</ChatProvider>
+            </>
          ) : (
             <Navigate to="/auth/sign-in" />
          )}

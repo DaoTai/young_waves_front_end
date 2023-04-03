@@ -1,37 +1,57 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Box, Fab, Grid, Modal, Paper, Typography, useTheme } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Box, Fab, Modal, Stack, Typography, useTheme } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import { CloseButton, Comment as MyComment, PostBody, Spinner } from "../../../../../components";
-import { editComment } from "../../../../../apis/comment";
-import { getPost, deleteComment, showAlert } from "../../../../../redux-saga/redux/actions";
-import { postState$ } from "../../../../../redux-saga/redux/selectors";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import * as api from "../../../../../apis";
+import { CloseButton, Comment as MyComment } from "../../../../../components";
+import {
+   createComment,
+   createCommentSuccess,
+   deleteComment,
+   showAlert,
+} from "../../../../../redux-saga/redux/actions";
 import { Comment } from "../../../../../utils/interfaces/Comment";
 import { Post } from "../../../../../utils/interfaces/Post";
 import { Profile } from "../../../../../utils/interfaces/Profile";
+import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import Heading from "../Heading";
 import CommentField from "./CommentField";
+import Actions from "../Actions";
 import { settings } from "./config";
-import { ButtonSlide, MyBox, Container } from "./styles";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
+import { ButtonSlide, MyBox } from "./styles";
+
+interface DetailPost {
+   comments: [] | Comment[];
+   post: Post;
+}
+
 const Detail = () => {
    const theme = useTheme();
-   const { isLoading, payload } = useSelector(postState$);
    const { id, indexImage } = useParams();
-   const dispatch = useDispatch();
+   const auth$ = useSelector(authState$);
+
    const navigate = useNavigate();
-   const { post, comments } = (payload as { post: Post; comments: Comment[] }) ?? {};
-   const [open, setOpen] = useState(true);
+   const dispatch = useDispatch();
+   const [detailPost, setDetailPost] = useState<DetailPost | null>(null);
    const sliderRef = useRef<Slider | null>(null);
    useEffect(() => {
-      id && dispatch(getPost(id as string));
+      if (id) {
+         try {
+            (async () => {
+               const res = await api.post.getDetailPost(id);
+               const detailPost: DetailPost = res.data;
+               setDetailPost(detailPost);
+            })();
+         } catch (err) {
+            console.error(err);
+         }
+      }
       if (indexImage) {
-         console.log(sliderRef.current);
-
          const timerId = setTimeout(() => {
             sliderRef.current?.slickGoTo(Number(indexImage), false);
          }, 0);
@@ -41,68 +61,97 @@ const Detail = () => {
       }
    }, [indexImage, id]);
 
+   // Close modal
    const handleClose = () => {
-      setOpen(false);
       navigate(-1);
    };
 
-   const handleDeleteComment = useCallback(async (idComment: string) => {
-      dispatch(deleteComment({ idComment, idPost: post._id }));
-   }, []);
-
-   const handleEditComment = useCallback(async (idComment: string, updatedComment: string) => {
-      const payload = {
-         idComment,
-         idPost: post._id,
-         updatedComment: updatedComment.trim(),
-      };
-      const res = await editComment(payload);
-      if (res.status === 200) {
+   // Create comment
+   const handleCreateComment = async (comment: string) => {
+      try {
+         const res = await api.comment.createComment({
+            idPost: detailPost?.post._id as string,
+            comment: comment,
+         });
+         const newComment = res?.data as Comment;
          dispatch(
-            showAlert({
-               title: "Success",
-               mode: "success",
-               message: res.data.msg,
+            createCommentSuccess({
+               idPost: detailPost?.post._id as string,
+               comment: newComment._id,
             })
          );
-      } else {
-         dispatch(
-            showAlert({
-               title: "Failed",
-               mode: "warning",
-               message: "Update comment failed",
-            })
-         );
+         setDetailPost((prev) => {
+            return {
+               ...prev,
+               comments: [newComment, ...(prev?.comments as Comment[])],
+            } as DetailPost;
+         });
+      } catch (err: any) {
+         throw new Error(err);
       }
-   }, []);
+   };
+
+   // Edit comment
+   const handleEditComment = async (idComment: string, updatedComment: string) => {
+      try {
+         const res = await api.comment.editComment(
+            detailPost?.post._id as string,
+            idComment,
+            updatedComment
+         );
+      } catch (err: any) {
+         throw new Error(err);
+      }
+   };
+
+   // Delete comment
+   const handleDeleteComment = async (idComment: string) => {
+      try {
+         dispatch(deleteComment({ idPost: detailPost?.post._id as string, idComment }));
+         setDetailPost((prev) => {
+            const newComments = prev?.comments.filter((comment) => comment._id !== idComment);
+            return { ...prev, comments: newComments } as DetailPost;
+         });
+      } catch (err: any) {
+         throw new Error(err);
+      }
+   };
 
    return (
       <>
-         <Modal open={open} onClose={handleClose}>
-            <MyBox>
-               <Box p={2} bgcolor={theme.myColor.white}>
+         <Modal open onClose={handleClose}>
+            <MyBox sx={{ overflowY: "overlay" }}>
+               <Box
+                  bgcolor={theme.myColor.white}
+                  boxShadow={1}
+                  position="sticky"
+                  sx={{ top: 0, right: 0, left: 0, zIndex: 999, height: 70 }}
+                  p={2}>
                   <CloseButton onClick={handleClose} size="large" />
+                  <Typography variant="h4" textAlign="center" fontWeight={600}>
+                     Post of {detailPost?.post?.author.fullName}
+                  </Typography>
                </Box>
                {/* Body */}
-               <Container container>
+               <Box>
                   {/* Images */}
-                  {post?.attachments?.length ? (
-                     <Grid item md={8} xs={12} position="relative" height="100%" overflow="hidden">
+                  {detailPost?.post.attachments.length ? (
+                     <Box position="relative" height="100%" overflow="hidden">
                         <Slider ref={sliderRef} {...settings}>
-                           {post?.attachments.map((img, index) => (
+                           {detailPost?.post.attachments.map((img, index) => (
                               <div key={index}>
                                  <img
                                     src={img}
                                     style={{
-                                       height: "80vh",
+                                       height: "100%",
                                        width: "100%",
-                                       objectFit: "contain",
+                                       objectFit: "cover",
                                     }}
                                  />
                               </div>
                            ))}
                         </Slider>
-                        {post?.attachments?.length > 1 && (
+                        {detailPost?.post.attachments?.length > 1 && (
                            <ButtonSlide>
                               <Fab
                                  sx={{
@@ -124,50 +173,49 @@ const Detail = () => {
                               </Fab>
                            </ButtonSlide>
                         )}
-                     </Grid>
+                     </Box>
                   ) : null}
 
                   {/* Content */}
-                  <Grid
-                     item
-                     md={post?.attachments?.length > 0 ? 4 : 12}
-                     xs={12}
-                     pl={2}
-                     pr={2}
-                     boxShadow={1}
+                  <Stack
+                     flexDirection="column"
+                     p={2}
+                     pt={0}
+                     gap={2}
                      sx={{
                         background: theme.myColor.white,
-                        overflowY: "scroll",
+                        border: "none",
                      }}>
-                     <Heading
-                        author={post?.author as Profile}
-                        news={post}
-                        createdAt={post?.createdAt as string}
-                     />
-                     <PostBody bt={1} backgroundColor={theme.myColor.white}>
-                        {post?.body}
-                     </PostBody>
-
-                     {/* Add new comment */}
-                     <CommentField />
-                     {/* List comments */}
                      <Box>
-                        {comments?.map((comment: Comment, index) => {
+                        <Heading post={detailPost?.post as Post} />
+                        <Typography
+                           variant="body1"
+                           textAlign="justify"
+                           borderBottom={1}
+                           lineHeight={2}>
+                           {detailPost?.post?.body}
+                        </Typography>
+                     </Box>
+                     {/* Field comment */}
+                     <CommentField onSubmit={handleCreateComment} />
+                     {/* List comment */}
+                     <Box sx={{ scrollY: "auto" }}>
+                        {detailPost?.comments?.map((comment: Comment, index) => {
                            return (
                               <MyComment
-                                 key={index}
+                                 key={comment._id}
                                  comment={comment}
-                                 handleEdit={handleEditComment}
+                                 onSubmit={handleEditComment}
                                  handleDelete={handleDeleteComment}
                               />
                            );
                         })}
                      </Box>
-                  </Grid>
-               </Container>
+                  </Stack>
+               </Box>
             </MyBox>
          </Modal>
-         <Spinner show={isLoading} />
+         {/* <Spinner show={isLoading} /> */}
       </>
    );
 };

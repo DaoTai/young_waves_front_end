@@ -9,23 +9,23 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import { useFormik } from "formik";
+import { replace, useFormik } from "formik";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Alert, Spinner } from "../../../components";
-import { hideAlert, signIn } from "../../../redux-saga/redux/actions";
+import { hideAlert, signIn, signOut } from "../../../redux-saga/redux/actions";
 import { alert$, authState$ } from "../../../redux-saga/redux/selectors";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const theme = useTheme();
+   const navigate = useNavigate();
    const dispatch = useDispatch();
    const alert = useSelector(alert$);
    const { title, mode, message } = alert.payload as AlertProps;
    const { isLoading, payload } = useSelector(authState$);
-
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
          initialValues: init,
@@ -40,18 +40,15 @@ const SignIn = () => {
          const userNameLocal = JSON.parse(localStorage.getItem("user") as string)?.username;
          setFieldValue("username", userNameLocal);
       }
-
       // Hide alert when unmount cuz it can be showed in sign up if using Alert for parent component
       return () => {
          dispatch(hideAlert());
       };
    }, []);
-   if (payload?.status == 200) {
-      return payload?.data?.user?.isAdmin ? (
-         <Navigate to="/admin" replace />
-      ) : (
-         <Navigate to="/" replace />
-      );
+
+   // When user login success will navigate to home
+   if (payload?.user?._id) {
+      return payload?.user.isAdmin ? <Navigate to="/admin" replace /> : <Navigate to="/" replace />;
    }
 
    return (
