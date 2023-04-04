@@ -21,12 +21,14 @@ const Friends = () => {
    const searchDebounce = useDebounce(value);
    useEffect(() => {
       (async () => {
-         const res = await api.user.getFriends(payload._id, page);
-         if (res.status === 200) {
+         try {
+            const res = await api.user.getFriends(payload._id, page);
             setFriends((prev) => {
                return [...prev, ...res.data.friends];
             });
             page === res.data.maxPage && setShowLoadMore(false);
+         } catch (err: any) {
+            throw new Error(err);
          }
       })();
    }, [page]);

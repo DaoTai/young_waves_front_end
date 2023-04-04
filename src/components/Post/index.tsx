@@ -1,15 +1,12 @@
-import { Avatar, Grid, Typography } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { Avatar, Grid, Typography, useTheme } from "@mui/material";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../redux-saga/redux/selectors";
-import { INIT_STATE } from "../../utils/constants";
-import { Profile } from "../../utils/interfaces/Profile";
-import { ModalRef } from "../../utils/interfaces/Props";
-import MyInput from "../BaseInput";
-import Modal from "./Modal";
 import { Post as IPost } from "../../utils/interfaces/Post";
+import Modal from "./Modal";
 const Post = () => {
+   const theme = useTheme();
    const dispatch = useDispatch();
    const [openModal, setOpenModal] = useState(false);
    const user$ = useSelector(profileState$);
@@ -38,10 +35,12 @@ const Post = () => {
             item
             flexGrow={2}
             sx={{
-               cursor: "text",
+               cursor: "pointer",
             }}
             onClick={() => setOpenModal(true)}>
-            <Typography variant="subtitle1" sx={{ color: "#ccc" }}>
+            <Typography
+               variant="subtitle1"
+               sx={{ color: theme.myColor.textSecondary, letterSpacing: 1.5 }}>
                Hi {user$?.payload?.fullName || auth$?.payload?.user.fullName}. What do you think?
             </Typography>
          </Grid>

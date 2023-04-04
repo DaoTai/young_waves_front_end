@@ -36,8 +36,7 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
             container
             p={1}
             gap={4}
-            width="100%"
-            minHeight={350}
+            minHeight={400}
             alignItems="center"
             overflow="hidden"
             position="relative"
@@ -45,7 +44,7 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
                user?.coverPicture
                   ? {
                        backgroundImage: `url(${user?.coverPicture})`,
-                       backgroundPosition: "center",
+                       backgroundPosition: "center center",
                        backgroundSize: "cover",
                        backgroundRepeat: "no-repeat",
                     }

@@ -19,12 +19,13 @@ const News = ({ posts, emptyMsg = "No post" }: { posts: [] | Post[]; emptyMsg?: 
                      <Card sx={{ pl: 2, pr: 2 }}>
                         {/* Heading */}
                         <Heading post={post} showAction />
+                        {/* Body */}
+                        <PostBody>{post?.body}</PostBody>
                         {/* Images */}
                         {post?.attachments?.length > 0 && (
                            <Images id={post?._id} attachments={post?.attachments} />
                         )}
-                        {/* Body */}
-                        <PostBody>{post?.body}</PostBody>
+
                         {/* Actions */}
                         <Actions post={post} />
                      </Card>

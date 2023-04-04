@@ -1,7 +1,7 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Fab, Modal, Stack, Typography, useTheme } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
@@ -34,12 +34,11 @@ const Detail = () => {
    const theme = useTheme();
    const { id, indexImage } = useParams();
    const auth$ = useSelector(authState$);
-
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const [detailPost, setDetailPost] = useState<DetailPost | null>(null);
    const sliderRef = useRef<Slider | null>(null);
-   useEffect(() => {
+   useLayoutEffect(() => {
       if (id) {
          try {
             (async () => {
@@ -47,8 +46,8 @@ const Detail = () => {
                const detailPost: DetailPost = res.data;
                setDetailPost(detailPost);
             })();
-         } catch (err) {
-            console.error(err);
+         } catch (err: any) {
+            throw new Error(err);
          }
       }
       if (indexImage) {
@@ -128,7 +127,11 @@ const Detail = () => {
                   sx={{ top: 0, right: 0, left: 0, zIndex: 999, height: 70 }}
                   p={2}>
                   <CloseButton onClick={handleClose} size="large" />
-                  <Typography variant="h4" textAlign="center" fontWeight={600}>
+                  <Typography
+                     variant="h4"
+                     textAlign="center"
+                     sx={{ color: theme.myColor.text }}
+                     fontWeight={600}>
                      Post of {detailPost?.post?.author.fullName}
                   </Typography>
                </Box>
@@ -136,16 +139,16 @@ const Detail = () => {
                <Box>
                   {/* Images */}
                   {detailPost?.post.attachments.length ? (
-                     <Box position="relative" height="100%" overflow="hidden">
+                     <Box position="relative" height="100%" bgcolor="#000" overflow="hidden">
                         <Slider ref={sliderRef} {...settings}>
                            {detailPost?.post.attachments.map((img, index) => (
                               <div key={index}>
                                  <img
                                     src={img}
                                     style={{
-                                       height: "100%",
+                                       height: "60vh",
                                        width: "100%",
-                                       objectFit: "cover",
+                                       objectFit: "contain",
                                     }}
                                  />
                               </div>

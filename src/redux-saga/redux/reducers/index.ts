@@ -5,8 +5,8 @@ import { Profile } from "../../../utils/interfaces/Profile";
 import alertReducer from "./alert";
 import authReducer from "./auth";
 import { postsReducer } from "./posts";
-import ownerPostsReducer from "./user/owner/posts";
-import trashPostsReducer from "./posts/trash";
+import ownerPostsReducer from "./user/posts";
+import trashPostsReducer from "./user/trash/posts";
 import { profileReducer } from "./user";
 
 export interface State {

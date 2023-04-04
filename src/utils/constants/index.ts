@@ -118,20 +118,6 @@ export const INIT_STATE = {
       isLoading: false,
       payload: {},
    },
-   posts: {
-      isLoading: false,
-      payload: {
-         data: [],
-      },
-      status: 0,
-   },
-   post: {
-      isLoading: false,
-      payload: {
-         post: {},
-         comments: [],
-      },
-   },
    trashPosts: {
       isLoading: false,
       payload: {
@@ -140,23 +126,4 @@ export const INIT_STATE = {
          maxPage: 0,
       },
    },
-   users: {
-      isLoading: false,
-      payload: {
-         data: [],
-         status: 0,
-      },
-   },
-   // modalRef: {
-   //    handleOpen: () => {},
-   //    handleClose: () => {},
-   //    images: [],
-   //    post: "",
-   //    status: "",
-   //    setImages: () => {},
-   //    setPost: () => {},
-   //    setStatus: () => {},
-   // },
 };
-
-// For action redux

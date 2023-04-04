@@ -1,10 +1,8 @@
 import * as CONSTANTS from "../../../utils/constants";
-import { SignIn, SignUp } from "../../../utils/interfaces/Auth";
-import { Profile, ChangePassword } from "../../../utils/interfaces/Profile";
+import { POSTS_ACTION, TRASH_POSTS_ACTION } from "../../../utils/enums";
+import { SignIn } from "../../../utils/interfaces/Auth";
 import { Post } from "../../../utils/interfaces/Post";
-import { Comment } from "../../../utils/interfaces/Comment";
-import { Like } from "../../../utils/interfaces/Like";
-import { POSTS_ACTION } from "../../../utils/enums";
+import { ChangePassword, Profile } from "../../../utils/interfaces/Profile";
 import { AlertProps } from "../../../utils/interfaces/Props";
 
 // Actions show/hide alert
@@ -135,57 +133,51 @@ export const getOwnerPostsFailure = (payload: any) => ({
 });
 
 // Trash posts
-export const getTrashPosts = () => ({ type: CONSTANTS.GET_TRASH_POSTS });
+export const getTrashPosts = () => ({ type: TRASH_POSTS_ACTION.GET_TRASH_POSTS });
 export const getTrashPostsSuccess = (payload: {
    posts: Post[];
    perPage: number;
    maxPages: number;
 }) => ({
-   type: CONSTANTS.GET_TRASH_POSTS_SUCCESS,
+   type: TRASH_POSTS_ACTION.GET_TRASH_POSTS_SUCCESS,
    payload,
 });
 export const getTrashPostsFailure = (payload: any) => ({
-   type: CONSTANTS.GET_TRASH_POSTS_FAILURE,
+   type: TRASH_POSTS_ACTION.GET_TRASH_POSTS_FAILURE,
    payload,
 });
 
-export const getTrashPost = (payload: string) => {
-   return {
-      type: CONSTANTS.GET_TRASH_POST,
-      payload,
-   };
-};
-
 export const forceDeletePost = (payload: string) => ({
-   type: CONSTANTS.FORCE_DELETE_POST,
+   type: TRASH_POSTS_ACTION.FORCE_DELETE_TRASH_POST,
    payload,
 });
 
 export const forceDeletePostSuccess = (payload: string) => ({
-   type: CONSTANTS.FORCE_DELETE_POST_SUCCESS,
+   type: TRASH_POSTS_ACTION.FORCE_DELETE_TRASH_POST_SUCCESS,
    payload,
 });
 
 export const forceDeletePostFailure = (payload: any) => ({
-   type: CONSTANTS.FORCE_DELETE_POST_FAILURE,
+   type: TRASH_POSTS_ACTION.FORCE_DELETE_TRASH_POST_FAILURE,
    payload,
 });
 
 export const restorePost = (payload: string) => ({
-   type: CONSTANTS.RESTORE_POST,
+   type: TRASH_POSTS_ACTION.RESTORE_TRASH_POST,
    payload,
 });
 
 export const restorePostSuccess = (payload: string) => ({
-   type: CONSTANTS.RESTORE_POST_SUCCESS,
+   type: TRASH_POSTS_ACTION.RESTORE_TRASH_POST_SUCCESS,
    payload,
 });
 
 export const restorePostFailure = (payload: any) => ({
-   type: CONSTANTS.RESTORE_POST_FAILURE,
+   type: TRASH_POSTS_ACTION.RESTORE_TRASH_POST_FAILURE,
    payload,
 });
 
+// Post
 export const createPost = (payload: Partial<Post>) => ({ type: POSTS_ACTION.CREATE_POST, payload });
 export const createPostSuccess = (payload: Partial<Post>) => ({
    type: POSTS_ACTION.CREATE_POST_SUCCESS,
@@ -278,23 +270,5 @@ export const unLikePostSuccess = (payload: { idPost: string; idLike: string }) =
 
 export const unLikePostFailure = (payload: any) => ({
    type: POSTS_ACTION.UNLIKE_POST_FAILURE,
-   payload,
-});
-
-// Users
-export const getAllUser = (payload?: { page?: number; name?: string }) => ({
-   type: CONSTANTS.GET_ALL_USER,
-   payload,
-});
-export const getAllUserSuccess = (payload: {
-   users: Array<Profile>;
-   currentPage: number;
-   maxPage: number;
-}) => ({
-   type: CONSTANTS.GET_ALL_USER_SUCCESS,
-   payload,
-});
-export const getAllUserFailure = (payload: any) => ({
-   type: CONSTANTS.GET_ALL_USER_FAILURE,
    payload,
 });

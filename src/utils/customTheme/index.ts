@@ -18,6 +18,11 @@ export const customTheme = createTheme({
          main: "#00b0ff",
       },
    },
+   typography: {
+      allVariants: {
+         fontFamily: "'Poppins', sans-serif",
+      },
+   },
    components: {
       MuiButton: {
          styleOverrides: {

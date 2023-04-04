@@ -1,20 +1,14 @@
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Box, Fab, Grid, Modal, Typography, useTheme } from "@mui/material";
+import { Box, Grid, Modal, Typography, useTheme } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 
-import { CloseButton, Comment as MyComment, Spinner, PostBody } from "../../../../../components";
-import { getTrashPost } from "../../../../../redux-saga/redux/actions";
+import { CloseButton, PostBody } from "../../../../../components";
 // import { postState$ } from "../../../../../redux-saga/redux/selectors";
-import { Post } from "../../../../../utils/interfaces/Post";
-import { Comment } from "../../../../../utils/interfaces/Comment";
-import { settings } from "./config";
-import { ButtonSlide, MyBox, Container } from "../../../NewsFeed/News/Detail/styles";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import { Container, MyBox } from "../../../NewsFeed/News/Detail/styles";
 const Detail = () => {
    const theme = useTheme();
    // const { isLoading, payload } = useSelector(postState$);
@@ -25,7 +19,7 @@ const Detail = () => {
    const [open, setOpen] = useState(true);
    const sliderRef = useRef<Slider | null>(null);
    useEffect(() => {
-      id && dispatch(getTrashPost(id as string));
+      // id && dispatch(getTrashPost(id as string));
    }, []);
    const handleClose = () => {
       setOpen(false);

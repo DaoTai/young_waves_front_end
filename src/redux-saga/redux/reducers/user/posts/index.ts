@@ -1,5 +1,5 @@
-import { Post } from "../../../../../../utils/interfaces/Post";
-import { OWNER_POSTS_ACTION, POSTS_ACTION } from "../../../../../../utils/enums";
+import { Post } from "../../../../../utils/interfaces/Post";
+import { OWNER_POSTS_ACTION, POSTS_ACTION } from "../../../../../utils/enums";
 interface PostsState {
    isLoading: boolean;
    payload: Post[] | [];
@@ -133,7 +133,6 @@ const ownerPostsReducer = (
 
       // Failed
       case OWNER_POSTS_ACTION.GET_OWNER_POSTS_FAILURE:
-      case OWNER_POSTS_ACTION.CREATE_OWNER_POST_FAILURE:
       case POSTS_ACTION.UPDATE_POST_FAILURE:
       case POSTS_ACTION.DELETE_POST_FAILURE:
       case POSTS_ACTION.LIKE_POST_FAILURE:

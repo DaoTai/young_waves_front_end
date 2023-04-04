@@ -19,7 +19,7 @@ const Introduction = ({ user }: { user: Partial<Profile> }) => {
             {user?.gender?.toLowerCase() !== "other" && (
                <>
                   {user?.gender?.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
-                  <Typography variant="body1" component="b" pl={1}>
+                  <Typography variant="body1" component="span" pl={1}>
                      Gender: {user?.gender?.toLowerCase()}
                   </Typography>
                </>
@@ -27,25 +27,25 @@ const Introduction = ({ user }: { user: Partial<Profile> }) => {
          </Stack>
          <Stack flexDirection="row" alignItems="center" p={1}>
             <CakeIcon />
-            <Typography variant="body1" component="b" pl={1}>
+            <Typography variant="body1" component="span" pl={1}>
                Birthday: {user?.dob}
             </Typography>
          </Stack>
          <Stack flexDirection="row" alignItems="center" p={1}>
             <HandshakeIcon />
-            <Typography variant="body1" component="b" pl={1}>
+            <Typography variant="body1" component="span" pl={1}>
                Joined from: {dateFormat(user?.createdAt, " mmmm dS, yyyy")}
             </Typography>
          </Stack>
          <Stack flexDirection="row" alignItems="center" p={1}>
             <LocationOnIcon />
-            <Typography variant="body1" component="b" pl={1}>
+            <Typography variant="body1" component="span" pl={1}>
                City: {user?.city}
             </Typography>
          </Stack>
          <Stack flexDirection="row" alignItems="center" p={1}>
             <PublicIcon />
-            <Typography variant="body1" component="b" pl={1}>
+            <Typography variant="body1" component="span" pl={1}>
                Region: {user?.region}
             </Typography>
          </Stack>

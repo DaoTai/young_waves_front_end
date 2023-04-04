@@ -1,4 +1,5 @@
 import { GlobalStyles } from "@mui/material";
+
 const GlobalStyle = () => {
    return (
       <GlobalStyles
@@ -19,6 +20,7 @@ const GlobalStyle = () => {
                backgroundColor: "rgba(0, 0, 0, 0)",
             },
             body: {
+               fontFamily: "'Poppins', sans-serif",
                lineHeight: 1.5,
                textRendering: "optimizeSpeed",
                backgroundColor: theme.myColor.bg,
