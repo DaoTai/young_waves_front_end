@@ -31,7 +31,7 @@ import { init, updateUserOptions } from "./config";
 import Avatar from "../Heading/Avatar";
 const Editing = () => {
    const theme = useTheme();
-   const { isLoading, payload, action, error } = useSelector(profileState$);
+   const { isLoading, payload } = useSelector(profileState$);
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const imageRef = useRef(Object(null));
@@ -63,7 +63,7 @@ const Editing = () => {
          gender,
          email,
       });
-   }, [isLoading, payload, dispatch, action]);
+   }, [isLoading, payload, dispatch]);
    const handleChangeCoverPicture = (file) => {
       imageRef.current.src = file;
       dispatch(updateProfile({ coverPicture: file, _id: payload._id }));

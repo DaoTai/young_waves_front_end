@@ -22,8 +22,12 @@ export const getOwnerPosts = async (id: string) => {
    return await axios.get(`/owner/${id}`);
 };
 
-export const getTrashPosts = async () => {
-   return await axios.get("/trash");
+export const getTrashPosts = async (page: number = 1) => {
+   return await axios.get("/trash", {
+      params: {
+         page,
+      },
+   });
 };
 
 export const createPost = async (payload: Post) => {

@@ -133,10 +133,13 @@ export const getOwnerPostsFailure = (payload: any) => ({
 });
 
 // Trash posts
-export const getTrashPosts = () => ({ type: TRASH_POSTS_ACTION.GET_TRASH_POSTS });
+export const getTrashPosts = (payload?: number) => ({
+   type: TRASH_POSTS_ACTION.GET_TRASH_POSTS,
+   payload,
+});
 export const getTrashPostsSuccess = (payload: {
    posts: Post[];
-   perPage: number;
+   page: number;
    maxPages: number;
 }) => ({
    type: TRASH_POSTS_ACTION.GET_TRASH_POSTS_SUCCESS,

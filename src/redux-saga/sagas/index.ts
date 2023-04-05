@@ -254,20 +254,10 @@ function* handleUnLikePost(action: { type: string; payload: { idPost: string; id
    }
 }
 
-// Get all user
-function* getAllUserSaga(action: { type: string; payload: { page?: number; name?: string } }) {
-   try {
-      const res = yield call(api.user.getAllUser, action.payload);
-      yield put(ACTIONS.getAllUserSuccess(res));
-   } catch (err) {
-      yield put(ACTIONS.getAllUserFailure(err));
-   }
-}
-
 // Get trash posts
-function* getTrashPosts() {
+function* getTrashPosts(action: { type: string; payload: number }) {
    try {
-      const res = yield call(api.post.getTrashPosts);
+      const res = yield call(api.post.getTrashPosts, action.payload);
       yield put(ACTIONS.getTrashPostsSuccess(res.data));
    } catch (err) {
       yield ACTIONS.getTrashPostsFailure(err);

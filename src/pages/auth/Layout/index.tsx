@@ -20,8 +20,7 @@ const AuthLayout = () => {
       "& > #sign-up": {
          width: "80vw",
          maxWidth: "100%",
-         height: "90vh",
-         maxHeight: "100%",
+         maxHeight: "90vh",
       },
    }));
    return (

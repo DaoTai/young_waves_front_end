@@ -22,15 +22,12 @@ export interface State {
    profile: {
       isLoading: boolean;
       payload: Profile & { totalPosts: number };
-      action?: string;
-      status?: number;
-      error?: string;
    };
    posts: {
       isLoading: boolean;
       payload: Post[];
    };
-   trashPosts: { isLoading: boolean; payload: Post[] };
+   trashPosts: { isLoading: boolean; trashPosts: Post[]; page: number; maxPage: number };
    ownerPosts: { isLoading: boolean; payload: Post[] };
 }
 

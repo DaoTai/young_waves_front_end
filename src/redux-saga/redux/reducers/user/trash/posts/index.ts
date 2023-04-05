@@ -2,7 +2,7 @@ import { TRASH_POSTS_ACTION } from "../../../../../../utils/enums";
 import { Post } from "../../../../../../utils/interfaces/Post";
 interface TrashPostsPayload {
    posts: Post[];
-   perPage: number;
+   page: number;
    maxPage: number;
 }
 
@@ -10,7 +10,7 @@ interface TrashPostsState {
    isLoading: boolean;
    trashPosts: Partial<Post[]>;
    maxPage: number;
-   perPage: number;
+   page: number;
 }
 
 interface MyAction {
@@ -22,7 +22,7 @@ const init: TrashPostsState = {
    isLoading: false,
    trashPosts: [],
    maxPage: 0,
-   perPage: 0,
+   page: 0,
 };
 
 const trashPostsReducer = (state = init, action: MyAction): TrashPostsState => {
@@ -37,7 +37,7 @@ const trashPostsReducer = (state = init, action: MyAction): TrashPostsState => {
             ...state,
             isLoading: false,
             trashPosts: action.payload.posts,
-            perPage: action.payload.perPage,
+            page: action.payload.page,
             maxPage: action.payload.maxPage,
          };
       // case CONSTANTS.FORCE_DELETE_POST_SUCCESS:
