@@ -2,7 +2,6 @@ import InfoIcon from "@mui/icons-material/Info";
 import {
    Box,
    Button,
-   Chip,
    Dialog,
    DialogActions,
    DialogContent,
@@ -14,7 +13,10 @@ import {
 } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useEffect, useState, useRef } from "react";
+import DetailsIcon from "@mui/icons-material/Details";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +24,6 @@ import { DataGrid, GridCallbackDetails, GridColDef, GridValueGetterParams } from
 import dateformat from "dateformat";
 import { forceDeletePost, getTrashPosts, restorePost } from "../../../../redux-saga/redux/actions";
 import { trashPostsState$ } from "../../../../redux-saga/redux/selectors";
-import { Spinner } from "../../../../components";
 const TrashPosts = () => {
    const theme = useTheme();
    const navigate = useNavigate();
@@ -39,20 +40,23 @@ const TrashPosts = () => {
 
    const columns: GridColDef[] = [
       {
+         field: "status",
+         headerName: "Status",
+         flex: 1,
+         headerAlign: "center",
+      },
+      {
+         field: "body",
+         headerName: "Body",
+         flex: 1,
+         headerAlign: "center",
+      },
+      {
          field: "deletedAt",
          headerName: "Deleted at",
          valueFormatter: (params) => dateformat(params.value, "mmmm dS, yyyy, h:MM TT"),
          flex: 1,
-      },
-      {
-         field: "status",
-         headerName: "Status",
-         flex: 1,
-      },
-      {
-         field: "body",
-         headerName: "body",
-         flex: 1,
+         headerAlign: "center",
       },
       {
          field: "detail",
@@ -60,6 +64,22 @@ const TrashPosts = () => {
          flex: 1,
          disableColumnMenu: true,
          sortable: false,
+         headerAlign: "center",
+         renderCell(params) {
+            return (
+               <Button
+                  sx={{
+                     bgcolor: theme.palette.primary.main,
+                     "&:hover": {
+                        color: theme.palette.primary.main,
+                     },
+                  }}
+                  endIcon={<DetailsIcon />}
+                  onClick={() => handleShowDetail(params.row?._id)}>
+                  Open
+               </Button>
+            );
+         },
       },
       {
          field: "restore",
@@ -67,6 +87,23 @@ const TrashPosts = () => {
          flex: 1,
          disableColumnMenu: true,
          sortable: false,
+         headerAlign: "center",
+         renderCell(params) {
+            return (
+               <Button
+                  color="success"
+                  sx={{
+                     bgcolor: theme.palette.success.main,
+                     "&:hover": {
+                        color: theme.palette.success.main,
+                     },
+                  }}
+                  endIcon={<RestoreFromTrashIcon />}
+                  onClick={() => handleRestore(params.row?._id)}>
+                  Restore
+               </Button>
+            );
+         },
       },
       {
          field: "delete",
@@ -74,6 +111,22 @@ const TrashPosts = () => {
          flex: 1,
          disableColumnMenu: true,
          sortable: false,
+         headerAlign: "center",
+         renderCell(params) {
+            return (
+               <Button
+                  sx={{
+                     bgcolor: theme.palette.error.main,
+                     "&:hover": {
+                        color: theme.palette.error.main,
+                     },
+                  }}
+                  endIcon={<DeleteForeverIcon />}
+                  onClick={() => handleOpenDialogDelete(params.row?._id)}>
+                  Delete
+               </Button>
+            );
+         },
       },
    ];
 
@@ -90,7 +143,7 @@ const TrashPosts = () => {
       setOpenDialog(!openDialog);
    };
 
-   const handleOpenDialog = (id: string) => {
+   const handleOpenDialogDelete = (id: string) => {
       setOpenDialog(true);
       setIdDelete(id);
    };
@@ -114,7 +167,20 @@ const TrashPosts = () => {
          </Helmet>
          <Box width="100%" height="100vh">
             <DataGrid
-               sx={{ bgcolor: theme.myColor.white }}
+               showCellRightBorder={true}
+               showColumnRightBorder={true}
+               sx={{
+                  bgcolor: theme.myColor.white,
+                  button: {
+                     color: theme.myColor.white,
+                     border: "1px solid #ccc",
+                     margin: "auto",
+                     alignItems: "stretch",
+                     "&:hover": {
+                        borderColor: "currentcolor",
+                     },
+                  },
+               }}
                rows={trashPosts}
                columns={columns}
                getRowId={(row) => row._id}
@@ -153,14 +219,19 @@ const TrashPosts = () => {
                </Fab>
             </Stack>
          </Box>
-         {/* Dialog */}
+         {/* Dialog delete*/}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-            <DialogTitle display="flex" justifyContent="center" alignItems="center">
-               Confirm delete
-               <InfoIcon color="info" />
+            <DialogTitle
+               display="flex"
+               justifyContent="center"
+               alignItems="center"
+               gap={1}
+               boxShadow={1}>
+               <Typography variant="h5"> Confirm delete</Typography>
+               <InfoIcon color="warning" fontSize="large" />
             </DialogTitle>
-            <DialogContent sx={{ minWidth: "30vw" }}>
-               <Typography color={theme.myColor.text} textAlign="center">
+            <DialogContent sx={{ minWidth: "30vw", p: 2 }}>
+               <Typography color={theme.myColor.text} textAlign="center" pt={2}>
                   Do you sure you want to delete this post ?
                </Typography>
             </DialogContent>

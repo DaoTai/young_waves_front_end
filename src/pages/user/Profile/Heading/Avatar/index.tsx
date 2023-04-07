@@ -30,8 +30,8 @@ const AvatarProfile = ({
             variant={variant}
             src={user?.avatar}
             sx={{
-               width: 200,
-               height: 200,
+               width: 220,
+               height: 220,
                border: 0.5,
                borderRadius,
             }}></Avatar>

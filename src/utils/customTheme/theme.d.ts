@@ -9,6 +9,7 @@ declare module "@mui/material/styles" {
          bgGray: string;
          link: string;
          white: string;
+         black: string;
       };
    }
    // allow configuration using `createTheme`
@@ -21,6 +22,7 @@ declare module "@mui/material/styles" {
          bgGray: string;
          link: string;
          white: string;
+         black: string;
       };
    }
 }

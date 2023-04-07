@@ -28,7 +28,11 @@ const Post = () => {
          <Grid item>
             <Avatar
                src={user$?.payload?.avatar || auth$?.payload?.user.avatar}
-               sx={{ width: 50, height: 50, boxShadow: 1 }}
+               sx={{
+                  width: 50,
+                  height: 50,
+                  boxShadow: 1,
+               }}
             />
          </Grid>
          <Grid
@@ -36,6 +40,9 @@ const Post = () => {
             flexGrow={2}
             sx={{
                cursor: "pointer",
+               "&:hover": {
+                  opacity: 0.8,
+               },
             }}
             onClick={() => setOpenModal(true)}>
             <Typography

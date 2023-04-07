@@ -9,7 +9,7 @@ import { addFriend, updateProfile } from "../../../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import Avatar from "./Avatar";
-const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
+const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }) => {
    const theme = useTheme();
    const navigate = useNavigate();
    const auth$ = useSelector(authState$);
@@ -37,14 +37,15 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
             p={1}
             gap={4}
             minHeight={400}
-            alignItems="center"
             overflow="hidden"
             position="relative"
+            justifyContent={{ lg: "flex-start", md: "center", sm: "center" }}
             sx={
                user?.coverPicture
                   ? {
                        backgroundImage: `url(${user?.coverPicture})`,
-                       backgroundPosition: "center center",
+                       bgcolor: theme.myColor.black,
+                       backgroundPosition: "top",
                        backgroundSize: "cover",
                        backgroundRepeat: "no-repeat",
                     }
@@ -83,9 +84,7 @@ const Heading = ({ user }: { user: Profile & { totalPosts: number } }) => {
                   variant="subtitle1"
                   fontWeight={600}
                   sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
-                  {user?.totalPosts && user?.totalPosts > 1
-                     ? user?.totalPosts + " posts"
-                     : user?.totalPosts + " post"}
+                  {totalPosts && totalPosts > 1 ? totalPosts + " posts" : totalPosts + " post"}
                </Typography>
 
                {/* Show button edit */}

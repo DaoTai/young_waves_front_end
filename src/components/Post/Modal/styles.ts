@@ -11,7 +11,7 @@ export const MyBox = styled(Box)(({ theme }) => ({
    maxHeight: "100vh",
    overflow: "auto",
    backgroundColor: "#fff",
-   border: "1px solid #000",
+   border: `1px solid ${theme.myColor.black}`,
    padding: "24px",
    borderRadius: 2,
    boxShadow:

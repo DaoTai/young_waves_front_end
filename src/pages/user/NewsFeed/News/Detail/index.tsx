@@ -1,30 +1,21 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Fab, Modal, Stack, Typography, useTheme } from "@mui/material";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useLayoutEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
 import * as api from "../../../../../apis";
 import { CloseButton, Comment as MyComment } from "../../../../../components";
-import {
-   createComment,
-   createCommentSuccess,
-   deleteComment,
-   showAlert,
-} from "../../../../../redux-saga/redux/actions";
+import { createCommentSuccess, deleteComment } from "../../../../../redux-saga/redux/actions";
 import { Comment } from "../../../../../utils/interfaces/Comment";
 import { Post } from "../../../../../utils/interfaces/Post";
-import { Profile } from "../../../../../utils/interfaces/Profile";
-import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import Heading from "../Heading";
 import CommentField from "./CommentField";
-import Actions from "../Actions";
 import { settings } from "./config";
 import { ButtonSlide, MyBox } from "./styles";
-
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 interface DetailPost {
    comments: [] | Comment[];
    post: Post;
@@ -33,7 +24,6 @@ interface DetailPost {
 const Detail = () => {
    const theme = useTheme();
    const { id, indexImage } = useParams();
-   const auth$ = useSelector(authState$);
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const [detailPost, setDetailPost] = useState<DetailPost | null>(null);
@@ -139,7 +129,11 @@ const Detail = () => {
                <Box>
                   {/* Images */}
                   {detailPost?.post.attachments.length ? (
-                     <Box position="relative" height="100%" bgcolor="#000" overflow="hidden">
+                     <Box
+                        position="relative"
+                        height="100%"
+                        bgcolor={theme.myColor.black}
+                        overflow="hidden">
                         <Slider ref={sliderRef} {...settings}>
                            {detailPost?.post.attachments.map((img, index) => (
                               <div key={index}>
@@ -210,6 +204,7 @@ const Detail = () => {
                                  comment={comment}
                                  onSubmit={handleEditComment}
                                  handleDelete={handleDeleteComment}
+                                 enableActions
                               />
                            );
                         })}
@@ -218,7 +213,6 @@ const Detail = () => {
                </Box>
             </MyBox>
          </Modal>
-         {/* <Spinner show={isLoading} /> */}
       </>
    );
 };

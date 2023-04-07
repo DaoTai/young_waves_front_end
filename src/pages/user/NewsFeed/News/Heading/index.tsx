@@ -57,10 +57,6 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
    const handleShowEditModal = () => {
       handleClose();
       setOpenPostModal(true);
-      // const { setImages, setPost, setStatus, handleOpen } = modalRef.current as ModalRef;
-      // setImages(post?.attachments);
-      // setPost(post?.body);
-      // setStatus(post?.status);
    };
 
    const handleUpdate = useCallback(
@@ -90,7 +86,11 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                         src={post?.author.avatar}
                         srcSet={post?.author.avatar}
                         alt="avatar"
-                        sx={{ width: 50, height: 50, boxShadow: 1 }}
+                        sx={{
+                           width: 50,
+                           height: 50,
+                           boxShadow: 1,
+                        }}
                      />
                   </Link>
                }

@@ -10,7 +10,6 @@ import {
    FormControlLabel,
    FormLabel,
    Grid,
-   Paper,
    Radio,
    RadioGroup,
    TextField,
@@ -89,10 +88,13 @@ const Editing = () => {
                   <ArrowBackIosIcon />
                </Fab>
                <Button
-                  variant="outlined"
-                  startIcon={<KeyIcon />}
+                  variant="contained"
+                  endIcon={<KeyIcon />}
+                  sx={{
+                     color: theme.myColor.white,
+                  }}
                   onClick={() => navigate("/user/profile/password")}>
-                  Change Password
+                  Change password
                </Button>
             </Stack>
             <form autoComplete="off" onSubmit={handleSubmit}>
@@ -194,15 +196,18 @@ const Editing = () => {
                </Grid>
 
                {/* Submit button */}
-               <Button
-                  fullWidth
-                  type="submit"
-                  size="large"
-                  variant="contained"
-                  endIcon={<SendIcon />}
-                  sx={{ fontSize: 18, marginTop: 2, fontWeight: 500, color: theme.myColor.white }}>
-                  Update
-               </Button>
+               <Stack flexDirection="row" justifyContent="flex-end">
+                  <Button
+                     type="submit"
+                     size="large"
+                     variant="contained"
+                     endIcon={<SendIcon />}
+                     sx={{
+                        color: theme.myColor.white,
+                     }}>
+                     Update
+                  </Button>
+               </Stack>
             </form>
          </Container>
 

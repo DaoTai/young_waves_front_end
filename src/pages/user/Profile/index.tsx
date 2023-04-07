@@ -24,9 +24,12 @@ const Profile = () => {
    const idUser = profile$?.payload?._id;
    const [tab, setTab] = useState<TYPE_TAB_PROFILE>("posts");
    useEffect(() => {
-      id === String(auth$.payload.user._id) &&
-         dispatch(getOwnerPosts(id as string)) &&
-         dispatch(getProfile(id as string));
+      if (id === auth$.payload.user._id) {
+         if (!profile$.payload._id) {
+            dispatch(getProfile(id as string));
+         }
+         dispatch(getOwnerPosts(id as string));
+      }
    }, [id]);
    const handleChangeTabPanel = (event: React.SyntheticEvent, newValue: TYPE_TAB_PROFILE) => {
       setTab(newValue);
@@ -55,7 +58,7 @@ const Profile = () => {
 
          <Stack flexDirection="column" gap={2}>
             <Box boxShadow={1} borderRadius={1} bgcolor="#fff" overflow="hidden">
-               <Heading user={profile$.payload} />
+               <Heading user={profile$.payload} totalPosts={ownerPosts$.payload.length} />
             </Box>
             {/* Tab navigate */}
             <Tabs

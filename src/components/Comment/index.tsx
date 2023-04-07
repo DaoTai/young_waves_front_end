@@ -30,10 +30,12 @@ const MyComment = ({
    comment,
    handleDelete = () => {},
    onSubmit = () => {},
+   enableActions = false,
 }: {
    comment: Comment;
    handleDelete?: (id: string) => void;
    onSubmit?: (id: string, updatedComment: string) => void;
+   enableActions?: boolean;
 }) => {
    const theme = useTheme();
    const auth$ = useSelector(authState$);
@@ -138,6 +140,7 @@ const MyComment = ({
                      </Typography>
                   }
                   action={
+                     enableActions &&
                      idAuth === comment.user._id && (
                         <ButtonBase sx={{ pt: 1, pr: 2, pl: 2, pb: 0 }} onClick={handleShowPopover}>
                            <MoreHorizIcon />

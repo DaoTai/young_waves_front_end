@@ -9,6 +9,7 @@ export const customTheme = createTheme({
       bgGray: "#eee",
       bgGradient: "linear-gradient(to bottom, #4568dc, #b06ab3)",
       link: "#2196f3",
+      black: "#000",
    },
    palette: {
       secondary: {
@@ -72,6 +73,13 @@ export const customTheme = createTheme({
          styleOverrides: {
             root: {
                backgroundColor: "rgb(181 176 176 / 14%)",
+            },
+         },
+      },
+      MuiAvatar: {
+         styleOverrides: {
+            img: {
+               objectPosition: "top",
             },
          },
       },

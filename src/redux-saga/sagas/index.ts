@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../../apis";
 import * as CONSTANTS from "../../utils/constants";
-import { OWNER_POSTS_ACTION, POSTS_ACTION } from "../../utils/enums";
+import { OWNER_POSTS_ACTION, POSTS_ACTION, TRASH_POSTS_ACTION } from "../../utils/enums";
 import { SignIn, SignUp } from "../../utils/interfaces/Auth";
 import { Post } from "../../utils/interfaces/Post";
 import { Profile } from "../../utils/interfaces/Profile";
@@ -326,9 +326,9 @@ export default function* rootSaga() {
       takeLatest(POSTS_ACTION.DELETE_COMMENT_POST, deleteCommentSaga),
       takeLatest(POSTS_ACTION.LIKE_POST, handleLikePost),
       takeLatest(POSTS_ACTION.UNLIKE_POST, handleUnLikePost),
-      takeLatest(CONSTANTS.GET_TRASH_POSTS, getTrashPosts),
+      takeLatest(TRASH_POSTS_ACTION.GET_TRASH_POSTS, getTrashPosts),
       // takeLatest(CONSTANTS.GET_TRASH_POST, getDetailTrashPost),
-      takeLatest(CONSTANTS.RESTORE_POST, restorePost),
-      takeLatest(CONSTANTS.FORCE_DELETE_POST, forceDeletePost),
+      takeLatest(TRASH_POSTS_ACTION.RESTORE_TRASH_POST, restorePost),
+      takeLatest(TRASH_POSTS_ACTION.FORCE_DELETE_TRASH_POST, forceDeletePost),
    ]);
 }
