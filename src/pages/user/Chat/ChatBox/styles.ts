@@ -2,13 +2,14 @@ import { Paper, styled, Stack, Avatar, Box } from "@mui/material";
 
 export const MyChatBox = styled(Paper)(({ theme }) => ({
    position: "relative",
+   zIndex: 10,
    width: "328px",
    maxWidth: "330px",
    height: "460px",
    padding: 0,
    boxShadow: theme.shadows[2],
    backgroundColor: theme.myColor.white,
-   overflowY: "hidden",
+   overflow: "hidden",
 }));
 
 export const Heading = styled(Stack)(({ theme }) => ({
@@ -79,9 +80,7 @@ export const Footer = styled(Stack)(({ theme }) => ({
 }));
 
 export const Floating = styled(Avatar)(({ theme }) => ({
-   position: "fixed",
-   bottom: 15,
-   right: 15,
+   position: "relative",
    padding: 2,
    zIndex: 99999,
    width: 56,

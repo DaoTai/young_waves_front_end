@@ -1,4 +1,4 @@
-import { Container, Grid, useTheme } from "@mui/material";
+import { Box, Container, Grid, Stack, useTheme } from "@mui/material";
 import { useCallback, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import Trashes from "../Trashes";
 import Users from "../Users";
 const ContainerAdmin = () => {
    const theme = useTheme();
-   const { isLoading, payload } = useSelector(alert$);
+   const { isShow, payload } = useSelector(alert$);
    const { title, mode, message } = payload as AlertProps;
    const [feature, setFeature] = useState<TYPE_FEATURES>("users");
 
@@ -34,17 +34,15 @@ const ContainerAdmin = () => {
             <title>Young Waves | Admin</title>
          </Helmet>
          <Header />
-         <Grid container minHeight="100vh" mt={7}>
-            <Grid item lg={2} md={2} sm={2} xs={12} sx={{ background: theme.myColor.bgGradient }}>
+         <Container maxWidth="xl" sx={{ pb: 2, pt: 4, mt: 7, bgcolor: theme.myColor.white }}>
+            <Stack flexDirection="row" gap={4} minHeight="100vh">
                <Features onClick={onClick} />
-            </Grid>
-            <Grid item lg={10} md={10} sm={10} xs={12}>
-               <Container maxWidth="lg" sx={{ pb: 2, pt: 2 }}>
+               <Box flex={2} pb={1} pt={1}>
                   {Feature[feature]}
-               </Container>
-            </Grid>
-         </Grid>
-         {isLoading && <Alert title={title} mode={mode} message={message} />}
+               </Box>
+            </Stack>
+         </Container>
+         {isShow && <Alert title={title} mode={mode} message={message} />}
       </>
    );
 };

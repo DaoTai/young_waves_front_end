@@ -160,7 +160,7 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
                      <Body ref={bodyRef}>
                         {messages.length === 0 ? (
                            <Typography variant="body1" textAlign="center">
-                              You don't have message. <br /> Let's chat each other
+                              You don't have message. <br /> Let's chat together
                            </Typography>
                         ) : (
                            messages.map((chat, index) => {

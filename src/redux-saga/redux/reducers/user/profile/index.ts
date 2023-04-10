@@ -13,15 +13,11 @@ import {
    ADD_FRIEND_SUCCESS,
    ADD_FRIEND_FAILURE,
 } from "../../../../../utils/constants";
-import { Action } from "../../../../../utils/interfaces/Action";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 
 interface ProfileState {
    isLoading: boolean;
    payload: Partial<Profile>;
-   action?: string;
-   status?: number;
-   error?: string;
 }
 
 const init: ProfileState = {
@@ -31,8 +27,8 @@ const init: ProfileState = {
 
 const profileReducer = (
    state = init,
-   action: { type: string; payload: { data: Object; status: number; message?: string } | any }
-) => {
+   action: { type: string; payload: { data: Object } | any }
+): ProfileState => {
    switch (action.type) {
       case GET_PROFILE:
       case UPDATE_PROFILE:
@@ -49,15 +45,12 @@ const profileReducer = (
             ...state,
             isLoading: false,
             payload: { ...state.payload, ...action.payload.data },
-            action: action.type,
-            status: action.payload.status,
          };
       case ADD_FRIEND_SUCCESS:
          state.payload?.friends?.push(action.payload);
          return {
             ...state,
             isLoading: false,
-            action: action.type,
          };
 
       case GET_PROFILE_FAILURE:
@@ -67,8 +60,6 @@ const profileReducer = (
          return {
             ...state,
             isLoading: false,
-            error: action.payload.message,
-            action: action.type,
          };
       default:
          return { ...state, isLoading: false };

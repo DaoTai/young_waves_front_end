@@ -61,8 +61,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       {
          field: "fullName",
          headerName: "Full name",
-         width: 160,
-         flex: 1,
+         flex: 2,
          renderCell(params) {
             return (
                <Stack
@@ -93,8 +92,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       {
          field: "createdAt",
          headerName: "Joined time",
-         width: 70,
-         flex: 1,
+         flex: 2,
          valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
       },
       {
@@ -241,8 +239,17 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          <Typography variant="h3" textAlign="center" letterSpacing={2}>
             Users
          </Typography>
-         {/* Select role  */}
+         {/* Roles & actions */}
          <Stack mt={2} mb={2} flexDirection="row" justifyContent="space-between" gap={2}>
+            {/* Roles */}
+            <FormControl sx={{ width: 200 }}>
+               <InputLabel id="demo-simple-select-label">Role</InputLabel>
+               <Select value={role} label="Selection" onChange={handleChangeRole}>
+                  <MenuItem value="User">User</MenuItem>
+                  <MenuItem value="Admin">Admin</MenuItem>
+               </Select>
+            </FormControl>
+            {/* Actions */}
             <Stack flexDirection="row" gap={4}>
                <Tooltip title="Trash Store">
                   <Fab color="info" size="medium">
@@ -261,20 +268,14 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   </Fab>
                </Tooltip>
             </Stack>
-
-            {/* Roles */}
-            <FormControl sx={{ width: 200 }}>
-               <InputLabel id="demo-simple-select-label">Role</InputLabel>
-               <Select value={role} label="Selection" onChange={handleChangeRole}>
-                  <MenuItem value="User">User</MenuItem>
-                  <MenuItem value="Admin">Admin</MenuItem>
-               </Select>
-            </FormControl>
          </Stack>
 
          {users && (
-            <Box width="100%" height="100vh">
+            <Box width="100%">
                <DataGrid
+                  autoHeight
+                  showCellRightBorder={true}
+                  showColumnRightBorder={true}
                   rows={users as Array<Profile>}
                   columns={columns}
                   pageSize={10}

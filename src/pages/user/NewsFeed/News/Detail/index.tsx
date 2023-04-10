@@ -1,7 +1,7 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Fab, Modal, Stack, Typography, useTheme } from "@mui/material";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
@@ -23,12 +23,12 @@ interface DetailPost {
 
 const Detail = () => {
    const theme = useTheme();
-   const { id, indexImage } = useParams();
+   const { id } = useParams();
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const [detailPost, setDetailPost] = useState<DetailPost | null>(null);
    const sliderRef = useRef<Slider | null>(null);
-   useLayoutEffect(() => {
+   useEffect(() => {
       if (id) {
          try {
             (async () => {
@@ -40,15 +40,7 @@ const Detail = () => {
             throw new Error(err);
          }
       }
-      if (indexImage) {
-         const timerId = setTimeout(() => {
-            sliderRef.current?.slickGoTo(Number(indexImage), false);
-         }, 0);
-         return () => {
-            clearTimeout(timerId);
-         };
-      }
-   }, [indexImage, id]);
+   }, [id]);
 
    // Close modal
    const handleClose = () => {

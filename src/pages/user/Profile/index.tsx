@@ -6,9 +6,7 @@ import { useParams } from "react-router-dom";
 import { Post, Spinner } from "../../../components";
 import { getOwnerPosts, getProfile } from "../../../redux-saga/redux/actions";
 import { authState$, ownerPostsState$, profileState$ } from "../../../redux-saga/redux/selectors";
-import { Post as IPost } from "../../../utils/interfaces/Post";
 import { TYPE_TAB_PROFILE } from "../../../utils/types";
-
 import News from "../NewsFeed/News";
 import Friends from "./Friends";
 import Heading from "./Heading";

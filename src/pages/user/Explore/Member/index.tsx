@@ -14,15 +14,19 @@ const Member = () => {
    const { id } = useParams();
    const [user, setUser] = useState<(Profile & { totalPosts: number }) | null>(null);
    const [show, setShow] = useState<boolean>(false);
-   const [listNews, setListNews] = useState<Partial<Post[]>>([]);
+   const [listNews, setListNews] = useState<Post[]>([]);
    useEffect(() => {
       (async () => {
-         setShow(true);
-         const profile = await getProfile(id as string);
-         const newses = await getOwnerPosts(id as string);
-         setUser(profile.data);
-         setListNews(newses.data);
-         setShow(false);
+         try {
+            setShow(true);
+            const profileRes = await getProfile(id as string);
+            const postsRes = await getOwnerPosts(id as string);
+            setUser(profileRes.data);
+            setListNews(postsRes.data);
+            setShow(false);
+         } catch (err: any) {
+            throw new Error(err);
+         }
       })();
    }, [id]);
 
@@ -34,14 +38,14 @@ const Member = () => {
          {user && (
             <Stack flexDirection="column" sx={{ gap: 1 }}>
                <Box boxShadow={1} borderRadius={1} bgcolor="#fff">
-                  <Heading user={user} />
+                  <Heading user={user} totalPosts={listNews.length} />
                </Box>
                <Grid container pt={1} spacing={2}>
                   <Grid item xs={12} md={4}>
                      <Introduction user={user} />
                   </Grid>
                   <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
-                     {/* <News listNews={listNews as Post[]} /> */}
+                     <News posts={listNews} />
                   </Grid>
                </Grid>
             </Stack>

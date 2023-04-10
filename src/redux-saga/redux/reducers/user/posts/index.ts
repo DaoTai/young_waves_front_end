@@ -76,7 +76,7 @@ const ownerPostsReducer = (
          const idLike = action.payload.idLike;
          const idLikedPost = action.payload.idPost;
          const newPostsAfterLike = state.payload.map((post: Post) => {
-            if (post._id === idLikedPost) {
+            if (post._id === idLikedPost && !post.likes.includes(idLike)) {
                post.likes.push(idLike);
             }
             return post;

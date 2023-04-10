@@ -4,7 +4,7 @@ export enum FEATURES_ADMIN {
    trashes = "trashes",
 }
 export enum TRASHES_ADMIN {
-   users = "users",
+   members = "members",
 }
 
 export enum TAB_PROFILE {

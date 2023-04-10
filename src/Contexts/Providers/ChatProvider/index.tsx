@@ -30,12 +30,15 @@ const ChatProvider = ({ children }) => {
          <Stack
             flexDirection="row"
             justifyContent="flex-end"
+            alignItems="flex-end"
+            flexWrap="wrap"
             gap={2}
             maxHeight={460}
             position="fixed"
             left={3}
             right={3}
-            bottom={0}>
+            bottom={0}
+            overflow="hidden">
             {conversations.map((conversation) => {
                return (
                   <ChatBox

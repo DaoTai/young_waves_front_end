@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import RestoreIcon from "@mui/icons-material/Restore";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,7 +18,6 @@ import {
    Select,
    SelectChangeEvent,
    Stack,
-   Tooltip,
    Typography,
    useTheme,
 } from "@mui/material";
@@ -46,8 +45,12 @@ const UserTrashes = () => {
    useEffect(() => {
       (async () => {
          setLoading(true);
-         const res = await api.admin.getTrashedUsers({ admin: role === "Admin" });
-         res.status === 200 && setUsers(res.data);
+         try {
+            const res = await api.admin.getTrashedUsers({ admin: role === "Admin" });
+            setUsers(res.data);
+         } catch (err: any) {
+            throw new Error(err);
+         }
          setLoading(false);
       })();
    }, [role]);
@@ -56,6 +59,7 @@ const UserTrashes = () => {
    const columns: GridColDef[] = [
       {
          field: "fullName",
+         headerAlign: "center",
          headerName: "Full name",
          width: 160,
          flex: 1,
@@ -76,18 +80,21 @@ const UserTrashes = () => {
       },
       {
          field: "username",
+         headerAlign: "center",
          headerName: "Username",
          width: 70,
          flex: 1,
       },
       {
          field: "region",
+         headerAlign: "center",
          headerName: "Region",
          width: 70,
          flex: 1,
       },
       {
          field: "deletedAt",
+         headerAlign: "center",
          headerName: "Deleted at",
          width: 70,
          flex: 1,
@@ -95,6 +102,7 @@ const UserTrashes = () => {
       },
       {
          field: "detail",
+         headerAlign: "center",
          headerName: "Detail",
          width: 200,
          flex: 1,
@@ -110,45 +118,44 @@ const UserTrashes = () => {
          },
       },
       {
-         field: "options",
-         headerName: "Options",
-         width: 200,
+         field: "restore",
+         headerAlign: "center",
+         headerName: "Restore",
          flex: 1,
          sortable: false,
          disableColumnMenu: true,
          renderCell(params) {
             return (
-               <Stack
-                  flexDirection="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  flex={1}
-                  gap={2}>
-                  {
-                     <Tooltip title="Restore" arrow>
-                        <RestoreIcon
-                           sx={{
-                              cursor: "pointer",
-                              transform: "scale(1.2)",
-                              flex: 1,
-                              color: theme.myColor.link,
-                           }}
-                           onClick={() => handleRestoreUser(params.id.toString())}
-                        />
-                     </Tooltip>
-                  }
-                  <Tooltip title="Force delete" arrow>
-                     <DeleteIcon
-                        sx={{
-                           cursor: "pointer",
-                           transform: "scale(1.2)",
-                           flex: 1,
-                           color: theme.palette.error.main,
-                        }}
-                        onClick={() => onOpenConfirmForceDelete(params.row)}
-                     />
-                  </Tooltip>
-               </Stack>
+               <RestoreFromTrashIcon
+                  sx={{
+                     cursor: "pointer",
+                     transform: "scale(1.2)",
+                     flex: 1,
+                     color: theme.myColor.link,
+                  }}
+                  onClick={() => handleRestoreUser(params.id.toString())}
+               />
+            );
+         },
+      },
+      {
+         field: "options",
+         headerAlign: "center",
+         headerName: "Options",
+         flex: 1,
+         sortable: false,
+         disableColumnMenu: true,
+         renderCell(params) {
+            return (
+               <DeleteIcon
+                  sx={{
+                     cursor: "pointer",
+                     transform: "scale(1.2)",
+                     flex: 1,
+                     color: theme.palette.error.main,
+                  }}
+                  onClick={() => onOpenConfirmForceDelete(params.row)}
+               />
             );
          },
       },
@@ -231,22 +238,28 @@ const UserTrashes = () => {
             <Stack justifyContent="flex-end">
                <FormControl sx={{ width: 200, pb: 2, pt: 2, ml: "auto" }}>
                   <InputLabel>Role</InputLabel>
-                  <Select value={role} label="Selection" onChange={handleChangeRole}>
+                  <Select
+                     value={role}
+                     label="Selection"
+                     sx={{ border: 1, borderColor: theme.myColor.link }}
+                     onChange={handleChangeRole}>
                      <MenuItem value="User">User</MenuItem>
                      <MenuItem value="Admin">Admin</MenuItem>
                   </Select>
                </FormControl>
             </Stack>
             {users && (
-               <Box width="100%" overflow="overlay" height={500}>
+               <Box width="100%" overflow="overlay">
                   <DataGrid
+                     autoHeight
+                     showCellRightBorder={true}
+                     showColumnRightBorder={true}
                      rows={users as Array<Profile>}
                      columns={columns}
                      pageSize={10}
                      rowsPerPageOptions={[10]}
                      getRowId={(row) => row._id}
                      loading={isLoading}
-                     autoHeight
                      components={{
                         NoRowsOverlay: () => (
                            <Typography p={2} textAlign="center">
@@ -254,6 +267,7 @@ const UserTrashes = () => {
                            </Typography>
                         ),
                      }}
+                     sx={{ bgcolor: theme.myColor.white }}
                   />
                </Box>
             )}

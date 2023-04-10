@@ -5,11 +5,11 @@ import OverlayBackground from "../../../../../components/OverlayBackground";
 const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) => {
    const columns = 4;
    const navigate = useNavigate();
-   const handleNavigate = (index: number) => {
+   const handleNavigate = () => {
       if (window.location.pathname.includes("/user/profile")) {
-         navigate(`/user/news/${id}/${index}`);
+         navigate(`/user/news/${id}`);
       } else {
-         navigate(`/news/${id}/${index}`);
+         navigate(`/news/${id}`);
       }
    };
 
@@ -37,12 +37,12 @@ const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) 
             {attachments?.map((item, index, arr) => {
                if (index < columns) {
                   return index === columns - 1 ? (
-                     <ImageListItem key={index} onClick={() => handleNavigate(index)}>
+                     <ImageListItem key={index} onClick={handleNavigate}>
                         <img src={item} srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
                         <OverlayBackground amount={arr.length - columns} />
                      </ImageListItem>
                   ) : (
-                     <ImageListItem key={index} onClick={() => handleNavigate(index)}>
+                     <ImageListItem key={index} onClick={handleNavigate}>
                         <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
                      </ImageListItem>
                   );

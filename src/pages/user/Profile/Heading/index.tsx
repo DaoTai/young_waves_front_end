@@ -1,5 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Button, Fab, Grid, Typography, useTheme } from "@mui/material";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,9 +13,13 @@ import Avatar from "./Avatar";
 const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }) => {
    const theme = useTheme();
    const navigate = useNavigate();
+   const profile$ = useSelector(profileState$);
    const auth$ = useSelector(authState$);
    const idAuth = auth$?.payload?.user._id;
    const { isLoading, payload } = useSelector(profileState$);
+   const isFriend =
+      !auth$.payload.user.friends.includes(user._id) &&
+      !profile$.payload?.friends?.includes(user._id);
 
    const dispatch = useDispatch();
    const imageRef = useRef(Object(null));
@@ -39,14 +44,15 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
             minHeight={400}
             overflow="hidden"
             position="relative"
-            justifyContent={{ lg: "flex-start", md: "center", sm: "center" }}
+            alignItems="center"
             sx={
                user?.coverPicture
                   ? {
+                       justifyContent: { lg: "flex-start", md: "flex-start", xs: "center" },
                        backgroundImage: `url(${user?.coverPicture})`,
                        bgcolor: theme.myColor.black,
                        backgroundPosition: "top",
-                       backgroundSize: "cover",
+                       backgroundSize: "contain",
                        backgroundRepeat: "no-repeat",
                     }
                   : {
@@ -79,6 +85,7 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
                   fontWeight={600}
                   sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
                   {user?.fullName}
+                  {user?.isAdmin && <CheckCircleIcon color="primary" sx={{ ml: 0.25 }} />}
                </Typography>
                <Typography
                   variant="subtitle1"
@@ -106,21 +113,19 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
                   </Button>
                )}
                {/* Show button add friend */}
-               {idAuth !== user?._id &&
-                  (!payload?.friends?.includes(user?._id) ||
-                     auth$?.payload?.user?.friends.includes(user?._id)) && (
-                     <Button
-                        sx={{
-                           mt: 2,
-                           color: theme.myColor.white,
-                        }}
-                        size="large"
-                        variant="contained"
-                        endIcon={<AddIcon />}
-                        onClick={handleAddFriend}>
-                        Add friend
-                     </Button>
-                  )}
+               {idAuth !== user?._id && isFriend && (
+                  <Button
+                     sx={{
+                        mt: 2,
+                        color: theme.myColor.white,
+                     }}
+                     size="large"
+                     variant="contained"
+                     endIcon={<AddIcon />}
+                     onClick={handleAddFriend}>
+                     Add friend
+                  </Button>
+               )}
             </Grid>
          </Grid>
 

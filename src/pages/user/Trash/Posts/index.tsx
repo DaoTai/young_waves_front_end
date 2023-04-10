@@ -66,6 +66,7 @@ const TrashPosts = () => {
          sortable: false,
          headerAlign: "center",
          renderCell(params) {
+            console.log(params);
             return (
                <Button
                   sx={{
@@ -165,14 +166,14 @@ const TrashPosts = () => {
          <Helmet>
             <title>Trash | Young Waves</title>
          </Helmet>
-         <Box width="100%" height="100vh">
+         <Box width="100%">
             <DataGrid
+               autoHeight
                showCellRightBorder={true}
                showColumnRightBorder={true}
                sx={{
                   bgcolor: theme.myColor.white,
                   button: {
-                     color: theme.myColor.white,
                      border: "1px solid #ccc",
                      margin: "auto",
                      alignItems: "stretch",
@@ -194,30 +195,32 @@ const TrashPosts = () => {
                   ),
                }}
             />
-            <Stack
-               pt={2}
-               pb={2}
-               flexDirection="row"
-               gap={2}
-               alignItems="center"
-               justifyContent="flex-end"
-               sx={{
-                  ".MuiFab-root": {
-                     boxShadow: 0,
-                     borderColor: theme.myColor.textSecondary,
-                     bgcolor: theme.myColor.white,
-                  },
-               }}>
-               <Fab size="small" onClick={handlePrevPage} disabled={currentPage === 1}>
-                  <ArrowBackIosNewIcon fontSize="small" />
-               </Fab>
-               <Typography variant="body1" component="span" letterSpacing={2}>
-                  {page} of {maxPage}
-               </Typography>
-               <Fab size="small" onClick={handleNextPage} disabled={currentPage === maxPage}>
-                  <ArrowForwardIosIcon fontSize="small" />
-               </Fab>
-            </Stack>
+            {maxPage > 0 && (
+               <Stack
+                  pt={2}
+                  pb={2}
+                  flexDirection="row"
+                  gap={2}
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  sx={{
+                     ".MuiFab-root": {
+                        boxShadow: 0,
+                        borderColor: theme.myColor.textSecondary,
+                        bgcolor: theme.myColor.white,
+                     },
+                  }}>
+                  <Fab size="small" onClick={handlePrevPage} disabled={currentPage === 1}>
+                     <ArrowBackIosNewIcon fontSize="small" />
+                  </Fab>
+                  <Typography variant="body1" component="span" letterSpacing={2}>
+                     {page} of {maxPage}
+                  </Typography>
+                  <Fab size="small" onClick={handleNextPage} disabled={currentPage === maxPage}>
+                     <ArrowForwardIosIcon fontSize="small" />
+                  </Fab>
+               </Stack>
+            )}
          </Box>
          {/* Dialog delete*/}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>

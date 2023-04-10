@@ -3,10 +3,10 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../../apis";
 import * as CONSTANTS from "../../utils/constants";
 import { OWNER_POSTS_ACTION, POSTS_ACTION, TRASH_POSTS_ACTION } from "../../utils/enums";
-import { SignIn, SignUp } from "../../utils/interfaces/Auth";
+import { SignIn } from "../../utils/interfaces/Auth";
+import { Comment } from "../../utils/interfaces/Comment";
 import { Post } from "../../utils/interfaces/Post";
 import { Profile } from "../../utils/interfaces/Profile";
-import { Comment } from "../../utils/interfaces/Comment";
 import * as ACTIONS from "../redux/actions";
 // Saga
 
@@ -53,11 +53,7 @@ function* signOutSaga() {
 function* getProfileSaga(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.user.getProfile, action.payload);
-      if (res.status === 200) {
-         yield put(ACTIONS.getProfileSuccess(res));
-      } else {
-         yield put(ACTIONS.getProfileFailure("Get profile failed"));
-      }
+      yield put(ACTIONS.getProfileSuccess(res));
    } catch (err) {
       yield put(ACTIONS.getProfileFailure(err as string));
    }
@@ -127,7 +123,6 @@ function* addFriend(action: { type: string; payload: string }) {
       yield put(ACTIONS.addFriendSuccess(action.payload));
    } catch (err: any) {
       throw new Error(err);
-      yield put(ACTIONS.addFriendFailure(err));
    }
 }
 
@@ -166,7 +161,7 @@ function* createPostSaga(action: { type: string; payload: Post }) {
             yield put(
                ACTIONS.showAlert({
                   title: "Create post",
-                  message: "Data is invalid! Let's try",
+                  message: "Capacity of post is over 50 MB",
                   mode: "warning",
                })
             );
@@ -264,16 +259,6 @@ function* getTrashPosts(action: { type: string; payload: number }) {
    }
 }
 
-// Get detail trash post
-// function* getDetailTrashPost(action: { type: string; payload: string }) {
-//    try {
-//       const res = yield call(api.post.getDetailTrashPost, action.payload);
-//       yield put(ACTIONS.getPostSuccess(res.data));
-//    } catch (err) {
-//       yield put(ACTIONS.getPostFailure(err));
-//    }
-// }
-
 // Restore post
 function* restorePost(action: { type: string; payload: string }) {
    try {
@@ -327,7 +312,6 @@ export default function* rootSaga() {
       takeLatest(POSTS_ACTION.LIKE_POST, handleLikePost),
       takeLatest(POSTS_ACTION.UNLIKE_POST, handleUnLikePost),
       takeLatest(TRASH_POSTS_ACTION.GET_TRASH_POSTS, getTrashPosts),
-      // takeLatest(CONSTANTS.GET_TRASH_POST, getDetailTrashPost),
       takeLatest(TRASH_POSTS_ACTION.RESTORE_TRASH_POST, restorePost),
       takeLatest(TRASH_POSTS_ACTION.FORCE_DELETE_TRASH_POST, forceDeletePost),
    ]);

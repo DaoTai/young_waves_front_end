@@ -12,8 +12,6 @@ const NewsFeed = () => {
    useEffect(() => {
       dispatch(getPosts());
    }, []);
-
-   //
    return (
       <>
          <Stack direction="column" sx={{ gap: 2 }}>

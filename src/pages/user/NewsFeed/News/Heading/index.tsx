@@ -3,6 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {
    Avatar,
    Button,
@@ -15,6 +16,7 @@ import {
    IconButton,
    Popover,
    Stack,
+   Tooltip,
    Typography,
    useTheme,
 } from "@mui/material";
@@ -50,7 +52,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
    };
 
    const handleCopyLinkPost = () => {
-      navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
+      navigator.clipboard.writeText(`${window.location.origin}/news/${post._id}`);
       handleClose();
    };
 
@@ -102,8 +104,18 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                   )
                }
                title={
-                  <Typography variant="body1">
+                  <Typography
+                     fontWeight={500}
+                     variant="body1"
+                     display="flex"
+                     flexDirection="row"
+                     align="center">
                      <Link to={`/user/explore/${post?.author?._id}`}>{post?.author?.fullName}</Link>
+                     {post?.author.isAdmin && (
+                        <Tooltip title="Admin" TransitionProps={{ timeout: 1000 }}>
+                           <CheckCircleIcon fontSize="small" color="primary" sx={{ ml: 0.25 }} />
+                        </Tooltip>
+                     )}
                   </Typography>
                }
                subheader={
@@ -204,10 +216,23 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                )
             }
             title={
-               <Typography variant="body1">
+               <Typography
+                  fontWeight={500}
+                  variant="body1"
+                  display="flex"
+                  flexDirection="row"
+                  align="center">
                   <Link to={`/user/profile/${auth$.payload?.user._id}`}>
                      {profile$.payload?.fullName || auth$.payload?.user.fullName}
                   </Link>
+                  {post?.author.isAdmin && (
+                     <Tooltip
+                        title="Admin"
+                        TransitionProps={{ timeout: 1000 }}
+                        sx={{ animation: "none" }}>
+                        <CheckCircleIcon fontSize="small" color="primary" sx={{ ml: 0.25 }} />
+                     </Tooltip>
+                  )}
                </Typography>
             }
             subheader={

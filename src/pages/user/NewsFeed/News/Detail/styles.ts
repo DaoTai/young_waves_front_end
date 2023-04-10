@@ -22,8 +22,8 @@ export const MyBox = styled(Box)(({ theme }) => ({
 export const ButtonSlide = styled(ButtonGroup)(({ theme }) => ({
    position: "absolute",
    top: "50%",
-   left: "0",
-   right: "0",
+   left: 5,
+   right: 5,
    color: theme.myColor.white,
    transform: "translateY(-50%)",
    borderRadius: 2,

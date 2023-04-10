@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Tabs, Tab, Typography, Box, Paper } from "@mui/material";
-import UserTrashes from "./Users";
+import { Tabs, Tab, Typography, Box, useTheme } from "@mui/material";
+import Members from "./Members";
 import { TYPE_TRASHES } from "../../../utils/types";
 const Trashes = () => {
-   const [trash, setTrash] = useState<TYPE_TRASHES>("users");
+   const theme = useTheme();
+   const [trash, setTrash] = useState<TYPE_TRASHES>("members");
    const TypeTrash: Record<TYPE_TRASHES, React.ReactNode> = {
-      users: <UserTrashes />,
+      members: <Members />,
    };
    const handleChangeTabPanel = (event: React.SyntheticEvent, newValue: TYPE_TRASHES) => {
       setTrash(newValue);
@@ -18,7 +19,16 @@ const Trashes = () => {
 
          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={trash} onChange={handleChangeTabPanel}>
-               <Tab value="users" label="Users" />
+               <Tab
+                  value="members"
+                  label="Members"
+                  sx={{
+                     transition: "all 0.3s ease",
+                     "&:hover": {
+                        bgcolor: theme.myColor.bgGray,
+                     },
+                  }}
+               />
             </Tabs>
          </Box>
 

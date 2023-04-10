@@ -22,10 +22,7 @@ const commonRoutes: Array<Route> = [
    {
       path: "news",
       component: NewsFeed,
-      children: [
-         { path: ":id", component: NewsDetail },
-         { path: ":id/:indexImage", component: NewsDetail },
-      ],
+      children: [{ path: ":id", component: NewsDetail }],
    },
 ];
 
