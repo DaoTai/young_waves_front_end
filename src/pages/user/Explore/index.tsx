@@ -143,7 +143,7 @@ const Explore = () => {
       ),
       posts: (
          <Stack sx={{ gap: 1 }} flexDirection="column">
-            <News listNews={posts} />
+            <News posts={posts} />
          </Stack>
       ),
    };
@@ -164,7 +164,8 @@ const Explore = () => {
                sx={{
                   border: 1,
                   mt: 1,
-                  borderColor: theme.myColor.textSecondary,
+                  borderColor: theme.palette.primary.main,
+                  bgcolor: theme.myColor.white,
                   borderRadius: 2,
                   p: 0.5,
                }}

@@ -1,9 +1,12 @@
 import { Grid, styled } from "@mui/material";
 import { Outlet } from "react-router-dom";
-
+import CoverPicture from "../../../assets/images/cover-picture.jpg";
 const AuthLayout = () => {
    const MyGrid = styled(Grid)(({ theme }) => ({
-      background: theme.myColor.bgGradient,
+      backgroundImage: `url(${CoverPicture})`,
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
       position: "fixed",
       inset: 0,
    }));

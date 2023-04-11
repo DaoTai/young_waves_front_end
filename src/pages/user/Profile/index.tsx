@@ -56,7 +56,7 @@ const Profile = () => {
 
          <Stack flexDirection="column" gap={2}>
             <Box boxShadow={1} borderRadius={1} bgcolor="#fff" overflow="hidden">
-               <Heading user={profile$.payload} totalPosts={ownerPosts$.payload.length} />
+               <Heading user={profile$.payload} totalPosts={ownerPosts$.payload?.length} />
             </Box>
             {/* Tab navigate */}
             <Tabs

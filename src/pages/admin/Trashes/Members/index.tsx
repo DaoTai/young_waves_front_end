@@ -79,9 +79,9 @@ const UserTrashes = () => {
          },
       },
       {
-         field: "username",
+         field: "city",
          headerAlign: "center",
-         headerName: "Username",
+         headerName: "City",
          width: 70,
          flex: 1,
       },

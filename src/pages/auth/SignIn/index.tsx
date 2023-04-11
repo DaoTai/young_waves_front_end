@@ -9,19 +9,18 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import { replace, useFormik } from "formik";
+import { useFormik } from "formik";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Alert, Spinner } from "../../../components";
-import { hideAlert, signIn, signOut } from "../../../redux-saga/redux/actions";
+import { hideAlert, signIn } from "../../../redux-saga/redux/actions";
 import { alert$, authState$ } from "../../../redux-saga/redux/selectors";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const theme = useTheme();
-   const navigate = useNavigate();
    const dispatch = useDispatch();
    const alert = useSelector(alert$);
    const { title, mode, message } = alert.payload as AlertProps;

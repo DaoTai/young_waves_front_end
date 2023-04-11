@@ -1,4 +1,4 @@
-import AddIcon from "@mui/icons-material/Add";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Button, Fab, Grid, Typography, useTheme } from "@mui/material";
@@ -17,9 +17,12 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
    const auth$ = useSelector(authState$);
    const idAuth = auth$?.payload?.user._id;
    const { isLoading, payload } = useSelector(profileState$);
-   const isFriend =
-      !auth$.payload.user.friends.includes(user._id) &&
-      !profile$.payload?.friends?.includes(user._id);
+   const isStrange =
+      profile$.payload?.friends?.length > 0
+         ? !profile$.payload?.friends?.includes(user._id)
+         : !auth$.payload.user.friends.includes(user._id);
+
+   console.log(isStrange);
 
    const dispatch = useDispatch();
    const imageRef = useRef(Object(null));
@@ -40,7 +43,6 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
          <Grid
             container
             p={1}
-            gap={4}
             minHeight={400}
             overflow="hidden"
             position="relative"
@@ -49,6 +51,7 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
                user?.coverPicture
                   ? {
                        justifyContent: { lg: "flex-start", md: "flex-start", xs: "center" },
+                       gap: { lg: 4, md: 4, sm: 4, xs: 2 },
                        backgroundImage: `url(${user?.coverPicture})`,
                        bgcolor: theme.myColor.black,
                        backgroundPosition: "top",
@@ -113,7 +116,7 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
                   </Button>
                )}
                {/* Show button add friend */}
-               {idAuth !== user?._id && isFriend && (
+               {idAuth !== user?._id && isStrange && (
                   <Button
                      sx={{
                         mt: 2,
@@ -121,7 +124,7 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
                      }}
                      size="large"
                      variant="contained"
-                     endIcon={<AddIcon />}
+                     endIcon={<PersonAddIcon />}
                      onClick={handleAddFriend}>
                      Add friend
                   </Button>

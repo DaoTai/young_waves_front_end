@@ -1,6 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
    Avatar,
@@ -17,6 +18,7 @@ import {
    Paper,
    Popover,
    Stack,
+   Tooltip,
    Typography,
    useTheme,
 } from "@mui/material";
@@ -102,7 +104,6 @@ const MyComment = ({
       }
       hideEditComment();
    };
-
    return (
       <>
          <Stack marginBottom={2} flexDirection="row" alignItems="flex-start" sx={{ gap: 1 }}>
@@ -123,6 +124,9 @@ const MyComment = ({
                      <Typography
                         variant="body1"
                         component="span"
+                        display="flex"
+                        flexDirection="row"
+                        align="center"
                         sx={{
                            "&:hover": {
                               textDecoration: "underline",
@@ -136,6 +140,15 @@ const MyComment = ({
                                  : `/user/explore/${comment?.user?._id}`
                            }>
                            {comment?.user.fullName}
+                           {comment?.user?.isAdmin && (
+                              <Tooltip title="Admin" TransitionProps={{ timeout: 1000 }}>
+                                 <CheckCircleIcon
+                                    fontSize="small"
+                                    color="primary"
+                                    sx={{ ml: 0.25 }}
+                                 />
+                              </Tooltip>
+                           )}
                         </Link>
                      </Typography>
                   }
@@ -168,7 +181,7 @@ const MyComment = ({
                   sx={{
                      borderBottom: 1,
                      borderColor: "transparent",
-                     "&:focus-within, &:hover": {
+                     "&:focus-within": {
                         borderColor: theme.palette.primary.main,
                      },
                   }}

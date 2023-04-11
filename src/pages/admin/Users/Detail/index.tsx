@@ -116,8 +116,8 @@ const DetailUser = ({
                         fontSize={18}
                         textAlign="center"
                         mt={2}
-                        sx={{ textDecoration: "underline", color: theme.palette.primary.main }}>
-                        <Link to={`/user/explore/${values._id}`}>Profile</Link>
+                        sx={{ color: theme.palette.primary.main }}>
+                        <Link to={`/user/explore/${values._id}`}>Go to explore</Link>
                      </Typography>
                   </Grid>
                   <Grid item md={9} xs={12}>

@@ -112,6 +112,21 @@ export const addFriendFailure = (payload: any) => ({
    payload,
 });
 
+export const cancelFriend = (payload: string) => ({
+   type: CONSTANTS.CANCEL_FRIEND,
+   payload,
+});
+
+export const cancelFriendSuccess = (payload: string) => ({
+   type: CONSTANTS.CANCEL_FRIEND_SUCCESS,
+   payload,
+});
+
+export const cancelFriendFailure = (payload: any) => ({
+   type: CONSTANTS.CANCEL_FRIEND_FAILURE,
+   payload,
+});
+
 // POSTS
 export const getPosts = () => ({ type: POSTS_ACTION.GET_POSTS });
 export const getPostsSuccess = (payload: Post[]) => ({

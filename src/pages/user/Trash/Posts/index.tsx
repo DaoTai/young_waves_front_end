@@ -66,7 +66,6 @@ const TrashPosts = () => {
          sortable: false,
          headerAlign: "center",
          renderCell(params) {
-            console.log(params);
             return (
                <Button
                   sx={{
@@ -208,6 +207,7 @@ const TrashPosts = () => {
                         boxShadow: 0,
                         borderColor: theme.myColor.textSecondary,
                         bgcolor: theme.myColor.white,
+                        zIndex: 0,
                      },
                   }}>
                   <Fab size="small" onClick={handlePrevPage} disabled={currentPage === 1}>

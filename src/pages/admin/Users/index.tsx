@@ -60,6 +60,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const columns: GridColDef[] = [
       {
          field: "fullName",
+         headerAlign: "center",
          headerName: "Full name",
          flex: 2,
          renderCell(params) {
@@ -78,25 +79,29 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          },
       },
       {
-         field: "username",
-         headerName: "Username",
+         field: "city",
+         headerAlign: "center",
+         headerName: "City",
          width: 70,
          flex: 1,
       },
       {
          field: "region",
+         headerAlign: "center",
          headerName: "Region",
          width: 70,
          flex: 1,
       },
       {
          field: "createdAt",
+         headerAlign: "center",
          headerName: "Joined time",
          flex: 2,
          valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
       },
       {
          field: "gender",
+         headerAlign: "center",
          headerName: "Gender",
          width: 130,
          flex: 1,
@@ -105,8 +110,8 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "detail",
-         headerName: "Detail",
          headerAlign: "center",
+         headerName: "Detail",
          sortable: false,
          disableColumnMenu: true,
          width: 200,
@@ -123,8 +128,8 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
 
       {
          field: "authorize",
-         headerName: "Authorize",
          headerAlign: "center",
+         headerName: "Authorize",
          sortable: false,
          disableColumnMenu: true,
          width: 200,
@@ -142,8 +147,8 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "delete",
-         headerName: "Delete",
          headerAlign: "center",
+         headerName: "Delete",
          sortable: false,
          disableColumnMenu: true,
          width: 200,
@@ -183,7 +188,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          if (res.status === 200) {
             dispatch(
                showAlert({
-                  title: "Success",
+                  title: "Delete",
                   message: `Delete ${user?.fullName} successfully!`,
                   mode: "success",
                })

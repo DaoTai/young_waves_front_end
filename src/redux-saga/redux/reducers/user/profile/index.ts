@@ -12,6 +12,9 @@ import {
    ADD_FRIEND,
    ADD_FRIEND_SUCCESS,
    ADD_FRIEND_FAILURE,
+   CANCEL_FRIEND,
+   CANCEL_FRIEND_SUCCESS,
+   CANCEL_FRIEND_FAILURE,
 } from "../../../../../utils/constants";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 
@@ -34,6 +37,8 @@ const profileReducer = (
       case UPDATE_PROFILE:
       case CHANGE_PASSWORD_PROFILE:
       case ADD_FRIEND:
+
+      case CANCEL_FRIEND:
          return {
             ...state,
             isLoading: true,
@@ -52,11 +57,22 @@ const profileReducer = (
             ...state,
             isLoading: false,
          };
+      case CANCEL_FRIEND_SUCCESS:
+         const newFriendAfterCanceled = state.payload.friends?.filter(
+            (friend) => friend !== action.payload
+         ) as string[];
+         state.payload.friends = newFriendAfterCanceled;
+
+         return {
+            ...state,
+            isLoading: false,
+         };
 
       case GET_PROFILE_FAILURE:
       case UPDATE_PROFILE_FAILURE:
       case CHANGE_PASSWORD_PROFILE_FAILURE:
       case ADD_FRIEND_FAILURE:
+      case CANCEL_FRIEND_FAILURE:
          return {
             ...state,
             isLoading: false,

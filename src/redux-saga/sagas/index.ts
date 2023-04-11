@@ -118,9 +118,24 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
 // Add friend
 function* addFriend(action: { type: string; payload: string }) {
    try {
-      yield call(api.user.addFriend, action.payload);
-      yield call(api.conversation.addConversation, action.payload);
+      const res = yield call(api.user.addFriend, action.payload);
+      // If not existed conversation, will add new conversation
+      if (!res.data.existedConversation) {
+         yield call(api.conversation.addConversation, action.payload);
+      }
       yield put(ACTIONS.addFriendSuccess(action.payload));
+   } catch (err: any) {
+      throw new Error(err);
+   }
+}
+
+// Cancel friend
+function* cancelFriend(action: { type: string; payload: string }) {
+   try {
+      const res = yield call(api.user.cancelFriend, action.payload);
+      console.log("res cancel: ", res);
+      const canceledFriend = res.data as Profile;
+      yield put(ACTIONS.cancelFriendSuccess(canceledFriend._id));
    } catch (err: any) {
       throw new Error(err);
    }
@@ -267,7 +282,7 @@ function* restorePost(action: { type: string; payload: string }) {
       yield put(
          ACTIONS.showAlert({
             message: "Restore successfully",
-            title: "Post",
+            title: "Restore post",
             mode: "success",
          })
       );
@@ -284,7 +299,7 @@ function* forceDeletePost(action: { type: string; payload: string }) {
       yield put(
          ACTIONS.showAlert({
             message: "Delete successfully",
-            title: "Post",
+            title: "Delete post",
             mode: "success",
          })
       );
@@ -303,6 +318,7 @@ export default function* rootSaga() {
       takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
       takeLatest(POSTS_ACTION.GET_POSTS, getPostsSaga),
       takeLatest(CONSTANTS.ADD_FRIEND, addFriend),
+      takeLatest(CONSTANTS.CANCEL_FRIEND, cancelFriend),
       takeLatest(OWNER_POSTS_ACTION.GET_OWNER_POSTS, getOwnerPostsSaga),
       takeLatest(POSTS_ACTION.CREATE_POST, createPostSaga),
       takeLatest(POSTS_ACTION.UPDATE_POST, updatePostSaga),

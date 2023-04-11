@@ -1,7 +1,7 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Fab, Modal, Stack, Typography, useTheme } from "@mui/material";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
@@ -40,6 +40,20 @@ const Detail = () => {
             throw new Error(err);
          }
       }
+      const handleControlImages = (ev: any): void => {
+         switch (ev.key) {
+            case "ArrowLeft":
+               sliderRef.current?.slickPrev();
+               break;
+            case "ArrowRight":
+               sliderRef.current?.slickNext();
+               break;
+         }
+      };
+      window.addEventListener("keydown", handleControlImages);
+      return () => {
+         // window.removeEventListener("keydown", handleControlImages);
+      };
    }, [id]);
 
    // Close modal
