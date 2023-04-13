@@ -1,4 +1,4 @@
-import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
+import ChatIcon from "@mui/icons-material/Chat";
 import { Badge, Popover, useTheme } from "@mui/material";
 import { useState } from "react";
 
@@ -24,7 +24,7 @@ const Messenger = () => {
                color: theme.palette.primary.main,
             }}
             onClick={handleShowListChat}>
-            <ForwardToInboxIcon fontSize="large" />
+            <ChatIcon fontSize="large" />
          </Badge>
          <Popover
             open={open}

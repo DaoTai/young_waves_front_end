@@ -1,4 +1,4 @@
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import ExploreIcon from "@mui/icons-material/Explore";
 import HomeIcon from "@mui/icons-material/Home";
 import { Container, Stack, useTheme } from "@mui/material";
@@ -21,7 +21,7 @@ const Navigation = () => {
                </NavLink>
                {isAdmin && (
                   <NavLink to="/admin">
-                     <AdminPanelSettingsIcon fontSize="large" />
+                     <ManageAccountsIcon fontSize="large" />
                   </NavLink>
                )}
             </Stack>

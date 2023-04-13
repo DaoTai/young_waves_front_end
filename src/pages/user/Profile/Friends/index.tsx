@@ -56,8 +56,6 @@ const Friends = () => {
             } else {
                res = await api.user.getFriends(payload._id, page);
             }
-            console.log("res = ", res);
-
             setFriends(res.data?.friends);
             maxPageRef.current = res?.data?.maxPage;
          } catch (err: any) {
@@ -90,6 +88,7 @@ const Friends = () => {
    // Close dialog unfriend
    const onCloseDialogUnfriend = () => {
       setOpenDialogUnfriend(false);
+      onCloseMenuActions();
    };
 
    // Navigate to profile user

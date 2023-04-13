@@ -22,8 +22,6 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
          ? !profile$.payload?.friends?.includes(user._id)
          : !auth$.payload.user.friends.includes(user._id);
 
-   console.log(isStrange);
-
    const dispatch = useDispatch();
    const imageRef = useRef(Object(null));
 

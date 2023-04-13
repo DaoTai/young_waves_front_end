@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { SignIn, SignUp } from "../../utils/interfaces/Auth";
 import axiosInstance from "./axios";
 export const signInUser = async (user: SignIn) => {
@@ -10,4 +11,10 @@ export const signUpUser = async (data: SignUp) => {
 
 export const logOutUser = async () => {
    return await axiosInstance.post("/logout");
+};
+
+export const refreshToken = async () => {
+   return await axiosInstance.post("/refresh", {
+      withCredentials: true,
+   });
 };

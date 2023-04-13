@@ -14,24 +14,15 @@ import * as ACTIONS from "../redux/actions";
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
       const res = yield call(api.auth.signInUser, action.payload);
-      if (res.status === 200) {
-         yield put(ACTIONS.signInSuccess(res.data));
-         const { password, ...localUser } = action.payload;
-         // Remember username to login
-         action.payload.isRemember
-            ? localStorage.setItem("user", JSON.stringify(localUser))
-            : localStorage.removeItem("user");
-      } else {
-         yield put(ACTIONS.signInFailure(res as string));
-         yield put(
-            ACTIONS.showAlert({
-               title: "Sign in",
-               message: res.message || "Server not working",
-            })
-         );
-      }
-   } catch (err) {
-      yield put(ACTIONS.signInFailure(err as string));
+      yield put(ACTIONS.signInSuccess(res.data));
+      const { password, ...localUser } = action.payload;
+      // Remember username to login
+      action.payload.isRemember
+         ? localStorage.setItem("user", JSON.stringify(localUser))
+         : localStorage.removeItem("user");
+   } catch (err: any) {
+      yield put(ACTIONS.signInFailure());
+      throw new Error(err);
    }
 }
 

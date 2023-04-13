@@ -21,17 +21,13 @@ export const signIn = (payload: SignIn) => ({
    payload,
 });
 
-export const signInSuccess = (payload: {
-   status: number;
-   data: { user: Profile; accessToken: string };
-}) => ({
+export const signInSuccess = (payload: { user: Profile; accessToken: string }) => ({
    type: CONSTANTS.SIGN_IN_SUCCESS,
    payload,
 });
 
-export const signInFailure = (payload: string) => ({
+export const signInFailure = () => ({
    type: CONSTANTS.SIGN_IN_FAILURE,
-   payload,
 });
 
 // Actions LogOut

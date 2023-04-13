@@ -18,7 +18,6 @@ const Profile = () => {
    const auth$ = useSelector(authState$);
    const ownerPosts$ = useSelector(ownerPostsState$);
    const profile$ = useSelector(profileState$);
-
    const idUser = profile$?.payload?._id;
    const [tab, setTab] = useState<TYPE_TAB_PROFILE>("posts");
    useEffect(() => {

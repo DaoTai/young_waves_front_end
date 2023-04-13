@@ -8,6 +8,7 @@ import { postsReducer } from "./posts";
 import ownerPostsReducer from "./user/posts";
 import trashPostsReducer from "./user/trash/posts";
 import { profileReducer } from "./user";
+import { Reducer } from "react";
 
 export interface State {
    alert: { isShow: boolean; payload: any };
