@@ -15,18 +15,6 @@ export const textInfoUser: Array<TextField> = [
       autoComplete: "off",
    },
    {
-      name: "region",
-      type: "text",
-      label: "Region",
-      variant: "outlined",
-      margin: "normal",
-      size: "medium",
-      placeholder: "Enter your region",
-      required: true,
-      fullWidth: true,
-      autoComplete: "off",
-   },
-   {
       name: "city",
       type: "text",
       label: "City",
@@ -143,6 +131,7 @@ export const registerOptions = Yup.object().shape({
    region: Yup.string()
       .required(REQUIRED_MSG)
       .min(2)
+      .trim()
       .matches(/^([^0-9]*)$/, "Region is invalid"),
    gender: Yup.string().required(REQUIRED_MSG),
    email: Yup.string().email("Email is invalid").required(REQUIRED_MSG).trim(),

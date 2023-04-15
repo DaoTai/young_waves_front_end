@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
 import { Alert, Header } from "../../../components";
-import { alert$ } from "../../../redux-saga/redux/selectors";
+import { alertState$ } from "../../../redux-saga/redux/selectors";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { TYPE_FEATURES } from "../../../utils/types";
 import Features from "../Features";
@@ -12,7 +12,7 @@ import Trashes from "../Trashes";
 import Users from "../Users";
 const ContainerAdmin = () => {
    const theme = useTheme();
-   const { isShow, payload } = useSelector(alert$);
+   const { isShow, payload } = useSelector(alertState$);
    const { title, mode, message } = payload as AlertProps;
    const [feature, setFeature] = useState<TYPE_FEATURES>("users");
 

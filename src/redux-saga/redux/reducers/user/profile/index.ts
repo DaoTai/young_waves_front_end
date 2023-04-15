@@ -1,21 +1,4 @@
-import {
-   INIT_STATE,
-   GET_PROFILE,
-   GET_PROFILE_SUCCESS,
-   GET_PROFILE_FAILURE,
-   UPDATE_PROFILE,
-   UPDATE_PROFILE_SUCCESS,
-   UPDATE_PROFILE_FAILURE,
-   CHANGE_PASSWORD_PROFILE,
-   CHANGE_PASSWORD_PROFILE_SUCCESS,
-   CHANGE_PASSWORD_PROFILE_FAILURE,
-   ADD_FRIEND,
-   ADD_FRIEND_SUCCESS,
-   ADD_FRIEND_FAILURE,
-   CANCEL_FRIEND,
-   CANCEL_FRIEND_SUCCESS,
-   CANCEL_FRIEND_FAILURE,
-} from "../../../../../utils/constants";
+import { PROFILE_ACTION, FRIEND_ACTION } from "../../../../../utils/enums";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 
 interface ProfileState {
@@ -33,31 +16,30 @@ const profileReducer = (
    action: { type: string; payload: { data: Object } | any }
 ): ProfileState => {
    switch (action.type) {
-      case GET_PROFILE:
-      case UPDATE_PROFILE:
-      case CHANGE_PASSWORD_PROFILE:
-      case ADD_FRIEND:
-
-      case CANCEL_FRIEND:
+      case PROFILE_ACTION.GET_PROFILE:
+      case PROFILE_ACTION.UPDATE_PROFILE:
+      case PROFILE_ACTION.CHANGE_PASSWORD:
+      case FRIEND_ACTION.ADD_FRIEND:
+      case FRIEND_ACTION.CANCEL_FRIEND:
          return {
             ...state,
             isLoading: true,
          };
-      case GET_PROFILE_SUCCESS:
-      case UPDATE_PROFILE_SUCCESS:
-      case CHANGE_PASSWORD_PROFILE_SUCCESS:
+      case PROFILE_ACTION.GET_PROFILE_SUCCESS:
+      case PROFILE_ACTION.UPDATE_PROFILE_SUCCESS:
+      case PROFILE_ACTION.CHANGE_PASSWORD_SUCCESS:
          return {
             ...state,
             isLoading: false,
             payload: { ...state.payload, ...action.payload.data },
          };
-      case ADD_FRIEND_SUCCESS:
+      case FRIEND_ACTION.ADD_FRIEND_SUCCESS:
          state.payload?.friends?.push(action.payload);
          return {
             ...state,
             isLoading: false,
          };
-      case CANCEL_FRIEND_SUCCESS:
+      case FRIEND_ACTION.CANCEL_FRIEND_SUCCESS:
          const newFriendAfterCanceled = state.payload.friends?.filter(
             (friend) => friend !== action.payload
          ) as string[];
@@ -68,11 +50,11 @@ const profileReducer = (
             isLoading: false,
          };
 
-      case GET_PROFILE_FAILURE:
-      case UPDATE_PROFILE_FAILURE:
-      case CHANGE_PASSWORD_PROFILE_FAILURE:
-      case ADD_FRIEND_FAILURE:
-      case CANCEL_FRIEND_FAILURE:
+      case PROFILE_ACTION.GET_PROFILE_FAILURE:
+      case PROFILE_ACTION.UPDATE_PROFILE_FAILURE:
+      case PROFILE_ACTION.CHANGE_PASSWORD_FAILURE:
+      case FRIEND_ACTION.ADD_FRIEND_FAILURE:
+      case FRIEND_ACTION.CANCEL_FRIEND_FAILURE:
          return {
             ...state,
             isLoading: false,

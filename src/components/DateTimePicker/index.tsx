@@ -8,20 +8,18 @@ import {
    Box,
    Typography,
    SelectChangeEvent,
-   AutocompleteInputChangeReason,
+   FormControl,
 } from "@mui/material";
 import { useState, useEffect, useMemo, memo } from "react";
 import { Dob } from "../../utils/interfaces/DateTimePicker";
-import { MyFormControl } from "./styles";
-const DateTimePicker = ({
-   onChange = () => {},
-   name = "",
-   value,
-}: {
+
+interface Props {
    name?: string;
    value: string;
    onChange?: (...args) => void;
-}) => {
+}
+
+const DateTimePicker = ({ onChange = () => {}, name = "", value = "" }: Props) => {
    const [dob, setDob] = useState<Dob>(() => {
       if (value) {
          const splitValue = value.split("-");
@@ -106,7 +104,7 @@ const DateTimePicker = ({
          </Typography>
          <Stack direction="row" justifyContent="space-between" sx={{ gap: 1 }}>
             {/* Dates */}
-            <MyFormControl fullWidth>
+            <FormControl fullWidth>
                <InputLabel>Date</InputLabel>
                <Select label="Date" name="date" value={dob?.date} onChange={handleChange}>
                   {listDate?.map((date: string) => (
@@ -115,9 +113,9 @@ const DateTimePicker = ({
                      </MenuItem>
                   ))}
                </Select>
-            </MyFormControl>
+            </FormControl>
             {/* Months */}
-            <MyFormControl fullWidth>
+            <FormControl fullWidth>
                <InputLabel>Month</InputLabel>
                <Select label="Month" name="month" value={dob?.month} onChange={handleChange}>
                   {months.map((month) => (
@@ -126,7 +124,7 @@ const DateTimePicker = ({
                      </MenuItem>
                   ))}
                </Select>
-            </MyFormControl>
+            </FormControl>
             {/* Years */}
             <Autocomplete
                sx={{ backgroundColor: "#fff" }}

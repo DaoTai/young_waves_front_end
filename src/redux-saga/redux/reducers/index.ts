@@ -1,14 +1,13 @@
 import { combineReducers } from "redux";
-import { SIGN_OUT_SUCCESS } from "../../../utils/constants";
+import { AUTH_ACTION } from "../../../utils/enums";
 import { Post } from "../../../utils/interfaces/Post";
 import { Profile } from "../../../utils/interfaces/Profile";
 import alertReducer from "./alert";
 import authReducer from "./auth";
-import { postsReducer } from "./posts";
+import postsReducer from "./posts";
 import ownerPostsReducer from "./user/posts";
 import trashPostsReducer from "./user/trash/posts";
 import { profileReducer } from "./user";
-import { Reducer } from "react";
 
 export interface State {
    alert: { isShow: boolean; payload: any };
@@ -43,4 +42,4 @@ const rootReducer = combineReducers({
 
 // hande reset all reducer when sign out success
 export default (state, action) =>
-   rootReducer(action.type === SIGN_OUT_SUCCESS ? undefined : state, action);
+   rootReducer(action.type === AUTH_ACTION.SIGN_OUT_SUCCESS ? undefined : state, action);

@@ -2,14 +2,14 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
-import { Box, ToggleButton, Typography } from "@mui/material";
+import { Box, Button, ButtonBase, ToggleButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../../redux-saga/redux/actions";
 import { authState$ } from "../../../redux-saga/redux/selectors";
 
 import Spinner from "../../Spinner";
-import { Option, OptionButton, ToggleOptions } from "../styles";
+import { LogOutButton, Option, ToggleOptions } from "../styles";
 import { Anchor } from "./types";
 const ToggleActions = () => {
    const dispatch = useDispatch();
@@ -44,20 +44,18 @@ const ToggleActions = () => {
                <Box>
                   <Option to={`/user/profile/${payload?.user._id}`}>
                      <AccountBoxIcon fontSize="medium" />
-                     <Typography variant="subtitle1"> Profile</Typography>
+                     <Typography variant="body1">Profile</Typography>
                   </Option>
 
                   <Option to="/user/trash/posts">
                      <RestoreFromTrashIcon fontSize="medium" />
-                     <Typography variant="subtitle1"> Trash</Typography>
+                     <Typography variant="body1">Trash post</Typography>
                   </Option>
                </Box>
-               <Box>
-                  <OptionButton onClick={handleSignOut}>
-                     <LogoutIcon fontSize="medium" />
-                     <Typography variant="subtitle1">Log out</Typography>
-                  </OptionButton>
-               </Box>
+               <LogOutButton variant="outlined" onClick={handleSignOut}>
+                  <LogoutIcon fontSize="medium" />
+                  <Typography variant="body1">Log out</Typography>
+               </LogOutButton>
             </ToggleOptions>
          </ToggleButton>
 

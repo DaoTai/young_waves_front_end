@@ -1,31 +1,15 @@
-import { AlertColor } from "@mui/material";
-import { SHOW_ALERT, HIDE_ALERT, INIT_STATE } from "../../../../utils/constants";
-
-type Payload = {
-   isShow: boolean;
-   title: string;
-   message: string;
-   mode: AlertColor;
-};
-
-interface MyAction {
-   type: "SHOW_ALERT" | "HIDE_ALERT";
-   payload: Payload;
-}
-
-const alertReducer = (state = INIT_STATE.alert, action: MyAction) => {
+import { ALERT_ACTION } from "../../../../utils/enums";
+import { AlertAction, AlertState, init } from "./helpers";
+const alertReducer = (state = init, action: AlertAction): AlertState => {
    switch (action.type) {
-      case SHOW_ALERT:
+      case ALERT_ACTION.SHOW_ALERT:
          return {
             ...state,
             isShow: true,
             payload: action.payload,
          };
-      case HIDE_ALERT:
-         return {
-            ...state,
-            isShow: false,
-         };
+      case ALERT_ACTION.HIDE_ALERT:
+         return init;
       default:
          return state;
    }

@@ -1,5 +1,5 @@
 import { State } from "../reducers";
-export const alert$ = (state: State) => state.alert;
+export const alertState$ = (state: State) => state.alert;
 export const authState$ = (state: State) => state.auth;
 export const profileState$ = (state: State) => state.profile;
 export const postsState$ = (state: State) => state.posts;

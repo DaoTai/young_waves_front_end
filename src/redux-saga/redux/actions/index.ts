@@ -1,5 +1,13 @@
 import * as CONSTANTS from "../../../utils/constants";
-import { POSTS_ACTION, TRASH_POSTS_ACTION } from "../../../utils/enums";
+import {
+   ALERT_ACTION,
+   AUTH_ACTION,
+   FRIEND_ACTION,
+   OWNER_POSTS_ACTION,
+   POSTS_ACTION,
+   PROFILE_ACTION,
+   TRASH_POSTS_ACTION,
+} from "../../../utils/enums";
 import { SignIn } from "../../../utils/interfaces/Auth";
 import { Post } from "../../../utils/interfaces/Post";
 import { ChangePassword, Profile } from "../../../utils/interfaces/Profile";
@@ -7,119 +15,117 @@ import { AlertProps } from "../../../utils/interfaces/Props";
 
 // Actions show/hide alert
 export const showAlert = (payload: AlertProps) => ({
-   type: CONSTANTS.SHOW_ALERT,
+   type: ALERT_ACTION.SHOW_ALERT,
    payload,
 });
 
 export const hideAlert = () => ({
-   type: CONSTANTS.HIDE_ALERT,
+   type: ALERT_ACTION.HIDE_ALERT,
 });
 
 // Actions SIGN-IN
 export const signIn = (payload: SignIn) => ({
-   type: CONSTANTS.SIGN_IN,
+   type: AUTH_ACTION.SIGN_IN,
    payload,
 });
 
 export const signInSuccess = (payload: { user: Profile; accessToken: string }) => ({
-   type: CONSTANTS.SIGN_IN_SUCCESS,
+   type: AUTH_ACTION.SIGN_IN_SUCCESS,
    payload,
 });
 
 export const signInFailure = () => ({
-   type: CONSTANTS.SIGN_IN_FAILURE,
+   type: AUTH_ACTION.SIGN_IN_FAILURE,
 });
 
 // Actions LogOut
 export const signOut = () => ({
-   type: CONSTANTS.SIGN_OUT,
+   type: AUTH_ACTION.SIGN_OUT,
 });
 
 export const signOutSuccess = () => ({
-   type: CONSTANTS.SIGN_OUT_SUCCESS,
+   type: AUTH_ACTION.SIGN_OUT_SUCCESS,
 });
 
-export const signOutFailure = (payload: string) => ({
-   type: CONSTANTS.SIGN_OUT_FAILURE,
-   payload,
+export const signOutFailure = () => ({
+   type: AUTH_ACTION.SIGN_OUT_FAILURE,
 });
 
 // Actions PROFILE
 // GET
 
 export const getProfile = (payload: string) => ({
-   type: CONSTANTS.GET_PROFILE,
+   type: PROFILE_ACTION.GET_PROFILE,
    payload,
 });
 
 export const getProfileSuccess = (payload: Profile) => ({
-   type: CONSTANTS.GET_PROFILE_SUCCESS,
+   type: PROFILE_ACTION.GET_PROFILE_SUCCESS,
    payload,
 });
 
 export const getProfileFailure = (payload: string) => ({
-   type: CONSTANTS.GET_PROFILE_FAILURE,
+   type: PROFILE_ACTION.GET_PROFILE_FAILURE,
    payload,
 });
 //UPDATE
 export const updateProfile = (payload: Partial<Profile>) => ({
-   type: CONSTANTS.UPDATE_PROFILE,
+   type: PROFILE_ACTION.UPDATE_PROFILE,
    payload,
 });
 
 export const updateProfileSuccess = (payload: Profile) => ({
-   type: CONSTANTS.UPDATE_PROFILE_SUCCESS,
+   type: PROFILE_ACTION.UPDATE_PROFILE_SUCCESS,
    payload,
 });
 
 export const updateProfileFailure = (payload: string) => ({
-   type: CONSTANTS.UPDATE_PROFILE_FAILURE,
-   payload,
+   type: PROFILE_ACTION.UPDATE_PROFILE_FAILURE,
 });
 
 // CHANGE-PASSWORD
 export const changePasswordProfile = (payload: ChangePassword & { _id: string }) => ({
-   type: CONSTANTS.CHANGE_PASSWORD_PROFILE,
+   type: PROFILE_ACTION.CHANGE_PASSWORD,
    payload,
 });
 
 export const changePasswordProfileSuccess = (payload: string) => ({
-   type: CONSTANTS.CHANGE_PASSWORD_PROFILE_SUCCESS,
+   type: PROFILE_ACTION.CHANGE_PASSWORD_SUCCESS,
    payload,
 });
 
 export const changePasswordProfileFailure = (payload: any) => ({
-   type: CONSTANTS.CHANGE_PASSWORD_PROFILE_FAILURE,
+   type: PROFILE_ACTION.CHANGE_PASSWORD_FAILURE,
    payload,
 });
 
 export const addFriend = (payload: string) => ({
-   type: CONSTANTS.ADD_FRIEND,
+   type: FRIEND_ACTION.ADD_FRIEND,
    payload,
 });
 
 export const addFriendSuccess = (payload: string) => ({
-   type: CONSTANTS.ADD_FRIEND_SUCCESS,
+   type: FRIEND_ACTION.ADD_FRIEND_SUCCESS,
    payload,
 });
 
 export const addFriendFailure = (payload: any) => ({
-   type: CONSTANTS.ADD_FRIEND_FAILURE,
+   type: FRIEND_ACTION.ADD_FRIEND_FAILURE,
    payload,
 });
 
 export const cancelFriend = (payload: string) => ({
-   type: CONSTANTS.CANCEL_FRIEND,
+   type: FRIEND_ACTION.CANCEL_FRIEND,
    payload,
 });
 
 export const cancelFriendSuccess = (payload: string) => ({
-   type: CONSTANTS.CANCEL_FRIEND_SUCCESS,
+   type: FRIEND_ACTION.CANCEL_FRIEND_SUCCESS,
    payload,
 });
 
 export const cancelFriendFailure = (payload: any) => ({
-   type: CONSTANTS.CANCEL_FRIEND_FAILURE,
+   type: FRIEND_ACTION.CANCEL_FRIEND_FAILURE,
    payload,
 });
 
@@ -133,13 +139,16 @@ export const getPostsFailure = () => ({
    type: POSTS_ACTION.GET_POSTS_FAILURE,
 });
 
-export const getOwnerPosts = (idUser: string) => ({ type: CONSTANTS.GET_OWNER_POSTS, id: idUser });
+export const getOwnerPosts = (idUser: string) => ({
+   type: OWNER_POSTS_ACTION.GET_OWNER_POSTS,
+   id: idUser,
+});
 export const getOwnerPostsSuccess = (payload: Array<Post>) => ({
-   type: CONSTANTS.GET_OWNER_POSTS_SUCCESS,
+   type: OWNER_POSTS_ACTION.GET_OWNER_POSTS_SUCCESS,
    payload,
 });
 export const getOwnerPostsFailure = (payload: any) => ({
-   type: CONSTANTS.GET_OWNER_POSTS_FAILURE,
+   type: OWNER_POSTS_ACTION.GET_OWNER_POSTS_FAILURE,
    payload,
 });
 
@@ -202,7 +211,7 @@ export const createPostFailure = () => ({
 });
 
 export const updatePost = (payload: Partial<Post>) => ({
-   type: CONSTANTS.UPDATE_POST,
+   type: POSTS_ACTION.UPDATE_POST,
    payload,
 });
 export const updatePostSuccess = (payload: Partial<Post>) => ({

@@ -219,7 +219,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                : user.fullName + " becomed admin";
             dispatch(
                showAlert({
-                  title: "Success",
+                  title: "Authorization",
                   message,
                   mode: "success",
                })
@@ -228,7 +228,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          } else {
             dispatch(
                showAlert({
-                  title: "Failure",
+                  title: "Authorization",
                   message: `Authorize ${user?.fullName} failed!`,
                   mode: "error",
                })
@@ -257,7 +257,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             {/* Actions */}
             <Stack flexDirection="row" gap={4}>
                <Tooltip title="Trash Store">
-                  <Fab color="info" size="medium">
+                  <Fab sx={{ zIndex: 0 }} color="info" size="medium">
                      <RestoreFromTrashIcon
                         sx={{ color: theme.palette.primary.main }}
                         onClick={goToTrashes}
@@ -265,7 +265,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   </Fab>
                </Tooltip>
                <Tooltip title="Add user">
-                  <Fab color="success" size="medium">
+                  <Fab sx={{ zIndex: 0 }} color="success" size="medium">
                      <AddIcon
                         sx={{ color: theme.myColor.white }}
                         onClick={() => setShowModal(true)}

@@ -1,55 +1,28 @@
-import {
-   INIT_STATE,
-   SIGN_IN,
-   SIGN_IN_FAILURE,
-   SIGN_IN_SUCCESS,
-   SIGN_OUT,
-   SIGN_OUT_SUCCESS,
-   SIGN_OUT_FAILURE,
-   ADD_FRIEND_SUCCESS,
-} from "../../../../utils/constants";
-import { SignInPayload } from "../../../../utils/interfaces/Action";
-import { Profile } from "../../../../utils/interfaces/Profile";
+import { AUTH_ACTION } from "../../../../utils/enums";
+import { AuthPayload, AuthState, init } from "./helpers";
 
-interface AuthState {
-   isLoading: boolean;
-   payload: {
-      user: Partial<Profile> | null;
-      accessToken: string | null;
-   } | null;
-}
-
-interface AuthPayload {
-   accessToken: string;
-   user: Partial<Profile>;
-}
-
-const init: AuthState = {
-   isLoading: false,
-   payload: null,
-};
 const authReducer = (state = init, action: { type: string; payload: AuthPayload }): AuthState => {
    switch (action.type) {
-      case SIGN_IN:
-      case SIGN_OUT:
+      case AUTH_ACTION.SIGN_IN:
+      case AUTH_ACTION.SIGN_OUT:
          return {
             ...state,
             isLoading: true,
          };
-      case SIGN_IN_SUCCESS:
+      case AUTH_ACTION.SIGN_IN_SUCCESS:
          return {
             ...state,
             isLoading: false,
             payload: action.payload,
          };
-      case SIGN_OUT_SUCCESS:
+      case AUTH_ACTION.SIGN_OUT_SUCCESS:
          return {
             ...state,
             isLoading: false,
             payload: { accessToken: null, user: null },
          };
-      case SIGN_IN_FAILURE:
-      case SIGN_OUT_FAILURE:
+      case AUTH_ACTION.SIGN_IN_FAILURE:
+      case AUTH_ACTION.SIGN_OUT_FAILURE:
          return {
             ...state,
             isLoading: false,

@@ -27,52 +27,35 @@ export const Option = styled(NavLink)(({ theme }) => ({
    display: "inline-flex",
    alignItems: "center",
    gap: 4,
-   padding: 8,
+   padding: 12,
    boxShadow: "1px 1px 1px rgb(0 0 0 / 40%)",
    width: "100%",
    color: theme.myColor.text,
-   position: "relative",
    transition: "all 0.2s linear",
    "&.active .MuiTypography-root": {
       color: theme.myColor.link,
    },
    "&:hover": {
-      color: "#fff",
+      color: theme.myColor.white,
       backgroundColor: theme.palette.primary.main,
-      svg: {
-         transform: "scale(1.2)",
-      },
-   },
-   "&:last-child:hover": {
-      svg: {
-         transform: "translateX(2px)",
+      ".MuiTypography-root": {
+         color: theme.myColor.white,
       },
    },
 }));
 
-export const OptionButton = styled(Button)(({ theme }) => ({
-   display: "inline-flex",
-   alignItems: "center",
-   gap: 4,
-   padding: 8,
-   boxShadow: "1px 1px 1px rgb(0 0 0 / 40%)",
-   width: "100%",
-   color: theme.myColor.text,
-   position: "relative",
+export const LogOutButton = styled(Button)(({ theme }) => ({
+   p: 1,
+   gap: 2,
+   padding: 12,
+   justifyContent: "flex-start",
+   borderRadius: 0,
    transition: "all 0.2s linear",
-   "&.active ": {
-      backgroundColor: theme.myColor.link,
-   },
    "&:hover": {
-      color: "#fff",
+      color: theme.myColor.white,
       backgroundColor: theme.palette.primary.main,
-      svg: {
-         transform: "scale(1.2)",
-      },
-   },
-   "&:last-child:hover": {
-      svg: {
-         transform: "translateX(2px)",
+      ".MuiTypography-root": {
+         color: theme.myColor.white,
       },
    },
 }));
@@ -80,6 +63,5 @@ export const OptionButton = styled(Button)(({ theme }) => ({
 export const ToggleOptions = styled(SwipeableDrawer)({
    ".MuiPaper-root": {
       justifyContent: "space-between",
-      width: "20vw",
    },
 });

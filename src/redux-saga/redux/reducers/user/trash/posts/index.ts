@@ -1,31 +1,10 @@
 import { TRASH_POSTS_ACTION } from "../../../../../../utils/enums";
-import { Post } from "../../../../../../utils/interfaces/Post";
-interface TrashPostsPayload {
-   posts: Post[];
-   page: number;
-   maxPage: number;
-}
+import { TrashPostsAction, TrashPostsState, init } from "./helpers";
 
-interface TrashPostsState {
-   isLoading: boolean;
-   trashPosts: Partial<Post[]>;
-   maxPage: number;
-   page: number;
-}
-
-interface MyAction {
-   type: string;
-   payload: string & TrashPostsPayload;
-}
-
-const init: TrashPostsState = {
-   isLoading: false,
-   trashPosts: [],
-   maxPage: 0,
-   page: 0,
-};
-
-const trashPostsReducer = (state: TrashPostsState = init, action: MyAction): TrashPostsState => {
+const trashPostsReducer = (
+   state: TrashPostsState = init,
+   action: TrashPostsAction
+): TrashPostsState => {
    switch (action.type) {
       case TRASH_POSTS_ACTION.GET_TRASH_POSTS:
       case TRASH_POSTS_ACTION.FORCE_DELETE_TRASH_POST:

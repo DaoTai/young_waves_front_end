@@ -14,3 +14,4 @@ export { default as Spinner } from "./Spinner";
 export { default as AuthProtect } from "./AuthProtect";
 export { default as Alert } from "./Alert";
 export { default as OverlayFullImage } from "./OverlayFullImage";
+export { default as CountriesSelect } from "./CountriesSelect";

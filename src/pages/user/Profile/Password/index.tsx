@@ -1,9 +1,8 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SendIcon from "@mui/icons-material/Send";
-import ClearIcon from "@mui/icons-material/Clear";
-import CheckIcon from "@mui/icons-material/Check";
-import KeyIcon from "@mui/icons-material/Key";
 import {
    Box,
    Button,
@@ -13,12 +12,11 @@ import {
    DialogContent,
    DialogContentText,
    DialogTitle,
+   Fab,
    Grid,
    Input,
-   Paper,
    Stack,
    Typography,
-   Fab,
    useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
@@ -28,13 +26,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "../../../../components";
 import { changePasswordProfile } from "../../../../redux-saga/redux/actions";
-import { profileState$, authState$ } from "../../../../redux-saga/redux/selectors";
+import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
 import { changePasswordPassword, init, textFields } from "./config";
 const Password = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const { isLoading, payload, action, error } = useSelector(profileState$);
+   const { isLoading, payload } = useSelector(profileState$);
    const auth$ = useSelector(authState$);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -49,7 +47,7 @@ const Password = () => {
    );
    useEffect(() => {
       resetForm();
-   }, [isLoading, payload, action, error, dispatch]);
+   }, [isLoading, payload, dispatch]);
    const handleConfirm = () => {
       handleSubmit();
       setOpenDialog(false);
@@ -60,19 +58,21 @@ const Password = () => {
             <title>Change password | Young Waves</title>
          </Helmet>
          <Container maxWidth="md" sx={{ backgroundColor: theme.myColor.white, pt: 1 }}>
-            <Fab
-               size="medium"
-               sx={{
-                  boxShadow: 1,
-                  bgcolor: theme.myColor.white,
-               }}
-               onClick={() => navigate("/user/profile/edit")}>
-               <ArrowBackIosIcon />
-            </Fab>
+            <Stack flexDirection="row" alignItems="baseline">
+               <Fab
+                  size="medium"
+                  sx={{
+                     boxShadow: 1,
+                     bgcolor: theme.myColor.white,
+                  }}
+                  onClick={() => navigate("/user/profile/edit")}>
+                  <ArrowBackIosIcon />
+               </Fab>
 
-            <Typography variant="h4" mb={2} textAlign="center">
-               Change Password
-            </Typography>
+               <Typography flex={2} variant="h4" textAlign="center">
+                  Change Password
+               </Typography>
+            </Stack>
             <Box p={2} bgcolor={theme.myColor.white}>
                <form autoComplete="off" onSubmit={handleSubmit}>
                   <Grid container spacing={2}>

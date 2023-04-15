@@ -16,14 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { Alert, Spinner } from "../../../components";
 import { hideAlert, signIn } from "../../../redux-saga/redux/actions";
-import { alert$, authState$ } from "../../../redux-saga/redux/selectors";
+import { alertState$, authState$ } from "../../../redux-saga/redux/selectors";
 import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
-   const alert = useSelector(alert$);
-   const { title, mode, message } = alert.payload as AlertProps;
+   const alert$ = useSelector(alertState$);
    const { isLoading, payload } = useSelector(authState$);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
@@ -56,7 +55,13 @@ const SignIn = () => {
             <title>Sign in</title>
          </Helmet>
          {/* Alert */}
-         {alert?.isShow && <Alert title={title} mode={mode} message={message} />}
+         {alert$?.isShow && (
+            <Alert
+               title={alert$?.payload?.title}
+               mode={alert$?.payload?.mode}
+               message={alert$?.payload?.message}
+            />
+         )}
          {/* Body */}
          <Box p={4} paddingTop={4} paddingBottom={4}>
             {/* Form */}

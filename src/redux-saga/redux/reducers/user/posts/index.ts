@@ -1,27 +1,8 @@
 import { Post } from "../../../../../utils/interfaces/Post";
 import { OWNER_POSTS_ACTION, POSTS_ACTION } from "../../../../../utils/enums";
-interface PostsState {
-   isLoading: boolean;
-   payload: Post[] | [];
-}
+import { PostsAction, PostsState, init } from "./helpers";
 
-const init: PostsState = {
-   isLoading: false,
-   payload: [],
-};
-
-const ownerPostsReducer = (
-   state = init,
-   action: {
-      type: string;
-      payload: Post[] &
-         Post &
-         string & { idPost: string; idLike: string } & { idPost: string; comment: string } & {
-            idPost: string;
-            idComment: string;
-         };
-   }
-): PostsState => {
+const ownerPostsReducer = (state = init, action: PostsAction): PostsState => {
    switch (action.type) {
       case OWNER_POSTS_ACTION.GET_OWNER_POSTS:
       case POSTS_ACTION.CREATE_POST:

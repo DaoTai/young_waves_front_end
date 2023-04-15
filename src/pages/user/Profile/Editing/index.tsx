@@ -21,7 +21,7 @@ import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { DateTimePicker, ImageInput, Spinner } from "../../../../components";
+import { CountriesSelect, DateTimePicker, ImageInput, Spinner } from "../../../../components";
 import { updateProfile } from "../../../../redux-saga/redux/actions";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -98,26 +98,25 @@ const Editing = () => {
                </Button>
             </Stack>
             <form autoComplete="off" onSubmit={handleSubmit}>
-               <Grid container pt={2} spacing={2}>
+               <Grid container alignItems="center" pt={2} spacing={2}>
+                  {/* Images */}
                   <Grid
                      item
                      sm={12}
                      xs={12}
-                     gap={4}
+                     gap={1}
                      rowSpacing={2}
                      display="flex"
                      justifyContent="center"
-                     alignItems="flex-start">
-                     {/* Avatar */}
-                     <Avatar user={payload} variant="square" borderRadius={2} />
+                     alignItems="flex-start"
+                     flexWrap="wrap">
                      {/* Cover picture */}
                      <Box
                         width="100%"
-                        minHeight={350}
+                        minHeight={400}
                         alignItems="center"
                         overflow="hidden"
                         position="relative"
-                        borderRadius={2}
                         sx={
                            payload?.coverPicture
                               ? {
@@ -135,20 +134,24 @@ const Editing = () => {
                            sx={{
                               backgroundColor: theme.myColor.white,
                               position: "absolute",
-                              top: 5,
-                              right: 5,
+                              top: 10,
+                              right: 10,
                               boxShadow: "none",
                            }}>
                            <ImageInput onChange={handleChangeCoverPicture} />
                         </Fab>
                      </Box>
+                     {/* Avatar */}
+                     <Avatar user={payload} variant="square" borderRadius={2} />
                   </Grid>
+
                   {/* Text fields */}
                   {textInfoUser.map((props: any, i: number) => {
                      return (
                         <Grid key={i} item sm={6} xs={12}>
                            <TextField
                               {...props}
+                              sx={{ mt: 1 }}
                               value={values[props.name] || ""}
                               onChange={handleChange}
                               onBlur={handleBlur}
@@ -162,6 +165,18 @@ const Editing = () => {
                         </Grid>
                      );
                   })}
+
+                  {/* Countries field */}
+                  <Grid item sm={6} xs={12}>
+                     <CountriesSelect
+                        value={values.region}
+                        name="region"
+                        onBlur={handleBlur}
+                        onChange={setFieldValue}
+                        error={!!(errors["region"] && touched["region"])}
+                        helperText={errors["region"] && touched["region"] ? errors["region"] : null}
+                     />
+                  </Grid>
                   {/* Radio fields */}
                   {radioFields.map((item: any, i: number) => {
                      return (
@@ -188,7 +203,7 @@ const Editing = () => {
                   })}
 
                   {/* Time fields */}
-                  <Grid item md={6} xs={12}>
+                  <Grid item sm={12} xs={12}>
                      {values?.dob && (
                         <DateTimePicker name="dob" value={values.dob} onChange={setFieldValue} />
                      )}
@@ -196,7 +211,7 @@ const Editing = () => {
                </Grid>
 
                {/* Submit button */}
-               <Stack flexDirection="row" justifyContent="flex-end">
+               <Stack mt={2} flexDirection="row" justifyContent="flex-end">
                   <Button
                      type="submit"
                      size="large"

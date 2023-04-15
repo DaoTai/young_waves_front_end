@@ -45,6 +45,7 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
             overflow="hidden"
             position="relative"
             alignItems="center"
+            gap={2}
             sx={
                user?.coverPicture
                   ? {

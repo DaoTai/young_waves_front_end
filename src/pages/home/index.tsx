@@ -4,12 +4,11 @@ import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { Alert, Header } from "../../components";
 import { HEIGHT_HEADER } from "../../utils/constants";
-import { alert$ } from "../../redux-saga/redux/selectors";
+import { alertState$ } from "../../redux-saga/redux/selectors";
 import { AlertProps } from "../../utils/interfaces/Props";
 const Home = () => {
    const theme = useTheme();
-   const { isShow, payload } = useSelector(alert$);
-   const { title, mode, message } = payload as AlertProps;
+   const alert$ = useSelector(alertState$);
    return (
       <>
          <Helmet>
@@ -26,7 +25,13 @@ const Home = () => {
                }}>
                <Outlet />
             </Container>
-            {isShow && <Alert title={title} mode={mode} message={message} />}
+            {alert$?.isShow && (
+               <Alert
+                  title={alert$?.payload.title}
+                  mode={alert$?.payload.mode}
+                  message={alert$?.payload.message}
+               />
+            )}
          </Box>
       </>
    );

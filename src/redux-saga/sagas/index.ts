@@ -2,7 +2,14 @@ import { AxiosResponse } from "axios";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../../apis";
 import * as CONSTANTS from "../../utils/constants";
-import { OWNER_POSTS_ACTION, POSTS_ACTION, TRASH_POSTS_ACTION } from "../../utils/enums";
+import {
+   AUTH_ACTION,
+   FRIEND_ACTION,
+   OWNER_POSTS_ACTION,
+   POSTS_ACTION,
+   PROFILE_ACTION,
+   TRASH_POSTS_ACTION,
+} from "../../utils/enums";
 import { SignIn } from "../../utils/interfaces/Auth";
 import { Comment } from "../../utils/interfaces/Comment";
 import { Post } from "../../utils/interfaces/Post";
@@ -14,12 +21,16 @@ import * as ACTIONS from "../redux/actions";
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
       const res = yield call(api.auth.signInUser, action.payload);
-      yield put(ACTIONS.signInSuccess(res.data));
-      const { password, ...localUser } = action.payload;
-      // Remember username to login
-      action.payload.isRemember
-         ? localStorage.setItem("user", JSON.stringify(localUser))
-         : localStorage.removeItem("user");
+      if (res.status === 200) {
+         yield put(ACTIONS.signInSuccess(res.data));
+         const { password, ...localUser } = action.payload;
+         // Remember username to login
+         action.payload.isRemember
+            ? localStorage.setItem("user", JSON.stringify(localUser))
+            : localStorage.removeItem("user");
+      } else {
+         yield put(ACTIONS.signInFailure());
+      }
    } catch (err: any) {
       yield put(ACTIONS.signInFailure());
       throw new Error(err);
@@ -124,7 +135,6 @@ function* addFriend(action: { type: string; payload: string }) {
 function* cancelFriend(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.user.cancelFriend, action.payload);
-      console.log("res cancel: ", res);
       const canceledFriend = res.data as Profile;
       yield put(ACTIONS.cancelFriendSuccess(canceledFriend._id));
    } catch (err: any) {
@@ -302,14 +312,14 @@ function* forceDeletePost(action: { type: string; payload: string }) {
 // Combine saga
 export default function* rootSaga() {
    yield all([
-      takeLatest(CONSTANTS.SIGN_IN, signInSaga),
-      takeLatest(CONSTANTS.GET_PROFILE, getProfileSaga),
-      takeLatest(CONSTANTS.SIGN_OUT, signOutSaga),
-      takeLatest(CONSTANTS.UPDATE_PROFILE, updateProfileSaga),
-      takeLatest(CONSTANTS.CHANGE_PASSWORD_PROFILE, changePasswordProfileSaga),
+      takeLatest(AUTH_ACTION.SIGN_IN, signInSaga),
+      takeLatest(AUTH_ACTION.SIGN_OUT, signOutSaga),
+      takeLatest(PROFILE_ACTION.GET_PROFILE, getProfileSaga),
+      takeLatest(PROFILE_ACTION.UPDATE_PROFILE, updateProfileSaga),
+      takeLatest(PROFILE_ACTION.CHANGE_PASSWORD, changePasswordProfileSaga),
       takeLatest(POSTS_ACTION.GET_POSTS, getPostsSaga),
-      takeLatest(CONSTANTS.ADD_FRIEND, addFriend),
-      takeLatest(CONSTANTS.CANCEL_FRIEND, cancelFriend),
+      takeLatest(FRIEND_ACTION.ADD_FRIEND, addFriend),
+      takeLatest(FRIEND_ACTION.CANCEL_FRIEND, cancelFriend),
       takeLatest(OWNER_POSTS_ACTION.GET_OWNER_POSTS, getOwnerPostsSaga),
       takeLatest(POSTS_ACTION.CREATE_POST, createPostSaga),
       takeLatest(POSTS_ACTION.UPDATE_POST, updatePostSaga),

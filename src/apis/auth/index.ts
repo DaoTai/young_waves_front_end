@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { SignIn, SignUp } from "../../utils/interfaces/Auth";
 import axiosInstance from "./axios";
 export const signInUser = async (user: SignIn) => {
