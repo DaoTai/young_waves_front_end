@@ -6,6 +6,7 @@ export interface AlertProps {
    title?: string;
    message: string;
    mode?: AlertColor;
+   onClose?: () => void;
 }
 
 export interface HeadingNewsProps {

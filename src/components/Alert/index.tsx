@@ -5,10 +5,10 @@ import { hideAlert } from "../../redux-saga/redux/actions";
 import { TIME_ALERT } from "../../utils/constants";
 import { AlertProps } from "../../utils/interfaces/Props";
 import { MyAlert } from "./styles";
-const Alert = ({ message, title = "Error", mode = "error" }: AlertProps) => {
+const Alert = ({ message, title = "Error", mode = "error", onClose }: AlertProps) => {
    const dispatch = useDispatch();
-   const onClose = () => {
-      dispatch(hideAlert());
+   const onCloseAlert = () => {
+      onClose ? onClose() : dispatch(hideAlert());
    };
 
    return (
@@ -17,8 +17,8 @@ const Alert = ({ message, title = "Error", mode = "error" }: AlertProps) => {
          autoHideDuration={TIME_ALERT}
          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
          message={message}
-         onClose={onClose}>
-         <MyAlert severity={mode} closeText="Close" variant="outlined" onClose={onClose}>
+         onClose={onCloseAlert}>
+         <MyAlert severity={mode} closeText="Close" variant="outlined" onClose={onCloseAlert}>
             <Typography variant="body1" fontWeight={600}>
                {title}
             </Typography>

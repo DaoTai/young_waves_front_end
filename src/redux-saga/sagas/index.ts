@@ -44,10 +44,10 @@ function* signOutSaga() {
       if (res.status === 200) {
          yield put(ACTIONS.signOutSuccess());
       } else {
-         yield put(ACTIONS.signOutFailure(res));
+         yield put(ACTIONS.signOutFailure());
       }
    } catch (err) {
-      yield put(ACTIONS.signOutFailure(err as string));
+      yield put(ACTIONS.signOutFailure());
    }
 }
 
@@ -135,8 +135,12 @@ function* addFriend(action: { type: string; payload: string }) {
 function* cancelFriend(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.user.cancelFriend, action.payload);
-      const canceledFriend = res.data as Profile;
-      yield put(ACTIONS.cancelFriendSuccess(canceledFriend._id));
+      if (res.status === 200) {
+         const canceledFriend = res.data as Profile;
+         yield put(ACTIONS.cancelFriendSuccess(canceledFriend._id));
+      } else {
+         yield put(ACTIONS.cancelFriendFailure("Cancel failed"));
+      }
    } catch (err: any) {
       throw new Error(err);
    }

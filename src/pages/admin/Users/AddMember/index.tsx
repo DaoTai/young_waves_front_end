@@ -37,7 +37,7 @@ const AddMember = ({ onClose }: { onClose: () => void }) => {
             Add member
          </Typography>
          <Stack justifyContent="flex-end">
-            <FormControl sx={{ width: 200, pb: 2, pt: 2, ml: "auto" }}>
+            <FormControl sx={{ minWidth: 200, mb: 1, mt: 2, ml: "auto" }}>
                <InputLabel>Role</InputLabel>
                <Select value={role} label="Selection" onChange={handleChangeRole}>
                   <MenuItem value="User">User</MenuItem>

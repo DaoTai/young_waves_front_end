@@ -29,6 +29,8 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
       (async () => {
          try {
             const res = await api.conversation.getAllConversation();
+            console.log("res = ", res);
+
             const filterData = res.data.map((conversation: Conversation) => {
                const friend = conversation.members.find((member) => member?._id !== user?._id);
                return {

@@ -173,8 +173,6 @@ const Editing = () => {
                         name="region"
                         onBlur={handleBlur}
                         onChange={setFieldValue}
-                        error={!!(errors["region"] && touched["region"])}
-                        helperText={errors["region"] && touched["region"] ? errors["region"] : null}
                      />
                   </Grid>
                   {/* Radio fields */}

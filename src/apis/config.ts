@@ -1,19 +1,21 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { signInSuccess, signOut } from "../redux-saga/redux/actions";
-import { store, RootState } from "../redux-saga/redux/store";
+import { RootState, store } from "../redux-saga/redux/store";
 import { Profile } from "../utils/interfaces/Profile";
 import { refreshToken } from "./auth";
 interface DecodedAccessToken {
    id: string;
+   isAdmin: boolean;
    iat: number;
    exp: number;
 }
 const serverUrl = "http://localhost:8001";
 
+// gửi cookie và header xác thực với các request giữa các miền khác nhau.
+axios.defaults.withCredentials = true;
 export const axiosInstance = axios.create({
    baseURL: serverUrl,
-   withCredentials: true, // gửi cookie và header xác thực với các request giữa các miền khác nhau.
 });
 
 // Config interceptors: có thể coi như 1 tường chắn trước khi request / response
@@ -45,6 +47,7 @@ axiosInstance.interceptors.request.use(
             store.dispatch(signOut());
          }
       }
+
       config.headers.token = "Bearer " + accessToken;
       return config;
    },

@@ -43,9 +43,8 @@ const SignIn = () => {
          dispatch(hideAlert());
       };
    }, []);
-
    // When user login success will navigate to home
-   if (payload?.user?._id) {
+   if (payload?.accessToken) {
       return payload?.user.isAdmin ? <Navigate to="/admin" replace /> : <Navigate to="/" replace />;
    }
 

@@ -10,18 +10,20 @@ import {
    TextField,
    useTheme,
 } from "@mui/material";
+import { memo, useCallback, useState } from "react";
 import { useFormik } from "formik";
-import { memo, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../../../../apis/auth";
 import { Alert, CountriesSelect, DateTimePicker, Spinner } from "../../../../components";
-import { hideAlert, showAlert } from "../../../../redux-saga/redux/actions";
-import { alertState$ } from "../../../../redux-saga/redux/selectors";
+import { AlertProps } from "../../../../utils/interfaces/Props";
 import { init, radioFields, registerOptions, textFields } from "../config";
 const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
    const theme = useTheme();
-   const dispatch = useDispatch();
-   const alert$ = useSelector(alertState$);
+   const [showAlert, setShowAlert] = useState<boolean>(false);
+   const [alert, setAlert] = useState<AlertProps>({
+      title: "Sign up",
+      message: "Sign up successfully",
+      mode: "success",
+   });
    const [loading, setLoading] = useState<boolean>(false);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
@@ -33,38 +35,31 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
             setLoading(true);
             try {
                const res = await signUpUser({ ...values, isAdmin });
+               setShowAlert(true);
                if (res.status === 200) {
-                  dispatch(
-                     showAlert({
-                        title: "Sign up",
-                        message: "Sign up successfully",
-                        mode: "success",
-                     })
-                  );
+                  setAlert({
+                     title: "Sign up",
+                     message: "Sign up successfully",
+                     mode: "success",
+                  });
                } else {
-                  dispatch(
-                     showAlert({
-                        title: "Sign up",
-                        message: "Sign up failed",
-                     })
-                  );
+                  setAlert({
+                     title: "Sign up",
+                     message: "Sign up failed",
+                  });
                }
                setLoading(false);
             } catch (err) {
-               dispatch(
-                  showAlert({
-                     title: "Sign up",
-                     message: "Sign up failed",
-                  })
-               );
+               setShowAlert(true);
+               setAlert({
+                  title: "Sign up",
+                  message: "Sign up failed",
+               });
             }
          },
       });
-   useEffect(() => {
-      return () => {
-         dispatch(hideAlert());
-      };
-   }, []);
+
+   const onCloseAlert = useCallback(() => setShowAlert(false), []);
    return (
       <>
          {/* Form */}
@@ -94,8 +89,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
                      name="region"
                      onBlur={handleBlur}
                      onChange={setFieldValue}
-                     error={!!(errors["region"] && touched["region"])}
-                     helperText={errors["region"] && touched["region"] ? errors["region"] : null}
+                     onlyOptions
                   />
                </Grid>
                {/* Radio fields */}
@@ -137,13 +131,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
             </Button>
          </form>
          {/* Alert */}
-         {alert$?.isShow && (
-            <Alert
-               title={alert$?.payload.title}
-               mode={alert$?.payload.mode}
-               message={alert$?.payload.message}
-            />
-         )}
+         {showAlert && <Alert {...alert} onClose={onCloseAlert} />}
          {/* Spinner */}
          {loading && <Spinner show={loading} />}
       </>
