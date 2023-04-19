@@ -12,10 +12,9 @@ interface DecodedAccessToken {
 }
 const serverUrl = "http://localhost:8001";
 
-// gửi cookie và header xác thực với các request giữa các miền khác nhau.
-axios.defaults.withCredentials = true;
 export const axiosInstance = axios.create({
    baseURL: serverUrl,
+   withCredentials: true, // gửi cookie và header xác thực với các request giữa các miền khác nhau.
 });
 
 // Config interceptors: có thể coi như 1 tường chắn trước khi request / response

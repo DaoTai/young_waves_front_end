@@ -71,6 +71,7 @@ export const Footer = styled(Stack)(({ theme }) => ({
       height: 42,
       padding: 8,
       cursor: "pointer",
+      transform: "rotate(-15deg)",
       transition: "0.3s linear all",
       "&:hover": {
          boxShadow: "0px 0px 2px rgba(0,0,0,0.3)",

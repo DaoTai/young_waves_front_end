@@ -2,7 +2,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CardActions, Checkbox, Chip, Stack, useTheme } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { likePost, unLikePost } from "../../../../../redux-saga/redux/actions";
@@ -15,6 +15,7 @@ const Actions = ({ post }: { post: Post }) => {
    const auth$ = useSelector(authState$);
    const idAuth = auth$.payload?.user?._id;
    const [like, setLike] = useState<boolean>(post?.likes.includes(idAuth));
+   const [totalLike, setTotalLike] = useState<number>(post?.likes.length ?? 0);
 
    // Navigate to profile
    const handleNavigate = () => {
@@ -29,8 +30,10 @@ const Actions = ({ post }: { post: Post }) => {
    const clickLike = () => {
       if (like) {
          dispatch(unLikePost({ idLike: idAuth, idPost: post._id }));
+         setTotalLike((prev) => prev - 1);
       } else {
          dispatch(likePost(post._id));
+         setTotalLike((prev) => prev + 1);
       }
       setLike(!like);
    };
@@ -43,11 +46,7 @@ const Actions = ({ post }: { post: Post }) => {
             <Stack flexDirection="column">
                <Chip
                   variant="outlined"
-                  label={
-                     post.likes?.length > 1
-                        ? post.likes?.length + " likes"
-                        : post.likes?.length + " like"
-                  }
+                  label={totalLike > 1 ? totalLike + " likes" : totalLike + " like"}
                />
                <Checkbox
                   sx={{ zoom: 1.2 }}

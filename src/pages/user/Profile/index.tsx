@@ -28,6 +28,7 @@ const Profile = () => {
          dispatch(getOwnerPosts(id as string));
       }
    }, [id]);
+
    const handleChangeTabPanel = (event: React.SyntheticEvent, newValue: TYPE_TAB_PROFILE) => {
       setTab(newValue);
    };

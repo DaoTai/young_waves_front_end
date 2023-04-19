@@ -6,8 +6,10 @@ export const addConversation = async (idFriend: string) => {
    });
 };
 
-export const getAllConversation = async () => {
-   return await axiosInstance.get("/conversations/");
+export const getAllConversation = async (q: { friendName?: string; page?: number }) => {
+   return await axiosInstance.get("/conversations/", {
+      params: q,
+   });
 };
 
 export const getDetailConversation = async (id: string) => {
