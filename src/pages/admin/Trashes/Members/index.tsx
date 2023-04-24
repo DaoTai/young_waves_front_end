@@ -97,7 +97,7 @@ const UserTrashes = () => {
          headerAlign: "center",
          headerName: "Deleted at",
          width: 70,
-         flex: 1,
+         flex: 2,
          valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
       },
       {
@@ -139,9 +139,9 @@ const UserTrashes = () => {
          },
       },
       {
-         field: "options",
+         field: "delete",
          headerAlign: "center",
-         headerName: "Options",
+         headerName: "Delete",
          flex: 1,
          sortable: false,
          disableColumnMenu: true,
@@ -184,8 +184,8 @@ const UserTrashes = () => {
          if (res.status === 200) {
             dispatch(
                showAlert({
-                  title: "Success",
-                  message: "Restore user successfully",
+                  title: "Restore member",
+                  message: "Restored successfully",
                   mode: "success",
                })
             );
@@ -193,8 +193,8 @@ const UserTrashes = () => {
          } else {
             dispatch(
                showAlert({
-                  title: "Failure",
-                  message: "Restore user failed",
+                  title: "Restore member",
+                  message: "Restore failed",
                   mode: "error",
                })
             );
@@ -211,8 +211,8 @@ const UserTrashes = () => {
          if (res.status === 200) {
             dispatch(
                showAlert({
-                  title: "Success",
-                  message: `Force delete ${user?.fullName} successfully`,
+                  title: "Force delete",
+                  message: `Deleted ${user?.fullName} successfully`,
                   mode: "success",
                })
             );
@@ -221,7 +221,7 @@ const UserTrashes = () => {
             dispatch(
                showAlert({
                   title: "Failure",
-                  message: `Force delete ${user?.fullName} failed`,
+                  message: `Deleted ${user?.fullName} failed`,
                   mode: "error",
                })
             );

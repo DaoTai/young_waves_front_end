@@ -17,3 +17,7 @@ export const refreshToken = async () => {
       withCredentials: true,
    });
 };
+
+export const forgotPassword = async (data: { username: string; email: string }) => {
+   return await axiosInstance.post("/forgot-password", data);
+};

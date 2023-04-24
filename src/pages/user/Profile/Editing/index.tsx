@@ -134,6 +134,7 @@ const Editing = () => {
                            sx={{
                               backgroundColor: theme.myColor.white,
                               position: "absolute",
+                              zIndex: 2,
                               top: 10,
                               right: 10,
                               boxShadow: "none",

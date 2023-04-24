@@ -10,22 +10,22 @@ const Navigation = () => {
    const { isLoading, payload } = useSelector(authState$);
    const isAdmin = payload?.user.isAdmin;
    return (
-      <Container maxWidth="md">
-         <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Stack direction="row" sx={{ gap: 4 }}>
-               <NavLink to="/">
-                  <HomeIcon fontSize="large" />
+      <Container maxWidth="md" sx={{ bgcolor: theme.myColor.white }}>
+         {/* <Stack direction="row" justifyContent="space-between" alignItems="center"> */}
+         <Stack direction="row" justifyContent="center" sx={{ gap: 4 }}>
+            <NavLink to="/">
+               <HomeIcon fontSize="large" />
+            </NavLink>
+            <NavLink to="/user/explore">
+               <ExploreIcon fontSize="large" />
+            </NavLink>
+            {isAdmin && (
+               <NavLink to="/admin">
+                  <ManageAccountsIcon fontSize="large" />
                </NavLink>
-               <NavLink to="/user/explore">
-                  <ExploreIcon fontSize="large" />
-               </NavLink>
-               {isAdmin && (
-                  <NavLink to="/admin">
-                     <ManageAccountsIcon fontSize="large" />
-                  </NavLink>
-               )}
-            </Stack>
+            )}
          </Stack>
+         {/* </Stack> */}
       </Container>
    );
 };

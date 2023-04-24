@@ -6,6 +6,7 @@ import { Alert, Header } from "../../components";
 import { HEIGHT_HEADER } from "../../utils/constants";
 import { alertState$ } from "../../redux-saga/redux/selectors";
 import { AlertProps } from "../../utils/interfaces/Props";
+import Navigation from "../../components/Header/Navigation";
 const Home = () => {
    const theme = useTheme();
    const alert$ = useSelector(alertState$);
@@ -16,6 +17,7 @@ const Home = () => {
          </Helmet>
          <Box bgcolor={theme.myColor.bg} minHeight="100vh">
             <Header />
+
             <Container
                sx={{
                   position: "relative",

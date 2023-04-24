@@ -11,6 +11,7 @@ import { authState$ } from "../../../redux-saga/redux/selectors";
 import Spinner from "../../Spinner";
 import { LogOutButton, Option, ToggleOptions } from "../styles";
 import { Anchor } from "./types";
+import Navigation from "../Navigation";
 const ToggleActions = () => {
    const dispatch = useDispatch();
    const { isLoading, payload } = useSelector(authState$);

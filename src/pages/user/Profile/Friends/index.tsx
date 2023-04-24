@@ -126,9 +126,11 @@ const Friends = () => {
                }}
                endAdornment={
                   <Stack flexDirection="row" alignItems="center">
-                     <ClearButton position="end" onClick={handleClearSearch}>
-                        <CloseIcon />
-                     </ClearButton>
+                     {value && (
+                        <ClearButton position="end" onClick={handleClearSearch}>
+                           <CloseIcon />
+                        </ClearButton>
+                     )}
                      <SearchButton position="end">
                         <SearchIcon />
                      </SearchButton>

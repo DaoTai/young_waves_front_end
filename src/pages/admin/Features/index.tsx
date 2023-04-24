@@ -22,7 +22,7 @@ const Features = ({ onClick }: { onClick: (name: TYPE_FEATURES) => void }) => {
    const theme = useTheme();
    const items = [
       { name: FEATURES_ADMIN.users, label: "Users", Icon: <PeopleAltIcon /> },
-      { name: FEATURES_ADMIN.statistical, label: "Statistical", Icon: <EqualizerIcon /> },
+      // { name: FEATURES_ADMIN.statistical, label: "Statistical", Icon: <EqualizerIcon /> },
       { name: FEATURES_ADMIN.trashes, label: "Trashes", Icon: <RestoreFromTrashIcon /> },
    ];
 

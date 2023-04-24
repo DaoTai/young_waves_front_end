@@ -22,7 +22,7 @@ const SignUp = () => {
 
          {/* Body */}
          <Box p={4} paddingTop={1} paddingBottom={2}>
-            <Typography variant="h3" textAlign="center" color="primary">
+            <Typography variant="h2" textAlign="center" color="primary">
                Sign up
             </Typography>
             <Form />

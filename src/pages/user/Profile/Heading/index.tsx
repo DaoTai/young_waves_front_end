@@ -2,10 +2,10 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Button, Fab, Grid, Typography, useTheme } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ImageInput, Spinner } from "../../../../components";
+import { ImageInput, OverlayFullImage, Spinner } from "../../../../components";
 import { addFriend, updateProfile } from "../../../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -21,8 +21,8 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
       profile$.payload?.friends?.length > 0
          ? !profile$.payload?.friends?.includes(user._id)
          : !auth$.payload.user.friends.includes(user._id);
-
    const dispatch = useDispatch();
+
    const imageRef = useRef(Object(null));
 
    // Change cover picture

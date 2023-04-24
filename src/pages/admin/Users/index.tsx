@@ -80,6 +80,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "city",
+         align: "center",
          headerAlign: "center",
          headerName: "City",
          width: 70,
@@ -87,6 +88,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "region",
+         align: "center",
          headerAlign: "center",
          headerName: "Region",
          width: 70,
@@ -94,6 +96,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "createdAt",
+         align: "center",
          headerAlign: "center",
          headerName: "Joined time",
          flex: 2,
@@ -101,6 +104,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "gender",
+         align: "center",
          headerAlign: "center",
          headerName: "Gender",
          width: 130,
@@ -110,6 +114,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "detail",
+         align: "center",
          headerAlign: "center",
          headerName: "Detail",
          sortable: false,
@@ -128,6 +133,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
 
       {
          field: "authorize",
+         align: "center",
          headerAlign: "center",
          headerName: "Authorize",
          sortable: false,
@@ -147,6 +153,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       },
       {
          field: "delete",
+         align: "center",
          headerAlign: "center",
          headerName: "Delete",
          sortable: false,

@@ -138,8 +138,10 @@ const MyComment = ({
                               idAuth === comment?.user?._id
                                  ? `/user/profile/${auth$.payload?.user._id}`
                                  : `/user/explore/${comment?.user?._id}`
-                           }>
+                           }
+                           style={{ display: "flex", alignItems: "center" }}>
                            {comment?.user.fullName}
+                           {/* Display admin icon */}
                            {comment?.user?.isAdmin && (
                               <Tooltip title="Admin" TransitionProps={{ timeout: 1000 }}>
                                  <CheckCircleIcon

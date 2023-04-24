@@ -55,7 +55,7 @@ const TrashPosts = () => {
          field: "deletedAt",
          headerName: "Deleted at",
          valueFormatter: (params) => dateformat(params.value, "mmmm dS, yyyy, h:MM TT"),
-         flex: 1,
+         flex: 2,
          headerAlign: "center",
       },
       {
@@ -74,9 +74,11 @@ const TrashPosts = () => {
                         color: theme.palette.primary.main,
                      },
                   }}
-                  endIcon={<DetailsIcon />}
                   onClick={() => handleShowDetail(params.row?._id)}>
-                  Open
+                  <Typography variant="body2" sx={{ display: { sm: "block", xs: "none" } }}>
+                     Open
+                  </Typography>
+                  <DetailsIcon />
                </Button>
             );
          },
@@ -98,9 +100,11 @@ const TrashPosts = () => {
                         color: theme.palette.success.main,
                      },
                   }}
-                  endIcon={<RestoreFromTrashIcon />}
                   onClick={() => handleRestore(params.row?._id)}>
-                  Restore
+                  <Typography variant="body2" sx={{ display: { sm: "block", xs: "none" } }}>
+                     Restore
+                  </Typography>
+                  <RestoreFromTrashIcon />
                </Button>
             );
          },
@@ -121,9 +125,11 @@ const TrashPosts = () => {
                         color: theme.palette.error.main,
                      },
                   }}
-                  endIcon={<DeleteForeverIcon />}
                   onClick={() => handleOpenDialogDelete(params.row?._id)}>
-                  Delete
+                  <Typography variant="body2" sx={{ display: { sm: "block", xs: "none" } }}>
+                     Delete
+                  </Typography>
+                  <DeleteForeverIcon />
                </Button>
             );
          },
@@ -180,6 +186,7 @@ const TrashPosts = () => {
                         borderColor: "currentcolor",
                      },
                   },
+                  overflow: "scroll",
                }}
                rows={trashPosts}
                columns={columns}

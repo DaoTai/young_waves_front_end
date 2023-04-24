@@ -6,7 +6,7 @@ const MyLogo = () => {
    const theme = useTheme();
 
    return (
-      <Logo to="/">
+      <Logo to="/" onClick={() => document.body.scrollIntoView({ behavior: "smooth" })}>
          <Stack
             direction="row"
             alignItems="center"

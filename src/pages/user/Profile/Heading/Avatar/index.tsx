@@ -16,7 +16,6 @@ const AvatarProfile = ({
    borderRadius?: number | string;
 }) => {
    const dispatch = useDispatch();
-   const theme = useTheme();
    const auth$ = useSelector(authState$);
    const [open, setOpen] = useState<boolean>(false);
    const imageRef = useRef(Object(null));
@@ -24,6 +23,13 @@ const AvatarProfile = ({
       imageRef.current.src = file;
       dispatch(updateProfile({ avatar: file, _id: user._id }));
    };
+
+   // Open full image
+   const onOpen = () => {
+      user?.avatar && setOpen(true);
+   };
+
+   // Close full image
    const onClose = () => {
       setOpen(false);
    };
@@ -39,7 +45,7 @@ const AvatarProfile = ({
                   border: 0.5,
                   borderRadius,
                }}
-               onClick={() => setOpen(true)}
+               onClick={onOpen}
             />
             {auth$.payload.user._id === user?._id && <ImageInput onChange={onChange} />}
          </WrapAvatar>

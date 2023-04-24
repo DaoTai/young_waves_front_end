@@ -1,7 +1,6 @@
 import { Fragment } from "../components";
-import { SignIn, SignUp } from "../pages/auth";
+import { SignIn, SignUp, ForgotPassword } from "../pages/auth";
 import Error from "../pages/error";
-import { AdminContainer } from "../pages/admin";
 import {
    Editing,
    NewsFeed,
@@ -45,6 +44,10 @@ const authRoutes: Array<Route> = [
    {
       path: "sign-up",
       component: SignUp,
+   },
+   {
+      path: "forgot-password",
+      component: ForgotPassword,
    },
 ];
 

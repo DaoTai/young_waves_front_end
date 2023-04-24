@@ -97,7 +97,7 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
          yield put(ACTIONS.changePasswordProfileSuccess(res));
          yield put(
             ACTIONS.showAlert({
-               message: "Change password successfully",
+               message: "Changed successfully",
                title: "Password",
                mode: "success",
             })
@@ -105,7 +105,7 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
       } else {
          yield put(
             ACTIONS.showAlert({
-               message: "Change password failed",
+               message: "Changed failed",
                title: "Password",
                mode: "error",
             })

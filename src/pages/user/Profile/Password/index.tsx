@@ -75,13 +75,17 @@ const Password = () => {
             </Stack>
             <Box p={2} bgcolor={theme.myColor.white}>
                <form autoComplete="off" onSubmit={handleSubmit}>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={3}>
                      {textFields.map((props: any, i: number) => {
                         return (
                            <Grid key={i} item xs={12}>
-                              <label htmlFor={props.name} style={{ fontWeight: 500 }}>
+                              <Typography
+                                 variant="body1"
+                                 component="label"
+                                 htmlFor={props.name}
+                                 sx={{ cursor: "pointer", pb: 1, display: "block" }}>
                                  {props.label}
-                              </label>
+                              </Typography>
                               <Input
                                  {...props}
                                  id={props.name}
@@ -90,7 +94,7 @@ const Password = () => {
                                  onBlur={handleBlur}
                                  error={errors[props.name] && touched[props.name]}
                               />
-                              <Typography variant="subtitle2" color="error">
+                              <Typography variant="subtitle2" color="error" sx={{ mt: 1 }}>
                                  {errors[props.name] && touched[props.name]
                                     ? errors[props.name]
                                     : null}
@@ -124,7 +128,7 @@ const Password = () => {
          {/* Dialog confirm */}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
             <DialogTitle>
-               <Typography variant="h6" textAlign="center">
+               <Typography variant="body1" textAlign="center">
                   Change Password
                </Typography>
             </DialogTitle>
@@ -134,11 +138,15 @@ const Password = () => {
             <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
                <Button
                   variant="outlined"
-                  endIcon={<ClearIcon />}
+                  sx={{ bgcolor: theme.myColor.white }}
                   onClick={() => setOpenDialog(false)}>
                   Cancel
                </Button>
-               <Button type="submit" endIcon={<SendIcon />} onClick={handleConfirm}>
+               <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={handleConfirm}
+                  sx={{ paddingLeft: 2, paddingRight: 2 }}>
                   Agree
                </Button>
             </DialogActions>

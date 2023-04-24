@@ -42,10 +42,12 @@ export const init: ChangePassword = {
 };
 
 export const changePasswordPassword = Yup.object().shape({
-   currentPassword: Yup.string().required(REQUIRED_MSG).min(LENGTH_PASSWORD),
+   currentPassword: Yup.string()
+      .required(REQUIRED_MSG)
+      .min(LENGTH_PASSWORD, "Password must be at least 6 characters"),
    newPassword: Yup.string()
       .required(REQUIRED_MSG)
-      .min(LENGTH_PASSWORD)
+      .min(LENGTH_PASSWORD, "New password must be at least 6 characters")
       .notOneOf([Yup.ref("currentPassword")], "Must be different current password"),
    confirmPassword: Yup.string()
       .required(REQUIRED_MSG)

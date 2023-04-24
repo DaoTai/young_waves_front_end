@@ -20,8 +20,8 @@ const ContainerAdmin = () => {
    const goToTrashes = useCallback(() => {
       setFeature("trashes");
    }, []);
-   const Feature: Record<TYPE_FEATURES, React.ReactNode> = {
-      statistical: <Statistical />,
+   const Feature: Partial<Record<TYPE_FEATURES, React.ReactNode>> = {
+      // statistical: <Statistical />,
       users: <Users goToTrashes={goToTrashes} />,
       trashes: <Trashes />,
    };

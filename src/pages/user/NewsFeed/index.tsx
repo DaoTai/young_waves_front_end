@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
@@ -6,6 +6,8 @@ import { Post } from "../../../components";
 import { getPosts } from "../../../redux-saga/redux/actions";
 import { postsState$ } from "../../../redux-saga/redux/selectors";
 import News from "./News";
+import { HEIGHT_HEADER } from "../../../utils/constants";
+import Navigation from "../../../components/Header/Navigation";
 const NewsFeed = () => {
    const dispatch = useDispatch();
    const posts$ = useSelector(postsState$);

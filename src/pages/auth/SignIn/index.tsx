@@ -62,10 +62,10 @@ const SignIn = () => {
             />
          )}
          {/* Body */}
-         <Box p={4} paddingTop={4} paddingBottom={4}>
+         <Box p={4}>
             {/* Form */}
             <form autoComplete="off" onSubmit={handleSubmit}>
-               <Typography variant="h3" textAlign="center" color="primary">
+               <Typography variant="h2" textAlign="center" color="primary" sx={{ mb: 2 }}>
                   Sign in
                </Typography>
                <TextField
@@ -125,7 +125,7 @@ const SignIn = () => {
                   label="Remember me"
                />
                <Typography>
-                  <Link color={theme.myColor.link} to="/">
+                  <Link color={theme.myColor.link} to="/auth/forgot-password">
                      Forgot password?
                   </Link>
                </Typography>
