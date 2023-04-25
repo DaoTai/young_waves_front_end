@@ -1,4 +1,9 @@
-import { PROFILE_ACTION, FRIEND_ACTION } from "../../../../../utils/enums";
+import {
+   PROFILE_ACTION,
+   FRIEND_ACTION,
+   POSTS_ACTION,
+   TRASH_POSTS_ACTION,
+} from "../../../../../utils/enums";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 
 interface ProfileState {
@@ -50,6 +55,20 @@ const profileReducer = (
             isLoading: false,
          };
 
+      case POSTS_ACTION.CREATE_POST_SUCCESS:
+      case TRASH_POSTS_ACTION.RESTORE_TRASH_POST_SUCCESS:
+         state.payload.totalPosts = state.payload.totalPosts ? state.payload.totalPosts + 1 : 0;
+         return {
+            ...state,
+            isLoading: false,
+         };
+
+      case POSTS_ACTION.DELETE_POST_SUCCESS:
+         state.payload.totalPosts = state.payload.totalPosts ? state.payload.totalPosts - 1 : 0;
+         return {
+            ...state,
+            isLoading: false,
+         };
       case PROFILE_ACTION.GET_PROFILE_FAILURE:
       case PROFILE_ACTION.UPDATE_PROFILE_FAILURE:
       case PROFILE_ACTION.CHANGE_PASSWORD_FAILURE:

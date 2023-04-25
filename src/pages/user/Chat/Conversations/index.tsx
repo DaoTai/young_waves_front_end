@@ -29,6 +29,21 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
    const [maxPage, setMaxPage] = useState<number>(1);
    // const [page, setPage] = useState<number>(currentPage);
    const debouncedValue = useDebounce(searchValue.trim(), 500);
+
+   useEffect(() => {
+      (async () => {
+         try {
+            const response = await fetchApi({ friendName: debouncedValue });
+            setConversations(response.conversations);
+            // Set page
+            setCurrentPage(response.currentPage);
+            setMaxPage(response.maxPage);
+         } catch (err) {
+            console.error(err);
+         }
+      })();
+   }, [debouncedValue]);
+
    const handleClickChatItem = (conversation: FormatConversation) => {
       chatContext?.handleShowChatBox(conversation);
       onClose();
@@ -55,20 +70,6 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
          throw new Error(err);
       }
    };
-
-   useEffect(() => {
-      (async () => {
-         try {
-            const response = await fetchApi({ friendName: debouncedValue });
-            setConversations(response.conversations);
-            // Set page
-            setCurrentPage(response.currentPage);
-            setMaxPage(response.maxPage);
-         } catch (err) {
-            console.error(err);
-         }
-      })();
-   }, [debouncedValue]);
 
    const handleNextPage = async () => {
       if (currentPage + 1 <= maxPage) {

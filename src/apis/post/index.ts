@@ -1,7 +1,10 @@
 import { Post } from "../../utils/interfaces/Post";
 import { axiosInstance } from "../config";
-export const getPosts = async () => {
-   return await axiosInstance.get("/posts");
+
+export const getPosts = async (page: number = 1) => {
+   return await axiosInstance.get("/posts", {
+      params: { page },
+   });
 };
 
 export const searchPosts = async (q: string) => {
@@ -18,8 +21,12 @@ export const getDetailTrashPost = async (id: string) => {
    return await axiosInstance.get(`/posts/trash/${id}`);
 };
 
-export const getOwnerPosts = async (id: string) => {
-   return await axiosInstance.get(`/posts/owner/${id}`);
+export const getOwnerPosts = async (payload: { id: string; page?: number }) => {
+   return await axiosInstance.get(`/posts/owner/${payload.id}`, {
+      params: {
+         page: payload.page || 1,
+      },
+   });
 };
 
 export const getTrashPosts = async (page: number = 1) => {

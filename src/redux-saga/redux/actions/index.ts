@@ -130,8 +130,13 @@ export const cancelFriendFailure = (payload: any) => ({
 });
 
 // POSTS
-export const getPosts = () => ({ type: POSTS_ACTION.GET_POSTS });
-export const getPostsSuccess = (payload: Post[]) => ({
+export const clearPosts = () => ({ type: POSTS_ACTION.CLEAR_POSTS });
+export const getPosts = (payload?: number) => ({ type: POSTS_ACTION.GET_POSTS, payload });
+export const getPostsSuccess = (payload: {
+   posts: Post[];
+   currentPage: number;
+   maxPage: number;
+}) => ({
    type: POSTS_ACTION.GET_POSTS_SUCCESS,
    payload,
 });
@@ -139,11 +144,17 @@ export const getPostsFailure = () => ({
    type: POSTS_ACTION.GET_POSTS_FAILURE,
 });
 
-export const getOwnerPosts = (idUser: string) => ({
+export const clearOwnerPosts = () => ({ type: OWNER_POSTS_ACTION.CLEAR_OWNER_POSTS });
+
+export const getOwnerPosts = (payload: { id: string; page?: number }) => ({
    type: OWNER_POSTS_ACTION.GET_OWNER_POSTS,
-   id: idUser,
+   payload,
 });
-export const getOwnerPostsSuccess = (payload: Array<Post>) => ({
+export const getOwnerPostsSuccess = (payload: {
+   posts: Post[];
+   currentPage: number;
+   maxPage: number;
+}) => ({
    type: OWNER_POSTS_ACTION.GET_OWNER_POSTS_SUCCESS,
    payload,
 });

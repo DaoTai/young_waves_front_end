@@ -1,7 +1,6 @@
 import SendIcon from "@mui/icons-material/Send";
 import { Fab, Stack, TextField, useTheme } from "@mui/material";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 const CommentField = ({ onSubmit }: { onSubmit: (comment: string) => void }) => {
    const theme = useTheme();
    const [newComment, setNewComment] = useState<string>("");

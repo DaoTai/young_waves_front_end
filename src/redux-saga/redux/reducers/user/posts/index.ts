@@ -4,6 +4,11 @@ import { PostsAction, PostsState, init } from "./helpers";
 
 const ownerPostsReducer = (state = init, action: PostsAction): PostsState => {
    switch (action.type) {
+      case OWNER_POSTS_ACTION.CLEAR_OWNER_POSTS:
+         return {
+            ...init,
+            isLoading: false,
+         };
       case OWNER_POSTS_ACTION.GET_OWNER_POSTS:
       case POSTS_ACTION.CREATE_POST:
       case POSTS_ACTION.UPDATE_POST:
@@ -18,20 +23,28 @@ const ownerPostsReducer = (state = init, action: PostsAction): PostsState => {
          };
       // Success
       case OWNER_POSTS_ACTION.GET_OWNER_POSTS_SUCCESS:
+         const { currentPage, maxPage, posts } = action.payload;
          return {
             ...state,
             isLoading: false,
-            payload: action.payload,
+            payload: {
+               currentPage: currentPage,
+               maxPage: maxPage,
+               posts: currentPage === 1 ? posts : [...state.payload.posts, ...posts],
+            },
          };
       case POSTS_ACTION.CREATE_POST_SUCCESS:
          return {
             ...state,
             isLoading: false,
-            payload: [action.payload, ...state.payload],
+            payload: {
+               ...state.payload,
+               posts: [action.payload, ...state.payload.posts],
+            },
          };
       case POSTS_ACTION.UPDATE_POST_SUCCESS:
          const updatedPost = action.payload as Partial<Post>;
-         const updatedPosts = state.payload.map((post: Post) => {
+         const updatedPosts = state.payload.posts.map((post: Post) => {
             if (post._id === action.payload._id) {
                return {
                   ...post,
@@ -43,20 +56,26 @@ const ownerPostsReducer = (state = init, action: PostsAction): PostsState => {
          return {
             ...state,
             isLoading: false,
-            payload: updatedPosts,
+            payload: {
+               ...state.payload,
+               posts: updatedPosts,
+            },
          };
       case POSTS_ACTION.DELETE_POST_SUCCESS:
          const idDeletedPost = action.payload as string;
-         let newPosts = state.payload.filter((post: Post) => post._id !== idDeletedPost);
+         let newPosts = state.payload.posts.filter((post: Post) => post._id !== idDeletedPost);
          return {
             ...state,
             isLoading: false,
-            payload: newPosts,
+            payload: {
+               ...state.payload,
+               posts: newPosts,
+            },
          };
       case POSTS_ACTION.LIKE_POST_SUCCESS:
          const idLike = action.payload.idLike;
          const idLikedPost = action.payload.idPost;
-         const newPostsAfterLike = state.payload.map((post: Post) => {
+         const newPostsAfterLike = state.payload.posts.map((post: Post) => {
             if (post._id === idLikedPost && !post.likes.includes(idLike)) {
                post.likes.push(idLike);
             }
@@ -65,12 +84,15 @@ const ownerPostsReducer = (state = init, action: PostsAction): PostsState => {
          return {
             ...state,
             isLoading: false,
-            payload: newPostsAfterLike,
+            payload: {
+               ...state.payload,
+               posts: newPostsAfterLike,
+            },
          };
       case POSTS_ACTION.UNLIKE_POST_SUCCESS:
          const idUnlike = action.payload.idLike;
          const idUnlikePost = action.payload.idPost;
-         const newPostsAfterUnlike = state.payload.map((post: Post) => {
+         const newPostsAfterUnlike = state.payload.posts.map((post: Post) => {
             if (post._id === idUnlikePost) {
                post.likes = post.likes.filter((like) => like !== idUnlike);
             }
@@ -80,26 +102,35 @@ const ownerPostsReducer = (state = init, action: PostsAction): PostsState => {
          return {
             ...state,
             isLoading: false,
-            payload: newPostsAfterUnlike,
+            payload: {
+               ...state.payload,
+               posts: newPostsAfterUnlike,
+            },
          };
       case POSTS_ACTION.COMMENT_POST_SUCCESS:
          const idCommentedPost = action.payload.idPost;
          const newComment = action.payload.comment;
-         const newPostsAfterComment = state.payload.map((post: Post) => {
+         const newPostsAfterComment = state.payload.posts.map((post: Post) => {
             if (post._id === idCommentedPost) {
                post.comments.push(newComment);
+               // Chưa tìm ra nguyên nhân lại push 2 lần newComment nên
+               // dùng cách cùn này
+               post.comments = [...new Set(post.comments)];
             }
             return post;
          });
          return {
             ...state,
             isLoading: false,
-            payload: newPostsAfterComment,
+            payload: {
+               ...state.payload,
+               posts: newPostsAfterComment,
+            },
          };
       case POSTS_ACTION.DELETE_COMMENT_POST_SUCCESS:
          const idDeletedCommentPost = action.payload.idPost;
          const idDeletedComment = action.payload.idComment;
-         const newPostsAfterDeletedComment = state.payload.map((post: Post) => {
+         const newPostsAfterDeletedComment = state.payload.posts.map((post: Post) => {
             if (post._id === idDeletedCommentPost) {
                post.comments = post.comments.filter((comment) => comment !== idDeletedComment);
             }
@@ -109,7 +140,10 @@ const ownerPostsReducer = (state = init, action: PostsAction): PostsState => {
          return {
             ...state,
             isLoading: false,
-            payload: newPostsAfterDeletedComment,
+            payload: {
+               ...state.payload,
+               posts: newPostsAfterDeletedComment,
+            },
          };
 
       // Failed

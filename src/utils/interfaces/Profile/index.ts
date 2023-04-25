@@ -15,6 +15,7 @@ export interface Profile {
    deletedAt?: string;
    updatedAt?: string;
    coverPicture?: string;
+   totalPosts?: number;
 }
 
 export interface ChangePassword {

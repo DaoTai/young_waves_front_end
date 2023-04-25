@@ -79,6 +79,7 @@ const MyModal = ({ post, open, onClose, onSubmit }: ModalPostProps) => {
                   />
                   <TextField
                      value={body}
+                     autoFocus
                      placeholder="What do you think?"
                      margin="dense"
                      required

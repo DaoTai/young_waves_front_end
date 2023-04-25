@@ -34,7 +34,7 @@ const TrashPosts = () => {
    const [currentPage, setCurrentPage] = useState(1);
 
    useEffect(() => {
-      dispatch(getTrashPosts(currentPage));
+      trashPosts.length === 0 && dispatch(getTrashPosts(currentPage));
       document.body.scrollIntoView();
    }, [currentPage]);
 
@@ -237,7 +237,9 @@ const TrashPosts = () => {
                alignItems="center"
                gap={1}
                boxShadow={1}>
-               <Typography variant="h5"> Confirm delete</Typography>
+               <Typography variant="h5" component="h5">
+                  Confirm delete
+               </Typography>
                <InfoIcon color="warning" fontSize="large" />
             </DialogTitle>
             <DialogContent sx={{ minWidth: "30vw", p: 2 }}>

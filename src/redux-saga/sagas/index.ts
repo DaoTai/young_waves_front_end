@@ -147,9 +147,9 @@ function* cancelFriend(action: { type: string; payload: string }) {
 }
 
 // Posts
-function* getPostsSaga() {
+function* getPostsSaga(action: { type: string; payload: number }) {
    try {
-      const res: AxiosResponse = yield call(api.post.getPosts);
+      const res = yield call(api.post.getPosts, action.payload);
       if (res.status === 200) {
          yield put(ACTIONS.getPostsSuccess(res.data));
       } else {
@@ -161,9 +161,9 @@ function* getPostsSaga() {
 }
 
 // Get owner posts
-function* getOwnerPostsSaga(action: { type: string; id: string }) {
+function* getOwnerPostsSaga(action: { type: string; payload: { id: string; page?: number } }) {
    try {
-      const res = yield call(api.post.getOwnerPosts, action.id);
+      const res = yield call(api.post.getOwnerPosts, action.payload);
       yield put(ACTIONS.getOwnerPostsSuccess(res.data));
    } catch (err) {
       yield put(ACTIONS.getOwnerPostsFailure(err));
@@ -221,20 +221,20 @@ function* deletePostSaga(action: { type: string; payload: string }) {
 }
 
 // Create comment
-function* createCommentSaga(action: {
-   type: string;
-   payload: { idPost: string; comment: string };
-}) {
-   try {
-      const res = yield call(api.comment.createComment, action.payload);
-      const newComment = res.data as Comment;
-      yield put(
-         ACTIONS.createCommentSuccess({ idPost: action.payload.idPost, comment: newComment._id })
-      );
-   } catch (err) {
-      yield put(ACTIONS.createCommentFailure(err));
-   }
-}
+// function* createCommentSaga(action: {
+//    type: string;
+//    payload: { idPost: string; comment: string };
+// }) {
+//    try {
+//       const res = yield call(api.comment.createComment, action.payload);
+//       const newComment = res.data as Comment;
+//       yield put(
+//          ACTIONS.createCommentSuccess({ idPost: action.payload.idPost, comment: newComment._id })
+//       );
+//    } catch (err) {
+//       yield put(ACTIONS.createCommentFailure(err));
+//    }
+// }
 
 // Delete comment
 function* deleteCommentSaga(action: {
@@ -328,7 +328,7 @@ export default function* rootSaga() {
       takeLatest(POSTS_ACTION.CREATE_POST, createPostSaga),
       takeLatest(POSTS_ACTION.UPDATE_POST, updatePostSaga),
       takeLatest(POSTS_ACTION.DELETE_POST, deletePostSaga),
-      takeLatest(POSTS_ACTION.COMMENT_POST, createCommentSaga),
+      // takeLatest(POSTS_ACTION.COMMENT_POST, createCommentSaga),
       takeLatest(POSTS_ACTION.DELETE_COMMENT_POST, deleteCommentSaga),
       takeLatest(POSTS_ACTION.LIKE_POST, handleLikePost),
       takeLatest(POSTS_ACTION.UNLIKE_POST, handleUnLikePost),

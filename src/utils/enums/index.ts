@@ -53,6 +53,8 @@ export enum FRIEND_ACTION {
 }
 
 export enum POSTS_ACTION {
+   // Clear posts
+   CLEAR_POSTS = "CLEAR_POSTS",
    // Get posts
    GET_POSTS = "GET_POSTS",
    GET_POSTS_SUCCESS = "GET_POSTS_SUCCESS",
@@ -92,6 +94,8 @@ export enum POSTS_ACTION {
 }
 
 export enum OWNER_POSTS_ACTION {
+   // Clear owner posts
+   CLEAR_OWNER_POSTS = "CLEAR_OWNER_POSTS",
    // Get owner posts
    GET_OWNER_POSTS = "GET_OWNER_POSTS",
    GET_OWNER_POSTS_SUCCESS = "GET_OWNER_POSTS_SUCCESS",
