@@ -39,7 +39,5 @@ export const authorizeUser = async (idUser: string, isAdmin: boolean) => {
 
 // [PATCH] admin/users/:id
 export const editUser = async (user: Partial<Profile>) => {
-   console.log(user);
-
    return await axiosInstance.patch(`/admin/users/${user._id}`, user);
 };

@@ -12,8 +12,8 @@ interface Props {
    emptyMsg?: string;
    currentPage?: number;
    maxPage?: number;
-   hasMore: boolean;
-   fetchMoreData: () => void;
+   hasMore?: boolean;
+   fetchMoreData?: () => void;
 }
 
 const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) => {
@@ -25,13 +25,17 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
             <Typography variant="h6" textAlign="center" color={theme.myColor.textSecondary}>
                {emptyMsg}
             </Typography>
-         ) : (
+         ) : hasMore && fetchMoreData ? (
             <InfiniteScroll
                dataLength={posts?.length}
                hasMore={hasMore}
                next={fetchMoreData}
-               loader={<p>Loading...</p>}>
-               {posts?.map((post: Post, index) => {
+               loader={
+                  <Typography variant="body2" textAlign="center">
+                     Loading ...
+                  </Typography>
+               }>
+               {posts?.map((post: Post) => {
                   return (
                      <Box key={post._id} mb={2}>
                         <Card sx={{ pl: 2, pr: 2 }}>
@@ -51,6 +55,26 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
                   );
                })}
             </InfiniteScroll>
+         ) : (
+            posts?.map((post: Post) => {
+               return (
+                  <Box key={post._id} mb={2}>
+                     <Card sx={{ pl: 2, pr: 2 }}>
+                        {/* Heading */}
+                        <Heading post={post} showAction />
+                        {/* Body */}
+                        <PostBody>{post?.body}</PostBody>
+                        {/* Images */}
+                        {post?.attachments?.length > 0 && (
+                           <Images id={post?._id} attachments={post?.attachments} />
+                        )}
+
+                        {/* Actions */}
+                        <Actions post={post} />
+                     </Card>
+                  </Box>
+               );
+            })
          )}
       </>
    );

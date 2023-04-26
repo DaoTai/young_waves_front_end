@@ -11,7 +11,7 @@ interface Props {
 const OverlayFullImage = ({ open, src, onClose, alt = "image" }: Props) => {
    return (
       <>
-         {open && (
+         {open && src && (
             <LayOutWrapper onClick={onClose}>
                <CloseButton size="large" onClick={onClose} />
                <Box>

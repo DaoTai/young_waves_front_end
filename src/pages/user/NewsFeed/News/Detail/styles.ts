@@ -1,4 +1,4 @@
-import { styled, Box, ButtonGroup, Grid } from "@mui/material";
+import { styled, Box, ButtonGroup, Grid, Stack } from "@mui/material";
 
 export const MyBox = styled(Box)(({ theme }) => ({
    position: "absolute",
@@ -33,4 +33,10 @@ export const ButtonSlide = styled(ButtonGroup)(({ theme }) => ({
 
 export const Container = styled(Grid)(({ theme }) => ({
    minHeight: "100%",
+}));
+
+export const ContentWrapper = styled(Stack)(({ theme }) => ({
+   padding: "16px",
+   gap: "16px",
+   backgroundColor: theme.myColor.white,
 }));

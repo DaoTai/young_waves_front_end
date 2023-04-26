@@ -19,7 +19,7 @@ import {
    useTheme,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import dateformat from "dateformat";
 import * as api from "../../../apis";
@@ -57,119 +57,122 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       })();
    }, [role]);
 
-   const columns: GridColDef[] = [
-      {
-         field: "fullName",
-         headerAlign: "center",
-         headerName: "Full name",
-         flex: 2,
-         renderCell(params) {
-            return (
-               <Stack
-                  flexDirection="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  gap={2}>
-                  <Avatar src={params.row.avatar} />
-                  <Typography variant="subtitle1" component="span" mt={0} textOverflow="clip">
-                     {params.formattedValue}
-                  </Typography>
-               </Stack>
-            );
+   const columns: GridColDef[] = useMemo(
+      () => [
+         {
+            field: "fullName",
+            headerAlign: "center",
+            headerName: "Full name",
+            flex: 2,
+            renderCell(params) {
+               return (
+                  <Stack
+                     flexDirection="row"
+                     alignItems="center"
+                     justifyContent="space-between"
+                     gap={2}>
+                     <Avatar src={params.row.avatar} />
+                     <Typography variant="subtitle1" component="span" mt={0} textOverflow="clip">
+                        {params.formattedValue}
+                     </Typography>
+                  </Stack>
+               );
+            },
          },
-      },
-      {
-         field: "city",
-         align: "center",
-         headerAlign: "center",
-         headerName: "City",
-         width: 70,
-         flex: 1,
-      },
-      {
-         field: "region",
-         align: "center",
-         headerAlign: "center",
-         headerName: "Region",
-         width: 70,
-         flex: 1,
-      },
-      {
-         field: "createdAt",
-         align: "center",
-         headerAlign: "center",
-         headerName: "Joined time",
-         flex: 2,
-         valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
-      },
-      {
-         field: "gender",
-         align: "center",
-         headerAlign: "center",
-         headerName: "Gender",
-         width: 130,
-         flex: 1,
-         valueFormatter: (params) =>
-            String(params.value[0]).toUpperCase() + String(params.value).slice(1),
-      },
-      {
-         field: "detail",
-         align: "center",
-         headerAlign: "center",
-         headerName: "Detail",
-         sortable: false,
-         disableColumnMenu: true,
-         width: 200,
-         flex: 1,
-         renderCell(params) {
-            return (
-               <VisibilityIcon
-                  sx={{ flex: 1, cursor: "pointer", color: theme.palette.success.main }}
-                  onClick={() => onOpenDetail(params.row)}
-               />
-            );
+         {
+            field: "city",
+            align: "center",
+            headerAlign: "center",
+            headerName: "City",
+            width: 70,
+            flex: 1,
          },
-      },
-
-      {
-         field: "authorize",
-         align: "center",
-         headerAlign: "center",
-         headerName: "Authorize",
-         sortable: false,
-         disableColumnMenu: true,
-         width: 200,
-         flex: 1,
-         renderCell(params) {
-            return (
-               <Tooltip title={params.row.isAdmin ? "Authorize to user" : "Authorize to admin"}>
-                  <PersonAddIcon
-                     sx={{ flex: 1, cursor: "pointer", color: theme.myColor.link }}
-                     onClick={() => handleAuthorize(params.row)}
+         {
+            field: "region",
+            align: "center",
+            headerAlign: "center",
+            headerName: "Region",
+            width: 70,
+            flex: 1,
+         },
+         {
+            field: "createdAt",
+            align: "center",
+            headerAlign: "center",
+            headerName: "Joined time",
+            flex: 2,
+            valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+         },
+         {
+            field: "gender",
+            align: "center",
+            headerAlign: "center",
+            headerName: "Gender",
+            width: 130,
+            flex: 1,
+            valueFormatter: (params) =>
+               String(params.value[0]).toUpperCase() + String(params.value).slice(1),
+         },
+         {
+            field: "detail",
+            align: "center",
+            headerAlign: "center",
+            headerName: "Detail",
+            sortable: false,
+            disableColumnMenu: true,
+            width: 200,
+            flex: 1,
+            renderCell(params) {
+               return (
+                  <VisibilityIcon
+                     sx={{ flex: 1, cursor: "pointer", color: theme.palette.success.main }}
+                     onClick={() => onOpenDetail(params.row)}
                   />
-               </Tooltip>
-            );
+               );
+            },
          },
-      },
-      {
-         field: "delete",
-         align: "center",
-         headerAlign: "center",
-         headerName: "Delete",
-         sortable: false,
-         disableColumnMenu: true,
-         width: 200,
-         flex: 1,
-         renderCell(params) {
-            return (
-               <DeleteIcon
-                  sx={{ flex: 1, cursor: "pointer", color: theme.palette.error.main }}
-                  onClick={() => onOpenConfirmDelete(params.row)}
-               />
-            );
+
+         {
+            field: "authorize",
+            align: "center",
+            headerAlign: "center",
+            headerName: "Authorize",
+            sortable: false,
+            disableColumnMenu: true,
+            width: 200,
+            flex: 1,
+            renderCell(params) {
+               return (
+                  <Tooltip title={params.row.isAdmin ? "Authorize to user" : "Authorize to admin"}>
+                     <PersonAddIcon
+                        sx={{ flex: 1, cursor: "pointer", color: theme.myColor.link }}
+                        onClick={() => handleAuthorize(params.row)}
+                     />
+                  </Tooltip>
+               );
+            },
          },
-      },
-   ];
+         {
+            field: "delete",
+            align: "center",
+            headerAlign: "center",
+            headerName: "Delete",
+            sortable: false,
+            disableColumnMenu: true,
+            width: 200,
+            flex: 1,
+            renderCell(params) {
+               return (
+                  <DeleteIcon
+                     sx={{ flex: 1, cursor: "pointer", color: theme.palette.error.main }}
+                     onClick={() => onOpenConfirmDelete(params.row)}
+                  />
+               );
+            },
+         },
+      ],
+      []
+   );
 
    // handle change role
    const handleChangeRole = (event: SelectChangeEvent) => {
@@ -215,6 +218,44 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       }
       setShowDialog(false);
    };
+
+   // handle update user
+   const handleUpdateUser = useCallback(async (values: Partial<Profile>) => {
+      try {
+         const res = await api.admin.editUser(values);
+         if (res.status === 200) {
+            setUsers((prev) => {
+               const newUsers = prev.map((user: Profile) => {
+                  if (user._id === values._id) {
+                     return {
+                        ...user,
+                        ...values,
+                     };
+                  }
+                  return user;
+               });
+               return newUsers;
+            });
+            dispatch(
+               showAlert({
+                  title: "Update user",
+                  message: "Update user successfully",
+                  mode: "success",
+               })
+            );
+         } else {
+            dispatch(
+               showAlert({
+                  title: "Update user",
+                  message: "Update user failed",
+                  mode: "error",
+               })
+            );
+         }
+      } catch (err: any) {
+         throw new Error(err);
+      }
+   }, []);
 
    // handle authorize user
    const handleAuthorize = async (user: Profile) => {
@@ -307,7 +348,14 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          )}
 
          {/* Modal detail user */}
-         {user && <DetailUser user={user} open={showDetail} onClose={onClose} />}
+         {user && (
+            <DetailUser
+               user={user}
+               open={showDetail}
+               onClose={onClose}
+               onSubmit={handleUpdateUser}
+            />
+         )}
 
          {/* Dialog confirm delete */}
          <ConfirmDeleteDialog
@@ -316,6 +364,8 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             onSubmit={handleDeleteUser}
             onClose={onCloseDeleteDialog}
          />
+
+         {/* Modal add member */}
          <Modal open={showModal} onClose={() => setShowModal(false)}>
             <>
                <AddMember onClose={() => setShowModal(false)} />

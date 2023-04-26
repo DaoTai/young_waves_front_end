@@ -1,5 +1,6 @@
 import { Like } from "../Like";
 import { Profile } from "../Profile";
+import { Comment } from "../Comment";
 export interface Post {
    _id: string;
    body: string;
@@ -12,11 +13,7 @@ export interface Post {
    comments: Array<string>;
    attachments: Array<string>;
 }
-export interface Comment {
-   _id: string;
-   user: Partial<Profile>;
-   post: string;
-   body: string;
-   createdAt: string;
-   updatedAt: string;
+export interface DetailPost {
+   comments: { data: Comment[]; currentPage: number; maxPage: number };
+   post: Post;
 }

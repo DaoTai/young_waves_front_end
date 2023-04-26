@@ -52,14 +52,13 @@ const Member = () => {
          {user && (
             <Stack flexDirection="column" sx={{ gap: 1 }}>
                <Box boxShadow={1} borderRadius={1} bgcolor="#fff">
-                  <Heading user={user} totalPosts={user.totalPosts} />
+                  <Heading user={user} />
                </Box>
                <Grid container pt={1} spacing={2}>
                   <Grid item xs={12} md={4}>
                      <Introduction user={user} />
                   </Grid>
                   <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
-                     {/* Ko thay đổi khi like => Bug */}
                      <News posts={listNews} hasMore={hasMore} fetchMoreData={fetchMoreData} />
                   </Grid>
                </Grid>

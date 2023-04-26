@@ -10,7 +10,7 @@ import { addFriend, updateProfile } from "../../../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import Avatar from "./Avatar";
-const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }) => {
+const Heading = ({ user }: { user: Profile }) => {
    const theme = useTheme();
    const navigate = useNavigate();
    const profile$ = useSelector(profileState$);
@@ -26,7 +26,7 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
    const imageRef = useRef(Object(null));
 
    // Change cover picture
-   const handleChangeCoverPicture = (file) => {
+   const handleChangeCoverPicture = (file: string) => {
       imageRef.current.src = file;
       dispatch(updateProfile({ coverPicture: file, _id: user._id }));
    };
@@ -93,7 +93,9 @@ const Heading = ({ user, totalPosts = 0 }: { user: Profile; totalPosts: number }
                   variant="subtitle1"
                   fontWeight={600}
                   sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
-                  {totalPosts && totalPosts > 1 ? totalPosts + " posts" : totalPosts + " post"}
+                  {user.totalPosts && user.totalPosts > 1
+                     ? user.totalPosts + " posts"
+                     : user.totalPosts + " post"}
                </Typography>
 
                {/* Show button edit */}

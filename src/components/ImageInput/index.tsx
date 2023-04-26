@@ -8,9 +8,11 @@ const ImageInput = ({
    onChange,
 }: {
    multiple?: boolean;
-   onChange: (e: React.FormEvent<EventTarget>) => void;
+   onChange: (file: string & string[]) => void;
 }) => {
    const handleGetImages = (files) => {
+      // Nhược điểm của FileBase64 là khi encode ảnh với size quá lớn thì
+      // MongoDB ko chứa nổi => Failed
       if (Array.isArray(files)) {
          const fileImages = files.filter((file) => file.type.includes("image"));
          const fileBases = fileImages.map((file) => file.base64);

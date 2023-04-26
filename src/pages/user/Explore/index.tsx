@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import { Container, Grid, Pagination, Stack, Tab, Tabs, Typography, useTheme } from "@mui/material";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useLayoutEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { searchPosts } from "../../../apis/post";
 import { getAllUser } from "../../../apis/user";
@@ -15,16 +15,15 @@ import { ClearButton, SearchButton } from "./styles";
 
 const Explore = () => {
    const theme = useTheme();
-   const exploreRef = useRef<HTMLDivElement>(null);
    const maxPageRef = useRef<number>(0);
    const [tab, setTab] = useState<TYPE_SEARCH>("users");
    const [page, setPage] = useState<number>(1);
    const [users, setUsers] = useState<Profile[]>([]);
    const [posts, setPosts] = useState<Post[]>([]);
    const [search, setSearch] = useState<string>("");
-   useEffect(() => {
-      // When search value is empty
-      exploreRef.current?.scrollIntoView({ behavior: "smooth" });
+   // When search value is empty
+   useLayoutEffect(() => {
+      document.body.scrollIntoView({ behavior: "smooth" });
       if (tab === "users") {
          // Exist search value
          handleGetUnqueriedAllUser();
@@ -65,7 +64,7 @@ const Explore = () => {
 
    // Get all user without query
    const handleGetUnqueriedAllUser = async () => {
-      const res = await getAllUser();
+      const res = await getAllUser({ page });
       const data: {
          currentPage: number;
          maxPage: number;
@@ -153,7 +152,7 @@ const Explore = () => {
          <Helmet>
             <title>Explore | Young Waves</title>
          </Helmet>
-         <Container maxWidth="xl" ref={exploreRef}>
+         <Container maxWidth="xl">
             {/* Search */}
             <MySearch
                fullWidth
@@ -193,8 +192,6 @@ const Explore = () => {
             {/* Tab panel */}
             {InforExplore[tab]}
          </Container>
-
-         {/* <Spinner show={isLoading} /> */}
       </>
    );
 };

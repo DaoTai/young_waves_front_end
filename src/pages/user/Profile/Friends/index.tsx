@@ -25,7 +25,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../../../../apis";
-import { BaseInput as Search } from "../../../../components";
+import { BaseInput as Search, Spinner } from "../../../../components";
 import { useDebounce } from "../../../../hooks";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -36,6 +36,7 @@ const Friends = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const navigate = useNavigate();
+   const [loading, setLoading] = useState<boolean>(true);
    const [friends, setFriends] = useState<Profile[] | []>([]);
    const [idFriend, setIdFriend] = useState<string | null>(null);
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -56,6 +57,7 @@ const Friends = () => {
             } else {
                res = await api.user.getFriends(payload._id, page);
             }
+            setLoading(false);
             setFriends(res.data?.friends);
             maxPageRef.current = res?.data?.maxPage;
          } catch (err: any) {
@@ -276,6 +278,8 @@ const Friends = () => {
                </Button>
             </DialogActions>
          </Dialog>
+
+         <Spinner show={loading} />
       </>
    );
 };

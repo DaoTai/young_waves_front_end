@@ -1,5 +1,5 @@
 import { Box, Grid, Stack, Tab, Tabs, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
@@ -7,10 +7,11 @@ import { Post, Spinner } from "../../../components";
 import { clearOwnerPosts, getOwnerPosts, getProfile } from "../../../redux-saga/redux/actions";
 import { authState$, ownerPostsState$, profileState$ } from "../../../redux-saga/redux/selectors";
 import { TYPE_TAB_PROFILE } from "../../../utils/types";
-import News from "../NewsFeed/News";
-import Friends from "./Friends";
-import Heading from "./Heading";
-import Introduction from "./Introduction";
+const Friends = lazy(() => import("./Friends"));
+const Heading = lazy(() => import("./Heading"));
+const Introduction = lazy(() => import("./Introduction"));
+const News = lazy(() => import("../NewsFeed/News"));
+
 const Profile = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
@@ -61,19 +62,27 @@ const Profile = () => {
       posts: (
          <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
-               <Introduction user={profile$.payload} />
+               <Suspense fallback={<Spinner show />}>
+                  <Introduction user={profile$.payload} />
+               </Suspense>
             </Grid>
             <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
                {auth$.payload.user._id == idUser && <Post />}
-               <News
-                  posts={ownerPosts$.payload.posts}
-                  hasMore={hasMore}
-                  fetchMoreData={fetchMoreData}
-               />
+               <Suspense fallback={<Spinner show />}>
+                  <News
+                     posts={ownerPosts$.payload.posts}
+                     hasMore={hasMore}
+                     fetchMoreData={fetchMoreData}
+                  />
+               </Suspense>
             </Grid>
          </Grid>
       ),
-      friends: <Friends />,
+      friends: (
+         <Suspense fallback={<Spinner show />}>
+            <Friends />
+         </Suspense>
+      ),
    };
 
    return (
@@ -84,7 +93,9 @@ const Profile = () => {
 
          <Stack flexDirection="column" gap={2}>
             <Box boxShadow={1} borderRadius={1} bgcolor="#fff" overflow="hidden">
-               <Heading user={profile$.payload} totalPosts={profile$.payload.totalPosts} />
+               <Suspense fallback={<Spinner show />}>
+                  <Heading user={profile$.payload} />
+               </Suspense>
             </Box>
             {/* Tab navigate */}
             <Tabs

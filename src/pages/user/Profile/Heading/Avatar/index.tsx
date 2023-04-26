@@ -19,7 +19,7 @@ const AvatarProfile = ({
    const auth$ = useSelector(authState$);
    const [open, setOpen] = useState<boolean>(false);
    const imageRef = useRef(Object(null));
-   const onChange = (file) => {
+   const onChange = (file: string) => {
       imageRef.current.src = file;
       dispatch(updateProfile({ avatar: file, _id: user._id }));
    };

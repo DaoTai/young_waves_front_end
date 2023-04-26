@@ -1,48 +1,43 @@
 import SendIcon from "@mui/icons-material/Send";
-import { memo, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import {
+   Avatar,
+   Button,
    FormControl,
    FormControlLabel,
    FormLabel,
    Grid,
+   Modal,
    Radio,
    RadioGroup,
    TextField,
-   Button,
    Typography,
-   Modal,
-   Avatar,
    useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { Profile } from "../../../../utils/interfaces/Profile";
+import { memo, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+   CloseButton,
+   CountriesSelect,
+   DateTimePicker,
+   ImageInput,
+   OverlayFullImage,
+} from "../../../../components";
 import { MyBox } from "../../../../components/Post/Modal/styles";
-import * as api from "../../../../apis";
-import { showAlert } from "../../../../redux-saga/redux/actions";
+import { Profile } from "../../../../utils/interfaces/Profile";
 import { initDetail, radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { updateUserOptions } from "../../../user/Profile/Editing/config";
-import {
-   ImageInput,
-   CloseButton,
-   DateTimePicker,
-   OverlayFullImage,
-   CountriesSelect,
-} from "../../../../components";
 import { WrapAvatar } from "../../../user/Profile/Heading/styles";
-import { Link } from "react-router-dom";
 
-const DetailUser = ({
-   user,
-   open,
-   onClose,
-}: {
+interface Props {
    user: Profile;
    open: boolean;
    onClose: () => void;
-}) => {
+   onSubmit: (values: Partial<Profile>) => void;
+}
+
+const DetailUser = ({ user, open, onClose, onSubmit }: Props) => {
    const theme = useTheme();
-   const dispatch = useDispatch();
    const [avatar, setAvatar] = useState<string>("");
    const [showFullAvatar, setShowFullAvatar] = useState<boolean>(false);
    const {
@@ -58,32 +53,25 @@ const DetailUser = ({
       initialValues: initDetail,
       validationSchema: updateUserOptions,
       onSubmit: async (values: Partial<Profile>) => {
-         const res = await api.admin.editUser({ ...values, avatar });
-         if (res.status === 200) {
-            dispatch(
-               showAlert({
-                  title: "Update user",
-                  message: "Update user successfully",
-                  mode: "success",
-               })
-            );
-         } else {
-            dispatch(
-               showAlert({
-                  title: "Update user",
-                  message: "Update user failed",
-                  mode: "error",
-               })
-            );
-         }
+         onSubmit({ ...values, avatar });
       },
    });
    useEffect(() => {
       setValues(user);
       setAvatar(user.avatar);
+
+      const onCloseShort = (e: KeyboardEvent) => {
+         e.key === "Escape" && onClose();
+      };
+
+      window.addEventListener("keydown", onCloseShort);
+
+      return () => {
+         window.removeEventListener("keydown", onCloseShort);
+      };
    }, [user]);
 
-   const handleChangeAvatar = (file) => {
+   const handleChangeAvatar = (file: string) => {
       setAvatar(file);
    };
 

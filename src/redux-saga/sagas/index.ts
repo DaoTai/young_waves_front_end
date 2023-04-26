@@ -174,6 +174,8 @@ function* getOwnerPostsSaga(action: { type: string; payload: { id: string; page?
 function* createPostSaga(action: { type: string; payload: Post }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
+      console.log("res = ", res);
+
       if (res.status === 200) {
          yield put(ACTIONS.createPostSuccess(res.data));
       } else {
@@ -181,7 +183,7 @@ function* createPostSaga(action: { type: string; payload: Post }) {
             yield put(
                ACTIONS.showAlert({
                   title: "Create post",
-                  message: "Capacity of post is over 50 MB",
+                  message: "Capacity of post is over 100 MB",
                   mode: "warning",
                })
             );
@@ -196,7 +198,13 @@ function* createPostSaga(action: { type: string; payload: Post }) {
          }
       }
    } catch (err: any) {
-      throw new Error(err);
+      yield put(
+         ACTIONS.showAlert({
+            title: "Create post",
+            message: "Create post failed",
+            mode: "error",
+         })
+      );
    }
 }
 
@@ -206,6 +214,13 @@ function* updatePostSaga(action: { type: string; payload: Partial<Post> }) {
       yield call(api.post.updatePost, action.payload);
       yield put(ACTIONS.updatePostSuccess(action.payload));
    } catch (err) {
+      yield put(
+         ACTIONS.showAlert({
+            title: "Create post",
+            message: "Create post failed",
+            mode: "error",
+         })
+      );
       yield put(ACTIONS.updatePostFailure(err));
    }
 }

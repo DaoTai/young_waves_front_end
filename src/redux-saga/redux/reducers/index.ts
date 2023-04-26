@@ -21,7 +21,7 @@ export interface State {
    };
    profile: {
       isLoading: boolean;
-      payload: Profile & { totalPosts: number };
+      payload: Profile;
    };
    posts: PostsState;
    trashPosts: { isLoading: boolean; trashPosts: Post[]; page: number; maxPage: number };

@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CountriesSelect, DateTimePicker, ImageInput, Spinner } from "../../../../components";
 import { updateProfile } from "../../../../redux-saga/redux/actions";
-import { profileState$ } from "../../../../redux-saga/redux/selectors";
+import { profileState$, authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { init, updateUserOptions } from "./config";
@@ -31,6 +31,7 @@ import Avatar from "../Heading/Avatar";
 const Editing = () => {
    const theme = useTheme();
    const { isLoading, payload } = useSelector(profileState$);
+   const auth$ = useSelector(authState$);
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const imageRef = useRef(Object(null));
@@ -52,18 +53,19 @@ const Editing = () => {
    });
    useEffect(() => {
       // If network slow, payload?.data'll undefined. So we shoud assign in Object
-      const { fullName, dob, city, region, gender, email, _id } = Object(payload) as Profile;
       setValues({
-         _id,
-         fullName,
-         dob,
-         city,
-         region,
-         gender,
-         email,
+         _id: payload._id || auth$.payload.user._id,
+         fullName: payload.fullName || auth$.payload.user.fullName,
+         dob: payload.dob || auth$.payload.user.dob,
+         city: payload.city || auth$.payload.user.city,
+         region: payload.region || auth$.payload.user.region,
+         gender: payload.gender || auth$.payload.user.gender,
+         email: payload.email || auth$.payload.user.email,
       });
-   }, [isLoading, payload, dispatch]);
-   const handleChangeCoverPicture = (file) => {
+   }, [payload, dispatch]);
+
+   // Change cover picture
+   const handleChangeCoverPicture = (file: any) => {
       imageRef.current.src = file;
       dispatch(updateProfile({ coverPicture: file, _id: payload._id }));
    };
@@ -118,9 +120,11 @@ const Editing = () => {
                         overflow="hidden"
                         position="relative"
                         sx={
-                           payload?.coverPicture
+                           payload?.coverPicture || auth$.payload.user.coverPicture
                               ? {
-                                   backgroundImage: `url(${payload?.coverPicture})`,
+                                   backgroundImage: `url(${
+                                      payload?.coverPicture || auth$.payload.user.coverPicture
+                                   })`,
                                    backgroundPosition: "center",
                                    backgroundSize: "cover",
                                    backgroundRepeat: "no-repeat",
@@ -143,7 +147,11 @@ const Editing = () => {
                         </Fab>
                      </Box>
                      {/* Avatar */}
-                     <Avatar user={payload} variant="square" borderRadius={2} />
+                     {payload.avatar ? (
+                        <Avatar user={payload} variant="square" borderRadius={2} />
+                     ) : (
+                        <Avatar user={auth$.payload.user} variant="square" borderRadius={2} />
+                     )}
                   </Grid>
 
                   {/* Text fields */}

@@ -1,6 +1,5 @@
-import { Post } from "../../utils/interfaces/Post";
+import { Post, DetailPost } from "../../utils/interfaces/Post";
 import { axiosInstance } from "../config";
-
 export const getPosts = async (page: number = 1) => {
    return await axiosInstance.get("/posts", {
       params: { page },
@@ -13,8 +12,12 @@ export const searchPosts = async (q: string) => {
    });
 };
 
-export const getDetailPost = async (id: string) => {
-   return await axiosInstance.get(`/posts/${id}`);
+export const getDetailPost = async (payload: { id: string; page?: number }) => {
+   return await axiosInstance.get<Promise<DetailPost>>(`/posts/${payload.id}`, {
+      params: {
+         pageComment: payload.page || 1,
+      },
+   });
 };
 
 export const getDetailTrashPost = async (id: string) => {
@@ -54,7 +57,7 @@ export const deletePost = async (id: string) => {
 };
 
 export const forceDeletePost = async (id: string) => {
-   return await axiosInstance.delete(`/posts/${id}/force-delete`);
+   return id && (await axiosInstance.delete(`/posts/${id}/force-delete`));
 };
 export const likePost = async (id: string) => {
    return await axiosInstance.post(`/posts/${id}/like`);
