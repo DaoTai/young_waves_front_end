@@ -1,8 +1,10 @@
-import { Paper, styled, Stack, Avatar, Box } from "@mui/material";
+import { Avatar, Box, Stack, styled } from "@mui/material";
 
-export const MyChatBox = styled(Paper)(({ theme }) => ({
+export const MyChatBox = styled(Stack)(({ theme }) => ({
    position: "relative",
    zIndex: 10,
+   flexDirection: "column",
+   justifyContent: "space-between",
    width: "328px",
    maxWidth: "330px",
    height: "460px",
@@ -13,11 +15,6 @@ export const MyChatBox = styled(Paper)(({ theme }) => ({
 }));
 
 export const Heading = styled(Stack)(({ theme }) => ({
-   position: "absolute",
-   top: 0,
-   right: 0,
-   left: 0,
-   zIndex: 2,
    padding: 4,
    maxHeigh: 50,
    flexDirection: "row",
@@ -38,31 +35,39 @@ export const Heading = styled(Stack)(({ theme }) => ({
 }));
 
 export const Body = styled(Box)(({ theme }) => ({
-   padding: "55px 0",
-   overflowY: "auto",
    overflowX: "hidden",
-   height: "100%",
-   maxWidth: "100%",
+   "&::-webkit-scrollbar": {
+      display: "none",
+   },
+   ".message": {
+      maxWidth: "90%",
+      whitespace: "pre-wrap",
+      borderRadius: 16,
+      padding: 8,
+      wordBreak: "break-word",
+      color: theme.myColor.white,
+      background: theme.myColor.bgGradient,
+      "&[href^='http']": {
+         textDecoration: "underline",
+      },
+      "&.message--friend": {
+         background: theme.myColor.link,
+      },
+   },
 }));
 
 export const Footer = styled(Stack)(({ theme }) => ({
-   position: "absolute",
-   bottom: 0,
-   right: 0,
-   left: 0,
-   zIndex: 2,
    gap: 8,
-   padding: 2,
+   padding: 4,
    flexDirection: "row",
    justifyContent: "space-between",
    alignItems: "center",
    color: theme.myColor.text,
    backgroundColor: theme.myColor.white,
    ".MuiInputBase-root": {
-      boxShadow: "0px 0px 4px rgba(0,0,0,0.1)",
+      boxShadow: theme.shadows[1],
       flexGrow: 2,
-      borderRadius: 0,
-      outlined: 0,
+      borderRadius: 16,
    },
    "#send-icon": {
       color: theme.palette.primary.main,
@@ -71,7 +76,7 @@ export const Footer = styled(Stack)(({ theme }) => ({
       height: 42,
       padding: 8,
       cursor: "pointer",
-      transform: "rotate(-15deg)",
+      transform: "rotate(-10deg)",
       transition: "0.3s linear all",
       "&:hover": {
          boxShadow: "0px 0px 2px rgba(0,0,0,0.3)",

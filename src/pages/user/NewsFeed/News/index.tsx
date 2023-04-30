@@ -1,4 +1,4 @@
-import { Box, Card, Typography, useTheme } from "@mui/material";
+import { Box, Card, TextareaAutosize, Typography, useTheme } from "@mui/material";
 import { memo } from "react";
 import { PostBody } from "../../../../components";
 import { Post } from "../../../../utils/interfaces/Post";

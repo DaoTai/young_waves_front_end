@@ -9,3 +9,4 @@ export { default as Editing } from "./Profile/Editing";
 export { default as EditingPassword } from "./Profile/Password";
 export { default as OwnerImages } from "./Profile/OwnerImages";
 export { default as TrashPosts } from "./Trash/Posts";
+export { default as Friends } from "./Profile/Friends";

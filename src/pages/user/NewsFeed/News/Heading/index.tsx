@@ -1,9 +1,9 @@
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {
    Avatar,
    Button,
@@ -21,15 +21,14 @@ import {
    useTheme,
 } from "@mui/material";
 import dateFormat from "dateformat";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PostModal } from "../../../../../components";
 import { deletePost, updatePost } from "../../../../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../../../../redux-saga/redux/selectors";
-import { INIT_STATE } from "../../../../../utils/constants";
 import { Post } from "../../../../../utils/interfaces/Post";
-
+import { Actions } from "./styles";
 export interface HeadingNewsProps {
    post: Post;
    showAction?: boolean;
@@ -112,7 +111,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                      align="center">
                      <Link to={`/user/explore/${post?.author?._id}`}>{post?.author?.fullName}</Link>
                      {post?.author.isAdmin && (
-                        <Tooltip title="Admin" TransitionProps={{ timeout: 1000 }}>
+                        <Tooltip title="Admin">
                            <CheckCircleIcon fontSize="small" color="primary" sx={{ ml: 0.25 }} />
                         </Tooltip>
                      )}
@@ -121,7 +120,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                subheader={
                   <>
                      {post?.status && (
-                        <Typography pr={1} variant="body2" component="span">
+                        <Typography pr={0.5} variant="body2" component="span">
                            I'm feeling {post?.status?.toLocaleLowerCase()}
                         </Typography>
                      )}
@@ -129,67 +128,24 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                         variant="body2"
                         component="span"
                         sx={{ color: theme.myColor.textSecondary }}>
-                        {dateFormat(post?.createdAt, "mmmm dS, yyyy, h:MM TT")}{" "}
+                        {dateFormat(post?.createdAt, "h:MM TT, mmmm dS, yyyy")}
                      </Typography>
                   </>
                }
-               sx={{ pl: 0 }}
             />
             {/* Options */}
-            <Popover
+            <Actions
                open={!!anchorEl}
                anchorEl={anchorEl}
                onClose={handleClose}
                anchorOrigin={{
                   vertical: "bottom",
                   horizontal: "left",
-               }}
-               sx={{
-                  "& button:hover": {
-                     background: theme.myColor.link,
-                     color: theme.myColor.white,
-                  },
                }}>
-               <Button
-                  sx={{
-                     bgcolor: "transparent",
-                     color: theme.myColor.link,
-                  }}
-                  startIcon={<ContentCopyIcon />}
-                  onClick={handleCopyLinkPost}>
+               <Button startIcon={<ContentCopyIcon />} onClick={handleCopyLinkPost}>
                   Copy link
                </Button>
-            </Popover>
-
-            {/* Dialog */}
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-               <DialogTitle display="flex" justifyContent="center" alignItems="center">
-                  Confirm delete
-                  <InfoIcon color="info" />
-               </DialogTitle>
-               <DialogContent>
-                  <DialogContentText>Are you sure want to delete this post?</DialogContentText>
-               </DialogContent>
-               <DialogActions sx={{ justifyContent: "space-between" }}>
-                  <Button
-                     variant="outlined"
-                     sx={{ backgroundColor: theme.myColor.white }}
-                     onClick={() => setOpenDialog(false)}>
-                     Cancel
-                  </Button>
-                  <Button variant="contained" type="submit" onClick={() => handleDelete(post._id)}>
-                     Agree
-                  </Button>
-               </DialogActions>
-            </Dialog>
-
-            {/* Modal */}
-            <PostModal
-               post={post}
-               open={openPostModal}
-               onClose={onClosePostModal}
-               onSubmit={handleUpdate}
-            />
+            </Actions>
          </>
       );
    }
@@ -226,10 +182,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                      {profile$.payload?.fullName || auth$.payload?.user.fullName}
                   </Link>
                   {post?.author.isAdmin && (
-                     <Tooltip
-                        title="Admin"
-                        TransitionProps={{ timeout: 1000 }}
-                        sx={{ animation: "none" }}>
+                     <Tooltip title="Admin">
                         <CheckCircleIcon fontSize="small" color="primary" sx={{ ml: 0.25 }} />
                      </Tooltip>
                   )}
@@ -238,7 +191,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
             subheader={
                <>
                   {post?.status && (
-                     <Typography pr={1} variant="body2" component="span">
+                     <Typography pr={0.5} variant="body2" component="span">
                         I'm feeling {post?.status?.toLocaleLowerCase()}
                      </Typography>
                   )}
@@ -246,36 +199,20 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                      variant="body2"
                      component="span"
                      sx={{ color: theme.myColor.textSecondary }}>
-                     {dateFormat(post?.createdAt, "mmmm dS, yyyy, h:MM TT")}{" "}
+                     {dateFormat(post?.createdAt, "h:MM TT, mmmm dS, yyyy")}
                   </Typography>
                </>
             }
-            sx={{ pl: 0 }}
+            sx={{ pl: 0, pb: 0 }}
          />
          {/* Options */}
-         <Popover
+         <Actions
             open={!!anchorEl}
             anchorEl={anchorEl}
             onClose={handleClose}
             anchorOrigin={{
                vertical: "bottom",
                horizontal: "left",
-            }}
-            sx={{
-               button: {
-                  justifyContent: "flex-start",
-                  textTransform: "none",
-                  bgcolor: "transparent",
-                  color: theme.myColor.link,
-                  borderRadius: 0,
-                  "&:not(:first-of-type)": {
-                     borderTop: 1,
-                  },
-               },
-               "& button:hover": {
-                  background: theme.myColor.link,
-                  color: theme.myColor.white,
-               },
             }}>
             <Stack>
                {auth$.payload.user._id === post?.author?._id && (
@@ -299,7 +236,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                   Copy link
                </Button>
             </Stack>
-         </Popover>
+         </Actions>
 
          {/* Dialog */}
          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>

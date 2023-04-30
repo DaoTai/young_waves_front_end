@@ -1,7 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
    Avatar,
@@ -42,6 +42,44 @@ const UserTrashes = () => {
       setShowDetail(false);
    }, []);
 
+   // handle update user
+   const handleUpdateUser = useCallback(async (values: Partial<Profile>) => {
+      try {
+         const res = await api.admin.editUser(values);
+         if (res.status === 200) {
+            setUsers((prev) => {
+               const newUsers = prev.map((user: Profile) => {
+                  if (user._id === values._id) {
+                     return {
+                        ...user,
+                        ...values,
+                     };
+                  }
+                  return user;
+               });
+               return newUsers;
+            });
+            dispatch(
+               showAlert({
+                  title: "Update user",
+                  message: "Update user successfully",
+                  mode: "success",
+               })
+            );
+         } else {
+            dispatch(
+               showAlert({
+                  title: "Update user",
+                  message: "Update user failed",
+                  mode: "error",
+               })
+            );
+         }
+      } catch (err: any) {
+         throw new Error(err);
+      }
+   }, []);
+
    useEffect(() => {
       (async () => {
          setLoading(true);
@@ -56,110 +94,113 @@ const UserTrashes = () => {
    }, [role]);
 
    // config columns data grid
-   const columns: GridColDef[] = [
-      {
-         field: "fullName",
-         headerAlign: "center",
-         headerName: "Full name",
-         width: 160,
-         flex: 1,
-         renderCell(params) {
-            return (
-               <Stack
-                  flexDirection="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  gap={2}>
-                  <Avatar src={params.row.avatar} />
-                  <Typography variant="subtitle1" component="span" mt={0} textOverflow="clip">
-                     {params.formattedValue}
-                  </Typography>
-               </Stack>
-            );
+   const columns: GridColDef[] = useMemo(
+      () => [
+         {
+            field: "fullName",
+            headerAlign: "center",
+            headerName: "Full name",
+            width: 160,
+            flex: 1,
+            renderCell(params) {
+               return (
+                  <Stack
+                     flexDirection="row"
+                     alignItems="center"
+                     justifyContent="space-between"
+                     gap={2}>
+                     <Avatar src={params.row.avatar} />
+                     <Typography variant="subtitle1" component="span" mt={0} textOverflow="clip">
+                        {params.formattedValue}
+                     </Typography>
+                  </Stack>
+               );
+            },
          },
-      },
-      {
-         field: "city",
-         headerAlign: "center",
-         headerName: "City",
-         width: 70,
-         flex: 1,
-      },
-      {
-         field: "region",
-         headerAlign: "center",
-         headerName: "Region",
-         width: 70,
-         flex: 1,
-      },
-      {
-         field: "deletedAt",
-         headerAlign: "center",
-         headerName: "Deleted at",
-         width: 70,
-         flex: 2,
-         valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
-      },
-      {
-         field: "detail",
-         headerAlign: "center",
-         headerName: "Detail",
-         width: 200,
-         flex: 1,
-         sortable: false,
-         disableColumnMenu: true,
-         renderCell(params) {
-            return (
-               <VisibilityIcon
-                  sx={{ flex: 1, cursor: "pointer", color: theme.palette.success.main }}
-                  onClick={() => onOpenDetail(params.row)}
-               />
-            );
+         {
+            field: "city",
+            headerAlign: "center",
+            headerName: "City",
+            width: 70,
+            flex: 1,
          },
-      },
-      {
-         field: "restore",
-         headerAlign: "center",
-         headerName: "Restore",
-         flex: 1,
-         sortable: false,
-         disableColumnMenu: true,
-         renderCell(params) {
-            return (
-               <RestoreFromTrashIcon
-                  sx={{
-                     cursor: "pointer",
-                     transform: "scale(1.2)",
-                     flex: 1,
-                     color: theme.myColor.link,
-                  }}
-                  onClick={() => handleRestoreUser(params.id.toString())}
-               />
-            );
+         {
+            field: "region",
+            headerAlign: "center",
+            headerName: "Region",
+            width: 70,
+            flex: 1,
          },
-      },
-      {
-         field: "delete",
-         headerAlign: "center",
-         headerName: "Delete",
-         flex: 1,
-         sortable: false,
-         disableColumnMenu: true,
-         renderCell(params) {
-            return (
-               <DeleteIcon
-                  sx={{
-                     cursor: "pointer",
-                     transform: "scale(1.2)",
-                     flex: 1,
-                     color: theme.palette.error.main,
-                  }}
-                  onClick={() => onOpenConfirmForceDelete(params.row)}
-               />
-            );
+         {
+            field: "deletedAt",
+            headerAlign: "center",
+            headerName: "Deleted at",
+            width: 70,
+            flex: 2,
+            valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
          },
-      },
-   ];
+         {
+            field: "detail",
+            headerAlign: "center",
+            headerName: "Detail",
+            width: 200,
+            flex: 1,
+            sortable: false,
+            disableColumnMenu: true,
+            renderCell(params) {
+               return (
+                  <VisibilityIcon
+                     sx={{ flex: 1, cursor: "pointer", color: theme.palette.success.main }}
+                     onClick={() => onOpenDetail(params.row)}
+                  />
+               );
+            },
+         },
+         {
+            field: "restore",
+            headerAlign: "center",
+            headerName: "Restore",
+            flex: 1,
+            sortable: false,
+            disableColumnMenu: true,
+            renderCell(params) {
+               return (
+                  <RestoreFromTrashIcon
+                     sx={{
+                        cursor: "pointer",
+                        transform: "scale(1.2)",
+                        flex: 1,
+                        color: theme.myColor.link,
+                     }}
+                     onClick={() => handleRestoreUser(params.id.toString())}
+                  />
+               );
+            },
+         },
+         {
+            field: "delete",
+            headerAlign: "center",
+            headerName: "Delete",
+            flex: 1,
+            sortable: false,
+            disableColumnMenu: true,
+            renderCell(params) {
+               return (
+                  <DeleteIcon
+                     sx={{
+                        cursor: "pointer",
+                        transform: "scale(1.2)",
+                        flex: 1,
+                        color: theme.palette.error.main,
+                     }}
+                     onClick={() => onOpenConfirmForceDelete(params.row)}
+                  />
+               );
+            },
+         },
+      ],
+      []
+   );
    // open detail modal
    const onOpenDetail = (user: Profile) => {
       setShowDetail(true);
@@ -274,7 +315,14 @@ const UserTrashes = () => {
          </Box>
 
          {/* Modal detail user */}
-         {user && <DetailUser user={user} open={showDetail} onClose={onClose} />}
+         {user && (
+            <DetailUser
+               user={user}
+               open={showDetail}
+               onClose={onClose}
+               onSubmit={handleUpdateUser}
+            />
+         )}
          {/* Dialog confirm delete */}
          <Dialog fullWidth open={showDialog} onClose={() => setShowDialog(false)}>
             <DialogTitle>

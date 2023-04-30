@@ -27,7 +27,6 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
    const [searchValue, setSearchValue] = useState<string>("");
    const [currentPage, setCurrentPage] = useState<number>(1);
    const [maxPage, setMaxPage] = useState<number>(1);
-   // const [page, setPage] = useState<number>(currentPage);
    const debouncedValue = useDebounce(searchValue.trim(), 500);
 
    useEffect(() => {
@@ -138,11 +137,11 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
                            backgroundColor: theme.myColor.bgGray,
                         },
                      }}>
-                     <Avatar src={conversation?.friend.avatar} sx={{ width: 60, height: 60 }} />
+                     <Avatar src={conversation?.friend?.avatar} sx={{ width: 60, height: 60 }} />
                      <List>
                         <ListItem>
                            <Typography variant="subtitle1">
-                              {conversation?.friend.fullName}
+                              {conversation?.friend?.fullName}
                            </Typography>
                         </ListItem>
                      </List>

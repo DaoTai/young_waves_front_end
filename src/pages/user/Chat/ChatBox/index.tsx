@@ -1,52 +1,41 @@
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SendIcon from "@mui/icons-material/Send";
-import {
-   Avatar,
-   Box,
-   Chip,
-   Input,
-   ListItem,
-   Paper,
-   Stack,
-   TextareaAutosize,
-   TextField,
-   Typography,
-   useTheme,
-} from "@mui/material";
+import { Avatar, ListItem, Stack, Tooltip, Typography, useTheme } from "@mui/material";
+import dateformat from "dateformat";
 import { memo, useEffect, useRef, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
-import { authState$ } from "../../../../redux-saga/redux/selectors";
 import * as api from "../../../../apis";
 import { BaseInput } from "../../../../components";
-import { Body, Floating, Footer, Heading, MyChatBox } from "./styles";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
+import { Body, Floating, Footer, Heading, MyChatBox } from "./styles";
+import { Message } from "../../../../utils/interfaces/Chat";
 interface MyChatBoxProps {
    conversation: Partial<{ idConversation: string; friend: Partial<Profile> }>;
    visibility?: boolean;
    onClose?: (idConversation: string) => void;
 }
 
-interface Message {
-   idConversation?: string;
-   sender: string;
-   text: string;
-}
-
 const host = "http://localhost:8001";
-const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyChatBoxProps) => {
+const ChatBox = ({ conversation, onClose = () => {} }: MyChatBoxProps) => {
    const theme = useTheme();
    const auth$ = useSelector(authState$);
    const idAuth = auth$.payload?.user?._id;
    const bodyRef = useRef<HTMLDivElement>(null);
    const messageRef = useRef<HTMLDivElement>();
    const socketRef = useRef<Socket>();
+   const ScrollRef = useRef<any>(null);
+   const maxPageRef = useRef<number>(1);
+   const currentPageRef = useRef<number>(1);
    const [hide, setHide] = useState<boolean>(false);
    const [messages, setMessages] = useState<Message[]>([]);
    const [message, setMessage] = useState<string>("");
-
+   const [page, setPage] = useState<number>(1);
+   const [hasMore, setHasMore] = useState<boolean>(true);
    // Work with socket
    useEffect(() => {
       socketRef.current = io(host);
@@ -55,8 +44,9 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
          const newMessage: Message = {
             sender: dataGot.idSender,
             text: dataGot.text,
+            createdAt: dateformat(String(new Date())),
          };
-         setMessages((oldMsgs) => [...oldMsgs, newMessage]);
+         setMessages((oldMsgs) => [newMessage, ...oldMsgs]);
       });
       return () => {
          socketRef.current?.disconnect();
@@ -65,13 +55,16 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
 
    // Call api to get messages
    useEffect(() => {
+      bodyRef!.current!.scrollTop = bodyRef!.current!.scrollHeight;
       conversation?.idConversation &&
          (async () => {
             try {
-               const res = await api.conversation.getDetailConversation(
-                  conversation?.idConversation as string
-               );
-               setMessages(res.data);
+               const res = await api.conversation.getDetailConversation({
+                  id: conversation?.idConversation as string,
+               });
+               setMessages(res.data.messages);
+
+               maxPageRef.current = res.data?.maxPage;
             } catch (err) {
                console.error(err);
             }
@@ -79,17 +72,27 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
    }, [conversation]);
 
    // Scroll to bottom when send message
-   useEffect(() => {
-      // bodyRef.current?.scrollIntoView({ block: "end", inline: "nearest" });
-      bodyRef.current?.scrollTo(0, 99999999);
-      // bodyRef.current?.scrollIntoView({ behavior: "smooth" });
-   }, [messages]);
 
    const toggleHide = () => setHide(!hide);
 
+   const fetchMoreData = async () => {
+      currentPageRef.current++;
+      if (currentPageRef.current <= maxPageRef.current) {
+         try {
+            const res = await api.conversation.getDetailConversation({
+               id: conversation?.idConversation as string,
+               page: currentPageRef.current,
+            });
+            setMessages((prev) => [...prev, ...res.data.messages]);
+         } catch (err) {
+            console.error(err);
+         }
+      } else {
+         setHasMore(false);
+      }
+   };
+
    const handleSendMsg = async () => {
-      bodyRef.current?.scrollTo(0, 99999999);
-      // bodyRef.current?.scrollIntoView({ block: "end", inline: "nearest" });
       if (message.trim()) {
          socketRef.current?.emit("sendMessage", {
             idSender: idAuth,
@@ -103,7 +106,7 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
                sender: idAuth,
                text: message.trim(),
             });
-            res.status === 200 && setMessages((prev) => [...prev, res.data]);
+            res.status === 200 && setMessages((prev) => [res.data, ...prev]);
          } catch (err) {
             console.error(err);
          }
@@ -115,105 +118,108 @@ const ChatBox = ({ conversation, onClose = (idConversation: string) => {} }: MyC
       }
    };
 
+   // Display floating ballon
+   if (hide) {
+      return (
+         <Floating
+            onClick={toggleHide}
+            alt={conversation.friend?.fullName}
+            src={conversation.friend?.avatar}
+         />
+      );
+   }
+
    return (
       <>
          {!!conversation.idConversation && (
-            <>
-               {hide ? (
-                  <Floating
-                     onClick={toggleHide}
-                     alt={conversation.friend?.fullName}
-                     src={conversation.friend?.avatar}
-                  />
-               ) : (
-                  <MyChatBox>
-                     {/* Heading */}
-                     <Heading>
-                        <Link to={`/user/explore/${conversation.friend?._id}`} style={{ flex: 2 }}>
-                           <Stack flexDirection="row" alignItems="center" gap={2}>
-                              <Avatar
-                                 sx={{ width: 42, height: 42, objectFit: "center" }}
-                                 alt={conversation.friend?.fullName}
-                                 src={conversation.friend?.avatar}
-                              />
-                              <Typography
-                                 component="span"
-                                 textOverflow="ellipsis"
-                                 width={100}
-                                 flex={2}>
-                                 {conversation.friend?.fullName}
-                              </Typography>
-                           </Stack>
-                        </Link>
+            <MyChatBox>
+               {/* Heading */}
+               <Heading>
+                  <Link to={`/user/explore/${conversation.friend?._id}`} style={{ flex: 2 }}>
+                     <Stack flexDirection="row" alignItems="center" gap={2}>
+                        <Avatar
+                           sx={{ width: 42, height: 42, objectFit: "center" }}
+                           alt={conversation.friend?.fullName}
+                           src={conversation.friend?.avatar}
+                        />
+                        <Typography component="span" textOverflow="ellipsis" width={100} flex={2}>
+                           {conversation.friend?.fullName}
+                        </Typography>
+                     </Stack>
+                  </Link>
 
-                        <Stack flexDirection="row" alignItems="center">
-                           <ListItem onClick={toggleHide}>
-                              <RemoveIcon />
-                           </ListItem>
-                           <ListItem onClick={() => onClose(conversation.idConversation as string)}>
-                              <CloseIcon />
-                           </ListItem>
-                        </Stack>
-                     </Heading>
+                  <Stack flexDirection="row" alignItems="center">
+                     <ListItem onClick={toggleHide}>
+                        <RemoveIcon />
+                     </ListItem>
+                     <ListItem onClick={() => onClose(conversation.idConversation as string)}>
+                        <CloseIcon />
+                     </ListItem>
+                  </Stack>
+               </Heading>
 
-                     {/* Body */}
-                     <Body ref={bodyRef}>
-                        {messages.length === 0 ? (
-                           <Typography variant="body1" textAlign="center">
-                              You don't have message. <br /> Let's chat together
+               {/* Body */}
+               <Body ref={bodyRef}>
+                  {messages.length === 0 ? (
+                     <Typography variant="body1" textAlign="center">
+                        You don't have message. <br /> Let's chat together
+                     </Typography>
+                  ) : (
+                     <InfiniteScroll
+                        ref={ScrollRef}
+                        style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
+                        inverse={true} //
+                        height={400}
+                        dataLength={messages.length}
+                        hasMore={hasMore}
+                        next={fetchMoreData}
+                        loader={
+                           <Typography variant="body2" textAlign="center">
+                              Loading ...
                            </Typography>
-                        ) : (
-                           messages.map((chat, index) => {
-                              return (
-                                 <Stack
-                                    key={index}
-                                    flexDirection="row"
-                                    justifyContent={
-                                       idAuth === chat.sender ? "flex-end" : "flex-start"
-                                    }
-                                    p={1}>
+                        }>
+                        {messages.map((chat, index) => {
+                           return (
+                              <Stack
+                                 key={index}
+                                 flexDirection="row"
+                                 justifyContent={idAuth === chat.sender ? "flex-end" : "flex-start"}
+                                 p={1}>
+                                 <Tooltip
+                                    title={dateformat(chat.createdAt, "h:MM TT, dd mmmm yyyy ")}
+                                    placement="left">
                                     <Typography
                                        variant="body1"
                                        component={chat.text.slice(0, 4) === "http" ? "a" : "p"}
                                        href={chat.text}
                                        target="_blank"
-                                       whiteSpace="pre-wrap"
-                                       maxWidth="90%"
-                                       borderRadius={4}
-                                       p={1}
-                                       sx={{
-                                          wordBreak: "break-word",
-                                          bgcolor:
-                                             idAuth === chat.sender
-                                                ? theme.palette.primary.main
-                                                : theme.myColor.bgGray,
-                                          "&[href^='http']": {
-                                             textDecoration: "underline",
-                                          },
-                                       }}>
+                                       className={
+                                          idAuth === chat.sender
+                                             ? "message"
+                                             : "message message--friend"
+                                       }>
                                        {chat.text}
                                     </Typography>
-                                 </Stack>
-                              );
-                           })
-                        )}
-                     </Body>
-                     {/* Footer */}
-                     <Footer>
-                        <BaseInput
-                           ref={messageRef}
-                           value={message}
-                           placeholder="Type a message..."
-                           onChange={(e) => setMessage(e.target.value)}
-                           onKeyDown={(e) =>
-                              (e.keyCode === 13 || e.key === "Enter") && handleSendMsg()
-                           }
-                        />
-                        <SendIcon id="send-icon" fontSize="large" onClick={handleSendMsg} />
-                     </Footer>
-                  </MyChatBox>
-               )}
-            </>
+                                 </Tooltip>
+                              </Stack>
+                           );
+                        })}
+                     </InfiniteScroll>
+                  )}
+               </Body>
+               {/* Footer */}
+               <Footer>
+                  <BaseInput
+                     ref={messageRef}
+                     value={message}
+                     autoFocus
+                     placeholder="Type a message..."
+                     onChange={(e) => setMessage(e.target.value)}
+                     onKeyDown={(e) => e.key === "Enter" && handleSendMsg()}
+                  />
+                  <SendIcon id="send-icon" fontSize="large" onClick={handleSendMsg} />
+               </Footer>
+            </MyChatBox>
          )}
       </>
    );

@@ -21,10 +21,11 @@ const Post = () => {
          container
          alignItems="center"
          p={2}
-         bgcolor={"#fff"}
+         gap={4}
+         bgcolor={theme.myColor.white}
+         flexWrap="nowrap"
          boxShadow={1}
-         borderRadius={2}
-         sx={{ gap: 4 }}>
+         borderRadius={2}>
          <Grid item>
             <Avatar
                src={user$?.payload?.avatar || auth$?.payload?.user.avatar}

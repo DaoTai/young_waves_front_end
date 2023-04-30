@@ -12,6 +12,10 @@ export const getAllConversation = async (q: { friendName?: string; page?: number
    });
 };
 
-export const getDetailConversation = async (id: string) => {
-   return await axiosInstance.get(`/conversations/${id}`);
+export const getDetailConversation = async (payload: { id: string; page?: number }) => {
+   return await axiosInstance.get(`/conversations/${payload.id}`, {
+      params: {
+         page: payload.page || 1,
+      },
+   });
 };

@@ -11,3 +11,11 @@ export interface FormatConversation {
    friend: Partial<Profile>;
    idConversation: string;
 }
+
+export interface Message {
+   idConversation?: string;
+   createdAt: string;
+   updatedAt?: string;
+   sender: string;
+   text: string;
+}

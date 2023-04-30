@@ -10,7 +10,7 @@ const User = ({ user }: { user: Profile }) => {
    const theme = useTheme();
    const navigate = useNavigate();
    return (
-      <MyCard boxShadow={1} borderRadius={4} bgcolor={theme.myColor.white} overflow="hidden">
+      <MyCard boxShadow={1} borderRadius={1} bgcolor={theme.myColor.white} overflow="hidden">
          <CardContent>
             <Avatar
                src={user.avatar}

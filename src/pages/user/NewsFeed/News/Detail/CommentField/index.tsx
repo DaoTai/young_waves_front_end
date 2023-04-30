@@ -21,6 +21,7 @@ const CommentField = ({ onSubmit }: { onSubmit: (comment: string) => void }) => 
          flexWrap="nowrap">
          <TextField
             fullWidth
+            autoFocus
             placeholder="Write your comment"
             value={newComment}
             autoComplete="off"
