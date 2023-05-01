@@ -8,11 +8,6 @@ import {
    Avatar,
    Box,
    Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogContentText,
-   DialogTitle,
    Grid,
    Menu,
    MenuItem,
@@ -25,7 +20,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../../../../apis";
-import { BaseInput as Search, Spinner } from "../../../../components";
+import { BaseInput as Search, Spinner, Dialog } from "../../../../components";
 import { useDebounce } from "../../../../hooks";
 import { profileState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -85,6 +80,11 @@ const Friends = () => {
    // Close menu actions
    const onCloseMenuActions = () => {
       setAnchorEl(null);
+   };
+
+   const onOpenDialogUnfriend = () => {
+      setOpenDialogUnfriend(true);
+      onCloseMenuActions();
    };
 
    // Close dialog unfriend
@@ -241,7 +241,7 @@ const Friends = () => {
                   </Typography>
                   <ContentCopyIcon />
                </MenuItem>
-               <MenuItem divider onClick={() => setOpenDialogUnfriend(true)}>
+               <MenuItem divider onClick={onOpenDialogUnfriend}>
                   <Typography variant="body1" component="span">
                      Unfriend
                   </Typography>
@@ -262,22 +262,13 @@ const Friends = () => {
          </Box>
 
          {/* Dialog */}
-         <Dialog open={openDialogUnfriend} onClose={onCloseDialogUnfriend}>
-            <DialogTitle>Confirm unfriend</DialogTitle>
-            <DialogContent>
-               <DialogContentText id="alert-dialog-description">
-                  Are you sure to calcel this friend?
-               </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-               <Button variant="outlined" onClick={onCloseDialogUnfriend}>
-                  Cancel
-               </Button>
-               <Button variant="contained" onClick={handleUnfriend} autoFocus>
-                  Agree
-               </Button>
-            </DialogActions>
-         </Dialog>
+         <Dialog
+            open={openDialogUnfriend}
+            title="Confirm unfriend"
+            content="Are you sure to calcel this friend?"
+            onClose={onCloseDialogUnfriend}
+            onSubmit={handleUnfriend}
+         />
 
          <Spinner show={loading} />
       </>

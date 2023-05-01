@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { Post } from "../../../components";
-import { getPosts, clearPosts } from "../../../redux-saga/redux/actions";
+import { getPosts } from "../../../redux-saga/redux/actions";
 import { postsState$ } from "../../../redux-saga/redux/selectors";
 import News from "./News";
 const NewsFeed = () => {

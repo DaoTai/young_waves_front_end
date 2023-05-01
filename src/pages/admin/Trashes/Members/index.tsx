@@ -1,17 +1,9 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
 import {
    Avatar,
    Box,
-   Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogContentText,
-   DialogTitle,
    FormControl,
    InputLabel,
    MenuItem,
@@ -23,10 +15,13 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import dateformat from "dateformat";
-import DetailUser from "../../Users/Detail";
-import { Profile } from "../../../../utils/interfaces/Profile";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import * as api from "../../../../apis";
+import { Dialog } from "../../../../components";
 import { showAlert } from "../../../../redux-saga/redux/actions";
+import { Profile } from "../../../../utils/interfaces/Profile";
+import DetailUser from "../../Users/Detail";
 
 const UserTrashes = () => {
    const theme = useTheme();
@@ -323,26 +318,14 @@ const UserTrashes = () => {
                onSubmit={handleUpdateUser}
             />
          )}
-         {/* Dialog confirm delete */}
-         <Dialog fullWidth open={showDialog} onClose={() => setShowDialog(false)}>
-            <DialogTitle>
-               Are you sure to delete <b>{user?.fullName}</b>?
-            </DialogTitle>
-            <DialogContent>
-               <DialogContentText id="alert-dialog-description">
-                  Note: You won't able to restore {user?.fullName}. Every posts and comments of{" "}
-                  {user?.fullName} are also deleted
-               </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-               <Button variant="outlined" onClick={() => setShowDialog(false)}>
-                  Disagree
-               </Button>
-               <Button variant="contained" onClick={handleForceDeleteUser} autoFocus>
-                  Agree
-               </Button>
-            </DialogActions>
-         </Dialog>
+         <Dialog
+            open={showDialog}
+            title="Confirm delete user"
+            content={`You won't able to restore ${user?.fullName}. Every posts and comments of
+                  ${user?.fullName} are also deleted`}
+            onClose={() => setShowDialog(false)}
+            onSubmit={handleForceDeleteUser}
+         />
       </>
    );
 };

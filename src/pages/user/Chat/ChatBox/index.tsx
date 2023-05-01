@@ -12,8 +12,8 @@ import * as api from "../../../../apis";
 import { BaseInput } from "../../../../components";
 import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
-import { Body, Floating, Footer, Heading, MyChatBox } from "./styles";
 import { Message } from "../../../../utils/interfaces/Chat";
+import { Body, Floating, Footer, Heading, MyChatBox } from "./styles";
 interface MyChatBoxProps {
    conversation: Partial<{ idConversation: string; friend: Partial<Profile> }>;
    visibility?: boolean;

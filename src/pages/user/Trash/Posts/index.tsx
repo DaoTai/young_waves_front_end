@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { forceDeletePost, getTrashPosts, restorePost } from "../../../../redux-saga/redux/actions";
 import { trashPostsState$ } from "../../../../redux-saga/redux/selectors";
-import DeletionDialog from "./DeletionDialog";
+import { Dialog } from "../../../../components";
 const TrashPosts = () => {
    const theme = useTheme();
    const navigate = useNavigate();
@@ -231,7 +231,13 @@ const TrashPosts = () => {
             )}
          </Box>
          {/* Dialog delete*/}
-         <DeletionDialog open={openDialog} onClose={onCloseDialog} onSubmit={handleForceDelete} />
+         <Dialog
+            open={openDialog}
+            title="Confirm delete"
+            content="Do you sure you want to delete this post ?"
+            onClose={onCloseDialog}
+            onSubmit={handleForceDelete}
+         />
       </>
    );
 };

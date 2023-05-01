@@ -3,22 +3,9 @@ import { styled, Fab, SwipeableDrawer, Button } from "@mui/material";
 import NavLink from "../NavLink";
 export const Logo = styled(Link)(({ theme }) => {
    return {
-      "&:hover": {
-         h5: {
-            color: theme.palette.primary.main,
-         },
-         svg: {
-            filter: "constrast(200%)",
-            transform: "rotate(120deg)",
-         },
-      },
       svg: {
          filter: "drop-shadow(1px 1px 1px #333)",
          transition: "all 0.3s linear",
-         "&:hover": {
-            filter: "constrast(200%)",
-            transform: "rotate(120deg)",
-         },
       },
    };
 });

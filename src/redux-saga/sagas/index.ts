@@ -21,16 +21,12 @@ import * as ACTIONS from "../redux/actions";
 function* signInSaga(action: { type: string; payload: SignIn }) {
    try {
       const res = yield call(api.auth.signInUser, action.payload);
-      if (res.status === 200) {
-         yield put(ACTIONS.signInSuccess(res.data));
-         const { password, ...localUser } = action.payload;
-         // Remember username to login
-         action.payload.isRemember
-            ? localStorage.setItem("user", JSON.stringify(localUser))
-            : localStorage.removeItem("user");
-      } else {
-         yield put(ACTIONS.signInFailure());
-      }
+      yield put(ACTIONS.signInSuccess(res.data));
+      const { password, ...user } = action.payload;
+      // Remember username to login
+      action.payload.isRemember
+         ? localStorage.setItem("user", JSON.stringify(user))
+         : localStorage.removeItem("user");
    } catch (err: any) {
       yield put(ACTIONS.signInFailure());
       throw new Error(err);
@@ -235,22 +231,6 @@ function* deletePostSaga(action: { type: string; payload: string }) {
    }
 }
 
-// Create comment
-// function* createCommentSaga(action: {
-//    type: string;
-//    payload: { idPost: string; comment: string };
-// }) {
-//    try {
-//       const res = yield call(api.comment.createComment, action.payload);
-//       const newComment = res.data as Comment;
-//       yield put(
-//          ACTIONS.createCommentSuccess({ idPost: action.payload.idPost, comment: newComment._id })
-//       );
-//    } catch (err) {
-//       yield put(ACTIONS.createCommentFailure(err));
-//    }
-// }
-
 // Delete comment
 function* deleteCommentSaga(action: {
    type: string;
@@ -343,7 +323,6 @@ export default function* rootSaga() {
       takeLatest(POSTS_ACTION.CREATE_POST, createPostSaga),
       takeLatest(POSTS_ACTION.UPDATE_POST, updatePostSaga),
       takeLatest(POSTS_ACTION.DELETE_POST, deletePostSaga),
-      // takeLatest(POSTS_ACTION.COMMENT_POST, createCommentSaga),
       takeLatest(POSTS_ACTION.DELETE_COMMENT_POST, deleteCommentSaga),
       takeLatest(POSTS_ACTION.LIKE_POST, handleLikePost),
       takeLatest(POSTS_ACTION.UNLIKE_POST, handleUnLikePost),

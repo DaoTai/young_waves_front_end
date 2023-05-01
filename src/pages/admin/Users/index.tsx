@@ -1,8 +1,8 @@
+import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import AddIcon from "@mui/icons-material/Add";
 import {
    Avatar,
    Box,
@@ -19,15 +19,15 @@ import {
    useTheme,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import dateformat from "dateformat";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import dateformat from "dateformat";
 import * as api from "../../../apis";
+import { Dialog } from "../../../components";
 import { showAlert } from "../../../redux-saga/redux/actions";
 import { Profile } from "../../../utils/interfaces/Profile";
-import DetailUser from "./Detail";
-import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import AddMember from "./AddMember";
+import DetailUser from "./Detail";
 const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const theme = useTheme();
    const dispatch = useDispatch();
@@ -358,9 +358,10 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          )}
 
          {/* Dialog confirm delete */}
-         <ConfirmDeleteDialog
+         <Dialog
             open={showDialog}
-            user={user}
+            title={`Are you sure to delete ${user?.fullName}?`}
+            content="You still can restore user in Trash Store when you deleted"
             onSubmit={handleDeleteUser}
             onClose={onCloseDeleteDialog}
          />

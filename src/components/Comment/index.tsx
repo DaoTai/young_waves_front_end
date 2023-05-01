@@ -1,19 +1,12 @@
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import InfoIcon from "@mui/icons-material/Info";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
    Avatar,
-   Box,
    Button,
    ButtonBase,
    CardHeader,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogContentText,
-   DialogTitle,
    InputBase,
    Paper,
    Popover,
@@ -26,19 +19,22 @@ import dateFormat from "dateformat";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Dialog } from "../../components";
 import { authState$ } from "../../redux-saga/redux/selectors";
 import { Comment } from "../../utils/interfaces/Comment";
+interface Props {
+   comment: Comment;
+   handleDelete?: (id: string) => void;
+   onSubmit?: (id: string, updatedComment: string) => void;
+   enableActions?: boolean;
+}
+
 const MyComment = ({
    comment,
    handleDelete = () => {},
    onSubmit = () => {},
    enableActions = false,
-}: {
-   comment: Comment;
-   handleDelete?: (id: string) => void;
-   onSubmit?: (id: string, updatedComment: string) => void;
-   enableActions?: boolean;
-}) => {
+}: Props) => {
    const theme = useTheme();
    const auth$ = useSelector(authState$);
    const idAuth = auth$.payload?.user._id;
@@ -98,12 +94,19 @@ const MyComment = ({
       hideEditComment();
    };
 
+   // Create comment
    const onSubmitComment = () => {
       if (value !== comment.body) {
          onSubmit(comment._id, value);
       }
       hideEditComment();
    };
+
+   // Close dialog
+   const onCloseDialog = () => {
+      setOpenDialog(false);
+   };
+
    return (
       <>
          <Stack marginBottom={2} flexDirection="row" alignItems="flex-start" sx={{ gap: 1 }}>
@@ -217,6 +220,7 @@ const MyComment = ({
                   <Button
                      startIcon={<EditIcon color="primary" />}
                      sx={{
+                        justifyContent: "space-between",
                         pl: 1,
                         pr: 1,
                         bgcolor: "transparent",
@@ -230,6 +234,7 @@ const MyComment = ({
                   <Button
                      startIcon={<DeleteIcon color="primary" />}
                      sx={{
+                        justifyContent: "space-between",
                         pl: 1,
                         pr: 1,
                         bgcolor: "transparent",
@@ -244,30 +249,13 @@ const MyComment = ({
             </Popover>
 
             {/* Dialog confirm delete*/}
-            <Dialog open={openDialog} onClose={() => setOpenDialog(!openDialog)}>
-               <DialogTitle display="flex" justifyContent="center" alignItems="center">
-                  Confirm delete
-                  <InfoIcon color="info" />
-               </DialogTitle>
-               <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                     Are you sure want to delete this comment?
-                  </DialogContentText>
-               </DialogContent>
-               <DialogActions>
-                  <Stack width="100%" flexDirection="row" justifyContent="space-between">
-                     <Button
-                        variant="outlined"
-                        sx={{ background: "transparent" }}
-                        onClick={() => setOpenDialog(!openDialog)}>
-                        Cancel
-                     </Button>
-                     <Button variant="contained" autoFocus onClick={handleDeleteComment}>
-                        Agree
-                     </Button>
-                  </Stack>
-               </DialogActions>
-            </Dialog>
+            <Dialog
+               open={openDialog}
+               title="Confirm delete"
+               content="Are you sure want to delete this comment?"
+               onClose={onCloseDialog}
+               onSubmit={handleDeleteComment}
+            />
          </Stack>
       </>
    );

@@ -1,17 +1,10 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CheckIcon from "@mui/icons-material/Check";
-import ClearIcon from "@mui/icons-material/Clear";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import SendIcon from "@mui/icons-material/Send";
 import {
    Box,
    Button,
    Container,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogContentText,
-   DialogTitle,
    Fab,
    Grid,
    Input,
@@ -24,7 +17,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "../../../../components";
+import { Dialog, Spinner } from "../../../../components";
 import { changePasswordProfile } from "../../../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
 import { changePasswordPassword, init, textFields } from "./config";
@@ -126,31 +119,13 @@ const Password = () => {
          </Container>
 
          {/* Dialog confirm */}
-         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-            <DialogTitle>
-               <Typography variant="body1" textAlign="center">
-                  Change Password
-               </Typography>
-            </DialogTitle>
-            <DialogContent>
-               <DialogContentText>Do you agree to change password?</DialogContentText>
-            </DialogContent>
-            <DialogActions sx={{ justifyContent: "space-between", p: 2 }}>
-               <Button
-                  variant="outlined"
-                  sx={{ bgcolor: theme.myColor.white }}
-                  onClick={() => setOpenDialog(false)}>
-                  Cancel
-               </Button>
-               <Button
-                  variant="contained"
-                  type="submit"
-                  onClick={handleConfirm}
-                  sx={{ paddingLeft: 2, paddingRight: 2 }}>
-                  Agree
-               </Button>
-            </DialogActions>
-         </Dialog>
+         <Dialog
+            open={openDialog}
+            title="Change Password"
+            content="Do you agree to change password?"
+            onClose={() => setOpenDialog(false)}
+            onSubmit={handleConfirm}
+         />
 
          {/* Spinner */}
          <Spinner show={isLoading} />

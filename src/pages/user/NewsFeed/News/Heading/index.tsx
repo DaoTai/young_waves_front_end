@@ -1,20 +1,13 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
-import InfoIcon from "@mui/icons-material/Info";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
    Avatar,
    Button,
    CardHeader,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogContentText,
-   DialogTitle,
    IconButton,
-   Popover,
    Stack,
    Tooltip,
    Typography,
@@ -24,7 +17,7 @@ import dateFormat from "dateformat";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { PostModal } from "../../../../../components";
+import { Dialog, PostModal } from "../../../../../components";
 import { deletePost, updatePost } from "../../../../../redux-saga/redux/actions";
 import { authState$, profileState$ } from "../../../../../redux-saga/redux/selectors";
 import { Post } from "../../../../../utils/interfaces/Post";
@@ -132,6 +125,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                      </Typography>
                   </>
                }
+               sx={{ pl: 0, pb: 0.5 }}
             />
             {/* Options */}
             <Actions
@@ -203,7 +197,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                   </Typography>
                </>
             }
-            sx={{ pl: 0, pb: 0 }}
+            sx={{ pl: 0, pb: 0.5 }}
          />
          {/* Options */}
          <Actions
@@ -239,27 +233,13 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
          </Actions>
 
          {/* Dialog */}
-         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-            <DialogTitle display="flex" justifyContent="center" alignItems="center">
-               Confirm delete
-               <InfoIcon color="info" />
-            </DialogTitle>
-            <DialogContent>
-               <DialogContentText>Are you sure want to delete this post?</DialogContentText>
-            </DialogContent>
-            <DialogActions sx={{ justifyContent: "space-between" }}>
-               <Button
-                  variant="outlined"
-                  sx={{ backgroundColor: theme.myColor.white }}
-                  onClick={() => setOpenDialog(false)}>
-                  Cancel
-               </Button>
-               <Button variant="contained" type="submit" onClick={() => handleDelete(post._id)}>
-                  Agree
-               </Button>
-            </DialogActions>
-         </Dialog>
-
+         <Dialog
+            open={openDialog}
+            title="Confirm delete"
+            content="Are you sure want to delete this post?"
+            onClose={() => setOpenDialog(false)}
+            onSubmit={() => handleDelete(post._id)}
+         />
          {/* Modal */}
          <PostModal
             post={post}
