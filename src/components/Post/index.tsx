@@ -2,14 +2,13 @@ import { Avatar, Grid, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../redux-saga/redux/actions";
-import { authState$, profileState$ } from "../../redux-saga/redux/selectors";
+import { authState$ } from "../../redux-saga/redux/selectors";
 import { Post as IPost } from "../../utils/interfaces/Post";
 import Modal from "./Modal";
 const Post = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const [openModal, setOpenModal] = useState(false);
-   const user$ = useSelector(profileState$);
    const auth$ = useSelector(authState$);
 
    const handleSubmit = (post: Partial<IPost>) => {
@@ -28,7 +27,7 @@ const Post = () => {
          borderRadius={2}>
          <Grid item>
             <Avatar
-               src={user$?.payload?.avatar || auth$?.payload?.user.avatar}
+               src={auth$?.payload?.user.avatar}
                sx={{
                   width: 50,
                   height: 50,
@@ -49,7 +48,7 @@ const Post = () => {
             <Typography
                variant="subtitle1"
                sx={{ color: theme.myColor.textSecondary, letterSpacing: 1.5 }}>
-               Hi {user$?.payload?.fullName || auth$?.payload?.user.fullName}. What do you think?
+               Hi {auth$?.payload?.user.fullName}. What do you think?
             </Typography>
          </Grid>
          <Modal open={openModal} onClose={() => setOpenModal(false)} onSubmit={handleSubmit} />

@@ -1,12 +1,13 @@
 import { Box, Grid, Stack, Tab, Tabs, useTheme } from "@mui/material";
-import { useEffect, useState, lazy, Suspense } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
 import { Post, Spinner } from "../../../components";
 import { clearOwnerPosts, getOwnerPosts, getProfile } from "../../../redux-saga/redux/actions";
-import { authState$, ownerPostsState$, profileState$ } from "../../../redux-saga/redux/selectors";
+import { authState$, ownerPostsState$ } from "../../../redux-saga/redux/selectors";
 import { TYPE_TAB_PROFILE } from "../../../utils/types";
+// Lazy
 const Friends = lazy(() => import("./Friends"));
 const Heading = lazy(() => import("./Heading"));
 const Introduction = lazy(() => import("./Introduction"));
@@ -18,16 +19,12 @@ const Profile = () => {
    const { id } = useParams();
    const auth$ = useSelector(authState$);
    const ownerPosts$ = useSelector(ownerPostsState$);
-   const profile$ = useSelector(profileState$);
-   const idUser = profile$?.payload?._id;
    const [tab, setTab] = useState<TYPE_TAB_PROFILE>("posts");
    const [hasMore, setHasMore] = useState<boolean>(true);
    const [page, setPage] = useState<number>(1);
    useEffect(() => {
       if (id === auth$.payload.user._id) {
-         if (!profile$.payload._id) {
-            dispatch(getProfile(id as string));
-         }
+         dispatch(getProfile(id as string));
          dispatch(
             getOwnerPosts({
                id,
@@ -63,11 +60,11 @@ const Profile = () => {
          <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
                <Suspense fallback={<Spinner show />}>
-                  <Introduction user={profile$.payload} />
+                  <Introduction user={auth$.payload?.user} />
                </Suspense>
             </Grid>
             <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
-               {auth$.payload.user._id == idUser && <Post />}
+               {<Post />}
                <Suspense fallback={<Spinner show />}>
                   <News
                      posts={ownerPosts$.payload.posts}
@@ -88,13 +85,13 @@ const Profile = () => {
    return (
       <>
          <Helmet>
-            <title>{profile$.payload?.fullName || "Profile"} | Young Waves</title>
+            <title>{auth$.payload?.user?.fullName || "Profile"} | Young Waves</title>
          </Helmet>
 
          <Stack flexDirection="column" gap={2}>
             <Box boxShadow={1} borderRadius={1} bgcolor="#fff" overflow="hidden">
                <Suspense fallback={<Spinner show />}>
-                  <Heading user={profile$.payload} />
+                  <Heading user={auth$.payload?.user} />
                </Suspense>
             </Box>
             {/* Tab navigate */}
@@ -125,7 +122,7 @@ const Profile = () => {
          {/* For detail news */}
          <Outlet />
          {/* Spinmer */}
-         <Spinner show={profile$.isLoading} />
+         <Spinner show={auth$.isLoading} />
       </>
    );
 };

@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Dialog, PostModal } from "../../../../../components";
 import { deletePost, updatePost } from "../../../../../redux-saga/redux/actions";
-import { authState$, profileState$ } from "../../../../../redux-saga/redux/selectors";
+import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { Post } from "../../../../../utils/interfaces/Post";
 import { Actions } from "./styles";
 export interface HeadingNewsProps {
@@ -31,7 +31,6 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const auth$ = useSelector(authState$);
-   const profile$ = useSelector(profileState$);
    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
    const [openPostModal, setOpenPostModal] = useState<boolean>(false);
@@ -151,8 +150,8 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
             avatar={
                <Link to={`/user/profile/${auth$.payload?.user._id}`}>
                   <Avatar
-                     src={profile$.payload?.avatar || auth$.payload?.user.avatar}
-                     srcSet={profile$.payload?.avatar || auth$.payload?.user.avatar}
+                     src={auth$.payload?.user.avatar}
+                     srcSet={auth$.payload?.user.avatar}
                      alt="avatar"
                      sx={{ width: 50, height: 50, boxShadow: 1 }}
                   />
@@ -173,7 +172,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                   flexDirection="row"
                   align="center">
                   <Link to={`/user/profile/${auth$.payload?.user._id}`}>
-                     {profile$.payload?.fullName || auth$.payload?.user.fullName}
+                     {auth$.payload?.user.fullName}
                   </Link>
                   {post?.author.isAdmin && (
                      <Tooltip title="Admin">

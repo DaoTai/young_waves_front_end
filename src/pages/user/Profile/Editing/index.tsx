@@ -23,14 +23,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CountriesSelect, DateTimePicker, ImageInput, Spinner } from "../../../../components";
 import { updateProfile } from "../../../../redux-saga/redux/actions";
-import { profileState$, authState$ } from "../../../../redux-saga/redux/selectors";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { init, updateUserOptions } from "./config";
 import Avatar from "../Heading/Avatar";
 const Editing = () => {
    const theme = useTheme();
-   const { isLoading, payload } = useSelector(profileState$);
    const auth$ = useSelector(authState$);
    const dispatch = useDispatch();
    const navigate = useNavigate();
@@ -54,20 +53,20 @@ const Editing = () => {
    useEffect(() => {
       // If network slow, payload?.data'll undefined. So we shoud assign in Object
       setValues({
-         _id: payload._id || auth$.payload.user._id,
-         fullName: payload.fullName || auth$.payload.user.fullName,
-         dob: payload.dob || auth$.payload.user.dob,
-         city: payload.city || auth$.payload.user.city,
-         region: payload.region || auth$.payload.user.region,
-         gender: payload.gender || auth$.payload.user.gender,
-         email: payload.email || auth$.payload.user.email,
+         _id: auth$.payload.user._id,
+         fullName: auth$.payload.user.fullName,
+         dob: auth$.payload.user.dob,
+         city: auth$.payload.user.city,
+         region: auth$.payload.user.region,
+         gender: auth$.payload.user.gender,
+         email: auth$.payload.user.email,
       });
-   }, [payload, dispatch]);
+   }, [dispatch]);
 
    // Change cover picture
    const handleChangeCoverPicture = (file: any) => {
       imageRef.current.src = file;
-      dispatch(updateProfile({ coverPicture: file, _id: payload._id }));
+      dispatch(updateProfile({ coverPicture: file, _id: auth$.payload?.user?._id }));
    };
 
    return (
@@ -120,11 +119,9 @@ const Editing = () => {
                         overflow="hidden"
                         position="relative"
                         sx={
-                           payload?.coverPicture || auth$.payload.user.coverPicture
+                           auth$.payload.user.coverPicture
                               ? {
-                                   backgroundImage: `url(${
-                                      payload?.coverPicture || auth$.payload.user.coverPicture
-                                   })`,
+                                   backgroundImage: `url(${auth$.payload.user.coverPicture})`,
                                    backgroundPosition: "center",
                                    backgroundSize: "cover",
                                    backgroundRepeat: "no-repeat",
@@ -147,11 +144,8 @@ const Editing = () => {
                         </Fab>
                      </Box>
                      {/* Avatar */}
-                     {payload.avatar ? (
-                        <Avatar user={payload} variant="square" borderRadius={2} />
-                     ) : (
-                        <Avatar user={auth$.payload.user} variant="square" borderRadius={2} />
-                     )}
+
+                     <Avatar user={auth$.payload.user} variant="square" borderRadius={2} />
                   </Grid>
 
                   {/* Text fields */}
@@ -234,7 +228,7 @@ const Editing = () => {
          </Container>
 
          {/* Spinner */}
-         <Spinner show={isLoading} />
+         <Spinner show={auth$.isLoading} />
       </>
    );
 };

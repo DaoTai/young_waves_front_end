@@ -1,29 +1,23 @@
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Button, Fab, Grid, Typography, useTheme } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ImageInput, OverlayFullImage, Spinner } from "../../../../components";
+import { ImageInput, Spinner } from "../../../../components";
 import { addFriend, updateProfile } from "../../../../redux-saga/redux/actions";
-import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import Avatar from "./Avatar";
 const Heading = ({ user }: { user: Profile }) => {
    const theme = useTheme();
    const navigate = useNavigate();
-   const profile$ = useSelector(profileState$);
-   const auth$ = useSelector(authState$);
-   const idAuth = auth$?.payload?.user._id;
-   const { isLoading, payload } = useSelector(profileState$);
-   const isStrange =
-      profile$.payload?.friends?.length > 0
-         ? !profile$.payload?.friends?.includes(user._id)
-         : !auth$.payload.user.friends.includes(user._id);
    const dispatch = useDispatch();
-
+   const auth$ = useSelector(authState$);
    const imageRef = useRef(Object(null));
+   const idAuth = auth$?.payload?.user._id;
+   const isStrange = !auth$.payload.user.friends.includes(user._id);
 
    // Change cover picture
    const handleChangeCoverPicture = (file: string) => {
@@ -134,7 +128,7 @@ const Heading = ({ user }: { user: Profile }) => {
          </Grid>
 
          {/* Spinner */}
-         <Spinner show={isLoading} />
+         <Spinner show={auth$.isLoading} />
       </>
    );
 };

@@ -7,7 +7,6 @@ import authReducer from "./auth";
 import postsReducer from "./posts";
 import ownerPostsReducer from "./user/posts";
 import trashPostsReducer from "./user/trash/posts";
-import { profileReducer } from "./user";
 import { PostsState } from "./posts/helpers";
 export interface State {
    alert: { isShow: boolean; payload: any };
@@ -19,10 +18,6 @@ export interface State {
       };
       status?: number | null;
    };
-   profile: {
-      isLoading: boolean;
-      payload: Profile;
-   };
    posts: PostsState;
    trashPosts: { isLoading: boolean; trashPosts: Post[]; page: number; maxPage: number };
    ownerPosts: PostsState;
@@ -31,7 +26,6 @@ export interface State {
 const rootReducer = combineReducers({
    alert: alertReducer,
    auth: authReducer,
-   profile: profileReducer,
    posts: postsReducer,
    trashPosts: trashPostsReducer,
    ownerPosts: ownerPostsReducer,

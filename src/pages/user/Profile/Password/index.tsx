@@ -19,13 +19,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Dialog, Spinner } from "../../../../components";
 import { changePasswordProfile } from "../../../../redux-saga/redux/actions";
-import { authState$, profileState$ } from "../../../../redux-saga/redux/selectors";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { changePasswordPassword, init, textFields } from "./config";
 const Password = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const { isLoading, payload } = useSelector(profileState$);
    const auth$ = useSelector(authState$);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -40,7 +39,7 @@ const Password = () => {
    );
    useEffect(() => {
       resetForm();
-   }, [isLoading, payload, dispatch]);
+   }, [auth$, dispatch]);
    const handleConfirm = () => {
       handleSubmit();
       setOpenDialog(false);
@@ -128,7 +127,7 @@ const Password = () => {
          />
 
          {/* Spinner */}
-         <Spinner show={isLoading} />
+         <Spinner show={auth$.isLoading} />
       </>
    );
 };

@@ -51,7 +51,7 @@ function* signOutSaga() {
 function* getProfileSaga(action: { type: string; payload: string }) {
    try {
       const res = yield call(api.user.getProfile, action.payload);
-      yield put(ACTIONS.getProfileSuccess(res));
+      yield put(ACTIONS.getProfileSuccess(res.data));
    } catch (err) {
       yield put(ACTIONS.getProfileFailure(err as string));
    }
@@ -62,7 +62,7 @@ function* updateProfileSaga(action: { type: string; payload: Profile }) {
    try {
       const res = yield call(api.user.updateProfile, action.payload);
       if (res.status === 200) {
-         yield put(ACTIONS.updateProfileSuccess(res));
+         yield put(ACTIONS.updateProfileSuccess(res.data));
          yield put(
             ACTIONS.showAlert({
                message: "Update successfully",
@@ -90,7 +90,7 @@ function* changePasswordProfileSaga(action: { type: string; payload: Profile }) 
    try {
       const res = yield call(api.user.changePasswordProfile, action.payload);
       if (res.status === 200) {
-         yield put(ACTIONS.changePasswordProfileSuccess(res));
+         yield put(ACTIONS.changePasswordProfileSuccess(res.data));
          yield put(
             ACTIONS.showAlert({
                message: "Changed successfully",
@@ -170,8 +170,6 @@ function* getOwnerPostsSaga(action: { type: string; payload: { id: string; page?
 function* createPostSaga(action: { type: string; payload: Post }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
-      console.log("res = ", res);
-
       if (res.status === 200) {
          yield put(ACTIONS.createPostSuccess(res.data));
       } else {
@@ -179,7 +177,7 @@ function* createPostSaga(action: { type: string; payload: Post }) {
             yield put(
                ACTIONS.showAlert({
                   title: "Create post",
-                  message: "Capacity of post is over 100 MB",
+                  message: "Capacity of post is over",
                   mode: "warning",
                })
             );

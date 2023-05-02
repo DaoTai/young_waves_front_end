@@ -1,9 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import SearchIcon from "@mui/icons-material/Search";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import SearchIcon from "@mui/icons-material/Search";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
    Avatar,
    Box,
@@ -17,20 +17,21 @@ import {
    useTheme,
 } from "@mui/material";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../../../../apis";
-import { BaseInput as Search, Spinner, Dialog } from "../../../../components";
+import { Dialog, BaseInput as Search, Spinner } from "../../../../components";
 import { useDebounce } from "../../../../hooks";
-import { profileState$ } from "../../../../redux-saga/redux/selectors";
+import { cancelFriend } from "../../../../redux-saga/redux/actions";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { ClearButton, SearchButton } from "../../Explore/styles";
-import { cancelFriend } from "../../../../redux-saga/redux/actions";
+import { useSelector } from "react-redux";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
 const Friends = () => {
-   const { payload } = useSelector(profileState$);
    const theme = useTheme();
    const dispatch = useDispatch();
    const navigate = useNavigate();
+   const auth$ = useSelector(authState$);
    const [loading, setLoading] = useState<boolean>(true);
    const [friends, setFriends] = useState<Profile[] | []>([]);
    const [idFriend, setIdFriend] = useState<string | null>(null);
@@ -48,13 +49,14 @@ const Friends = () => {
          try {
             let res;
             if (searchDebounce) {
-               res = await api.user.getFriends(payload._id, page, searchDebounce);
+               res = await api.user.getFriends(auth$.payload?.user?._id, page, searchDebounce);
             } else {
-               res = await api.user.getFriends(payload._id, page);
+               res = await api.user.getFriends(auth$.payload?.user?._id, page);
             }
             setLoading(false);
             setFriends(res.data?.friends);
             maxPageRef.current = res?.data?.maxPage;
+            console.log("res = ", res);
          } catch (err: any) {
             throw new Error(err);
          }

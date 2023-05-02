@@ -10,7 +10,7 @@ const persistConfig = {
    key: "root",
    version: 1,
    storage,
-   whitelist: ["auth", "profile"],
+   whitelist: ["auth"],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store: Store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
