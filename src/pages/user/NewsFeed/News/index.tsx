@@ -1,4 +1,4 @@
-import { Box, Card, TextareaAutosize, Typography, useTheme } from "@mui/material";
+import { Box, Card, Paper, TextareaAutosize, Typography, useTheme } from "@mui/material";
 import { memo } from "react";
 import { PostBody } from "../../../../components";
 import { Post } from "../../../../utils/interfaces/Post";
@@ -37,7 +37,7 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
                }>
                {posts?.map((post: Post) => {
                   return (
-                     <Box key={post._id} mb={2}>
+                     <Paper elevation={0} key={post._id} sx={{ marginBottom: 1 }}>
                         <Card sx={{ pl: 2, pr: 2 }}>
                            {/* Heading */}
                            <Heading post={post} showAction />
@@ -51,14 +51,14 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
                            {/* Actions */}
                            <Actions post={post} />
                         </Card>
-                     </Box>
+                     </Paper>
                   );
                })}
             </InfiniteScroll>
          ) : (
             posts?.map((post: Post) => {
                return (
-                  <Box key={post._id} mb={2}>
+                  <Paper elevation={0} key={post._id} sx={{ mb: 1 }}>
                      <Card sx={{ pl: 2, pr: 2 }}>
                         {/* Heading */}
                         <Heading post={post} showAction />
@@ -72,7 +72,7 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
                         {/* Actions */}
                         <Actions post={post} />
                      </Card>
-                  </Box>
+                  </Paper>
                );
             })
          )}

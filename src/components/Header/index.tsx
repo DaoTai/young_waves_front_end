@@ -58,11 +58,12 @@ const Header = () => {
          {/* Mobile */}
          <Box
             sx={{
-               position: "sticky",
-               top: HEIGHT_HEADER,
+               position: "fixed",
+               bottom: 0,
+               left: 0,
+               right: 0,
                zIndex: 999,
-               pt: 1,
-               borderBottom: 1,
+               borderTop: 1,
                borderColor: "divider",
                bgcolor: theme.myColor.white,
                display: {

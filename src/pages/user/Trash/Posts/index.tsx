@@ -59,15 +59,23 @@ const TrashPosts = () => {
                return (
                   <Button
                      sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
+                        color: theme.myColor.white,
                         bgcolor: theme.palette.primary.main,
+                        alignItems: "center",
                         "&:hover": {
                            color: theme.palette.primary.main,
+                           ".MuiTypography-root": {
+                              color: "inherit",
+                           },
                         },
                      }}
                      onClick={() => handleShowDetail(params.row?._id)}>
-                     <Typography variant="body2" sx={{ display: { sm: "block", xs: "none" } }}>
+                     <Typography
+                        variant="body2"
+                        sx={{
+                           color: theme.myColor.white,
+                           display: { md: "block", xs: "none" },
+                        }}>
                         Open
                      </Typography>
                      <DetailsIcon />
@@ -87,15 +95,22 @@ const TrashPosts = () => {
                   <Button
                      color="success"
                      sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
+                        color: theme.myColor.white,
                         bgcolor: theme.palette.success.main,
                         "&:hover": {
                            color: theme.palette.success.main,
+                           ".MuiTypography-root": {
+                              color: "inherit",
+                           },
                         },
                      }}
                      onClick={() => handleRestore(params.row?._id)}>
-                     <Typography variant="body2" sx={{ display: { sm: "block", xs: "none" } }}>
+                     <Typography
+                        variant="body2"
+                        sx={{
+                           color: theme.myColor.white,
+                           display: { md: "block", xs: "none" },
+                        }}>
                         Restore
                      </Typography>
                      <RestoreFromTrashIcon />
@@ -114,15 +129,22 @@ const TrashPosts = () => {
                return (
                   <Button
                      sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
+                        color: theme.myColor.white,
                         bgcolor: theme.palette.error.main,
                         "&:hover": {
                            color: theme.palette.error.main,
+                           ".MuiTypography-root": {
+                              color: "inherit",
+                           },
                         },
                      }}
                      onClick={() => handleOpenDialogDelete(params.row?._id)}>
-                     <Typography variant="body2" sx={{ display: { sm: "block", xs: "none" } }}>
+                     <Typography
+                        variant="body2"
+                        sx={{
+                           color: theme.myColor.white,
+                           display: { md: "block", xs: "none" },
+                        }}>
                         Delete
                      </Typography>
                      <DeleteForeverIcon />

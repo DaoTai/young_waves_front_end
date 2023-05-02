@@ -1,32 +1,32 @@
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
-import { Box, Button, ButtonBase, ToggleButton, Typography } from "@mui/material";
+import { Avatar, Badge, Popover, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { signOut } from "../../../redux-saga/redux/actions";
 import { authState$ } from "../../../redux-saga/redux/selectors";
 
-import Spinner from "../../Spinner";
-import { LogOutButton, Option, ToggleOptions } from "../styles";
-import { Anchor } from "./types";
-import Navigation from "../Navigation";
+import { MyAvtar, Option } from "../styles";
 const ToggleActions = () => {
    const dispatch = useDispatch();
-   const { isLoading, payload } = useSelector(authState$);
-   const [show, setShow] = useState(false);
-   const toggleDrawer =
-      (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-         if (
-            event &&
-            event.type === "keydown" &&
-            ((event as React.KeyboardEvent).key === "Tab" ||
-               (event as React.KeyboardEvent).key === "Shift")
-         ) {
-            return;
-         }
-      };
+   const navigate = useNavigate();
+   const { payload } = useSelector(authState$);
+   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+   };
+
+   const handleClose = () => {
+      setAnchorEl(null);
+   };
+
+   const handleNavigate = (url: string) => {
+      navigate(url);
+      handleClose();
+   };
 
    const handleSignOut = () => {
       dispatch(signOut());
@@ -34,35 +34,39 @@ const ToggleActions = () => {
 
    return (
       <>
-         <ToggleButton value="justify" onClick={() => setShow(!show)}>
-            <FormatAlignJustifyIcon />
-            <ToggleOptions
-               anchor="right"
-               open={show}
-               onClose={toggleDrawer("right", false)}
-               onOpen={toggleDrawer("right", true)}>
-               {/* List options */}
-               <Box>
-                  <Option to={`/user/profile/${payload?.user._id}`}>
-                     <AccountBoxIcon fontSize="medium" />
-                     <Typography variant="body1">Profile</Typography>
-                  </Option>
+         <Badge onClick={handleClick}>
+            <MyAvtar src={payload.user.avatar} />
+         </Badge>
 
-                  <Option to="/user/trash/posts">
-                     <RestoreFromTrashIcon fontSize="medium" />
-                     <Typography variant="body1">Trash post</Typography>
-                  </Option>
-               </Box>
-               <LogOutButton variant="outlined" onClick={handleSignOut}>
+         <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+               vertical: "bottom",
+               horizontal: "left",
+            }}
+            sx={{
+               top: 12,
+            }}>
+            <Stack>
+               <Option
+                  fullWidth
+                  onClick={() => handleNavigate(`/user/profile/${payload?.user._id}`)}>
+                  <AccountBoxIcon fontSize="medium" />
+                  <Typography variant="body1">Profile</Typography>
+               </Option>
+
+               <Option fullWidth onClick={() => handleNavigate("/user/trash/posts")}>
+                  <RestoreFromTrashIcon fontSize="medium" />
+                  <Typography variant="body1">Trash post</Typography>
+               </Option>
+               <Option fullWidth onClick={handleSignOut}>
                   <LogoutIcon fontSize="medium" />
                   <Typography variant="body1">Log out</Typography>
-               </LogOutButton>
-            </ToggleOptions>
-         </ToggleButton>
-
-         {/* Spinner */}
-         <Spinner show={isLoading} />
-         {/* When log out success */}
+               </Option>
+            </Stack>
+         </Popover>
       </>
    );
 };

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { styled, Fab, SwipeableDrawer, Button } from "@mui/material";
-import NavLink from "../NavLink";
+import { styled, Fab, SwipeableDrawer, Button, Avatar } from "@mui/material";
 export const Logo = styled(Link)(({ theme }) => {
    return {
       svg: {
@@ -10,45 +9,54 @@ export const Logo = styled(Link)(({ theme }) => {
    };
 });
 
-export const Option = styled(NavLink)(({ theme }) => ({
+export const MyAvtar = styled(Avatar)(({ theme }) => {
+   return {
+      width: 48,
+      height: 48,
+      boxShadow: theme.shadows[1],
+      cursor: "pointer",
+      transition: "0.3s linear all",
+      "&:hover": {
+         opacity: 0.8,
+      },
+   };
+});
+
+export const Option = styled(Button)(({ theme }) => ({
    display: "inline-flex",
    alignItems: "center",
-   gap: 4,
-   padding: 12,
-   boxShadow: "1px 1px 1px rgb(0 0 0 / 40%)",
-   width: "100%",
-   color: theme.myColor.text,
+   justifyContent: "flex-start",
+   padding: "8px 12px",
+   borderRadius: 0,
+   color: theme.myColor.textSecondary,
+   backgroundColor: theme.myColor.white,
+   border: "1px solid #ccc",
    transition: "all 0.2s linear",
+   "& .MuiTypography-root": {
+      paddingLeft: 8,
+   },
    "&.active .MuiTypography-root": {
       color: theme.myColor.link,
    },
+   "& .MuiSvgIcon-root": {
+      width: "1.3em",
+      height: "1.3em",
+      padding: 6,
+      fontSize: 28,
+      color: theme.myColor.black,
+      backgroundColor: theme.myColor.bgGray,
+      borderRadius: 99,
+      transition: "inherit",
+   },
    "&:hover": {
       color: theme.myColor.white,
       backgroundColor: theme.palette.primary.main,
       ".MuiTypography-root": {
          color: theme.myColor.white,
       },
-   },
-}));
-
-export const LogOutButton = styled(Button)(({ theme }) => ({
-   p: 1,
-   gap: 2,
-   padding: 12,
-   justifyContent: "flex-start",
-   borderRadius: 0,
-   transition: "all 0.2s linear",
-   "&:hover": {
-      color: theme.myColor.white,
-      backgroundColor: theme.palette.primary.main,
-      ".MuiTypography-root": {
-         color: theme.myColor.white,
+      ".MuiSvgIcon-root": {
+         color: theme.myColor.link,
+         backgroundColor: theme.myColor.white,
       },
    },
 }));
-
-export const ToggleOptions = styled(SwipeableDrawer)({
-   ".MuiPaper-root": {
-      justifyContent: "space-between",
-   },
-});

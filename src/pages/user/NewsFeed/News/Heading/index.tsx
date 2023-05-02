@@ -188,12 +188,17 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                         I'm feeling {post?.status?.toLocaleLowerCase()}
                      </Typography>
                   )}
-                  <Typography
-                     variant="body2"
-                     component="span"
-                     sx={{ color: theme.myColor.textSecondary }}>
-                     {dateFormat(post?.createdAt, "h:MM TT, mmmm dS, yyyy")}
-                  </Typography>
+                  <Tooltip
+                     arrow
+                     placement="right"
+                     title={`Updated at ${dateFormat(post?.updatedAt, "h:MM TT, mmmm dS, yyyy")}`}>
+                     <Typography
+                        variant="body2"
+                        component="span"
+                        sx={{ color: theme.myColor.textSecondary }}>
+                        {dateFormat(post?.createdAt, "h:MM TT, mmmm dS, yyyy")}
+                     </Typography>
+                  </Tooltip>
                </>
             }
             sx={{ pl: 0, pb: 0.5 }}

@@ -3,10 +3,8 @@ import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { Alert, Header } from "../../components";
-import { HEIGHT_HEADER } from "../../utils/constants";
 import { alertState$ } from "../../redux-saga/redux/selectors";
-import { AlertProps } from "../../utils/interfaces/Props";
-import Navigation from "../../components/Header/Navigation";
+import { HEIGHT_HEADER } from "../../utils/constants";
 const Home = () => {
    const theme = useTheme();
    const alert$ = useSelector(alertState$);
@@ -22,7 +20,7 @@ const Home = () => {
                sx={{
                   position: "relative",
                   top: HEIGHT_HEADER,
-                  pb: 2,
+                  pb: { sm: 2, xs: `${HEIGHT_HEADER}px` },
                   pt: 2,
                }}>
                <Outlet />

@@ -25,7 +25,8 @@ const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) 
                pb: 1,
                img: {
                   maxHeight: "50vh",
-                  borderRadius: 4,
+                  minWidth: "120px",
+                  borderRadius: 2,
                   cursor: "pointer",
                   boxShadow: 1,
                   transition: "all 0.3s linear",

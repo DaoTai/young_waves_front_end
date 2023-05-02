@@ -20,7 +20,7 @@ const Post = () => {
          container
          alignItems="center"
          p={2}
-         gap={4}
+         gap={2}
          bgcolor={theme.myColor.white}
          flexWrap="nowrap"
          boxShadow={1}
