@@ -48,7 +48,7 @@ const Post = () => {
             <Typography
                variant="subtitle1"
                sx={{ color: theme.myColor.textSecondary, letterSpacing: 1.5 }}>
-               Hi {auth$?.payload?.user.fullName}. What do you think?
+               Hi {auth$?.payload?.user.fullName}. What's on your mind?
             </Typography>
          </Grid>
          <Modal open={openModal} onClose={() => setOpenModal(false)} onSubmit={handleSubmit} />

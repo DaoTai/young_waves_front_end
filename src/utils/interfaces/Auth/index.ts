@@ -1,3 +1,4 @@
+import { GENDER } from "../../types";
 export interface TextField {
    name: string;
    label: string;
@@ -32,7 +33,7 @@ export interface SignUp {
    username: string;
    password: string;
    confirmedPassword: string;
-   gender: string;
+   gender: GENDER;
    dob: string;
    isAdmin?: boolean;
 }

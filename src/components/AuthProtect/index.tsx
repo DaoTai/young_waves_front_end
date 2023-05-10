@@ -1,10 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { ChatProvider } from "../../Contexts/Providers";
 import { authState$ } from "../../redux-saga/redux/selectors";
 const AuthProtect = ({ children }) => {
    const auth$ = useSelector(authState$);
-   const dispatch = useDispatch();
 
    return (
       <>

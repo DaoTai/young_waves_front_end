@@ -17,11 +17,11 @@ const AuthLayout = () => {
       overflow: "overlay",
       transition: "0.3s linear all",
       "& > #sign-in": {
-         width: "40vw",
+         width: "35vw",
          maxWidth: "100%",
       },
       "& > #sign-up": {
-         width: "80vw",
+         width: "60vw",
          maxWidth: "100%",
          maxHeight: "90vh",
       },

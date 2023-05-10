@@ -16,7 +16,8 @@ const Header = () => {
                   bgcolor={theme.myColor.white}
                   justifyContent="space-between"
                   alignItems="center"
-                  gap={2}>
+                  gap={2}
+                  pt={1}>
                   {/* Logo */}
                   <Grid item>
                      <Logo />

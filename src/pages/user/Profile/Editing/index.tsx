@@ -99,130 +99,134 @@ const Editing = () => {
                </Button>
             </Stack>
             <form autoComplete="off" onSubmit={handleSubmit}>
-               <Grid container alignItems="center" pt={2} spacing={2}>
-                  {/* Images */}
-                  <Grid
-                     item
-                     sm={12}
-                     xs={12}
-                     gap={1}
-                     rowSpacing={2}
-                     display="flex"
-                     justifyContent="center"
-                     alignItems="flex-start"
-                     flexWrap="wrap">
-                     {/* Cover picture */}
-                     <Box
-                        width="100%"
-                        minHeight={400}
-                        alignItems="center"
-                        overflow="hidden"
-                        position="relative"
-                        sx={
-                           auth$.payload.user.coverPicture
-                              ? {
-                                   backgroundImage: `url(${auth$.payload.user.coverPicture})`,
-                                   backgroundPosition: "center",
-                                   backgroundSize: "cover",
-                                   backgroundRepeat: "no-repeat",
-                                }
-                              : {
-                                   backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)`,
-                                }
-                        }>
-                        <Fab
-                           size="small"
-                           sx={{
-                              backgroundColor: theme.myColor.white,
-                              position: "absolute",
-                              zIndex: 2,
-                              top: 10,
-                              right: 10,
-                              boxShadow: "none",
-                           }}>
-                           <ImageInput onChange={handleChangeCoverPicture} />
-                        </Fab>
-                     </Box>
-                     {/* Avatar */}
+               <Stack gap={2} mt={2}>
+                  {/* Cover picture */}
+                  <Box
+                     width="100%"
+                     minHeight={400}
+                     alignItems="center"
+                     overflow="hidden"
+                     position="relative"
+                     sx={
+                        auth$.payload.user.coverPicture
+                           ? {
+                                backgroundImage: `url(${auth$.payload.user.coverPicture})`,
+                                backgroundPosition: "center",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat",
+                             }
+                           : {
+                                backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)`,
+                             }
+                     }>
+                     <Fab
+                        size="small"
+                        sx={{
+                           backgroundColor: theme.myColor.white,
+                           position: "absolute",
+                           zIndex: 2,
+                           top: 10,
+                           right: 10,
+                           boxShadow: "none",
+                        }}>
+                        <ImageInput onChange={handleChangeCoverPicture} />
+                     </Fab>
+                  </Box>
 
-                     <Avatar user={auth$.payload.user} variant="square" borderRadius={2} />
-                  </Grid>
+                  <Grid container spacing={4}>
+                     <Grid
+                        item
+                        sm={3}
+                        xs={12}
+                        display="flex"
+                        justifyContent="center"
+                        flexDirection="row">
+                        <Avatar user={auth$.payload.user} variant="square" borderRadius={2} />
+                     </Grid>
+                     <Grid container item sm={9} xs={12} spacing={1}>
+                        {/* Text fields */}
+                        {textInfoUser.map((props: any, i: number) => {
+                           return (
+                              <Grid key={i} item sm={6} xs={12}>
+                                 <TextField
+                                    {...props}
+                                    sx={{ mt: 1 }}
+                                    value={values[props.name] || ""}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={errors[props.name] && touched[props.name]}
+                                    helperText={
+                                       errors[props.name] && touched[props.name]
+                                          ? errors[props.name]
+                                          : null
+                                    }
+                                 />
+                              </Grid>
+                           );
+                        })}
 
-                  {/* Text fields */}
-                  {textInfoUser.map((props: any, i: number) => {
-                     return (
-                        <Grid key={i} item sm={6} xs={12}>
-                           <TextField
-                              {...props}
-                              sx={{ mt: 1 }}
-                              value={values[props.name] || ""}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={errors[props.name] && touched[props.name]}
-                              helperText={
-                                 errors[props.name] && touched[props.name]
-                                    ? errors[props.name]
-                                    : null
-                              }
-                           />
+                        {/* Countries field */}
+                        <Grid item sm={6} xs={12} alignItems={"center"}>
+                           <Box mt={1}>
+                              <CountriesSelect
+                                 value={values.region}
+                                 name="region"
+                                 onBlur={handleBlur}
+                                 onChange={setFieldValue}
+                              />
+                           </Box>
                         </Grid>
-                     );
-                  })}
+                        {/* Radio fields */}
+                        {radioFields.map((item: any, i: number) => {
+                           return (
+                              <Grid key={i} item md={6} xs={12}>
+                                 <FormControl>
+                                    <FormLabel>{item.label}</FormLabel>
+                                    <RadioGroup name={item.name}>
+                                       {item.radioes.map((radio: any, i: number) => {
+                                          return (
+                                             <FormControlLabel
+                                                key={i}
+                                                value={radio.value}
+                                                checked={values[item.name] === radio.value}
+                                                control={<Radio />}
+                                                label={radio.label}
+                                                onChange={handleChange}
+                                             />
+                                          );
+                                       })}
+                                    </RadioGroup>
+                                 </FormControl>
+                              </Grid>
+                           );
+                        })}
 
-                  {/* Countries field */}
-                  <Grid item sm={6} xs={12}>
-                     <CountriesSelect
-                        value={values.region}
-                        name="region"
-                        onBlur={handleBlur}
-                        onChange={setFieldValue}
-                     />
-                  </Grid>
-                  {/* Radio fields */}
-                  {radioFields.map((item: any, i: number) => {
-                     return (
-                        <Grid key={i} item md={6} xs={12}>
-                           <FormControl>
-                              <FormLabel>{item.label}</FormLabel>
-                              <RadioGroup name={item.name}>
-                                 {item.radioes.map((radio: any, i: number) => {
-                                    return (
-                                       <FormControlLabel
-                                          key={i}
-                                          value={radio.value}
-                                          checked={values[item.name] === radio.value}
-                                          control={<Radio />}
-                                          label={radio.label}
-                                          onChange={handleChange}
-                                       />
-                                    );
-                                 })}
-                              </RadioGroup>
-                           </FormControl>
+                        {/* Time fields */}
+                        <Grid item sm={6} xs={12}>
+                           {values?.dob && (
+                              <DateTimePicker
+                                 name="dob"
+                                 value={values.dob}
+                                 onChange={setFieldValue}
+                              />
+                           )}
                         </Grid>
-                     );
-                  })}
-
-                  {/* Time fields */}
-                  <Grid item sm={12} xs={12}>
-                     {values?.dob && (
-                        <DateTimePicker name="dob" value={values.dob} onChange={setFieldValue} />
-                     )}
+                     </Grid>
                   </Grid>
-               </Grid>
 
-               {/* Submit button */}
-               <Stack mt={2} flexDirection="row" justifyContent="flex-end">
-                  <Button
-                     type="submit"
-                     size="large"
-                     variant="contained"
-                     endIcon={<SendIcon />}
-                     sx={{
-                        color: theme.myColor.white,
-                     }}>
-                     Update
-                  </Button>
+                  {/* Submit button */}
+                  <Stack mt={2} flexDirection="row" justifyContent="flex-end">
+                     <Button
+                        type="submit"
+                        size="large"
+                        variant="contained"
+                        endIcon={<SendIcon />}
+                        sx={{
+                           color: theme.myColor.white,
+                        }}>
+                        Update
+                     </Button>
+                  </Stack>
                </Stack>
             </form>
          </Container>

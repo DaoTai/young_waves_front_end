@@ -64,7 +64,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
       <>
          {/* Form */}
          <form autoComplete="off" onSubmit={handleSubmit}>
-            <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid container spacing={1} sx={{ mt: 1 }}>
                {/* Text fields */}
                {textFields.map((props: any, i: number) => {
                   return (
@@ -115,7 +115,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
                })}
 
                {/* Time fields */}
-               <Grid item md={6} xs={12}>
+               <Grid item md={12} xs={12}>
                   <DateTimePicker name="dob" value="" onChange={setFieldValue} />
                </Grid>
             </Grid>

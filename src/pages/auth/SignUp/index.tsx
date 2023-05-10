@@ -21,7 +21,7 @@ const SignUp = () => {
          </Helmet>
 
          {/* Body */}
-         <Box p={4} paddingTop={1} paddingBottom={2}>
+         <Box p={2} pl={4} pr={4}>
             <Typography variant="h2" textAlign="center" color="primary">
                Sign up
             </Typography>

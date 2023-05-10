@@ -5,4 +5,4 @@ export const LENGTH_PASSWORD = 6;
 export const LENGTH_USERNAME = 6;
 
 // For time
-export const TIME_ALERT = 5000;
+export const TIME_ALERT = 4000;

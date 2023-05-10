@@ -25,8 +25,8 @@ const Detail = () => {
    const fetchMoreData = async () => {
       if (detailPost?.comments.maxPage && page < detailPost.comments.maxPage) {
          setPage(page + 1);
-         const res = await api.post.getDetailPost({ id: id as string, page: page + 1 });
-         const detailPost: DetailPost = await res.data;
+         const { data } = await api.post.getDetailPost({ id: id as string, page: page + 1 });
+         const detailPost: DetailPost = data;
          setDetailPost((prev: any) => {
             return {
                ...prev,
@@ -44,8 +44,8 @@ const Detail = () => {
       if (id) {
          try {
             (async () => {
-               const res = await api.post.getDetailPost({ id });
-               const detailPost: DetailPost = await res.data;
+               const { data } = await api.post.getDetailPost({ id });
+               const detailPost: DetailPost = data;
                setDetailPost(detailPost);
             })();
          } catch (err: any) {

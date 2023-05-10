@@ -10,6 +10,18 @@ const MyLink = styled(NavLink)(({ theme }) => ({
    "&.active": {
       color: theme.myColor.link,
       fontWeight: "bold",
+      "&:after": {
+         content: "''",
+         position: "absolute",
+         left: 0,
+         bottom: 0,
+         width: "100%",
+         height: 2,
+         backgroundColor: `${theme.myColor.link}`,
+         borderRadius: 4,
+         transform: "scale(1)",
+         transition: "all 0.2s linear",
+      },
    },
    "&:hover": {
       color: theme.myColor.link,

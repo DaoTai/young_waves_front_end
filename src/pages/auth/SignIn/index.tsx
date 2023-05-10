@@ -62,7 +62,7 @@ const SignIn = () => {
             />
          )}
          {/* Body */}
-         <Box p={4}>
+         <Box p={2} pl={4} pr={4}>
             {/* Form */}
             <form autoComplete="off" onSubmit={handleSubmit}>
                <Typography variant="h2" textAlign="center" color="primary" sx={{ mb: 2 }}>
@@ -107,7 +107,7 @@ const SignIn = () => {
                   variant="contained"
                   endIcon={<Send />}
                   sx={{ marginTop: 2, color: theme.myColor.white }}>
-                  Submit
+                  Sign in
                </Button>
             </form>
             {/* Utils */}

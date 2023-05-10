@@ -13,7 +13,7 @@ export const searchPosts = async (q: string) => {
 };
 
 export const getDetailPost = async (payload: { id: string; page?: number }) => {
-   return await axiosInstance.get<Promise<DetailPost>>(`/posts/${payload.id}`, {
+   return await axiosInstance.get<DetailPost>(`/posts/${payload.id}`, {
       params: {
          pageComment: payload.page || 1,
       },

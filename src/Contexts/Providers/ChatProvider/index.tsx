@@ -4,15 +4,15 @@ import { ChatBox } from "../../../pages/user/Chat";
 import { FormatConversation } from "../../../utils/interfaces/Chat";
 import { ChatContext } from "../../index";
 const ChatProvider = ({ children }) => {
-   const [conversations, setConversations] = useState<Partial<FormatConversation>[]>([]);
+   const [conversations, setConversations] = useState<FormatConversation[] | []>([]);
    const onCloseChatBox = (idConversation: string) => {
       setConversations((prev) => {
          return prev.filter((conversation) => conversation.idConversation !== idConversation);
       });
    };
 
-   const handleShowChatBox = (data: Partial<FormatConversation>) => {
-      setConversations((prev) => {
+   const handleShowChatBox = (data: FormatConversation) => {
+      setConversations((prev: FormatConversation[]) => {
          const showedMessage = prev.some(
             (conversation) => conversation.idConversation === data.idConversation
          );

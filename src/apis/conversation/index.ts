@@ -1,3 +1,4 @@
+import { ResponseConversation } from "../../utils/interfaces/Chat";
 import { axiosInstance } from "../config";
 
 export const addConversation = async (idFriend: string) => {
@@ -7,7 +8,7 @@ export const addConversation = async (idFriend: string) => {
 };
 
 export const getAllConversation = async (q: { friendName?: string; page?: number }) => {
-   return await axiosInstance.get("/conversations/", {
+   return await axiosInstance.get<ResponseConversation>("/conversations/", {
       params: q,
    });
 };

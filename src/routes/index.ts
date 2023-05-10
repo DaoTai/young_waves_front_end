@@ -11,8 +11,10 @@ import {
    Member,
    TrashPosts,
    TrashDetail,
+   ChatPage,
 } from "../pages/user";
 import Route from "./interface";
+
 const commonRoutes: Array<Route> = [
    {
       path: "",
@@ -66,6 +68,16 @@ const userRoutes: Array<Route> = [
       ],
    },
    {
+      path: "chats",
+      component: Fragment,
+      children: [
+         {
+            path: "",
+            component: ChatPage,
+         },
+      ],
+   },
+   {
       path: "explore",
       component: Fragment as React.FC,
       children: [
@@ -91,7 +103,7 @@ const userRoutes: Array<Route> = [
    },
 ];
 
-export const adminRoutes: Array<Route> = [
+const adminRoutes: Array<Route> = [
    {
       path: "",
       component: Fragment,
@@ -99,4 +111,4 @@ export const adminRoutes: Array<Route> = [
    ...userRoutes,
 ];
 
-export { authRoutes, commonRoutes, userRoutes, errorRoutes };
+export { authRoutes, commonRoutes, userRoutes, errorRoutes, adminRoutes };

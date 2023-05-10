@@ -20,7 +20,6 @@ const CountriesSelect = ({ name, value = "", onChange, onBlur, onlyOptions = fal
    const [countries, setCountries] = useState<Country[] | []>([]);
    const [selectedValue, setNewValue] = useState<Country | null>(null);
    const id = useId();
-   const objRef = useRef<any>();
 
    useEffect(() => {
       (async () => {
@@ -57,6 +56,7 @@ const CountriesSelect = ({ name, value = "", onChange, onBlur, onlyOptions = fal
    return (
       <>
          <Autocomplete
+            fullWidth
             value={selectedValue}
             options={countries}
             onChange={handleChange}
@@ -78,6 +78,7 @@ const CountriesSelect = ({ name, value = "", onChange, onBlur, onlyOptions = fal
                </Box>
             )}
             renderInput={(params) => <TextField {...params} placeholder="--Select country--" />}
+            sx={{ height: "100%" }}
          />
       </>
    );

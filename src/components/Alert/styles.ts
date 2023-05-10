@@ -39,20 +39,10 @@ export const MyAlert = styled(Alert)(({ theme }) => ({
       left: 0,
       right: 0,
       width: "100%",
-      height: 3,
+      height: 2,
       backgroundColor: "currentColor",
       filter: "brightness(2) contrast(2)",
       transformOrigin: "left",
-      animation: `${scaleX} 1s linear`,
+      animation: `${scaleX} 2s linear`,
    },
-   //  "&::after": {
-   //     content: "",
-   //     position: "absolute",
-   //     bottom: 0,
-   //     left: 0,
-   //     right: 0,
-   //     width: "100%",
-   //     height: 3,
-   //
-   //  },
 }));

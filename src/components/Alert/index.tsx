@@ -1,5 +1,5 @@
 import { Snackbar, Typography } from "@mui/material";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { hideAlert } from "../../redux-saga/redux/actions";
 import { TIME_ALERT } from "../../utils/constants";
@@ -10,6 +10,12 @@ const Alert = ({ message, title = "Error", mode = "error", onClose }: AlertProps
    const onCloseAlert = () => {
       onClose ? onClose() : dispatch(hideAlert());
    };
+
+   useEffect(() => {
+      return () => {
+         dispatch(hideAlert());
+      };
+   }, []);
 
    return (
       <Snackbar

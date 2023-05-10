@@ -11,7 +11,6 @@ const Navigation = () => {
    const isAdmin = payload?.user.isAdmin;
    return (
       <Container maxWidth="md" sx={{ bgcolor: theme.myColor.white }}>
-         {/* <Stack direction="row" justifyContent="space-between" alignItems="center"> */}
          <Stack direction="row" justifyContent="center" sx={{ gap: 4 }}>
             <NavLink to="/">
                <HomeIcon fontSize="large" />

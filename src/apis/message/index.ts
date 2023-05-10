@@ -1,8 +1,5 @@
+import { Message } from "../../utils/interfaces/Chat";
 import { axiosInstance } from "../config";
-export const createMessage = async (payload: {
-   idConversation: string;
-   sender: string;
-   text: string;
-}) => {
-   return await axiosInstance.post("/messages/", payload);
+export const createMessage = async (payload: Partial<Message>) => {
+   return await axiosInstance.post<Message>("/messages/", payload);
 };
