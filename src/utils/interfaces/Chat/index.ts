@@ -1,5 +1,5 @@
 import { Profile } from "../Profile";
-import { TYPE_MESSAGE } from "../../types";
+import { TYPE_ATTACHMENT } from "../../types";
 export interface Conversation {
    members: Partial<Profile[]>;
    _id: string;
@@ -8,14 +8,20 @@ export interface Conversation {
    createdAt: string;
 }
 
+export interface Attachment {
+   _id?: string;
+   type?: TYPE_ATTACHMENT;
+   url: string;
+}
+
 export interface Message {
+   _id: string;
    idConversation?: string;
    createdAt: string;
    updatedAt?: string;
    sender: string;
    content: string;
-   type?: TYPE_MESSAGE;
-   attachment?: string[];
+   attachments?: Attachment[];
 }
 export interface ResponseConversation {
    conversations: Conversation[];

@@ -56,30 +56,76 @@ export const Body = styled(Box)(({ theme }) => ({
    height: "80%",
    backgroundColor: theme.myColor.white,
    overflowX: "hidden",
+   ".wrap-message": {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+      padding: 4,
+   },
    ".infinite-scroll-component__outerdiv": { height: "100%" },
-   ".message": {
+   ".wrap-content": {
       maxWidth: "90%",
-      whiteSpace: "pre-wrap",
-      borderRadius: 12,
-      padding: "6px 8px",
-      wordBreak: "break-word",
-      color: theme.myColor.white,
-      background: theme.myColor.bgGradient,
-      "&[href^='http']": {
-         textDecoration: "underline",
+      position: "relative",
+      ".more-icon": {
+         display: "none",
+         position: "absolute",
+         top: "50%",
+         left: 0,
+         transform: "translate(-100%, -50%)",
+         cursor: "pointer",
+         "&:hover": {
+            filter: "contrast(200%)",
+         },
       },
-      "&.message--friend": {
-         background: theme.myColor.link,
-         position: "relative",
-         "&::before": {
-            content: '""',
-            position: "absolute",
-            top: "50%",
-            left: -8,
-            borderWidth: 4,
-            borderStyle: " solid",
-            borderColor: `transparent ${theme.myColor.link}  transparent transparent`,
-            transform: "translate(0, -50%)",
+      ".avatar": {
+         width: 35,
+         height: 35,
+      },
+      ".message": {
+         color: theme.myColor.white,
+         whiteSpace: "pre-wrap",
+         wordBreak: "break-word",
+         padding: "6px 8px",
+         borderRadius: 12,
+         width: "fit-content",
+         marginLeft: "auto",
+         background: theme.myColor.bgGradient,
+         "&[href^='http']": {
+            textDecoration: "underline",
+         },
+         "&.message--friend": {
+            marginRight: "auto",
+            background: theme.myColor.link,
+            position: "relative",
+            "&::before": {
+               content: '""',
+               position: "absolute",
+               top: "50%",
+               left: -8,
+               borderWidth: 4,
+               borderStyle: " solid",
+               borderColor: `transparent ${theme.myColor.link}  transparent transparent`,
+               transform: "translate(0, -50%)",
+            },
+         },
+      },
+
+      img: {
+         objectFit: "cover",
+         borderRadius: 12,
+         width: "100%",
+         height: "100%",
+         maxHeight: "200px",
+         cursor: "pointer",
+         transition: "all 0.3s ease",
+         "&:hover": {
+            filter: "contrast(110%)",
+         },
+      },
+
+      "&:hover": {
+         ".more-icon": {
+            display: "block",
          },
       },
    },

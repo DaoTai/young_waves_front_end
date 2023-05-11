@@ -6,15 +6,14 @@ import { updateProfile } from "../../../../../redux-saga/redux/actions";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../../utils/interfaces/Profile";
 import { WrapAvatar } from "../styles";
-const AvatarProfile = ({
-   user,
-   variant = "circular",
-   borderRadius,
-}: {
+
+interface Props {
    user: Profile;
    variant?: "rounded" | "square" | "circular";
    borderRadius?: number | string;
-}) => {
+}
+
+const AvatarProfile = ({ user, variant = "circular", borderRadius }: Props) => {
    const dispatch = useDispatch();
    const auth$ = useSelector(authState$);
    const [open, setOpen] = useState<boolean>(false);

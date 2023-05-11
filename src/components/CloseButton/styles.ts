@@ -4,7 +4,7 @@ export const CloseButton = styled(Button)(({ theme }) => ({
    position: "absolute",
    top: "4px",
    right: "2px",
-   zIndex: "99",
+   zIndex: 999,
    maxHeight: "32px",
    minWidth: "32px",
    maxWidth: "32px",

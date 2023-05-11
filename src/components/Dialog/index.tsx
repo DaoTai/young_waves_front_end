@@ -16,6 +16,10 @@ interface Props {
 }
 
 const MyDialog = ({ open, title, content, onClose, onSubmit }: Props) => {
+   const onClick = () => {
+      onSubmit();
+      onClose();
+   };
    return (
       <Dialog
          open={open}
@@ -30,7 +34,7 @@ const MyDialog = ({ open, title, content, onClose, onSubmit }: Props) => {
             <Button variant="outlined" onClick={onClose}>
                Cancel
             </Button>
-            <Button variant="contained" onClick={onSubmit}>
+            <Button variant="contained" onClick={onClick}>
                OK
             </Button>
          </DialogActions>
