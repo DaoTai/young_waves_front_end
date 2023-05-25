@@ -66,13 +66,7 @@ const CountriesSelect = ({ name, value = "", onChange, onBlur, onlyOptions = fal
             renderOption={(props, option) => (
                <Box key={id} component="li" sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
                   {option?.image && (
-                     <img
-                        loading="lazy"
-                        width="20"
-                        src={option.image}
-                        srcSet={`${option.image}`}
-                        alt="country"
-                     />
+                     <img width="20" src={option.image} srcSet={`${option.image}`} alt="country" />
                   )}
                   {option.name}
                </Box>

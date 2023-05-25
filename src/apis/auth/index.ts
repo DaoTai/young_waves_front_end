@@ -13,9 +13,12 @@ export const logOutUser = async () => {
 };
 
 export const refreshToken = async () => {
-   return await axiosInstance.post("/refresh", {
-      withCredentials: true,
-   });
+   try {
+      const res = await axiosInstance.post("/refresh", { withCredentials: true });
+      return res.data;
+   } catch (err) {
+      Promise.reject(err);
+   }
 };
 
 export const forgotPassword = async (data: { username: string; email: string }) => {

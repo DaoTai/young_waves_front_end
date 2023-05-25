@@ -39,7 +39,7 @@ const Message = ({
             <Tooltip
                arrow
                title={dateformat(message.createdAt, "h:MM TT, dd mmmm yyyy ")}
-               placement={idAuth === message.sender ? "bottom" : "right"}>
+               placement={idAuth === message.sender ? "top-end" : "right"}>
                <Stack className="wrap-content" flexDirection="column">
                   {/* Content message */}
                   <Typography
@@ -53,7 +53,13 @@ const Message = ({
 
                   {/* Attachments */}
                   {message!.attachments!.length > 0 && (
-                     <Stack gap={1} mt={1}>
+                     <Stack
+                        gap={1}
+                        mt={1}
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        flexWrap="wrap">
                         {message?.attachments?.map((attachment) => (
                            <img
                               key={attachment._id}
@@ -81,7 +87,7 @@ const Message = ({
          <Dialog
             open={openDialog}
             title="Message"
-            content="You want to this message? You will can't restore them"
+            content="Do you want to remove this message? You will can't restore them !"
             onSubmit={() => onDelete(message._id)}
             onClose={() => setOpenDialog(false)}
          />

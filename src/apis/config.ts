@@ -14,6 +14,7 @@ const serverUrl = "http://localhost:8001";
 
 export const axiosInstance = axios.create({
    baseURL: serverUrl,
+   timeout: 300000,
    withCredentials: true, // gửi cookie và header xác thực với các request giữa các miền khác nhau.
 });
 
@@ -26,14 +27,15 @@ axiosInstance.interceptors.request.use(
       const states: RootState = store.getState();
       const user = states.auth.payload?.user as Profile;
       let accessToken = states.auth.payload?.accessToken as string;
+
       // Check to get refresh token
       const date = new Date();
       const decodedToken: DecodedAccessToken = jwt_decode(accessToken);
       // When access token is expired, we need to get refresh token
       if (decodedToken.exp < date.getTime() / 1000) {
-         try {
-            const res = await refreshToken();
-            accessToken = res.data?.accessToken;
+         const data = await refreshToken();
+         if (data?.accessToken) {
+            accessToken = data.accessToken;
             // Dispatch to update new access token
             store.dispatch(
                signInSuccess({
@@ -41,8 +43,7 @@ axiosInstance.interceptors.request.use(
                   accessToken,
                })
             );
-         } catch (err) {
-            // When out of date token
+         } else {
             store.dispatch(signOut());
          }
       }

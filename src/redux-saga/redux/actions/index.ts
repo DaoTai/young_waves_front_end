@@ -9,7 +9,7 @@ import {
    TRASH_POSTS_ACTION,
 } from "../../../utils/enums";
 import { SignIn } from "../../../utils/interfaces/Auth";
-import { Post } from "../../../utils/interfaces/Post";
+import { CreatePost, Post, UpdatePost } from "../../../utils/interfaces/Post";
 import { ChangePassword, Profile } from "../../../utils/interfaces/Profile";
 import { AlertProps } from "../../../utils/interfaces/Props";
 
@@ -212,7 +212,10 @@ export const restorePostFailure = (payload: any) => ({
 });
 
 // Post
-export const createPost = (payload: Partial<Post>) => ({ type: POSTS_ACTION.CREATE_POST, payload });
+export const createPost = (payload: CreatePost) => ({
+   type: POSTS_ACTION.CREATE_POST,
+   payload,
+});
 export const createPostSuccess = (payload: Partial<Post>) => ({
    type: POSTS_ACTION.CREATE_POST_SUCCESS,
    payload,
@@ -221,7 +224,7 @@ export const createPostFailure = () => ({
    type: POSTS_ACTION.CREATE_POST_FAILURE,
 });
 
-export const updatePost = (payload: Partial<Post>) => ({
+export const updatePost = (payload: UpdatePost) => ({
    type: POSTS_ACTION.UPDATE_POST,
    payload,
 });

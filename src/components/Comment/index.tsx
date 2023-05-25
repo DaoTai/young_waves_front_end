@@ -220,7 +220,7 @@ const MyComment = ({
                   <Button
                      startIcon={<EditIcon color="primary" />}
                      sx={{
-                        justifyContent: "space-between",
+                        justifyContent: "flex-start",
                         pl: 1,
                         pr: 1,
                         bgcolor: "transparent",

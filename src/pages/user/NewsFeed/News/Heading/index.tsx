@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import { Dialog, PostModal } from "../../../../../components";
 import { deletePost, updatePost } from "../../../../../redux-saga/redux/actions";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
-import { Post } from "../../../../../utils/interfaces/Post";
+import { CreatePost, Post, UpdatePost } from "../../../../../utils/interfaces/Post";
 import { Actions } from "./styles";
 export interface HeadingNewsProps {
    post: Post;
@@ -51,13 +51,6 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
       handleClose();
       setOpenPostModal(true);
    };
-
-   const handleUpdate = useCallback(
-      (updatedPost: Partial<Post>) => {
-         dispatch(updatePost({ ...updatedPost, _id: post._id }));
-      },
-      [post]
-   );
 
    const onClosePostModal = useCallback(() => {
       setOpenPostModal(false);
@@ -253,12 +246,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
             onSubmit={() => handleDelete(post._id)}
          />
          {/* Modal */}
-         <PostModal
-            post={post}
-            open={openPostModal}
-            onClose={onClosePostModal}
-            onSubmit={handleUpdate}
-         />
+         {openPostModal && <PostModal type="update" post={post} onClose={onClosePostModal} />}
       </>
    );
 };

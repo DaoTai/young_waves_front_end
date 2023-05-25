@@ -53,7 +53,7 @@ export const Body = styled(Box)(({ theme }) => ({
    flex: 2,
    paddingTop: 8,
    paddingBottom: 8,
-   height: "80%",
+   height: "60%",
    backgroundColor: theme.myColor.white,
    overflowX: "hidden",
    ".wrap-message": {
@@ -113,9 +113,8 @@ export const Body = styled(Box)(({ theme }) => ({
       img: {
          objectFit: "cover",
          borderRadius: 12,
-         width: "100%",
-         height: "100%",
-         maxHeight: "200px",
+         width: "200px",
+         height: "200px",
          cursor: "pointer",
          transition: "all 0.3s ease",
          "&:hover": {
@@ -133,30 +132,43 @@ export const Body = styled(Box)(({ theme }) => ({
 
 export const Footer = styled(Stack)(({ theme }) => ({
    minHeight: 54,
-   maxHeight: "20%",
+   maxHeight: "40%",
    gap: 8,
+   padding: 4,
    flexDirection: "row",
    justifyContent: "space-between",
+   alignItems: "flex-end",
    color: theme.myColor.text,
    backgroundColor: theme.myColor.white,
+   borderTop: "1px solid transparent",
+   position: "relative",
+   zIndex: 10,
+   "&:hover, &:focus-within": {
+      borderColor: theme.myColor.link,
+   },
    "#form-chat": {
       resize: "none",
+      fontSize: 14,
       padding: 4,
       borderRadius: 4,
       fontFamily: "inherit",
-      fontSize: "inherit",
-      flexGrow: 2,
-      border: `1px solid ${theme.myColor.link}`,
-      height: "54px !important",
+      flex: "1 1 auto",
+      border: "none",
+      outline: "none",
+      caretColor: theme.myColor.link,
+      height: "50% !important",
       width: "100%",
+      backgroundColor: theme.myColor.bgGray,
       overflow: "scroll !important",
       transition: "all 0.2s ease",
+      "::-webkit-scrollbar": {
+         display: "none",
+      },
       "&:hover, &:focus": {
          outlineColor: theme.myColor.link,
       },
    },
    "#send-icon": {
-      alignSelf: "center",
       color: theme.palette.primary.main,
       borderRadius: 12,
       width: 42,
@@ -170,6 +182,20 @@ export const Footer = styled(Stack)(({ theme }) => ({
          backgroundColor: theme.myColor.link,
          color: theme.myColor.white,
       },
+   },
+}));
+
+export const WrapAttachments = styled(Stack)(({ theme }) => ({
+   flexDirection: "row",
+   flexWrap: "nowrap",
+   overflow: "scroll",
+   gap: 4,
+   padding: "4px 8px 4px 0",
+   img: {
+      width: 60,
+      height: 60,
+      borderRadius: 8,
+      objectFit: "cover",
    },
 }));
 

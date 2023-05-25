@@ -1,6 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
-import { Avatar, Box, Chip, Stack, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Chip, Divider, Stack, Typography, useTheme } from "@mui/material";
 import { memo, useEffect, useRef, useState, useContext } from "react";
 import { useSelector } from "react-redux";
 import * as api from "../../../../../apis/conversation";
@@ -8,7 +8,6 @@ import { BaseInput } from "../../../../../components";
 import { useDebounce } from "../../../../../hooks";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { FormatConversation } from "../../../../../utils/interfaces/Chat";
-import { ChatContext } from "../../../../../Contexts";
 import { ClearButton, ConvItem } from "./styles";
 const Container = ({
    onClickItem,
@@ -106,12 +105,17 @@ const Container = ({
                   {conversations?.map((conversation, index) => (
                      <ConvItem key={index} onClick={() => onClickItem(conversation)}>
                         <Avatar src={conversation?.friend?.avatar} sx={{ width: 60, height: 60 }} />
-                        <Stack>
+                        <Stack overflow="hidden">
                            <Typography variant="body1">{conversation?.friend?.fullName}</Typography>
+                           {/* Lastest message */}
                            {conversation.lastestMessage && (
                               <Typography
                                  variant="subtitle2"
                                  fontWeight={400}
+                                 textOverflow="ellipsis"
+                                 whiteSpace="nowrap"
+                                 overflow="hidden"
+                                 width="200px"
                                  sx={{ color: theme.myColor.textSecondary }}>
                                  {user._id === conversation?.lastestMessage?.sender
                                     ? "You"
@@ -131,6 +135,7 @@ const Container = ({
          {currentPageRef.current < maxPageRef.current && (
             <Chip label="Get more" onClick={handleNextPage} sx={{ width: "100%" }} />
          )}
+         <Divider />
       </Box>
    );
 };

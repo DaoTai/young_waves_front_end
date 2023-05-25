@@ -9,56 +9,97 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { createPost, updatePost } from "../../../redux-saga/redux/actions";
+import { Post } from "../../../utils/interfaces/Post";
 import { CloseButton, ImageInput } from "../../index";
 import { MyBox } from "./styles";
-import { Post } from "../../../utils/interfaces/Post";
 
 interface ModalPostProps {
    post?: Post;
-   open: boolean;
+   type: "update" | "create";
    onClose: () => void;
-   onSubmit: (post: Partial<Post>) => void;
 }
 
-const MyModal = ({ post, open, onClose, onSubmit }: ModalPostProps) => {
+const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
    const theme = useTheme();
+   const dispatch = useDispatch();
    const [images, setImages] = useState<string[]>([]);
    const [body, setBody] = useState<string>("");
    const [status, setStatus] = useState<string>("");
+   const [attachments, setAttachments] = useState<FileList>();
+   const [deletedImages, setDeletedImages] = useState<string[]>([]);
+   const imagesRef = useRef<string[]>([]);
    useEffect(() => {
-      setImages(post?.attachments ?? []);
-      setBody(post?.body ?? "");
-      setStatus(post?.status ?? "");
+      if (post) {
+         if (post?.attachments?.length > 0) {
+            setImages(post?.attachments);
+         }
+         post?.body && setBody(post.body);
+         post?.status && setStatus(post.status);
+      }
    }, [post]);
 
-   const handleSetImages = (files) => {
-      setImages((prev) => [...prev, ...files]);
+   useEffect(() => {
+      return () => {
+         imagesRef.current.forEach((url) => URL.revokeObjectURL(url));
+      };
+   }, []);
+
+   const handleSetImages = (files: FileList) => {
+      setAttachments(files);
+      // Remove not image files
+      const imageFiles = Array.from(files).filter((file) => !file.type.includes("video"));
+      const urlImages = imageFiles.map((file) => URL.createObjectURL(file));
+      imagesRef.current = [...images, ...urlImages];
+      setImages(imagesRef.current);
    };
-   const handleRemoveImage = (index: number) => {
-      setImages((prev: string[]) => {
-         const newState = [...prev];
-         newState.splice(index, 1);
-         return newState;
-      });
+
+   const handleRemoveImage = (deletedImg: string) => {
+      URL.revokeObjectURL(deletedImg);
+      imagesRef.current = imagesRef.current.filter((url) => url !== deletedImg);
+      setImages((prev) => prev.filter((img) => img !== deletedImg));
+      setDeletedImages([...deletedImages, deletedImg]);
    };
 
    const handleSubmit = () => {
       if (body) {
-         onSubmit({
-            attachments: images,
-            body,
-            status,
-         });
-         setImages([]);
-         setBody("");
-         setStatus("");
-         onClose();
+         switch (type) {
+            case "create":
+               dispatch(
+                  createPost({
+                     attachments,
+                     body,
+                     status,
+                  })
+               );
+               onClose();
+               return;
+            case "update":
+               const filteredImages = post?.attachments.filter(
+                  (attachment) => !deletedImages?.includes(attachment)
+               );
+               dispatch(
+                  updatePost({
+                     _id: post!._id,
+                     body,
+                     status,
+                     attachments: filteredImages,
+                     deletedAttachments: deletedImages,
+                     files: attachments,
+                  })
+               );
+               onClose();
+               return;
+            default:
+               return;
+         }
       }
    };
 
    return (
-      <Modal open={open} onClose={onClose}>
+      <Modal open onClose={onClose}>
          <MyBox>
             {/* Heading */}
             <Typography variant="h3" component="h2" textAlign="center" pb={1}>
@@ -69,32 +110,32 @@ const MyModal = ({ post, open, onClose, onSubmit }: ModalPostProps) => {
             <Box borderTop={1} pt={2}>
                <form>
                   <TextField
+                     fullWidth
                      variant="outlined"
                      label="Status"
-                     value={status}
                      placeholder="How do you feel..."
                      margin="dense"
-                     fullWidth
+                     value={status}
                      onChange={(e) => setStatus(e.target.value)}
                   />
                   <TextField
-                     value={body}
-                     autoFocus
-                     placeholder="What do you think?"
-                     margin="dense"
                      required
                      fullWidth
                      multiline
+                     autoFocus
+                     placeholder="What do you think?"
+                     margin="dense"
                      rows={5}
                      sx={{ mb: 2 }}
+                     value={body}
                      onChange={(e) => setBody(e.target.value)}
                   />
                   {images.length > 0 && (
                      <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
                         {images?.map((item, index) => (
                            <ImageListItem key={index} sx={{ mb: 1, minHeight: "40vh" }}>
-                              <CloseButton onClick={() => handleRemoveImage(index)} />
-                              <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
+                              <CloseButton onClick={() => handleRemoveImage(item)} />
+                              <img srcSet={`${item} 2x`} placeholder="image" />
                            </ImageListItem>
                         ))}
                      </ImageList>
@@ -102,6 +143,7 @@ const MyModal = ({ post, open, onClose, onSubmit }: ModalPostProps) => {
                   <ImageInput multiple onChange={handleSetImages} />
                   <Button
                      fullWidth
+                     disabled={!body.trim()}
                      size="large"
                      variant="contained"
                      endIcon={<Send />}

@@ -1,4 +1,5 @@
-import { Post, DetailPost } from "../../utils/interfaces/Post";
+import { storageImages, deleteMultipleImages, storageImage } from "../../firebase/services";
+import { Post, DetailPost, CreatePost, UpdatePost } from "../../utils/interfaces/Post";
 import { axiosInstance } from "../config";
 export const getPosts = async (page: number = 1) => {
    return await axiosInstance.get("/posts", {
@@ -40,12 +41,34 @@ export const getTrashPosts = async (page: number = 1) => {
    });
 };
 
-export const createPost = async (payload: Post) => {
-   return await axiosInstance.post(`/posts/`, payload);
+export const createPost = async (payload: CreatePost) => {
+   let urls: string[] = [];
+   if (payload.attachments) {
+      urls = await storageImages(payload.attachments);
+   }
+   const data = {
+      ...payload,
+      attachments: urls,
+   };
+   return await axiosInstance.post<Post>(`/posts/`, data);
 };
 
-export const updatePost = async (payload: Partial<Post>) => {
-   return payload._id && (await axiosInstance.put(`/posts/${payload._id}`, payload));
+export const updatePost = async (payload: UpdatePost) => {
+   let urls: string[] = [];
+   if (payload?.files) {
+      urls = await storageImages(payload.files);
+   }
+
+   if (payload?.deletedAttachments && payload?.deletedAttachments?.length > 0) {
+      deleteMultipleImages(payload?.deletedAttachments);
+   }
+   delete payload?.deletedAttachments;
+   const data = {
+      ...payload,
+      attachments: [...(payload.attachments ?? []), ...urls],
+   };
+
+   return payload._id && (await axiosInstance.put<Post>(`/posts/${payload._id}`, data));
 };
 
 export const restorePost = async (id: string) => {
@@ -57,7 +80,9 @@ export const deletePost = async (id: string) => {
 };
 
 export const forceDeletePost = async (id: string) => {
-   return id && (await axiosInstance.delete(`/posts/${id}/force-delete`));
+   const { data, statusText } = await axiosInstance.delete<Post>(`/posts/${id}/force-delete`);
+   await deleteMultipleImages(data.attachments);
+   return statusText;
 };
 export const likePost = async (id: string) => {
    return await axiosInstance.post(`/posts/${id}/like`);

@@ -1,7 +1,5 @@
-import { AxiosResponse } from "axios";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../../apis";
-import * as CONSTANTS from "../../utils/constants";
 import {
    AUTH_ACTION,
    FRIEND_ACTION,
@@ -11,11 +9,9 @@ import {
    TRASH_POSTS_ACTION,
 } from "../../utils/enums";
 import { SignIn } from "../../utils/interfaces/Auth";
-import { Comment } from "../../utils/interfaces/Comment";
-import { Post } from "../../utils/interfaces/Post";
+import { CreatePost, Post, UpdatePost } from "../../utils/interfaces/Post";
 import { Profile } from "../../utils/interfaces/Profile";
 import * as ACTIONS from "../redux/actions";
-// Saga
 
 // Sign-in
 function* signInSaga(action: { type: string; payload: SignIn }) {
@@ -167,35 +163,19 @@ function* getOwnerPostsSaga(action: { type: string; payload: { id: string; page?
 }
 
 // Create new post
-function* createPostSaga(action: { type: string; payload: Post }) {
+function* createPostSaga(action: { type: string; payload: CreatePost }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
       if (res.status === 200) {
          yield put(ACTIONS.createPostSuccess(res.data));
       } else {
-         if (res.status === 413) {
-            yield put(
-               ACTIONS.showAlert({
-                  title: "Create post",
-                  message: "Capacity of post is over",
-                  mode: "warning",
-               })
-            );
-         } else {
-            yield put(
-               ACTIONS.showAlert({
-                  title: "Create post",
-                  message: "Create post failed",
-                  mode: "error",
-               })
-            );
-         }
+         throw new Error("Create post failed");
       }
    } catch (err: any) {
       yield put(
          ACTIONS.showAlert({
             title: "Create post",
-            message: "Create post failed",
+            message: err,
             mode: "error",
          })
       );
@@ -203,10 +183,10 @@ function* createPostSaga(action: { type: string; payload: Post }) {
 }
 
 // Update post
-function* updatePostSaga(action: { type: string; payload: Partial<Post> }) {
+function* updatePostSaga(action: { type: string; payload: UpdatePost }) {
    try {
-      yield call(api.post.updatePost, action.payload);
-      yield put(ACTIONS.updatePostSuccess(action.payload));
+      const res = yield call(api.post.updatePost, action.payload);
+      yield put(ACTIONS.updatePostSuccess(res.data));
    } catch (err) {
       yield put(
          ACTIONS.showAlert({
@@ -292,7 +272,7 @@ function* restorePost(action: { type: string; payload: string }) {
 // Force delete
 function* forceDeletePost(action: { type: string; payload: string }) {
    try {
-      const res = yield call(api.post.forceDeletePost, action.payload);
+      yield call(api.post.forceDeletePost, action.payload);
       yield put(ACTIONS.forceDeletePostSuccess(action.payload));
       yield put(
          ACTIONS.showAlert({

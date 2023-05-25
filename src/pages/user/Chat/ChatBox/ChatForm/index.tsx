@@ -1,5 +1,13 @@
 import SendIcon from "@mui/icons-material/Send";
-import { Avatar, Stack, TextareaAutosize, Tooltip, Typography } from "@mui/material";
+import {
+   Avatar,
+   Divider,
+   Stack,
+   TextareaAutosize,
+   Tooltip,
+   Typography,
+   useTheme,
+} from "@mui/material";
 import dateformat from "dateformat";
 import { KeyboardEvent, useCallback, useEffect, useId, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -8,14 +16,16 @@ import { Socket, io } from "socket.io-client";
 import * as api from "../../../../../apis";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { FormatConversation, Message as IMessage } from "../../../../../utils/interfaces/Chat";
-import { OverlayFullImage } from "../../../../../components";
-import { Body, Footer, WrapperChat } from "../styles";
+import { ImageInput, OverlayFullImage } from "../../../../../components";
+import { Body, Footer, WrapAttachments, WrapperChat } from "../styles";
 import Message from "./Message";
+import Upload from "../../../../../components/Upload";
 const host = "http://localhost:8001";
 
 const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    const auth$ = useSelector(authState$);
    const idAuth = auth$.payload?.user?._id;
+   const theme = useTheme();
    const idMsg = useId();
    const bodyRef = useRef<HTMLDivElement>(null);
    const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -25,6 +35,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    const [messages, setMessages] = useState<IMessage[]>([]);
    const [message, setMessage] = useState<string>("");
    const [hasMore, setHasMore] = useState<boolean>(true);
+   const [attachments, setAttachments] = useState<string[] | []>([]);
    const friendAvatar = conversation.friend?.avatar;
    // Work with socket
    useEffect(() => {
@@ -98,6 +109,9 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
                   {
                      url: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/2/959628/Vong_Co_3.jpg",
                   },
+                  {
+                     url: "https://phunuvietnam.mediacdn.vn/179072216278405120/2023/5/11/page-1683785311109912638990.jpg",
+                  },
                ],
             });
             res.status === 200 && setMessages((prev) => [res.data, ...prev]);
@@ -126,6 +140,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
       }
    };
 
+   // Delete message
    const handleDeleteMsg = useCallback(async (idDeleteMsg: string) => {
       if (idDeleteMsg) {
          try {
@@ -138,6 +153,10 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
          }
       }
    }, []);
+
+   const getAttachments = (files: string[]) => {
+      setAttachments(files);
+   };
 
    return (
       <WrapperChat>
@@ -171,45 +190,6 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
                            friendAvatar={friendAvatar as string}
                            onDelete={handleDeleteMsg}
                         />
-                        // <Stack
-                        //    key={index}
-                        //    className="wrap-message"
-                        //    justifyContent={idAuth === message.sender ? "flex-end" : "flex-start"}>
-                        //    {/* Avatar friend */}
-                        //    {idAuth !== message.sender && (
-                        //       <Avatar src={friendAvatar} className="avatar" />
-                        //    )}
-                        //    <Tooltip
-                        //       arrow
-                        //       title={dateformat(message.createdAt, "h:MM TT, dd mmmm yyyy ")}
-                        //       placement={idAuth === message.sender ? "left" : "right"}>
-                        //       <Stack className="wrap-content" flexDirection="column">
-                        //          <Typography
-                        //             variant="body1"
-                        //             component={message.content.slice(0, 4) === "http" ? "a" : "p"}
-                        //             href={message.content}
-                        //             target="_blank"
-                        //             className={
-                        //                idAuth === message.sender
-                        //                   ? "message"
-                        //                   : "message message--friend"
-                        //             }>
-                        //             {message.content}
-                        //          </Typography>
-                        //          {message!.attachments!.length > 0 && (
-                        //             <Stack gap={1} mt={1}>
-                        //                {message?.attachments?.map((attachment) => (
-                        //                   <img
-                        //                      key={attachment._id}
-                        //                      src={attachment.url}
-                        //                      alt="attachment"
-                        //                   />
-                        //                ))}
-                        //             </Stack>
-                        //          )}
-                        //       </Stack>
-                        //    </Tooltip>
-                        // </Stack>
                      );
                   })}
                </InfiniteScroll>
@@ -217,15 +197,26 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
          </Body>
          {/* Footer */}
          <Footer>
-            <TextareaAutosize
-               id="form-chat"
-               ref={textareaRef}
-               value={message}
-               autoFocus
-               placeholder={"Type a message for " + conversation?.friend.fullName + "..."}
-               onChange={(e) => setMessage(e.target.value)}
-               onKeyDown={handleShortHandSendMsg}
-            />
+            {/* <ImageInput width={40} height={40} multiple onChange={getAttachments} /> */}
+            <Upload></Upload>
+            <Stack flex={2} borderRadius={2} overflow="hidden">
+               {attachments.length > 0 && (
+                  <WrapAttachments>
+                     {attachments.map((attach, i) => (
+                        <img key={i} src={attach} />
+                     ))}
+                  </WrapAttachments>
+               )}
+               <TextareaAutosize
+                  autoFocus
+                  id="form-chat"
+                  ref={textareaRef}
+                  value={message}
+                  placeholder={"Type a message for " + conversation?.friend.fullName + "..."}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyDown={handleShortHandSendMsg}
+               />
+            </Stack>
             <SendIcon id="send-icon" fontSize="large" onClick={handleSendMsg} />
          </Footer>
       </WrapperChat>

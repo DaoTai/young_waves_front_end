@@ -31,7 +31,7 @@ const MyDialog = ({ open, title, content, onClose, onSubmit }: Props) => {
             <DialogContentText id="alert-dialog-slide-description">{content}</DialogContentText>
          </DialogContent>
          <DialogActions>
-            <Button variant="outlined" onClick={onClose}>
+            <Button variant="outlined" sx={{ bgcolor: "transparent" }} onClick={onClose}>
                Cancel
             </Button>
             <Button variant="contained" onClick={onClick}>

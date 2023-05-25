@@ -1,19 +1,12 @@
 import { Avatar, Grid, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createPost } from "../../redux-saga/redux/actions";
+import { useSelector } from "react-redux";
 import { authState$ } from "../../redux-saga/redux/selectors";
-import { Post as IPost } from "../../utils/interfaces/Post";
 import Modal from "./Modal";
 const Post = () => {
    const theme = useTheme();
-   const dispatch = useDispatch();
    const [openModal, setOpenModal] = useState(false);
    const auth$ = useSelector(authState$);
-
-   const handleSubmit = (post: Partial<IPost>) => {
-      dispatch(createPost(post));
-   };
 
    return (
       <Grid
@@ -51,7 +44,7 @@ const Post = () => {
                Hi {auth$?.payload?.user.fullName}. What's on your mind?
             </Typography>
          </Grid>
-         <Modal open={openModal} onClose={() => setOpenModal(false)} onSubmit={handleSubmit} />
+         {openModal && <Modal type="create" onClose={() => setOpenModal(false)} />}
       </Grid>
    );
 };

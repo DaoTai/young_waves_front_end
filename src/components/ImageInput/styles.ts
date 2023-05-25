@@ -1,4 +1,4 @@
-import { Fab, styled } from "@mui/material";
+import { Box, Fab, styled } from "@mui/material";
 import ImageIcon from "../../assets/images/image-icon.png";
 export const MyLabel = styled("label")({
    marginTop: 8,
@@ -11,9 +11,7 @@ export const MyLabel = styled("label")({
    },
 });
 
-export const WrapFileInput = styled("div")({
-   width: "50px",
-   height: "50px",
+export const WrapFileInput = styled(Box)({
    textAlign: "center",
    display: "flex",
    alignItems: "center",
@@ -23,10 +21,6 @@ export const WrapFileInput = styled("div")({
    backgroundColor: "#fff",
    boxShadow: "0 0 6px rgba(0,0,0,0.3)",
    transition: "0.3s ease all",
-   "&:hover": {
-      borderColor: "#333",
-      backgroundColor: "#fff",
-   },
    "& input": {
       cursor: "pointer",
       color: "transparent",

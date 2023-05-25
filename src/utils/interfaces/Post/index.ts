@@ -4,15 +4,31 @@ import { Comment } from "../Comment";
 export interface Post {
    _id: string;
    body: string;
+   author: Partial<Profile>;
+   likes: Array<string>;
+   comments: Array<string>;
+   attachments: string[];
    status?: string;
    createdAt?: string;
    updatedAt?: string;
    deletedAt?: string;
-   author: Partial<Profile>;
-   likes: Array<string>;
-   comments: Array<string>;
-   attachments: Array<string>;
 }
+
+export interface CreatePost {
+   body: string;
+   status?: string;
+   attachments?: FileList;
+}
+
+export interface UpdatePost {
+   _id: string;
+   body: string;
+   status?: string;
+   attachments?: string[];
+   deletedAttachments?: string[];
+   files: FileList | undefined;
+}
+
 export interface DetailPost {
    comments: { data: Comment[]; currentPage: number; maxPage: number };
    post: Post;

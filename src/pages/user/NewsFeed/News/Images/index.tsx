@@ -1,4 +1,4 @@
-import { ImageList, ImageListItem, styled } from "@mui/material";
+import { Divider, ImageList, ImageListItem, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import OverlayBackground from "../../../../../components/OverlayBackground";
 
@@ -20,7 +20,6 @@ const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) 
             cols={columns}
             sx={{
                mt: 0,
-               borderBottom: 1,
                pt: 1,
                pb: 1,
                img: {
@@ -39,12 +38,14 @@ const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) 
                if (index < columns) {
                   return index === columns - 1 ? (
                      <ImageListItem key={index} onClick={handleNavigate}>
-                        <img src={item} srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
-                        <OverlayBackground amount={arr.length - columns} />
+                        <img src={item} srcSet={`${item} 2x`} placeholder="image" />
+                        {arr.length - columns > 0 && (
+                           <OverlayBackground amount={arr.length - columns} />
+                        )}
                      </ImageListItem>
                   ) : (
                      <ImageListItem key={index} onClick={handleNavigate}>
-                        <img srcSet={`${item} 2x`} loading="lazy" placeholder="image" />
+                        <img srcSet={`${item} 2x`} placeholder="image" />
                      </ImageListItem>
                   );
                }
