@@ -1,5 +1,5 @@
-import { Button, styled } from "@mui/material";
-export const WrapAvatar = styled(Button)(({ theme }) => ({
+import { Box, styled } from "@mui/material";
+export const WrapAvatar = styled(Box)(({ theme }) => ({
    position: "relative",
    cursor: "pointer",
    backgroundColor: "transparent !important",

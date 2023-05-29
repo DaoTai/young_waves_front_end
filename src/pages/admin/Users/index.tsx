@@ -25,27 +25,47 @@ import { useDispatch } from "react-redux";
 import * as api from "../../../apis";
 import { Dialog } from "../../../components";
 import { showAlert } from "../../../redux-saga/redux/actions";
-import { Profile } from "../../../utils/interfaces/Profile";
+import { Profile, UpdateProfile } from "../../../utils/interfaces/Profile";
 import AddMember from "./AddMember";
 import DetailUser from "./Detail";
+import { Link } from "react-router-dom";
+
+interface StatePoper {
+   detail: boolean;
+   dialog: boolean;
+   modal: boolean;
+}
+
 const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const [users, setUsers] = useState<Profile[] | []>([]);
    const [user, setUser] = useState<Profile>();
+   const [selectionModel, setSelectionModel] = useState([]);
    const [role, setRole] = useState<string>("User");
    const [isLoading, setLoading] = useState<boolean>(false);
-   const [showDetail, setShowDetail] = useState<boolean>(false);
-   const [showDialog, setShowDialog] = useState<boolean>(false);
-   const [showModal, setShowModal] = useState<boolean>(false);
+   const [open, setOpen] = useState<StatePoper>({
+      detail: false,
+      dialog: false,
+      modal: false,
+   });
+
+   const handleClosePopper = () => {
+      setOpen({
+         detail: false,
+         dialog: false,
+         modal: false,
+      });
+   };
+
    // close detail modal
    const onClose = useCallback(() => {
-      setShowDetail(false);
+      handleClosePopper();
    }, []);
 
    // close confirm delete dialog
    const onCloseDeleteDialog = useCallback(() => {
-      setShowDialog(false);
+      handleClosePopper();
    }, []);
 
    useEffect(() => {
@@ -101,7 +121,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             headerAlign: "center",
             headerName: "Joined time",
             flex: 2,
-            valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
+            valueFormatter: (params) => dateformat(params.value, "dd-mm-yyyy"),
          },
          {
             field: "gender",
@@ -124,10 +144,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             flex: 1,
             renderCell(params) {
                return (
-                  <VisibilityIcon
-                     sx={{ flex: 1, cursor: "pointer", color: theme.palette.success.main }}
-                     onClick={() => onOpenDetail(params.row)}
-                  />
+                  <Fab size="small" color="info" onClick={() => onOpenDetail(params.row)}>
+                     <VisibilityIcon />
+                  </Fab>
                );
             },
          },
@@ -144,10 +163,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             renderCell(params) {
                return (
                   <Tooltip title={params.row.isAdmin ? "Authorize to user" : "Authorize to admin"}>
-                     <PersonAddIcon
-                        sx={{ flex: 1, cursor: "pointer", color: theme.myColor.link }}
-                        onClick={() => handleAuthorize(params.row)}
-                     />
+                     <Fab size="small" color="success" onClick={() => handleAuthorize(params.row)}>
+                        <PersonAddIcon />
+                     </Fab>
                   </Tooltip>
                );
             },
@@ -163,11 +181,23 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             flex: 1,
             renderCell(params) {
                return (
-                  <DeleteIcon
-                     sx={{ flex: 1, cursor: "pointer", color: theme.palette.error.main }}
-                     onClick={() => onOpenConfirmDelete(params.row)}
-                  />
+                  <Fab size="small" color="error" onClick={() => onOpenConfirmDelete(params.row)}>
+                     <DeleteIcon sx={{ flex: 1 }} />
+                  </Fab>
                );
+            },
+         },
+         {
+            field: "access",
+            align: "center",
+            headerAlign: "center",
+            headerName: "Access",
+            sortable: false,
+            disableColumnMenu: true,
+            width: 200,
+            flex: 1,
+            renderCell(params) {
+               return <Link to={"/user/explore/" + params.id}>Profile</Link>;
             },
          },
       ],
@@ -181,49 +211,47 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
 
    // open detail modal
    const onOpenDetail = (user: Profile) => {
-      setShowDetail(true);
+      setOpen((prev) => ({ ...prev, detail: true }));
       setUser(user);
    };
 
    // open dialog delete
    const onOpenConfirmDelete = (user: Profile) => {
       setUser(user);
-      setShowDialog(true);
+      setOpen({ dialog: true, modal: false, detail: false });
    };
 
    // handle delete user
    const handleDeleteUser = async () => {
       try {
-         const res = await api.admin.deleteUser(user?._id as string);
-         if (res.status === 200) {
-            dispatch(
-               showAlert({
-                  title: "Delete",
-                  message: `Delete ${user?.fullName} successfully!`,
-                  mode: "success",
-               })
-            );
-            setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
-         } else {
-            dispatch(
-               showAlert({
-                  title: "Failure",
-                  message: `Delete ${user?.fullName} failed!`,
-                  mode: "info",
-               })
-            );
-         }
+         await api.admin.deleteUser(user?._id as string);
+         dispatch(
+            showAlert({
+               title: "Delete",
+               message: `Delete ${user?.fullName} successfully!`,
+               mode: "success",
+            })
+         );
+         setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
       } catch (err) {
          console.log(err);
+         dispatch(
+            showAlert({
+               title: "Failure",
+               message: `Delete ${user?.fullName} failed!`,
+               mode: "info",
+            })
+         );
       }
-      setShowDialog(false);
    };
 
    // handle update user
-   const handleUpdateUser = useCallback(async (values: Partial<Profile>) => {
-      try {
-         const res = await api.admin.editUser(values);
-         if (res.status === 200) {
+   const handleUpdateUser = useCallback(
+      async (values: UpdateProfile) => {
+         try {
+            setLoading(true);
+            await api.admin.editUser(values);
+            setLoading(false);
             setUsers((prev) => {
                const newUsers = prev.map((user: Profile) => {
                   if (user._id === values._id) {
@@ -236,6 +264,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                });
                return newUsers;
             });
+
             dispatch(
                showAlert({
                   title: "Update user",
@@ -243,7 +272,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   mode: "success",
                })
             );
-         } else {
+         } catch (err: any) {
             dispatch(
                showAlert({
                   title: "Update user",
@@ -252,10 +281,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                })
             );
          }
-      } catch (err: any) {
-         throw new Error(err);
-      }
-   }, []);
+      },
+      [user]
+   );
 
    // handle authorize user
    const handleAuthorize = async (user: Profile) => {
@@ -287,6 +315,11 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       }
    };
 
+   // Select many rows
+   const handleSelectionChange = (newSelection) => {
+      console.log(newSelection);
+   };
+
    return (
       <>
          <Typography variant="h3" textAlign="center" letterSpacing={2}>
@@ -316,7 +349,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   <Fab sx={{ zIndex: 0 }} color="success" size="medium">
                      <AddIcon
                         sx={{ color: theme.myColor.white }}
-                        onClick={() => setShowModal(true)}
+                        onClick={() => setOpen((prev) => ({ ...prev, modal: true }))}
                      />
                   </Fab>
                </Tooltip>
@@ -326,16 +359,16 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          {users && (
             <Box width="100%">
                <DataGrid
+                  checkboxSelection
                   autoHeight
                   showCellRightBorder={true}
                   showColumnRightBorder={true}
+                  loading={isLoading}
                   rows={users as Array<Profile>}
                   columns={columns}
                   pageSize={10}
                   rowsPerPageOptions={[10]}
                   getRowId={(row) => row._id}
-                  loading={isLoading}
-                  hideFooterSelectedRowCount
                   components={{
                      NoRowsOverlay: () => (
                         <Typography p={2} letterSpacing={2} textAlign="center">
@@ -343,15 +376,16 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                         </Typography>
                      ),
                   }}
+                  onSelectionModelChange={handleSelectionChange}
                />
             </Box>
          )}
 
          {/* Modal detail user */}
-         {user && (
+         {open.detail && user && (
             <DetailUser
+               isLoading={isLoading}
                user={user}
-               open={showDetail}
                onClose={onClose}
                onSubmit={handleUpdateUser}
             />
@@ -359,7 +393,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
 
          {/* Dialog confirm delete */}
          <Dialog
-            open={showDialog}
+            open={open.dialog}
             title={`Are you sure to delete ${user?.fullName}?`}
             content="You still can restore user in Trash Store when you deleted"
             onSubmit={handleDeleteUser}
@@ -367,9 +401,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          />
 
          {/* Modal add member */}
-         <Modal open={showModal} onClose={() => setShowModal(false)}>
+         <Modal open={open.modal} onClose={handleClosePopper}>
             <>
-               <AddMember onClose={() => setShowModal(false)} />
+               <AddMember onClose={handleClosePopper} />
             </>
          </Modal>
       </>

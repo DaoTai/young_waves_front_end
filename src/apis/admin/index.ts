@@ -1,4 +1,5 @@
-import { Profile } from "../../utils/interfaces/Profile";
+import { deleteMultipleImages, storageImage } from "../../firebase/services";
+import { Profile, UpdateProfile } from "../../utils/interfaces/Profile";
 import { axiosInstance } from "../config";
 
 // [GET] admin/users
@@ -27,7 +28,9 @@ export const restoreTrashedUser = async (idUser: string) => {
 
 // [DELETE] admin/users/:id/force-delete
 export const forceDeleteUser = async (idUser: string) => {
-   return await axiosInstance.delete(`/admin/users/${idUser}/force-delete`);
+   const res = await axiosInstance.delete(`/admin/users/${idUser}/force-delete`);
+   await deleteMultipleImages(res.data?.deletedAttachments);
+   return res.statusText;
 };
 
 // [PATCH] admin/authorization/:id
@@ -38,6 +41,10 @@ export const authorizeUser = async (idUser: string, isAdmin: boolean) => {
 };
 
 // [PATCH] admin/users/:id
-export const editUser = async (user: Partial<Profile>) => {
+export const editUser = async (user: UpdateProfile) => {
+   if (user.newAvatar) {
+      user.avatar = await storageImage(user.newAvatar);
+   }
+   delete user.newAvatar;
    return await axiosInstance.patch(`/admin/users/${user._id}`, user);
 };

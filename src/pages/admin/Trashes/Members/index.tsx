@@ -243,27 +243,24 @@ const UserTrashes = () => {
    // handle force delete user
    const handleForceDeleteUser = async () => {
       try {
-         const res = await api.admin.forceDeleteUser(user?._id as string);
-         if (res.status === 200) {
-            dispatch(
-               showAlert({
-                  title: "Force delete",
-                  message: `Deleted ${user?.fullName} successfully`,
-                  mode: "success",
-               })
-            );
-            setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
-         } else {
-            dispatch(
-               showAlert({
-                  title: "Failure",
-                  message: `Deleted ${user?.fullName} failed`,
-                  mode: "error",
-               })
-            );
-         }
+         await api.admin.forceDeleteUser(user?._id as string);
+         dispatch(
+            showAlert({
+               title: "Force delete",
+               message: `Deleted successfully`,
+               mode: "success",
+            })
+         );
+         setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
       } catch (err) {
          console.log(err);
+         dispatch(
+            showAlert({
+               title: "Failure",
+               message: `Deleted failed`,
+               mode: "error",
+            })
+         );
       }
       setShowDialog(false);
    };
@@ -310,14 +307,11 @@ const UserTrashes = () => {
          </Box>
 
          {/* Modal detail user */}
-         {user && (
-            <DetailUser
-               user={user}
-               open={showDetail}
-               onClose={onClose}
-               onSubmit={handleUpdateUser}
-            />
+         {user && showDetail && (
+            <DetailUser user={user} onClose={onClose} onSubmit={handleUpdateUser} />
          )}
+
+         {/* Dialog confirm */}
          <Dialog
             open={showDialog}
             title="Confirm delete user"

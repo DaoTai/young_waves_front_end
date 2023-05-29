@@ -10,7 +10,7 @@ import {
 } from "../../../utils/enums";
 import { SignIn } from "../../../utils/interfaces/Auth";
 import { CreatePost, Post, UpdatePost } from "../../../utils/interfaces/Post";
-import { ChangePassword, Profile } from "../../../utils/interfaces/Profile";
+import { ChangePassword, Profile, UpdateProfile } from "../../../utils/interfaces/Profile";
 import { AlertProps } from "../../../utils/interfaces/Props";
 
 // Actions show/hide alert
@@ -69,7 +69,7 @@ export const getProfileFailure = (payload: string) => ({
    payload,
 });
 //UPDATE
-export const updateProfile = (payload: Partial<Profile>) => ({
+export const updateProfile = (payload: UpdateProfile) => ({
    type: PROFILE_ACTION.UPDATE_PROFILE,
    payload,
 });

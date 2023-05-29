@@ -1,6 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Avatar, Box, ListItem, Stack, Typography } from "@mui/material";
+import { Avatar, Box, ListItem, Stack, Tooltip, Typography } from "@mui/material";
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChatBoxWrapperProps } from "../../../../utils/interfaces/Chat";
@@ -15,11 +15,13 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
    // Display floating ballon
    if (hide) {
       return (
-         <Floating
-            onClick={toggleHide}
-            alt={conversation.friend?.fullName}
-            src={conversation.friend?.avatar}
-         />
+         <Tooltip title={conversation.friend?.fullName} arrow>
+            <Floating
+               onClick={toggleHide}
+               alt={conversation.friend?.fullName}
+               src={conversation.friend?.avatar}
+            />
+         </Tooltip>
       );
    }
 

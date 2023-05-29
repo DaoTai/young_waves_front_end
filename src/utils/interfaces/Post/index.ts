@@ -17,7 +17,7 @@ export interface Post {
 export interface CreatePost {
    body: string;
    status?: string;
-   attachments?: FileList;
+   attachments?: File[];
 }
 
 export interface UpdatePost {
@@ -25,8 +25,8 @@ export interface UpdatePost {
    body: string;
    status?: string;
    attachments?: string[];
-   deletedAttachments?: string[];
-   files: FileList | undefined;
+   deletedImages?: string[];
+   newAttachments?: File[];
 }
 
 export interface DetailPost {

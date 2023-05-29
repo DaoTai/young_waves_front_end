@@ -20,9 +20,17 @@ export interface Message {
    createdAt: string;
    updatedAt?: string;
    sender: string;
-   content: string;
+   text: string;
    attachments?: Attachment[];
 }
+
+export interface SendMessage {
+   idConversation: string;
+   sender: string;
+   text: string;
+   attachments?: File[];
+}
+
 export interface ResponseConversation {
    conversations: Conversation[];
    currentPage: number;

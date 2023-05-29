@@ -6,7 +6,7 @@ export const customTheme = createTheme({
       white: "#fff",
       textSecondary: "#00000099",
       bg: "#f5f5f5",
-      bgGray: "#eee",
+      bgGray: "rgb(240,242,245)",
       bgGradient: "linear-gradient(to bottom, #4568dc, #b06ab3)",
       link: "#2196f3",
       black: "#000",

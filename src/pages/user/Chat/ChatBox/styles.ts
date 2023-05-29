@@ -94,6 +94,7 @@ export const Body = styled(Box)(({ theme }) => ({
             textDecoration: "underline",
          },
          "&.message--friend": {
+            marginLeft: 0,
             marginRight: "auto",
             background: theme.myColor.link,
             position: "relative",
@@ -112,14 +113,12 @@ export const Body = styled(Box)(({ theme }) => ({
 
       img: {
          objectFit: "cover",
-         borderRadius: 12,
-         width: "200px",
-         height: "200px",
+         borderRadius: 4,
+         width: "100%",
+         height: "100%",
+         maxHeight: "200px",
          cursor: "pointer",
          transition: "all 0.3s ease",
-         "&:hover": {
-            filter: "contrast(110%)",
-         },
       },
 
       "&:hover": {
@@ -149,7 +148,7 @@ export const Footer = styled(Stack)(({ theme }) => ({
    "#form-chat": {
       resize: "none",
       fontSize: 14,
-      padding: 4,
+      padding: "4px 8px",
       borderRadius: 4,
       fontFamily: "inherit",
       flex: "1 1 auto",
@@ -161,6 +160,9 @@ export const Footer = styled(Stack)(({ theme }) => ({
       backgroundColor: theme.myColor.bgGray,
       overflow: "scroll !important",
       transition: "all 0.2s ease",
+      "&::placeholder": {
+         letterSpacing: 1,
+      },
       "::-webkit-scrollbar": {
          display: "none",
       },
@@ -168,19 +170,19 @@ export const Footer = styled(Stack)(({ theme }) => ({
          outlineColor: theme.myColor.link,
       },
    },
-   "#send-icon": {
-      color: theme.palette.primary.main,
-      borderRadius: 12,
+   "#send-btn": {
+      backgroundColor: theme.myColor.white,
+      borderRadius: 4,
       width: 42,
       height: 42,
       padding: 8,
+      border: "1px solid transparent",
       cursor: "pointer",
       boxShadow: theme.shadows[2],
       transition: "all 0.3s linear",
       "&:hover": {
          opacity: 0.8,
-         backgroundColor: theme.myColor.link,
-         color: theme.myColor.white,
+         borderColor: theme.myColor.link,
       },
    },
 }));
@@ -188,12 +190,12 @@ export const Footer = styled(Stack)(({ theme }) => ({
 export const WrapAttachments = styled(Stack)(({ theme }) => ({
    flexDirection: "row",
    flexWrap: "nowrap",
-   overflow: "scroll",
+   overflow: "auto",
    gap: 4,
    padding: "4px 8px 4px 0",
    img: {
-      width: 60,
-      height: 60,
+      width: 75,
+      height: 75,
       borderRadius: 8,
       objectFit: "cover",
    },

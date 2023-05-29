@@ -3,7 +3,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import PublicIcon from "@mui/icons-material/Public";
 import { Avatar, Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Profile } from "../../../../utils/interfaces/Profile";
 import { MyCard } from "./style";
 const User = ({ user }: { user: Profile }) => {

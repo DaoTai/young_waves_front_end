@@ -28,12 +28,12 @@ import { Profile } from "../../../../utils/interfaces/Profile";
 import { radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { init, updateUserOptions } from "./config";
 import Avatar from "../Heading/Avatar";
+import CoverPicture from "../Heading/CoverPicture";
 const Editing = () => {
    const theme = useTheme();
    const auth$ = useSelector(authState$);
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const imageRef = useRef(Object(null));
    const {
       values,
       errors,
@@ -51,23 +51,9 @@ const Editing = () => {
       },
    });
    useEffect(() => {
-      // If network slow, payload?.data'll undefined. So we shoud assign in Object
-      setValues({
-         _id: auth$.payload.user._id,
-         fullName: auth$.payload.user.fullName,
-         dob: auth$.payload.user.dob,
-         city: auth$.payload.user.city,
-         region: auth$.payload.user.region,
-         gender: auth$.payload.user.gender,
-         email: auth$.payload.user.email,
-      });
+      const data = auth$.payload.user;
+      setValues(data);
    }, [dispatch]);
-
-   // Change cover picture
-   const handleChangeCoverPicture = (file: any) => {
-      imageRef.current.src = file;
-      dispatch(updateProfile({ coverPicture: file, _id: auth$.payload?.user?._id }));
-   };
 
    return (
       <>
@@ -98,52 +84,29 @@ const Editing = () => {
                   Change password
                </Button>
             </Stack>
+
+            {/* Information user */}
             <form autoComplete="off" onSubmit={handleSubmit}>
                <Stack gap={2} mt={2}>
                   {/* Cover picture */}
-                  <Box
-                     width="100%"
-                     minHeight={400}
-                     alignItems="center"
-                     overflow="hidden"
-                     position="relative"
-                     sx={
-                        auth$.payload.user.coverPicture
-                           ? {
-                                backgroundImage: `url(${auth$.payload.user.coverPicture})`,
-                                backgroundPosition: "center",
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat",
-                             }
-                           : {
-                                backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)`,
-                             }
-                     }>
-                     <Fab
-                        size="small"
-                        sx={{
-                           backgroundColor: theme.myColor.white,
-                           position: "absolute",
-                           zIndex: 2,
-                           top: 10,
-                           right: 10,
-                           boxShadow: "none",
-                        }}>
-                        <ImageInput onChange={handleChangeCoverPicture} />
-                     </Fab>
-                  </Box>
+                  <CoverPicture user={auth$.payload.user} />
 
                   <Grid container spacing={4}>
+                     {/* Avatar */}
                      <Grid
                         item
-                        sm={3}
+                        md={3}
                         xs={12}
                         display="flex"
-                        justifyContent="center"
-                        flexDirection="row">
+                        sx={{
+                           ".MuiAvatar-root": {
+                              alignSelf: "self-start",
+                           },
+                        }}>
                         <Avatar user={auth$.payload.user} variant="square" borderRadius={2} />
                      </Grid>
-                     <Grid container item sm={9} xs={12} spacing={1}>
+                     {/* Input fields */}
+                     <Grid container item md={9} xs={12} spacing={1}>
                         {/* Text fields */}
                         {textInfoUser.map((props: any, i: number) => {
                            return (

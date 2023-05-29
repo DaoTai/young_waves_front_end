@@ -111,6 +111,7 @@ export const init: SignUp = {
    confirmedPassword: "",
 };
 export const initDetail = {
+   avatar: "",
    fullName: "",
    dob: "",
    city: "",

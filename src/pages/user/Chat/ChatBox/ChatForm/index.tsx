@@ -1,55 +1,54 @@
 import SendIcon from "@mui/icons-material/Send";
-import {
-   Avatar,
-   Divider,
-   Stack,
-   TextareaAutosize,
-   Tooltip,
-   Typography,
-   useTheme,
-} from "@mui/material";
+import { Box, Fab, Stack, TextareaAutosize, Typography, useTheme } from "@mui/material";
 import dateformat from "dateformat";
 import { KeyboardEvent, useCallback, useEffect, useId, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 import * as api from "../../../../../apis";
+import { CloseButton, ImageInput } from "../../../../../components";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
+import { URL_SERVER } from "../../../../../utils/constants";
+import { Attachment } from "../../../../../utils/interfaces/Attachment";
 import { FormatConversation, Message as IMessage } from "../../../../../utils/interfaces/Chat";
-import { ImageInput, OverlayFullImage } from "../../../../../components";
 import { Body, Footer, WrapAttachments, WrapperChat } from "../styles";
 import Message from "./Message";
-import Upload from "../../../../../components/Upload";
-const host = "http://localhost:8001";
 
 const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    const auth$ = useSelector(authState$);
    const idAuth = auth$.payload?.user?._id;
    const theme = useTheme();
-   const idMsg = useId();
+   const uniqueId = useId();
+   // Refs
    const bodyRef = useRef<HTMLDivElement>(null);
    const textareaRef = useRef<HTMLTextAreaElement>(null);
    const socketRef = useRef<Socket>();
    const maxPageRef = useRef<number>(1);
    const currentPageRef = useRef<number>(1);
+   // States
    const [messages, setMessages] = useState<IMessage[]>([]);
    const [message, setMessage] = useState<string>("");
    const [hasMore, setHasMore] = useState<boolean>(true);
-   const [attachments, setAttachments] = useState<string[] | []>([]);
+   const [isLoading, setLoading] = useState<boolean>(false);
+   const [attachments, setAttachments] = useState<Attachment[]>([]);
    const friendAvatar = conversation.friend?.avatar;
    // Work with socket
    useEffect(() => {
-      socketRef.current = io(host);
+      socketRef.current = io(URL_SERVER);
       socketRef.current.emit("addUser", idAuth, conversation.idConversation);
-      socketRef.current.on("getMessage", (dataGot: { idSender: string; text: string }) => {
-         const newMessage: IMessage = {
-            _id: idMsg,
-            sender: dataGot.idSender,
-            content: dataGot.text,
-            createdAt: dateformat(String(new Date())),
-         };
-         setMessages((oldMsgs) => [newMessage, ...oldMsgs]);
-      });
+      socketRef.current.on(
+         "getMessage",
+         (dataGot: { idSender: string; text: string; attachments: any }) => {
+            const newMessage: IMessage = {
+               _id: uniqueId,
+               sender: dataGot.idSender,
+               text: dataGot.text,
+               createdAt: dateformat(String(new Date())),
+               attachments: dataGot.attachments,
+            };
+            setMessages((oldMsgs) => [newMessage, ...oldMsgs]);
+         }
+      );
       return () => {
          socketRef.current?.disconnect();
       };
@@ -93,32 +92,39 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
 
    // Send message
    const handleSendMsg = async () => {
-      if (message.trim()) {
-         socketRef.current?.emit("sendMessage", {
-            idSender: idAuth,
-            idReceiver: conversation.friend?._id,
-            idConversation: conversation.idConversation,
-            content: message.trim(),
-         });
+      if (!isLoading && message.trim()) {
+         setAttachments([]);
+         setMessage("");
+         const files = attachments.map((attach) => attach?.file);
+         const payload = files
+            ? {
+                 idConversation: conversation?.idConversation as string,
+                 sender: idAuth,
+                 text: message.trim(),
+                 attachments: files as File[],
+              }
+            : {
+                 idConversation: conversation?.idConversation as string,
+                 sender: idAuth,
+                 text: message.trim(),
+              };
          try {
-            const res = await api.message.createMessage({
-               idConversation: conversation?.idConversation as string,
-               sender: idAuth,
-               content: message.trim(),
-               attachments: [
-                  {
-                     url: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/2/959628/Vong_Co_3.jpg",
-                  },
-                  {
-                     url: "https://phunuvietnam.mediacdn.vn/179072216278405120/2023/5/11/page-1683785311109912638990.jpg",
-                  },
-               ],
-            });
-            res.status === 200 && setMessages((prev) => [res.data, ...prev]);
+            setLoading(true);
+            const res = await api.message.createMessage(payload);
+            if (res.statusText === "OK") {
+               setLoading(false);
+               setMessages((prev) => [res.data, ...prev]);
+               socketRef.current?.emit("sendMessage", {
+                  idSender: idAuth,
+                  idReceiver: conversation.friend?._id,
+                  idConversation: conversation.idConversation,
+                  text: message.trim(),
+                  attachments: res.data.attachments,
+               });
+            }
          } catch (err) {
             console.error(err);
          }
-         setMessage("");
       }
    };
 
@@ -144,18 +150,34 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    const handleDeleteMsg = useCallback(async (idDeleteMsg: string) => {
       if (idDeleteMsg) {
          try {
-            await api.message.deleteMessage(idDeleteMsg);
-            setMessages((prev) => {
-               return prev.filter((msg) => msg._id !== idDeleteMsg);
-            });
+            setLoading(true);
+            const statusText = await api.message.deleteMessage(idDeleteMsg);
+            if (statusText === "OK") {
+               setMessages((prev) => {
+                  return prev.filter((msg) => msg._id !== idDeleteMsg);
+               });
+            }
          } catch (err) {
             console.error(err);
          }
+         setLoading(false);
       }
    }, []);
 
-   const getAttachments = (files: string[]) => {
-      setAttachments(files);
+   // Get preview attachments
+   const getAttachments = (files: File[], blobs: string[]) => {
+      const newAttachments: Attachment[] = blobs.map((blob, index) => ({
+         url: blob,
+         file: files[index],
+      }));
+      setAttachments([...attachments, ...newAttachments]);
+   };
+
+   // Remove preview attachments
+   const handleRemoveAttachments = (attachment: Attachment) => {
+      const newAttachments = attachments.filter((attach) => attach.url !== attachment.url);
+      setAttachments(newAttachments);
+      URL.revokeObjectURL(attachment.url);
    };
 
    return (
@@ -182,10 +204,10 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
                         Loading ...
                      </Typography>
                   }>
-                  {messages.map((message, index) => {
+                  {messages.map((message) => {
                      return (
                         <Message
-                           key={index}
+                           key={message._id}
                            message={message}
                            friendAvatar={friendAvatar as string}
                            onDelete={handleDeleteMsg}
@@ -196,28 +218,47 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
             )}
          </Body>
          {/* Footer */}
+         {isLoading && (
+            <Typography
+               variant="subtitle1"
+               color="secondary"
+               component="span"
+               textAlign="center"
+               fontSize="small">
+               Message is handling ...
+            </Typography>
+         )}
+
          <Footer>
-            {/* <ImageInput width={40} height={40} multiple onChange={getAttachments} /> */}
-            <Upload></Upload>
+            <ImageInput width={40} height={40} multiple onChange={getAttachments} />
             <Stack flex={2} borderRadius={2} overflow="hidden">
                {attachments.length > 0 && (
                   <WrapAttachments>
-                     {attachments.map((attach, i) => (
-                        <img key={i} src={attach} />
+                     {attachments.map((attach, index) => (
+                        <Box key={attach.url + index} position="relative">
+                           <img width="100%" height="100%" src={attach.url} />
+                           <CloseButton
+                              size="small"
+                              onClick={() => handleRemoveAttachments(attach)}
+                           />
+                        </Box>
                      ))}
                   </WrapAttachments>
                )}
                <TextareaAutosize
+                  spellCheck={false}
                   autoFocus
                   id="form-chat"
                   ref={textareaRef}
                   value={message}
-                  placeholder={"Type a message for " + conversation?.friend.fullName + "..."}
+                  placeholder={"Type a message for " + conversation?.friend?.fullName}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={handleShortHandSendMsg}
                />
             </Stack>
-            <SendIcon id="send-icon" fontSize="large" onClick={handleSendMsg} />
+            <Fab size="small" id="send-btn" onClick={handleSendMsg}>
+               <SendIcon sx={{ color: theme.myColor.link }} />
+            </Fab>
          </Footer>
       </WrapperChat>
    );

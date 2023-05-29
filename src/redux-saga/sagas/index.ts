@@ -10,7 +10,7 @@ import {
 } from "../../utils/enums";
 import { SignIn } from "../../utils/interfaces/Auth";
 import { CreatePost, Post, UpdatePost } from "../../utils/interfaces/Post";
-import { Profile } from "../../utils/interfaces/Profile";
+import { Profile, UpdateProfile } from "../../utils/interfaces/Profile";
 import * as ACTIONS from "../redux/actions";
 
 // Sign-in
@@ -54,30 +54,26 @@ function* getProfileSaga(action: { type: string; payload: string }) {
 }
 
 // Update
-function* updateProfileSaga(action: { type: string; payload: Profile }) {
+function* updateProfileSaga(action: { type: string; payload: UpdateProfile }) {
    try {
       const res = yield call(api.user.updateProfile, action.payload);
-      if (res.status === 200) {
-         yield put(ACTIONS.updateProfileSuccess(res.data));
-         yield put(
-            ACTIONS.showAlert({
-               message: "Update successfully",
-               title: "Profile",
-               mode: "success",
-            })
-         );
-      } else {
-         yield put(
-            ACTIONS.showAlert({
-               message: "Update failed",
-               title: "Profile",
-               mode: "error",
-            })
-         );
-         yield put(ACTIONS.updateProfileFailure(res.toString()));
-      }
+      yield put(ACTIONS.updateProfileSuccess(res.data));
+      yield put(
+         ACTIONS.showAlert({
+            message: "Update successfully",
+            title: "Profile",
+            mode: "success",
+         })
+      );
    } catch (err) {
       yield put(ACTIONS.updateProfileFailure(err as string));
+      yield put(
+         ACTIONS.showAlert({
+            message: "Update failed",
+            title: "Profile",
+            mode: "error",
+         })
+      );
    }
 }
 

@@ -22,23 +22,24 @@ import {
    DateTimePicker,
    ImageInput,
    OverlayFullImage,
+   Spinner,
 } from "../../../../components";
 import { MyBox } from "../../../../components/Post/Modal/styles";
-import { Profile } from "../../../../utils/interfaces/Profile";
+import { Profile, UpdateProfile } from "../../../../utils/interfaces/Profile";
 import { initDetail, radioFields, textInfoUser } from "../../../auth/SignUp/config";
 import { updateUserOptions } from "../../../user/Profile/Editing/config";
 import { WrapAvatar } from "../../../user/Profile/Heading/styles";
 
 interface Props {
    user: Profile;
-   open: boolean;
+   isLoading?: boolean;
    onClose: () => void;
-   onSubmit: (values: Partial<Profile>) => void;
+   onSubmit: (values: UpdateProfile) => void;
 }
 
-const DetailUser = ({ user, open, onClose, onSubmit }: Props) => {
+const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
    const theme = useTheme();
-   const [avatar, setAvatar] = useState<string>("");
+   const [avatar, setAvatar] = useState<File>();
    const [showFullAvatar, setShowFullAvatar] = useState<boolean>(false);
    const {
       values,
@@ -53,33 +54,41 @@ const DetailUser = ({ user, open, onClose, onSubmit }: Props) => {
       initialValues: initDetail,
       validationSchema: updateUserOptions,
       onSubmit: async (values: Partial<Profile>) => {
-         onSubmit({ ...values, avatar });
+         onSubmit({
+            ...values,
+            newAvatar: avatar as File,
+            deletedImages: [user.avatar],
+         });
       },
    });
    useEffect(() => {
       setValues(user);
-      setAvatar(user.avatar);
-
       const onCloseShort = (e: KeyboardEvent) => {
          e.key === "Escape" && onClose();
       };
-
       window.addEventListener("keydown", onCloseShort);
-
       return () => {
          window.removeEventListener("keydown", onCloseShort);
       };
    }, [user]);
 
-   const handleChangeAvatar = (file: string) => {
+   useEffect(() => {
+      return () => {
+         values.avatar && URL.revokeObjectURL(values.avatar);
+      };
+   }, [values.avatar]);
+
+   const handleChangeAvatar = (files: FileList) => {
+      const file = files[0];
       setAvatar(file);
+      setFieldValue("avatar", URL.createObjectURL(file));
    };
 
    const onOpenFullImage = () => setShowFullAvatar(true);
    const onCloseFullImage = () => setShowFullAvatar(false);
 
    return (
-      <Modal open={open} onClose={onClose}>
+      <Modal open onClose={onClose}>
          <>
             <MyBox width="100vw" height="100vh">
                {/* Heading */}
@@ -100,7 +109,7 @@ const DetailUser = ({ user, open, onClose, onSubmit }: Props) => {
                         <WrapAvatar>
                            <Avatar
                               variant="square"
-                              src={avatar}
+                              src={values.avatar}
                               sx={{
                                  width: "100%",
                                  height: "100%",
@@ -208,6 +217,7 @@ const DetailUser = ({ user, open, onClose, onSubmit }: Props) => {
                </form>
             </MyBox>
             <OverlayFullImage open={showFullAvatar} src={user?.avatar} onClose={onCloseFullImage} />
+            <Spinner show={isLoading} />
          </>
       </Modal>
    );

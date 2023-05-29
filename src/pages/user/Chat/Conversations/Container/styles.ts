@@ -1,4 +1,12 @@
-import { ButtonBase, Stack, styled } from "@mui/material";
+import { Badge, ButtonBase, Stack, styled } from "@mui/material";
+
+export const StyledBadge = styled(Badge)(({ theme }) => ({
+   "& .MuiBadge-badge": {
+      backgroundColor: "#44b700",
+      color: "#44b700",
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+   },
+}));
 
 export const ClearButton = styled(ButtonBase)(({ theme }) => ({
    bgcolor: "transparent",

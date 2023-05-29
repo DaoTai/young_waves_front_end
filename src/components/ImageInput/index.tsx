@@ -1,11 +1,11 @@
 import { Box, Tooltip } from "@mui/material";
-import { ChangeEvent, memo, useEffect, useRef } from "react";
+import { ChangeEvent, memo, useEffect, useRef, useState } from "react";
 import firebase from "../../firebase/config";
 import { WrapFileInput } from "./styles";
 
 interface Props {
    multiple?: boolean;
-   onChange: (file: FileList) => void;
+   onChange: (files: File[], blobs: string[]) => void;
    width?: number;
    height?: number;
 }
@@ -13,7 +13,12 @@ interface Props {
 const ImageInput = ({ multiple = false, onChange, width = 50, height = 50 }: Props) => {
    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       const files = e.target.files;
-      files && onChange(files);
+      if (files) {
+         const imgFiles = Array.from(files).filter((file) => !file.type.includes("video"));
+         const blobs = Array.from(imgFiles).map((file) => URL.createObjectURL(file));
+         const formatFiles = Array.from(files);
+         files && onChange(formatFiles, blobs);
+      }
    };
 
    return (

@@ -4,7 +4,7 @@ import { ChatBox } from "../../../pages/user/Chat";
 import { FormatConversation } from "../../../utils/interfaces/Chat";
 import { ChatContext } from "../../index";
 const ChatProvider = ({ children }) => {
-   const [conversations, setConversations] = useState<FormatConversation[] | []>([]);
+   const [conversations, setConversations] = useState<FormatConversation[]>([]);
    const onCloseChatBox = (idConversation: string) => {
       setConversations((prev) => {
          return prev.filter((conversation) => conversation.idConversation !== idConversation);

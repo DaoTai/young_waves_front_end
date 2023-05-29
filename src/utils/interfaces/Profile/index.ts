@@ -18,6 +18,12 @@ export interface Profile {
    totalPosts?: number;
 }
 
+export interface UpdateProfile extends Partial<Profile> {
+   deletedImages?: string[];
+   newAvatar?: File;
+   newCoverPicture?: File;
+}
+
 export interface ChangePassword {
    currentPassword: string;
    newPassword: string;

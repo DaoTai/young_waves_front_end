@@ -55,14 +55,9 @@ export const createPost = async (payload: CreatePost) => {
 
 export const updatePost = async (payload: UpdatePost) => {
    let urls: string[] = [];
-   if (payload?.files) {
-      urls = await storageImages(payload.files);
+   if (payload?.newAttachments) {
+      urls = await storageImages(payload.newAttachments);
    }
-
-   if (payload?.deletedAttachments && payload?.deletedAttachments?.length > 0) {
-      deleteMultipleImages(payload?.deletedAttachments);
-   }
-   delete payload?.deletedAttachments;
    const data = {
       ...payload,
       attachments: [...(payload.attachments ?? []), ...urls],

@@ -1,19 +1,23 @@
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Box, Chip, Divider, Stack, Typography, useTheme } from "@mui/material";
-import { memo, useEffect, useRef, useState, useContext } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { Socket, io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import * as api from "../../../../../apis/conversation";
 import { BaseInput } from "../../../../../components";
 import { useDebounce } from "../../../../../hooks";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { FormatConversation } from "../../../../../utils/interfaces/Chat";
-import { ClearButton, ConvItem } from "./styles";
-const Container = ({
-   onClickItem,
-}: {
+import { URL_SERVER } from "../../../../../utils/constants";
+import { ClearButton, ConvItem, StyledBadge } from "./styles";
+import Item from "./Item";
+
+interface Props {
    onClickItem: (conversation: FormatConversation) => void;
-}) => {
+}
+
+const Container = ({ onClickItem }: Props) => {
    const theme = useTheme();
    const {
       payload: { user },
@@ -102,31 +106,24 @@ const Container = ({
                </Typography>
             ) : (
                <Stack gap={2} mb={2}>
-                  {conversations?.map((conversation, index) => (
-                     <ConvItem key={index} onClick={() => onClickItem(conversation)}>
-                        <Avatar src={conversation?.friend?.avatar} sx={{ width: 60, height: 60 }} />
-                        <Stack overflow="hidden">
-                           <Typography variant="body1">{conversation?.friend?.fullName}</Typography>
-                           {/* Lastest message */}
-                           {conversation.lastestMessage && (
-                              <Typography
-                                 variant="subtitle2"
-                                 fontWeight={400}
-                                 textOverflow="ellipsis"
-                                 whiteSpace="nowrap"
-                                 overflow="hidden"
-                                 width="200px"
-                                 sx={{ color: theme.myColor.textSecondary }}>
-                                 {user._id === conversation?.lastestMessage?.sender
-                                    ? "You"
-                                    : conversation.friend.fullName}
-                                 {": "}
-                                 {conversation?.lastestMessage?.content}
-                              </Typography>
-                           )}
-                        </Stack>
-                     </ConvItem>
-                  ))}
+                  {conversations?.map((conversation) => {
+                     const now = new Date();
+                     const specificTime = new Date(String(conversation?.lastestMessage?.updatedAt));
+                     const timeDiffMs = now.getTime() - specificTime.getTime();
+                     const timeDiffMin = Math.floor(timeDiffMs / 1000 / 60);
+                     let lastestTime = timeDiffMin;
+                     // if (timeDiffMin >= 60) {
+                     //    lastestTime /= 60;
+                     // }
+                     return (
+                        <Item
+                           key={conversation.idConversation}
+                           conversation={conversation}
+                           lastestTime={lastestTime}
+                           onClickItem={() => onClickItem(conversation)}
+                        />
+                     );
+                  })}
                </Stack>
             )}
          </Box>

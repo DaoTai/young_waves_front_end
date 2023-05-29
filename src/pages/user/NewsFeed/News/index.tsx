@@ -1,11 +1,11 @@
-import { Box, Card, Paper, TextareaAutosize, Typography, useTheme } from "@mui/material";
+import { Box, Card, Paper, Stack, Typography, useTheme } from "@mui/material";
 import { memo } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { PostBody } from "../../../../components";
 import { Post } from "../../../../utils/interfaces/Post";
 import Actions from "./Actions";
 import Heading from "./Heading";
 import Images from "./Images";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 interface Props {
    posts: [] | Post[];
@@ -20,7 +20,7 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
    const theme = useTheme();
 
    return (
-      <>
+      <Box>
          {posts?.length === 0 ? (
             <Typography variant="h6" textAlign="center" color={theme.myColor.textSecondary}>
                {emptyMsg}
@@ -34,10 +34,11 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
                   <Typography variant="body2" textAlign="center">
                      Loading ...
                   </Typography>
-               }>
+               }
+               style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                {posts?.map((post: Post) => {
                   return (
-                     <Paper elevation={0} key={post._id} sx={{ marginBottom: 1 }}>
+                     <Paper elevation={0} key={post._id}>
                         <Card sx={{ pl: 2, pr: 2 }}>
                            {/* Heading */}
                            <Heading post={post} showAction />
@@ -56,27 +57,29 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
                })}
             </InfiniteScroll>
          ) : (
-            posts?.map((post: Post) => {
-               return (
-                  <Paper elevation={0} key={post._id} sx={{ mb: 1 }}>
-                     <Card sx={{ pl: 2, pr: 2 }}>
-                        {/* Heading */}
-                        <Heading post={post} showAction />
-                        {/* Body */}
-                        <PostBody>{post?.body}</PostBody>
-                        {/* Images */}
-                        {post?.attachments?.length > 0 && (
-                           <Images id={post?._id} attachments={post?.attachments} />
-                        )}
+            <Stack gap={2}>
+               {posts?.map((post: Post) => {
+                  return (
+                     <Paper elevation={0} key={post._id}>
+                        <Card sx={{ pl: 2, pr: 2 }}>
+                           {/* Heading */}
+                           <Heading post={post} showAction />
+                           {/* Body */}
+                           <PostBody>{post?.body}</PostBody>
+                           {/* Images */}
+                           {post?.attachments?.length > 0 && (
+                              <Images id={post?._id} attachments={post?.attachments} />
+                           )}
 
-                        {/* Actions */}
-                        <Actions post={post} />
-                     </Card>
-                  </Paper>
-               );
-            })
+                           {/* Actions */}
+                           <Actions post={post} />
+                        </Card>
+                     </Paper>
+                  );
+               })}
+            </Stack>
          )}
-      </>
+      </Box>
    );
 };
 

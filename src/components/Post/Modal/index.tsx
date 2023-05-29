@@ -9,13 +9,13 @@ import {
    Typography,
    useTheme,
 } from "@mui/material";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPost, updatePost } from "../../../redux-saga/redux/actions";
 import { Post } from "../../../utils/interfaces/Post";
 import { CloseButton, ImageInput } from "../../index";
 import { MyBox } from "./styles";
-
+import { Attachment } from "../../../utils/interfaces/Attachment";
 interface ModalPostProps {
    post?: Post;
    type: "update" | "create";
@@ -25,87 +25,94 @@ interface ModalPostProps {
 const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
    const theme = useTheme();
    const dispatch = useDispatch();
-   const [images, setImages] = useState<string[]>([]);
    const [body, setBody] = useState<string>("");
    const [status, setStatus] = useState<string>("");
-   const [attachments, setAttachments] = useState<FileList>();
    const [deletedImages, setDeletedImages] = useState<string[]>([]);
-   const imagesRef = useRef<string[]>([]);
+   const [attachments, setAttachments] = useState<Attachment[]>([]);
+
    useEffect(() => {
       if (post) {
          if (post?.attachments?.length > 0) {
-            setImages(post?.attachments);
+            setAttachments(() => {
+               return post?.attachments.map((item) => ({ url: item }));
+            });
          }
          post?.body && setBody(post.body);
          post?.status && setStatus(post.status);
       }
    }, [post]);
 
-   useEffect(() => {
-      return () => {
-         imagesRef.current.forEach((url) => URL.revokeObjectURL(url));
-      };
-   }, []);
-
-   const handleSetImages = (files: FileList) => {
-      setAttachments(files);
-      // Remove not image files
-      const imageFiles = Array.from(files).filter((file) => !file.type.includes("video"));
-      const urlImages = imageFiles.map((file) => URL.createObjectURL(file));
-      imagesRef.current = [...images, ...urlImages];
-      setImages(imagesRef.current);
+   // onClose modal
+   const onCloseModal = () => {
+      attachments.forEach((item) => URL.revokeObjectURL(item.url));
+      onClose();
    };
 
-   const handleRemoveImage = (deletedImg: string) => {
-      URL.revokeObjectURL(deletedImg);
-      imagesRef.current = imagesRef.current.filter((url) => url !== deletedImg);
-      setImages((prev) => prev.filter((img) => img !== deletedImg));
-      setDeletedImages([...deletedImages, deletedImg]);
+   // Add images
+   const handleSetImages = (files: File[], blobs: string[]) => {
+      const newAttachment = blobs.map((blob, index) => ({ file: files[index], url: blob }));
+      setAttachments([...attachments, ...newAttachment]);
    };
 
+   // Remove image
+   const handleRemoveImage = (deletedImg: Attachment) => {
+      // If seleted image will be deleted which is old image, we set it to delete
+      if (deletedImg.url.includes("https://firebasestorage.googleapis.com")) {
+         setDeletedImages([...deletedImages, deletedImg.url]);
+      }
+      setAttachments(
+         attachments.filter((item) => item.file !== deletedImg?.file || item.url !== deletedImg.url)
+      );
+      URL.revokeObjectURL(deletedImg.url);
+   };
+
+   // Handle submit
    const handleSubmit = () => {
+      // Get files
+      const files = attachments.filter((item) => item.file).map((item) => item.file);
+      // Get urls of old images
+      const oldImages = attachments
+         .filter((item) => item.url.includes("https://firebasestorage.googleapis.com"))
+         .map((item) => item.url);
       if (body) {
          switch (type) {
             case "create":
                dispatch(
                   createPost({
-                     attachments,
+                     attachments: files as File[],
                      body,
                      status,
                   })
                );
-               onClose();
-               return;
+               break;
             case "update":
-               const filteredImages = post?.attachments.filter(
-                  (attachment) => !deletedImages?.includes(attachment)
-               );
                dispatch(
                   updatePost({
                      _id: post!._id,
                      body,
                      status,
-                     attachments: filteredImages,
-                     deletedAttachments: deletedImages,
-                     files: attachments,
+                     attachments: oldImages,
+                     deletedImages,
+                     newAttachments: files as File[],
                   })
                );
-               onClose();
-               return;
+               break;
             default:
-               return;
+               onCloseModal();
          }
+
+         onCloseModal();
       }
    };
 
    return (
-      <Modal open onClose={onClose}>
+      <Modal open onClose={onCloseModal}>
          <MyBox>
             {/* Heading */}
             <Typography variant="h3" component="h2" textAlign="center" pb={1}>
                Your post
             </Typography>
-            <CloseButton onClick={onClose} size="large" />
+            <CloseButton onClick={onCloseModal} size="large" />
 
             <Box borderTop={1} pt={2}>
                <form>
@@ -130,16 +137,17 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
                      value={body}
                      onChange={(e) => setBody(e.target.value)}
                   />
-                  {images.length > 0 && (
+                  {attachments.length > 0 && (
                      <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
-                        {images?.map((item, index) => (
+                        {attachments?.map((item, index) => (
                            <ImageListItem key={index} sx={{ mb: 1, minHeight: "40vh" }}>
                               <CloseButton onClick={() => handleRemoveImage(item)} />
-                              <img srcSet={`${item} 2x`} placeholder="image" />
+                              <img srcSet={`${item.url} 2x`} placeholder="image" />
                            </ImageListItem>
                         ))}
                      </ImageList>
                   )}
+
                   <ImageInput multiple onChange={handleSetImages} />
                   <Button
                      fullWidth
