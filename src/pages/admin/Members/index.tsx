@@ -1,11 +1,12 @@
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import SendIcon from "@mui/icons-material/Send";
 import {
    Avatar,
    Box,
+   Button,
    Fab,
    FormControl,
    InputLabel,
@@ -20,7 +21,7 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import dateformat from "dateformat";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import * as api from "../../../apis";
 import { Dialog } from "../../../components";
@@ -30,7 +31,7 @@ import AddMember from "./AddMember";
 import DetailUser from "./Detail";
 import { Link } from "react-router-dom";
 
-interface StatePoper {
+interface StatePopper {
    detail: boolean;
    dialog: boolean;
    modal: boolean;
@@ -41,10 +42,11 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const dispatch = useDispatch();
    const [users, setUsers] = useState<Profile[] | []>([]);
    const [user, setUser] = useState<Profile>();
-   const [selectionModel, setSelectionModel] = useState([]);
-   const [role, setRole] = useState<string>("User");
+   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+   const [role, setRole] = useState<string>("user");
+   const [action, setAction] = useState<string>("");
    const [isLoading, setLoading] = useState<boolean>(false);
-   const [open, setOpen] = useState<StatePoper>({
+   const [open, setOpen] = useState<StatePopper>({
       detail: false,
       dialog: false,
       modal: false,
@@ -58,21 +60,13 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       });
    };
 
-   // close detail modal
-   const onClose = useCallback(() => {
-      handleClosePopper();
-   }, []);
-
-   // close confirm delete dialog
-   const onCloseDeleteDialog = useCallback(() => {
-      handleClosePopper();
-   }, []);
-
    useEffect(() => {
       (async () => {
          setLoading(true);
-         const res = await api.admin.getAllUserByAdmin({ admin: role === "Admin" });
-         res.status === 200 && setUsers(res.data);
+         const { data, statusText } = await api.admin.getAllUserByAdmin({
+            admin: role === "admin",
+         });
+         statusText === "OK" && setUsers(data);
          setLoading(false);
       })();
    }, [role]);
@@ -80,9 +74,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    const columns: GridColDef[] = useMemo(
       () => [
          {
-            field: "fullName",
+            field: "username",
             headerAlign: "center",
-            headerName: "Full name",
+            headerName: "Username",
             flex: 2,
             renderCell(params) {
                return (
@@ -152,25 +146,6 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          },
 
          {
-            field: "authorize",
-            align: "center",
-            headerAlign: "center",
-            headerName: "Authorize",
-            sortable: false,
-            disableColumnMenu: true,
-            width: 200,
-            flex: 1,
-            renderCell(params) {
-               return (
-                  <Tooltip title={params.row.isAdmin ? "Authorize to user" : "Authorize to admin"}>
-                     <Fab size="small" color="success" onClick={() => handleAuthorize(params.row)}>
-                        <PersonAddIcon />
-                     </Fab>
-                  </Tooltip>
-               );
-            },
-         },
-         {
             field: "delete",
             align: "center",
             headerAlign: "center",
@@ -188,10 +163,10 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             },
          },
          {
-            field: "access",
+            field: "explore",
             align: "center",
             headerAlign: "center",
-            headerName: "Access",
+            headerName: "Explore",
             sortable: false,
             disableColumnMenu: true,
             width: 200,
@@ -285,56 +260,74 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       [user]
    );
 
-   // handle authorize user
-   const handleAuthorize = async (user: Profile) => {
+   // Select many rows
+   const handleSelectionChange = (ids: any) => {
+      setSelectedIds(ids);
+   };
+
+   // Handle all
+   const handleAll = async () => {
       try {
-         const res = await api.admin.authorizeUser(user._id as string, user.isAdmin);
-         if (res.status === 200) {
-            const message = user?.isAdmin
-               ? user.fullName + " becomed user"
-               : user.fullName + " becomed admin";
+         const res = await api.admin.handleAll({
+            action: action,
+            memberIds: selectedIds,
+            role: role,
+         });
+         if (res.statusText === "OK") {
+            setUsers(users.filter((user) => !selectedIds.includes(user._id)));
             dispatch(
                showAlert({
-                  title: "Authorization",
-                  message,
+                  title: action,
+                  message: action + "successfully",
                   mode: "success",
-               })
-            );
-            setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
-         } else {
-            dispatch(
-               showAlert({
-                  title: "Authorization",
-                  message: `Authorize ${user?.fullName} failed!`,
-                  mode: "error",
                })
             );
          }
       } catch (err) {
-         console.log(err);
+         console.error(err);
       }
-   };
-
-   // Select many rows
-   const handleSelectionChange = (newSelection) => {
-      console.log(newSelection);
    };
 
    return (
       <>
          <Typography variant="h3" textAlign="center" letterSpacing={2}>
-            Users
+            Members
          </Typography>
          {/* Roles & actions */}
          <Stack mt={2} mb={2} flexDirection="row" justifyContent="space-between" gap={2}>
-            {/* Roles */}
-            <FormControl sx={{ width: 200 }}>
-               <InputLabel id="demo-simple-select-label">Role</InputLabel>
-               <Select value={role} label="Selection" onChange={handleChangeRole}>
-                  <MenuItem value="User">User</MenuItem>
-                  <MenuItem value="Admin">Admin</MenuItem>
-               </Select>
-            </FormControl>
+            {/* Roles & Selection action*/}
+            <Stack flexDirection="row" gap={4}>
+               <FormControl sx={{ width: 100 }}>
+                  <InputLabel>Role</InputLabel>
+                  <Select value={role} label="Selection" onChange={handleChangeRole}>
+                     <MenuItem value="user">User</MenuItem>
+                     <MenuItem value="admin">Admin</MenuItem>
+                  </Select>
+               </FormControl>
+               <FormControl sx={{ width: 150 }}>
+                  <InputLabel>Action</InputLabel>
+                  <Select
+                     value={action}
+                     label="Action"
+                     placeholder="--Select--"
+                     onChange={(e) => setAction(e.target.value)}>
+                     <MenuItem value="delete">Delete</MenuItem>
+                     <MenuItem value="authorize">Authorize</MenuItem>
+                  </Select>
+               </FormControl>
+               <Button
+                  disabled={!action || selectedIds.length === 0}
+                  variant="contained"
+                  onClick={handleAll}
+                  sx={{
+                     alignSelf: "center",
+                     color: theme.myColor.white,
+                  }}
+                  endIcon={<SendIcon />}>
+                  Submit
+               </Button>
+            </Stack>
+
             {/* Actions */}
             <Stack flexDirection="row" gap={4}>
                <Tooltip title="Trash Store">
@@ -386,7 +379,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             <DetailUser
                isLoading={isLoading}
                user={user}
-               onClose={onClose}
+               onClose={handleClosePopper}
                onSubmit={handleUpdateUser}
             />
          )}
@@ -397,7 +390,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             title={`Are you sure to delete ${user?.fullName}?`}
             content="You still can restore user in Trash Store when you deleted"
             onSubmit={handleDeleteUser}
-            onClose={onCloseDeleteDialog}
+            onClose={handleClosePopper}
          />
 
          {/* Modal add member */}

@@ -25,10 +25,25 @@ const Alert = ({ message, title = "Error", mode = "error", onClose }: AlertProps
          message={message}
          onClose={onCloseAlert}>
          <MyAlert severity={mode} closeText="Close" variant="outlined" onClose={onCloseAlert}>
-            <Typography variant="body1" fontWeight={600}>
+            <Typography
+               variant="body1"
+               fontWeight={600}
+               sx={{
+                  "&:first-letter": {
+                     textTransform: "uppercase",
+                  },
+               }}>
                {title}
             </Typography>
-            {message}
+            <Typography
+               variant="subtitle2"
+               sx={{
+                  "&:first-letter": {
+                     textTransform: "uppercase",
+                  },
+               }}>
+               {message}
+            </Typography>
          </MyAlert>
       </Snackbar>
    );

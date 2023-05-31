@@ -111,10 +111,22 @@ const Container = ({ onClickItem }: Props) => {
                      const specificTime = new Date(String(conversation?.lastestMessage?.updatedAt));
                      const timeDiffMs = now.getTime() - specificTime.getTime();
                      const timeDiffMin = Math.floor(timeDiffMs / 1000 / 60);
-                     let lastestTime = timeDiffMin;
-                     // if (timeDiffMin >= 60) {
-                     //    lastestTime /= 60;
-                     // }
+                     let lastestTime = {
+                        time: timeDiffMin,
+                        unit: "m",
+                     };
+                     if (lastestTime.time === 0) {
+                        lastestTime = {
+                           time: 1,
+                           unit: "m",
+                        };
+                     }
+                     if (timeDiffMin >= 60) {
+                        lastestTime = {
+                           time: Math.floor(lastestTime.time / 60),
+                           unit: "h",
+                        };
+                     }
                      return (
                         <Item
                            key={conversation.idConversation}

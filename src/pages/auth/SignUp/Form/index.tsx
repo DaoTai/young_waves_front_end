@@ -95,7 +95,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
                {/* Radio fields */}
                {radioFields.map((item: any, i: number) => {
                   return (
-                     <Grid key={i} item md={6} sm={6} xs={12}>
+                     <Grid key={i} item md={6} xs={12}>
                         <FormControl>
                            <FormLabel>{item.label}</FormLabel>
                            <RadioGroup name={item.name}>

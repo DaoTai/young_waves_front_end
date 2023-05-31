@@ -25,8 +25,8 @@ const AddMember = ({ onClose }: { onClose: () => void }) => {
          boxShadow={2}
          p={2}
          borderRadius={2}
-         minWidth="60vw"
-         maxHeight="95vh"
+         width="98vw"
+         height="98vh"
          overflow="auto"
          position="absolute"
          top="50%"

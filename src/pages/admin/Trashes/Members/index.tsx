@@ -1,9 +1,11 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import SendIcon from "@mui/icons-material/Send";
 import {
    Avatar,
    Box,
+   Button,
+   Fab,
    FormControl,
    InputLabel,
    MenuItem,
@@ -21,7 +23,10 @@ import * as api from "../../../../apis";
 import { Dialog } from "../../../../components";
 import { showAlert } from "../../../../redux-saga/redux/actions";
 import { Profile } from "../../../../utils/interfaces/Profile";
-import DetailUser from "../../Users/Detail";
+interface StatePopper {
+   detail: boolean;
+   dialog: boolean;
+}
 
 const UserTrashes = () => {
    const theme = useTheme();
@@ -29,51 +34,13 @@ const UserTrashes = () => {
    const [users, setUsers] = useState<Profile[] | []>([]);
    const [user, setUser] = useState<Profile>();
    const [role, setRole] = useState<string>("User");
+   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+   const [action, setAction] = useState<string>("");
+   const [open, setOpen] = useState<StatePopper>({
+      detail: false,
+      dialog: false,
+   });
    const [isLoading, setLoading] = useState<boolean>(false);
-   const [showDetail, setShowDetail] = useState<boolean>(false);
-   const [showDialog, setShowDialog] = useState<boolean>(false);
-   // close detail modal
-   const onClose = useCallback(() => {
-      setShowDetail(false);
-   }, []);
-
-   // handle update user
-   const handleUpdateUser = useCallback(async (values: Partial<Profile>) => {
-      try {
-         const res = await api.admin.editUser(values);
-         if (res.status === 200) {
-            setUsers((prev) => {
-               const newUsers = prev.map((user: Profile) => {
-                  if (user._id === values._id) {
-                     return {
-                        ...user,
-                        ...values,
-                     };
-                  }
-                  return user;
-               });
-               return newUsers;
-            });
-            dispatch(
-               showAlert({
-                  title: "Update user",
-                  message: "Update user successfully",
-                  mode: "success",
-               })
-            );
-         } else {
-            dispatch(
-               showAlert({
-                  title: "Update user",
-                  message: "Update user failed",
-                  mode: "error",
-               })
-            );
-         }
-      } catch (err: any) {
-         throw new Error(err);
-      }
-   }, []);
 
    useEffect(() => {
       (async () => {
@@ -96,7 +63,7 @@ const UserTrashes = () => {
             headerAlign: "center",
             headerName: "Full name",
             width: 160,
-            flex: 1,
+            flex: 2,
             renderCell(params) {
                return (
                   <Stack
@@ -117,6 +84,7 @@ const UserTrashes = () => {
             headerAlign: "center",
             headerName: "City",
             width: 70,
+            align: "center",
             flex: 1,
          },
          {
@@ -124,88 +92,71 @@ const UserTrashes = () => {
             headerAlign: "center",
             headerName: "Region",
             width: 70,
+            align: "center",
             flex: 1,
          },
          {
             field: "deletedAt",
             headerAlign: "center",
             headerName: "Deleted at",
+            align: "center",
             width: 70,
             flex: 2,
-            valueFormatter: (params) => dateformat(params.value, "dddd, mmmm dS, yyyy, h:MM:ss TT"),
-         },
-         {
-            field: "detail",
-            headerAlign: "center",
-            headerName: "Detail",
-            width: 200,
-            flex: 1,
-            sortable: false,
-            disableColumnMenu: true,
-            renderCell(params) {
-               return (
-                  <VisibilityIcon
-                     sx={{ flex: 1, cursor: "pointer", color: theme.palette.success.main }}
-                     onClick={() => onOpenDetail(params.row)}
-                  />
-               );
-            },
+            valueFormatter: (params) => dateformat(params.value, "h:MM TT dd-mm-yyyy"),
          },
          {
             field: "restore",
             headerAlign: "center",
             headerName: "Restore",
+            align: "center",
             flex: 1,
             sortable: false,
             disableColumnMenu: true,
             renderCell(params) {
                return (
-                  <RestoreFromTrashIcon
-                     sx={{
-                        cursor: "pointer",
-                        transform: "scale(1.2)",
-                        flex: 1,
-                        color: theme.myColor.link,
-                     }}
-                     onClick={() => handleRestoreUser(params.id.toString())}
-                  />
+                  <Fab
+                     size="small"
+                     color="success"
+                     onClick={() => handleRestoreUser(params.id.toString())}>
+                     <RestoreFromTrashIcon />
+                  </Fab>
                );
             },
          },
          {
             field: "delete",
             headerAlign: "center",
+            align: "center",
             headerName: "Delete",
             flex: 1,
             sortable: false,
             disableColumnMenu: true,
             renderCell(params) {
                return (
-                  <DeleteIcon
-                     sx={{
-                        cursor: "pointer",
-                        transform: "scale(1.2)",
-                        flex: 1,
-                        color: theme.palette.error.main,
-                     }}
-                     onClick={() => onOpenConfirmForceDelete(params.row)}
-                  />
+                  <Fab
+                     size="small"
+                     color="error"
+                     onClick={() => onOpenConfirmForceDelete(params.row)}>
+                     <DeleteIcon />
+                  </Fab>
                );
             },
          },
       ],
       []
    );
-   // open detail modal
-   const onOpenDetail = (user: Profile) => {
-      setShowDetail(true);
-      setUser(user);
-   };
+
+   const handleClosePopper = useCallback(() => {
+      setOpen({
+         detail: false,
+         dialog: false,
+      });
+   }, []);
 
    // open dialog delete
    const onOpenConfirmForceDelete = (user: Profile) => {
       setUser(user);
-      setShowDialog(true);
+      setOpen((prev) => ({ ...prev, dialog: true }));
    };
 
    // handle change role
@@ -216,8 +167,8 @@ const UserTrashes = () => {
    // handle restore user
    const handleRestoreUser = async (idUser: string) => {
       try {
-         const res = await api.admin.restoreTrashedUser(idUser);
-         if (res.status === 200) {
+         const { statusText } = await api.admin.restoreTrashedUser(idUser);
+         statusText === "OK" &&
             dispatch(
                showAlert({
                   title: "Restore member",
@@ -225,18 +176,17 @@ const UserTrashes = () => {
                   mode: "success",
                })
             );
-            setUsers((prev) => prev.filter((user) => user._id !== idUser));
-         } else {
-            dispatch(
-               showAlert({
-                  title: "Restore member",
-                  message: "Restore failed",
-                  mode: "error",
-               })
-            );
-         }
+         setUsers((prev) => prev.filter((user) => user._id !== idUser));
       } catch (err) {
-         console.log(err);
+         console.error(err);
+
+         dispatch(
+            showAlert({
+               title: "Restore member",
+               message: "Restore failed",
+               mode: "error",
+            })
+         );
       }
    };
 
@@ -253,7 +203,7 @@ const UserTrashes = () => {
          );
          setUsers((prev) => prev.filter((prevUser) => prevUser._id !== user?._id));
       } catch (err) {
-         console.log(err);
+         console.error(err);
          dispatch(
             showAlert({
                title: "Failure",
@@ -262,14 +212,45 @@ const UserTrashes = () => {
             })
          );
       }
-      setShowDialog(false);
+      handleClosePopper();
+   };
+
+   // Handle all
+   const handleAll = async () => {
+      try {
+         const res = await api.admin.handleAll({ action: action, memberIds: selectedIds });
+         if (res.statusText === "OK") {
+            setUsers(users.filter((user) => !selectedIds.includes(user._id)));
+            dispatch(
+               showAlert({
+                  title: action,
+                  message: action + " successfully!",
+                  mode: "success",
+               })
+            );
+         }
+      } catch (err) {
+         dispatch(
+            showAlert({
+               title: action,
+               message: action + " failed!",
+               mode: "error",
+            })
+         );
+      }
+   };
+
+   // Select many rows
+   const handleSelectionChange = (ids: any) => {
+      setSelectedIds(ids);
    };
 
    return (
       <>
          <Box pt={2}>
-            <Stack justifyContent="flex-end">
-               <FormControl sx={{ width: 200, pb: 2, pt: 2, ml: "auto" }}>
+            {/* Select roles & actions */}
+            <Stack mt={2} mb={2} gap={2} flexDirection="row" alignItems="center">
+               <FormControl sx={{ width: 150 }}>
                   <InputLabel>Role</InputLabel>
                   <Select
                      value={role}
@@ -280,11 +261,36 @@ const UserTrashes = () => {
                      <MenuItem value="Admin">Admin</MenuItem>
                   </Select>
                </FormControl>
+               <FormControl sx={{ width: 150 }}>
+                  <InputLabel>Action</InputLabel>
+                  <Select
+                     value={action}
+                     label="Action"
+                     placeholder="--Select--"
+                     onChange={(e) => setAction(e.target.value)}>
+                     <MenuItem value="restore">Restore</MenuItem>
+                     <MenuItem value="force-delete">ForceDelete</MenuItem>
+                  </Select>
+               </FormControl>
+               <Button
+                  disabled={!action || selectedIds.length === 0}
+                  variant="contained"
+                  onClick={handleAll}
+                  sx={{
+                     alignSelf: "center",
+                     color: theme.myColor.white,
+                  }}
+                  endIcon={<SendIcon />}>
+                  Submit
+               </Button>
             </Stack>
+
+            {/* Table data */}
             {users && (
                <Box width="100%" overflow="overlay">
                   <DataGrid
                      autoHeight
+                     checkboxSelection
                      showCellRightBorder={true}
                      showColumnRightBorder={true}
                      rows={users as Array<Profile>}
@@ -300,24 +306,19 @@ const UserTrashes = () => {
                            </Typography>
                         ),
                      }}
-                     sx={{ bgcolor: theme.myColor.white }}
+                     onSelectionModelChange={handleSelectionChange}
                   />
                </Box>
             )}
          </Box>
 
-         {/* Modal detail user */}
-         {user && showDetail && (
-            <DetailUser user={user} onClose={onClose} onSubmit={handleUpdateUser} />
-         )}
-
          {/* Dialog confirm */}
          <Dialog
-            open={showDialog}
+            open={open.dialog}
             title="Confirm delete user"
             content={`You won't able to restore ${user?.fullName}. Every posts and comments of
                   ${user?.fullName} are also deleted`}
-            onClose={() => setShowDialog(false)}
+            onClose={handleClosePopper}
             onSubmit={handleForceDeleteUser}
          />
       </>

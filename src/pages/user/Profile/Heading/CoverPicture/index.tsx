@@ -66,7 +66,7 @@ const CoverPicture = ({ user, children }: { user: Profile; children?: ReactNode 
          overflow="hidden"
          position="relative"
          sx={
-            user.coverPicture
+            coverPicture.url
                ? {
                     backgroundImage: `url(${coverPicture.url})`,
                     backgroundPosition: "center",

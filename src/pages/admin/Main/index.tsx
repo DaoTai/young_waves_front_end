@@ -9,7 +9,7 @@ import { TYPE_FEATURES } from "../../../utils/types";
 import Features from "../Features";
 import Statistical from "../Statistical";
 import Trashes from "../Trashes";
-import Users from "../Users";
+import Members from "../Members";
 const ContainerAdmin = () => {
    const theme = useTheme();
    const { isShow, payload } = useSelector(alertState$);
@@ -22,7 +22,7 @@ const ContainerAdmin = () => {
    }, []);
    const Feature: Partial<Record<TYPE_FEATURES, React.ReactNode>> = {
       // statistical: <Statistical />,
-      users: <Users goToTrashes={goToTrashes} />,
+      users: <Members goToTrashes={goToTrashes} />,
       trashes: <Trashes />,
    };
    const onClick = (name: TYPE_FEATURES) => {

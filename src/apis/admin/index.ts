@@ -48,3 +48,17 @@ export const editUser = async (user: UpdateProfile) => {
    delete user.newAvatar;
    return await axiosInstance.patch(`/admin/users/${user._id}`, user);
 };
+
+// [POST] admin/users/handle-all
+export const handleAll = async (payload: {
+   action: string;
+   memberIds: string[];
+   role?: string;
+}) => {
+   const res = await axiosInstance.post("/admin/users/handle-all", payload);
+
+   if (res.data.deletedAttachments) {
+      await deleteMultipleImages(res.data.deletedAttachments);
+   }
+   return res;
+};

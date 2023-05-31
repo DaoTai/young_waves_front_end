@@ -27,16 +27,9 @@ interface Props {
 const Message = ({ message, friendAvatar, onDelete }: Props) => {
    const theme = useTheme();
    const auth$ = useSelector(authState$);
-   const [fullImage, setFullImage] = useState<string | null>(null);
-   const [openFullImage, setOpenFullImage] = useState<boolean>(false);
    const [openDialog, setOpenDialog] = useState<boolean>(false);
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
    const idAuth = auth$.payload?.user?._id;
-
-   const handleShowFullImg = (url: string) => {
-      setOpenFullImage(true);
-      setFullImage(url);
-   };
 
    const onCloseMenu = () => {
       setAnchorEl(null);
@@ -84,7 +77,6 @@ const Message = ({ message, friendAvatar, onDelete }: Props) => {
                               src={attachment.url}
                               srcSet={attachment.url + "2x"}
                               alt="attachment"
-                              onClick={() => handleShowFullImg(attachment.url)}
                            />
                         </Box>
                      ))}
@@ -131,14 +123,7 @@ const Message = ({ message, friendAvatar, onDelete }: Props) => {
                )}
             </Stack>
          </Stack>
-         {/* Full screen */}
-         {openFullImage && fullImage && (
-            <OverlayFullImage
-               open={openFullImage}
-               src={fullImage}
-               onClose={() => setOpenFullImage(false)}
-            />
-         )}
+
          <Dialog
             open={openDialog}
             title="Message"

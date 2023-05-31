@@ -78,10 +78,10 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
       };
    }, [values.avatar]);
 
-   const handleChangeAvatar = (files: FileList) => {
+   const handleChangeAvatar = (files: File[], blobs: string[]) => {
       const file = files[0];
       setAvatar(file);
-      setFieldValue("avatar", URL.createObjectURL(file));
+      setFieldValue("avatar", blobs[0]);
    };
 
    const onOpenFullImage = () => setShowFullAvatar(true);
@@ -106,7 +106,7 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                         display="flex"
                         flexDirection="column"
                         justifyContent="center">
-                        <WrapAvatar>
+                        <WrapAvatar mb={2}>
                            <Avatar
                               variant="square"
                               src={values.avatar}
@@ -127,7 +127,7 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                            textAlign="center"
                            mt={2}
                            sx={{ color: theme.palette.primary.main }}>
-                           <Link to={`/user/explore/${values._id}`}>Go to explore</Link>
+                           <Link to={`/user/explore/${values._id}`}>Explore</Link>
                         </Typography>
                      </Grid>
                      <Grid item md={9} xs={12}>

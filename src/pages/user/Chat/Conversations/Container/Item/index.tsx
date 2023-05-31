@@ -9,7 +9,10 @@ import { URL_SERVER } from "../../../../../../utils/constants";
 interface Props {
    onClickItem: () => void;
    conversation: FormatConversation;
-   lastestTime: number;
+   lastestTime: {
+      time: number;
+      unit: string;
+   };
 }
 const Item = ({ onClickItem, conversation, lastestTime }: Props) => {
    const theme = useTheme();
@@ -54,7 +57,7 @@ const Item = ({ onClickItem, conversation, lastestTime }: Props) => {
                      {conversation?.lastestMessage?.text}
                   </Typography>
                   <Typography variant="subtitle2" fontWeight={500}>
-                     {lastestTime && lastestTime + " m"}
+                     {lastestTime && lastestTime.time + lastestTime.unit}
                   </Typography>
                </Stack>
             )}

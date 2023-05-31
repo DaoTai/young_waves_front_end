@@ -1,6 +1,7 @@
 import ExploreIcon from "@mui/icons-material/Explore";
-import FemaleIcon from "@mui/icons-material/Female";
-import MaleIcon from "@mui/icons-material/Male";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import PersonIcon from "@mui/icons-material/Person";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import PublicIcon from "@mui/icons-material/Public";
 import { Avatar, Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -20,16 +21,34 @@ const User = ({ user }: { user: Profile }) => {
             />
             <Stack mt={2} gap={1}>
                <Stack flexDirection="row" alignItems="center" gap={1}>
-                  {user?.gender.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
+                  {user?.isAdmin ? (
+                     <AdminPanelSettingsIcon color="success" />
+                  ) : (
+                     <PersonIcon color="primary" />
+                  )}
                   <Typography variant="body1" component="span" m={0}>
                      {user?.fullName}
                   </Typography>
                </Stack>
-               <Stack flexDirection="row" alignItems="center" gap={1}>
-                  <PublicIcon />
+               <Stack
+                  flexDirection="row"
+                  alignItems="center"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  gap={1}>
+                  <LocationCityIcon />
                   <Typography variant="body1" component="span" m={0}>
-                     {user?.city},
+                     {user?.city}
                   </Typography>
+               </Stack>
+               <Stack
+                  flexDirection="row"
+                  alignItems="center"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  whiteSpace="pre"
+                  gap={1}>
+                  <PublicIcon />
                   <Typography variant="body1" component="span" m={0}>
                      {user?.region}
                   </Typography>
