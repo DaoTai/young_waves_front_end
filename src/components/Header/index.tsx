@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import Navigation from "./Navigation";
 import Actions from "./ToggleActions";
 import Messenger from "./Messenger";
+import ChangeModeButton from "../ChangeModeButton";
 const Header = () => {
    const theme = useTheme();
 
@@ -38,17 +39,18 @@ const Header = () => {
                   {/* Messenger */}
                   <Grid
                      item
-                     ml={1}
-                     mr={2}
+                     display="flex"
+                     gap={2}
                      sx={{
                         ml: {
                            xs: "auto",
                         },
                      }}>
+                     <ChangeModeButton />
                      <Messenger />
                   </Grid>
 
-                  {/* Toggle */}
+                  {/* Action user */}
                   <Grid item>
                      <Actions />
                   </Grid>

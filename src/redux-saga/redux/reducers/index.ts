@@ -8,8 +8,16 @@ import postsReducer from "./posts";
 import ownerPostsReducer from "./user/posts";
 import trashPostsReducer from "./user/trash/posts";
 import { PostsState } from "./posts/helpers";
+import { AlertColor } from "@mui/material";
 export interface State {
-   alert: { isShow: boolean; payload: any };
+   alert: {
+      isShow: boolean;
+      payload: {
+         title: string;
+         message: string;
+         mode: AlertColor;
+      };
+   };
    auth: {
       isLoading: boolean;
       payload: {

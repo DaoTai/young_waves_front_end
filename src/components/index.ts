@@ -16,3 +16,4 @@ export { default as Alert } from "./Alert";
 export { default as OverlayFullImage } from "./OverlayFullImage";
 export { default as CountriesSelect } from "./CountriesSelect";
 export { default as Dialog } from "./Dialog";
+export { default as ChangeModeButton } from "./ChangeModeButton";

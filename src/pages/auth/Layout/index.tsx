@@ -1,7 +1,11 @@
 import { Grid, styled } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { alertState$ } from "../../../redux-saga/redux/selectors";
+import { Alert } from "../../../components";
 import CoverPicture from "../../../assets/images/cover-picture.jpg";
 const AuthLayout = () => {
+   const alert$ = useSelector(alertState$);
    const MyGrid = styled(Grid)(({ theme }) => ({
       backgroundImage: `url(${CoverPicture})`,
       backgroundSize: "cover",
@@ -17,13 +21,13 @@ const AuthLayout = () => {
       overflow: "overlay",
       transition: "0.3s linear all",
       "& > #sign-in": {
-         width: "35vw",
+         width: 450,
          maxWidth: "100%",
       },
       "& > #sign-up": {
          width: "60vw",
          maxWidth: "100%",
-         maxHeight: "90vh",
+         maxHeight: "95vh",
       },
    }));
    return (
@@ -51,6 +55,7 @@ const AuthLayout = () => {
                <Outlet />
             </WrapForm>
          </MyGrid>
+         {alert$.isShow && <Alert />}
       </>
    );
 };

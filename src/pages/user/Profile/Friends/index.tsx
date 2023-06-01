@@ -47,16 +47,10 @@ const Friends = () => {
    useEffect(() => {
       (async () => {
          try {
-            let res;
-            if (searchDebounce) {
-               res = await api.user.getFriends(auth$.payload?.user?._id, page, searchDebounce);
-            } else {
-               res = await api.user.getFriends(auth$.payload?.user?._id, page);
-            }
+            const res = await api.user.getFriends(auth$.payload?.user?._id, page, searchDebounce);
             setLoading(false);
             setFriends(res.data?.friends);
             maxPageRef.current = res?.data?.maxPage;
-            console.log("res = ", res);
          } catch (err: any) {
             throw new Error(err);
          }
@@ -164,8 +158,6 @@ const Friends = () => {
                         justifyContent="space-between"
                         bgcolor={theme.myColor.white}
                         sx={{ margin: "4px -4px" }}>
-                        {/* Avatar */}
-
                         <Avatar
                            variant="square"
                            src={friend.avatar}
@@ -188,17 +180,7 @@ const Friends = () => {
                         </Typography>
                         {/* Action button*/}
                         <Button
-                           aria-controls={openMenu ? "basic-menu" : undefined}
-                           aria-haspopup="true"
-                           aria-expanded={openMenu ? "true" : undefined}
-                           sx={{
-                              bgcolor: theme.myColor.white,
-                              justifyContent: "center",
-                              "&:hover": {
-                                 bgcolor: "transparent",
-                                 opacity: 0.8,
-                              },
-                           }}
+                           sx={{ bgcolor: "transparent" }}
                            onClick={(e) => handleShowMenu(e, friend._id)}>
                            <MoreHorizIcon />
                         </Button>
@@ -222,9 +204,6 @@ const Friends = () => {
                anchorEl={anchorEl}
                open={openMenu}
                onClose={onCloseMenuActions}
-               MenuListProps={{
-                  "aria-labelledby": "basic-button",
-               }}
                sx={{
                   ".MuiButtonBase-root": {
                      justifyContent: "space-between",
@@ -232,21 +211,15 @@ const Friends = () => {
                   },
                }}>
                <MenuItem divider onClick={() => navigate("/user/explore/" + idFriend)}>
-                  <Typography variant="body1" component="span">
-                     Explore
-                  </Typography>
+                  Explore
                   <VisibilityIcon />
                </MenuItem>
                <MenuItem divider onClick={handleCopyLinkFriend}>
-                  <Typography variant="body1" component="span">
-                     Copy link
-                  </Typography>
+                  Copy
                   <ContentCopyIcon />
                </MenuItem>
                <MenuItem divider onClick={onOpenDialogUnfriend}>
-                  <Typography variant="body1" component="span">
-                     Unfriend
-                  </Typography>
+                  Unfriend
                   <PersonRemoveIcon />
                </MenuItem>
             </Menu>

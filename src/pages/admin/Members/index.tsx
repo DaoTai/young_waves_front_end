@@ -7,6 +7,7 @@ import {
    Avatar,
    Box,
    Button,
+   Divider,
    Fab,
    FormControl,
    InputLabel,
@@ -15,6 +16,8 @@ import {
    Select,
    SelectChangeEvent,
    Stack,
+   Tab,
+   Tabs,
    Tooltip,
    Typography,
    useTheme,
@@ -115,7 +118,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             headerAlign: "center",
             headerName: "Joined time",
             flex: 2,
-            valueFormatter: (params) => dateformat(params.value, "dd-mm-yyyy"),
+            valueFormatter: (params) => dateformat(params.value, "h:MM TT dd-mm-yyyy"),
          },
          {
             field: "gender",
@@ -172,7 +175,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             width: 200,
             flex: 1,
             renderCell(params) {
-               return <Link to={"/user/explore/" + params.id}>Profile</Link>;
+               return <Link to={"/user/explore/" + params.id}>Watch</Link>;
             },
          },
       ],
@@ -180,8 +183,8 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
    );
 
    // handle change role
-   const handleChangeRole = (event: SelectChangeEvent) => {
-      setRole(event.target.value as string);
+   const handleChangeRole = (event: React.SyntheticEvent, newValue: string) => {
+      setRole(newValue);
    };
 
    // open detail modal
@@ -293,17 +296,37 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          <Typography variant="h3" textAlign="center" letterSpacing={2}>
             Members
          </Typography>
-         {/* Roles & actions */}
+         {/* Roles  */}
+         <Box>
+            <Divider />
+            <Tabs value={role} onChange={handleChangeRole}>
+               <Tab
+                  value="user"
+                  label="User"
+                  sx={{
+                     transition: "all 0.3s ease",
+                     "&:hover": {
+                        bgcolor: theme.myColor.bgGray,
+                     },
+                  }}
+               />
+               <Tab
+                  value="admin"
+                  label="Admin"
+                  sx={{
+                     transition: "all 0.3s ease",
+                     "&:hover": {
+                        bgcolor: theme.myColor.bgGray,
+                     },
+                  }}
+               />
+            </Tabs>
+            <Divider />
+         </Box>
+         {/* Actions */}
          <Stack mt={2} mb={2} flexDirection="row" justifyContent="space-between" gap={2}>
             {/* Roles & Selection action*/}
             <Stack flexDirection="row" gap={4}>
-               <FormControl sx={{ width: 100 }}>
-                  <InputLabel>Role</InputLabel>
-                  <Select value={role} label="Selection" onChange={handleChangeRole}>
-                     <MenuItem value="user">User</MenuItem>
-                     <MenuItem value="admin">Admin</MenuItem>
-                  </Select>
-               </FormControl>
                <FormControl sx={{ width: 150 }}>
                   <InputLabel>Action</InputLabel>
                   <Select
@@ -322,6 +345,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   sx={{
                      alignSelf: "center",
                      color: theme.myColor.white,
+                     background: `${
+                        !action || selectedIds.length === 0 ? null : theme.myColor.bgGradient
+                     }`,
                   }}
                   endIcon={<SendIcon />}>
                   Submit
@@ -349,30 +375,28 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             </Stack>
          </Stack>
 
-         {users && (
-            <Box width="100%">
-               <DataGrid
-                  checkboxSelection
-                  autoHeight
-                  showCellRightBorder={true}
-                  showColumnRightBorder={true}
-                  loading={isLoading}
-                  rows={users as Array<Profile>}
-                  columns={columns}
-                  pageSize={10}
-                  rowsPerPageOptions={[10]}
-                  getRowId={(row) => row._id}
-                  components={{
-                     NoRowsOverlay: () => (
-                        <Typography p={2} letterSpacing={2} textAlign="center">
-                           No user
-                        </Typography>
-                     ),
-                  }}
-                  onSelectionModelChange={handleSelectionChange}
-               />
-            </Box>
-         )}
+         <Box width="100%">
+            <DataGrid
+               checkboxSelection
+               autoHeight
+               showCellRightBorder={true}
+               showColumnRightBorder={true}
+               loading={isLoading}
+               rows={users as Array<Profile>}
+               columns={columns}
+               pageSize={10}
+               rowsPerPageOptions={[10]}
+               getRowId={(row) => row._id}
+               components={{
+                  NoRowsOverlay: () => (
+                     <Typography p={2} letterSpacing={2} textAlign="center">
+                        No user
+                     </Typography>
+                  ),
+               }}
+               onSelectionModelChange={handleSelectionChange}
+            />
+         </Box>
 
          {/* Modal detail user */}
          {open.detail && user && (

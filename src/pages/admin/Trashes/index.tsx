@@ -17,7 +17,7 @@ const Trashes = () => {
             Trashes
          </Typography>
 
-         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+         {/* <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={trash} onChange={handleChangeTabPanel}>
                <Tab
                   value="members"
@@ -30,7 +30,7 @@ const Trashes = () => {
                   }}
                />
             </Tabs>
-         </Box>
+         </Box> */}
 
          <Box>{TypeTrash[trash]}</Box>
       </>

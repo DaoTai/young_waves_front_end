@@ -2,7 +2,7 @@ import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { Post } from "../../../components";
+import { Post, Spinner } from "../../../components";
 import { getPosts } from "../../../redux-saga/redux/actions";
 import { postsState$ } from "../../../redux-saga/redux/selectors";
 import News from "./News";
@@ -31,6 +31,7 @@ const NewsFeed = () => {
             <News posts={posts$.payload.posts} hasMore={hasMore} fetchMoreData={fetchMoreData} />
          </Stack>
          <Outlet />
+         <Spinner show={posts$.isLoading} />
       </>
    );
 };

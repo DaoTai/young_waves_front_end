@@ -5,6 +5,7 @@ import {
    DialogContent,
    DialogContentText,
    DialogTitle,
+   Divider,
 } from "@mui/material";
 
 interface Props {
@@ -26,9 +27,10 @@ const MyDialog = ({ open, title, content, onClose, onSubmit }: Props) => {
          keepMounted
          onClose={onClose}
          aria-describedby="alert-dialog-slide-description">
-         <DialogTitle>{title}</DialogTitle>
+         <DialogTitle sx={{ pt: 1, pb: 1 }}>{title}</DialogTitle>
+         <Divider />
          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">{content}</DialogContentText>
+            <DialogContentText>{content}</DialogContentText>
          </DialogContent>
          <DialogActions>
             <Button variant="outlined" sx={{ bgcolor: "transparent" }} onClick={onClose}>

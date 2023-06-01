@@ -1,19 +1,9 @@
-import {
-   Autocomplete,
-   Box,
-   FormControl,
-   InputLabel,
-   MenuItem,
-   Select,
-   SelectChangeEvent,
-   TextField,
-   Typography,
-} from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Form from "./Form";
-import { useEffect, useState } from "react";
 const SignUp = () => {
+   const theme = useTheme();
    return (
       <div id="sign-up">
          <Helmet>
@@ -21,13 +11,21 @@ const SignUp = () => {
          </Helmet>
 
          {/* Body */}
-         <Box p={2} pl={4} pr={4}>
-            <Typography variant="h2" textAlign="center" color="primary">
+         <Box pt={1} pl={4} pr={4} pb={2}>
+            <Typography
+               variant="h3"
+               textAlign="center"
+               sx={{
+                  background: theme.myColor.bgGradient,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  pb: 2,
+               }}>
                Sign up
             </Typography>
             <Form />
             {/* Suggest */}
-            <Box mt={3} textAlign="center">
+            <Box mt={1} textAlign="center">
                <Typography variant="subtitle1" component="b" mr={1}>
                   Have you already had an account?
                </Typography>

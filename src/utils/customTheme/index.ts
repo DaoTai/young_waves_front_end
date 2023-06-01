@@ -1,22 +1,28 @@
-import { createTheme } from "@mui/material/styles";
-
-export const customTheme = createTheme({
+import {
+   Experimental_CssVarsProvider as CssVarsProvider,
+   experimental_extendTheme as extendTheme,
+} from "@mui/material/styles";
+export const customTheme = extendTheme({
    myColor: {
       text: "#333",
       white: "#fff",
       textSecondary: "#00000099",
       bg: "#f5f5f5",
       bgGray: "rgb(240,242,245)",
-      bgGradient: "linear-gradient(to bottom, #4568dc, #b06ab3)",
+      bgGradient: "linear-gradient(to right, #121FCF 0%, #b11eaa 100%)",
       link: "#2196f3",
       black: "#000",
    },
-   palette: {
-      secondary: {
-         main: "#ff66ff",
-      },
-      primary: {
-         main: "#00b0ff",
+   colorSchemes: {
+      light: {
+         palette: {
+            secondary: {
+               main: "#ff66ff",
+            },
+            primary: {
+               main: "#00b0ff",
+            },
+         },
       },
    },
    typography: {

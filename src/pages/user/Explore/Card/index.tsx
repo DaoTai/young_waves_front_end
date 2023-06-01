@@ -3,23 +3,41 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import PublicIcon from "@mui/icons-material/Public";
-import { Avatar, Button, CardContent, Stack, Typography, useTheme } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Avatar, Button, CardContent, Divider, Stack, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
-import { MyCard } from "./style";
-const User = ({ user }: { user: Profile }) => {
+import { MyCard, WrapButtons } from "./style";
+import { addFriend } from "../../../../redux-saga/redux/actions";
+import { Dialog } from "../../../../components";
+import { useState } from "react";
+const Card = ({ user }: { user: Profile }) => {
+   const auth$ = useSelector(authState$);
    const theme = useTheme();
    const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const [openDialog, setOpenDialog] = useState<boolean>(false);
+   const isFriend = auth$.payload.user.friends.includes(user._id);
+
+   const onCloseDialog = () => setOpenDialog(!openDialog);
+
+   const handleAddFriend = async () => {
+      dispatch(addFriend(user._id));
+   };
+
    return (
       <MyCard boxShadow={1} borderRadius={1} bgcolor={theme.myColor.white} overflow="hidden">
          <CardContent>
             <Avatar
+               alt="avatar"
                src={user.avatar}
                srcSet={user.avatar}
-               alt="avatar"
-               sx={{ border: "1px dashed #ccc", margin: "0 auto", width: 240, height: 240 }}
+               sx={{ border: "1px dashed #ccc", margin: "0 auto", width: 200, height: 200 }}
             />
             <Stack mt={2} gap={1}>
+               <Divider />
                <Stack flexDirection="row" alignItems="center" gap={1}>
                   {user?.isAdmin ? (
                      <AdminPanelSettingsIcon color="success" />
@@ -36,7 +54,7 @@ const User = ({ user }: { user: Profile }) => {
                   textOverflow="ellipsis"
                   overflow="hidden"
                   gap={1}>
-                  <LocationCityIcon />
+                  <LocationCityIcon color="primary" />
                   <Typography variant="body1" component="span" m={0}>
                      {user?.city}
                   </Typography>
@@ -48,40 +66,38 @@ const User = ({ user }: { user: Profile }) => {
                   overflow="hidden"
                   whiteSpace="pre"
                   gap={1}>
-                  <PublicIcon />
+                  <PublicIcon color="primary" />
                   <Typography variant="body1" component="span" m={0}>
                      {user?.region}
                   </Typography>
                </Stack>
-
-               <Button
-                  fullWidth
-                  variant="outlined"
-                  onClick={() => navigate(`${user?._id}`)}
-                  startIcon={<ExploreIcon fontSize="large" sx={{ transform: "scale(1.2)" }} />}
-                  sx={{
-                     p: 1,
-                     color: theme.myColor.white,
-                     transition: "all 0.3 linear",
-                     "&:hover": {
-                        color: theme.myColor.link,
-                        ".MuiTypography-root": {
-                           color: theme.myColor.link,
-                        },
-                     },
-                  }}>
-                  <Typography
-                     variant="body1"
-                     sx={{
-                        color: theme.myColor.white,
-                     }}>
-                     Explore
-                  </Typography>
-               </Button>
             </Stack>
+            <WrapButtons>
+               <Button
+                  className="btn"
+                  variant="contained"
+                  onClick={() => navigate(`${user?._id}`)}
+                  startIcon={<ExploreIcon fontSize="large" />}>
+                  Watch
+               </Button>
+               <Button
+                  className={"btn btn--add-friend" + " " + (isFriend ? "hide" : "")}
+                  variant="contained"
+                  onClick={() => setOpenDialog(!openDialog)}
+                  startIcon={<AddIcon fontSize="large" />}>
+                  Add friend
+               </Button>
+            </WrapButtons>
          </CardContent>
+         <Dialog
+            open={openDialog}
+            title="Friend"
+            content={"Do u want to add friend with " + user.fullName}
+            onClose={onCloseDialog}
+            onSubmit={handleAddFriend}
+         />
       </MyCard>
    );
 };
 
-export default User;
+export default Card;

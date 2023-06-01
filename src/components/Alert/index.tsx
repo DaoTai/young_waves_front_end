@@ -1,12 +1,14 @@
 import { Snackbar, Typography } from "@mui/material";
 import { memo, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hideAlert } from "../../redux-saga/redux/actions";
 import { TIME_ALERT } from "../../utils/constants";
 import { AlertProps } from "../../utils/interfaces/Props";
 import { MyAlert } from "./styles";
-const Alert = ({ message, title = "Error", mode = "error", onClose }: AlertProps) => {
+import { alertState$ } from "../../redux-saga/redux/selectors";
+const Alert = ({ message, title, mode, onClose }: AlertProps) => {
    const dispatch = useDispatch();
+   const alert$ = useSelector(alertState$);
    const onCloseAlert = () => {
       onClose ? onClose() : dispatch(hideAlert());
    };
@@ -24,7 +26,11 @@ const Alert = ({ message, title = "Error", mode = "error", onClose }: AlertProps
          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
          message={message}
          onClose={onCloseAlert}>
-         <MyAlert severity={mode} closeText="Close" variant="outlined" onClose={onCloseAlert}>
+         <MyAlert
+            severity={mode || alert$.payload.mode}
+            closeText="Close"
+            variant="outlined"
+            onClose={onCloseAlert}>
             <Typography
                variant="body1"
                fontWeight={600}
@@ -33,7 +39,7 @@ const Alert = ({ message, title = "Error", mode = "error", onClose }: AlertProps
                      textTransform: "uppercase",
                   },
                }}>
-               {title}
+               {title || alert$.payload.title}
             </Typography>
             <Typography
                variant="subtitle2"
@@ -42,7 +48,7 @@ const Alert = ({ message, title = "Error", mode = "error", onClose }: AlertProps
                      textTransform: "uppercase",
                   },
                }}>
-               {message}
+               {message || alert$.payload.message}
             </Typography>
          </MyAlert>
       </Snackbar>

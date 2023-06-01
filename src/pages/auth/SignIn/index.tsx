@@ -15,14 +15,12 @@ import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { Alert, Spinner } from "../../../components";
-import { hideAlert, signIn } from "../../../redux-saga/redux/actions";
+import { signIn } from "../../../redux-saga/redux/actions";
 import { alertState$, authState$ } from "../../../redux-saga/redux/selectors";
-import { AlertProps } from "../../../utils/interfaces/Props";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
-   const alert$ = useSelector(alertState$);
    const { isLoading, payload } = useSelector(authState$);
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
       useFormik({
@@ -38,34 +36,28 @@ const SignIn = () => {
          const userNameLocal = JSON.parse(localStorage.getItem("user") as string)?.username;
          setFieldValue("username", userNameLocal);
       }
-      // Hide alert when unmount cuz it can be showed in sign up if using Alert for parent component
-      return () => {
-         dispatch(hideAlert());
-      };
    }, []);
-   // When user login success will navigate to home
    if (payload?.accessToken) {
       return payload?.user.isAdmin ? <Navigate to="/admin" replace /> : <Navigate to="/" replace />;
    }
-
    return (
       <div id="sign-in">
          <Helmet>
             <title>Sign in</title>
          </Helmet>
-         {/* Alert */}
-         {alert$?.isShow && (
-            <Alert
-               title={alert$?.payload?.title}
-               mode={alert$?.payload?.mode}
-               message={alert$?.payload?.message}
-            />
-         )}
          {/* Body */}
          <Box p={2} pl={4} pr={4}>
             {/* Form */}
             <form autoComplete="off" onSubmit={handleSubmit}>
-               <Typography variant="h2" textAlign="center" color="primary" sx={{ mb: 2 }}>
+               <Typography
+                  variant="h3"
+                  textAlign="center"
+                  sx={{
+                     background: theme.myColor.bgGradient,
+                     WebkitBackgroundClip: "text",
+                     WebkitTextFillColor: "transparent",
+                     pb: 1,
+                  }}>
                   Sign in
                </Typography>
                <TextField
@@ -131,7 +123,7 @@ const SignIn = () => {
                </Typography>
             </Stack>
             {/* Suggestions  */}
-            <Box textAlign="center" mt={2}>
+            <Box textAlign="center" mt={1}>
                <Typography variant="subtitle1" component="b" mr={1}>
                   Not a member?
                </Typography>

@@ -12,9 +12,11 @@ const MyLogo = () => {
             <Typography
                variant="h4"
                component="span"
-               color="primary"
+               fontWeight={600}
                sx={{
-                  textShadow: `1px 1px 1px ${theme.palette.primary.main}`,
+                  background: theme.myColor.bgGradient,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                   display: {
                      md: "block",
                      sm: "none",

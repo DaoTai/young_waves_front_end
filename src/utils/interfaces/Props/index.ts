@@ -4,7 +4,7 @@ import { Profile } from "../Profile";
 
 export interface AlertProps {
    title?: string;
-   message: string;
+   message?: string;
    mode?: AlertColor;
    onClose?: () => void;
 }

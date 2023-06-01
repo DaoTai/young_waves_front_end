@@ -50,28 +50,30 @@ const Explore = () => {
 
    // Get all user has query
    const handleGetQueriedAllUser = async () => {
-      const res = await getAllUser({
-         name: search.trim(),
-      });
-      const data: {
-         currentPage: number;
-         maxPage: number;
-         users: Profile[];
-      } = res.data;
-      maxPageRef.current = data.maxPage;
-      setUsers(data.users);
+      try {
+         const { data, statusText } = await getAllUser({
+            name: search.trim(),
+         });
+         if (statusText === "OK") {
+            maxPageRef.current = data.maxPage;
+            setUsers(data.users);
+         }
+      } catch (err) {
+         console.error(err);
+      }
    };
 
    // Get all user without query
    const handleGetUnqueriedAllUser = async () => {
-      const res = await getAllUser({ page });
-      const data: {
-         currentPage: number;
-         maxPage: number;
-         users: Profile[];
-      } = res.data;
-      maxPageRef.current = data.maxPage;
-      setUsers(data.users);
+      try {
+         const { data, statusText } = await getAllUser({ page });
+         if (statusText === "OK") {
+            maxPageRef.current = data.maxPage;
+            setUsers(data.users);
+         }
+      } catch (err) {
+         console.error(err);
+      }
    };
 
    // Do search
@@ -117,7 +119,7 @@ const Explore = () => {
                {users?.length > 0 ? (
                   users?.map((user) => {
                      return (
-                        <Grid key={user._id} item lg={3} md={3} xs={12}>
+                        <Grid key={user._id} item lg={4} md={4} xs={12}>
                            <Card user={user} />
                         </Grid>
                      );

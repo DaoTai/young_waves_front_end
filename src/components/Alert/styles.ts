@@ -3,14 +3,14 @@ import { keyframes } from "@mui/system";
 const fadeOut = keyframes`
 0% {
   opacity: 0.8;
-  transform: translateX(100px);
+  transform: translateX(-100px);
 }
 50% {
-  transform: translateX(-10px);
+  transform: translateX(10px);
 }
 75% {
   opacity: 1;
-  transform: translateX(10px);
+  transform: translateX(-10px);
 }
 100% {
   transform: translateX(0);
@@ -27,9 +27,12 @@ to {
 export const MyAlert = styled(Alert)(({ theme }) => ({
    position: "fixed",
    zIndex: 999,
-   top: "5%",
-   right: "1%",
+   top: "2%",
+   left: "1%",
    minWidth: "250px",
+   border: "none",
+   borderWidth: 1.5,
+   boxShadow: theme.shadows[2],
    backgroundColor: "#fff",
    animation: `1.4s ease-in-out ${fadeOut} `,
    "&:after": {
@@ -39,9 +42,8 @@ export const MyAlert = styled(Alert)(({ theme }) => ({
       left: 0,
       right: 0,
       width: "100%",
-      height: 2,
-      backgroundColor: "currentColor",
-      filter: "brightness(2) contrast(2)",
+      height: 3,
+      background: theme.myColor.bgGradient,
       transformOrigin: "left",
       animation: `${scaleX} 2s linear`,
    },

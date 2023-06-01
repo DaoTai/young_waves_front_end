@@ -7,6 +7,7 @@ import {
    Grid,
    Radio,
    RadioGroup,
+   Stack,
    TextField,
    useTheme,
 } from "@mui/material";
@@ -64,7 +65,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
       <>
          {/* Form */}
          <form autoComplete="off" onSubmit={handleSubmit}>
-            <Grid container spacing={1} sx={{ mt: 1 }}>
+            <Grid container rowSpacing={1} columnSpacing={2}>
                {/* Text fields */}
                {textFields.map((props: any, i: number) => {
                   return (
@@ -98,7 +99,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
                      <Grid key={i} item md={6} xs={12}>
                         <FormControl>
                            <FormLabel>{item.label}</FormLabel>
-                           <RadioGroup name={item.name}>
+                           <RadioGroup name={item.name} sx={{ flexDirection: "row" }}>
                               {item.radioes.map((radio: any, i: number) => (
                                  <FormControlLabel
                                     key={i}
@@ -120,15 +121,16 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
                </Grid>
             </Grid>
 
-            <Button
-               fullWidth
-               type="submit"
-               size="large"
-               variant="contained"
-               endIcon={<Send />}
-               sx={{ mt: 3, color: theme.myColor.white }}>
-               Sign up
-            </Button>
+            <Stack flexDirection="row" justifyContent="flex-end">
+               <Button
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  endIcon={<Send />}
+                  sx={{ mt: 2, color: theme.myColor.white }}>
+                  Sign up
+               </Button>
+            </Stack>
          </form>
          {/* Alert */}
          {showAlert && <Alert {...alert} onClose={onCloseAlert} />}

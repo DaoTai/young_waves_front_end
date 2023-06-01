@@ -6,15 +6,16 @@ const axiosInstance = axios.create({
    baseURL: "http://localhost:8001/auth",
 });
 axiosInstance.interceptors.response.use(
-   (config: AxiosResponse) => {
+   (config: AxiosResponse<any>) => {
       return config;
    },
    (err: AxiosError) => {
       // When sign in failed
       store.dispatch(
          showAlert({
-            title: "Sign in",
+            title: "Failure",
             message: (err.response?.data as string) || "Server not working",
+            mode: "error",
          })
       );
       return err;

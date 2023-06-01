@@ -5,6 +5,7 @@ import {
    Avatar,
    Box,
    Button,
+   Divider,
    Fab,
    FormControl,
    InputLabel,
@@ -12,6 +13,8 @@ import {
    Select,
    SelectChangeEvent,
    Stack,
+   Tab,
+   Tabs,
    Typography,
    useTheme,
 } from "@mui/material";
@@ -160,8 +163,8 @@ const UserTrashes = () => {
    };
 
    // handle change role
-   const handleChangeRole = (event: SelectChangeEvent) => {
-      setRole(event.target.value as string);
+   const handleChangeRole = (event: React.SyntheticEvent, newValue: string) => {
+      setRole(newValue);
    };
 
    // handle restore user
@@ -249,18 +252,33 @@ const UserTrashes = () => {
       <>
          <Box pt={2}>
             {/* Select roles & actions */}
+            <Box>
+               <Divider />
+               <Tabs value={role} onChange={handleChangeRole}>
+                  <Tab
+                     value="User"
+                     label="User"
+                     sx={{
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                           bgcolor: theme.myColor.bgGray,
+                        },
+                     }}
+                  />
+                  <Tab
+                     value="Admin"
+                     label="Admin"
+                     sx={{
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                           bgcolor: theme.myColor.bgGray,
+                        },
+                     }}
+                  />
+               </Tabs>
+               <Divider />
+            </Box>
             <Stack mt={2} mb={2} gap={2} flexDirection="row" alignItems="center">
-               <FormControl sx={{ width: 150 }}>
-                  <InputLabel>Role</InputLabel>
-                  <Select
-                     value={role}
-                     label="Selection"
-                     sx={{ border: 1, borderColor: theme.myColor.link }}
-                     onChange={handleChangeRole}>
-                     <MenuItem value="User">User</MenuItem>
-                     <MenuItem value="Admin">Admin</MenuItem>
-                  </Select>
-               </FormControl>
                <FormControl sx={{ width: 150 }}>
                   <InputLabel>Action</InputLabel>
                   <Select
@@ -279,6 +297,9 @@ const UserTrashes = () => {
                   sx={{
                      alignSelf: "center",
                      color: theme.myColor.white,
+                     background: `${
+                        !action || selectedIds.length === 0 ? null : theme.myColor.bgGradient
+                     }`,
                   }}
                   endIcon={<SendIcon />}>
                   Submit

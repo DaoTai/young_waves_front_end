@@ -1,23 +1,18 @@
 import SendIcon from "@mui/icons-material/Send";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Button, Fab, Paper, Stack, TextField, useTheme } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { Button, Paper, Stack, TextField, useTheme } from "@mui/material";
 import { useFormik } from "formik";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
 import { forgotPassword } from "../../../apis/auth";
+import { Spinner } from "../../../components";
 import { forgotPasswordSchema, init } from "./config";
-import { useCallback, useState } from "react";
-import { AlertProps } from "../../../utils/interfaces/Props";
-import { Alert, Spinner } from "../../../components";
+import { showAlert } from "../../../redux-saga/redux/actions";
 
 const ForgotPassword = () => {
    const navigate = useNavigate();
-   const [alert, setAlert] = useState<AlertProps>({
-      title: "Forgot Password",
-      message: "",
-      mode: "success",
-   });
-   const [showAlert, setShowAlert] = useState<boolean>(false);
+   const dispatch = useDispatch();
    const [loading, setLoading] = useState<boolean>(false);
    const theme = useTheme();
    const { values, errors, touched, handleBlur, handleChange, handleSubmit, handleReset } =
@@ -28,32 +23,22 @@ const ForgotPassword = () => {
             setLoading(true);
             try {
                const res = await forgotPassword(values);
-               handleReset(e);
-               setAlert({
-                  title: "Forgot password",
-                  mode: "success",
-                  message: res.data,
-               });
-               setShowAlert(true);
-               setTimeout(() => {
-                  navigate("/auth/sign-in");
-               }, 4000);
+               if (res.statusText === "OK") {
+                  handleReset(e);
+                  dispatch(
+                     showAlert({
+                        title: "Forgot password",
+                        mode: "success",
+                        message: "Please check your email instantly!",
+                     })
+                  );
+               }
             } catch (err: any) {
-               setAlert({
-                  title: "Forgot password",
-                  mode: "error",
-                  message: "Failed",
-               });
-               setShowAlert(true);
-               throw new Error(err);
+               console.log("error: ", err);
             }
             setLoading(false);
          },
       });
-
-   const onCloseAlert = useCallback(() => {
-      setShowAlert(false);
-   }, []);
 
    return (
       <>
@@ -112,7 +97,6 @@ const ForgotPassword = () => {
                </Stack>
             </form>
          </Paper>
-         {showAlert && <Alert {...alert} onClose={onCloseAlert} />}
          {/* Spinner */}
          <Spinner show={loading} />
       </>
