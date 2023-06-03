@@ -13,7 +13,7 @@ const Home = () => {
          <Helmet>
             <title>Young Waves</title>
          </Helmet>
-         <Box bgcolor={theme.myColor.bg} minHeight="100vh">
+         <Box bgcolor={theme.palette.background.default} minHeight="100vh">
             <Header />
 
             <Container

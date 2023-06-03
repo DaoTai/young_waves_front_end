@@ -32,11 +32,10 @@ const ChatProvider = ({ children }) => {
             justifyContent="flex-end"
             alignItems="flex-end"
             flexWrap="wrap"
-            gap={2}
+            gap={1}
             maxHeight={460}
             position="fixed"
-            left={3}
-            right={3}
+            right={10}
             bottom={0}
             overflow="hidden">
             {conversations.map((conversation) => {

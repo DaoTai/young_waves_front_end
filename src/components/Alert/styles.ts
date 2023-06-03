@@ -43,7 +43,7 @@ export const MyAlert = styled(Alert)(({ theme }) => ({
       right: 0,
       width: "100%",
       height: 3,
-      background: theme.myColor.bgGradient,
+      background: theme.palette.gradient.main,
       transformOrigin: "left",
       animation: `${scaleX} 2s linear`,
    },

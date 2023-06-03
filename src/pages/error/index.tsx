@@ -12,7 +12,7 @@ const Error = () => {
       position: "fixed",
       width: "100%",
       inset: "0 0 0 0",
-      background: theme.myColor.bgGradient,
+      background: theme.palette.gradient.main,
    };
    return (
       <>
@@ -22,7 +22,7 @@ const Error = () => {
          <Stack sx={style} alignItems="center" justifyContent="center">
             <Typography
                variant="h1"
-               color={theme.myColor.white}
+               color={theme.palette.white.main}
                textAlign="center"
                p={4}
                borderRadius={4}

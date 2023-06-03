@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { Box, Typography, styled } from "@mui/material";
 
 export const MyBox = styled(Box)(({ theme }) => ({
    position: "absolute",
@@ -10,10 +10,26 @@ export const MyBox = styled(Box)(({ theme }) => ({
    minHeight: "50vh",
    maxHeight: "98vh",
    overflow: "auto",
-   backgroundColor: "#fff",
-   border: `1px solid ${theme.myColor.black}`,
+   backgroundColor: theme.palette.white.main,
+   border: `1px solid ${theme.palette.black.main}`,
    padding: "24px",
    borderRadius: 2,
-   boxShadow:
-      "box-shadow: 0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%)",
+   boxShadow: theme.shadows[2],
+}));
+
+export const Title = styled(Typography)(({ theme }) => ({
+   textAlign: "center",
+   padding: 12,
+   color: theme.palette.text.primary,
+   textShadow: "1px 2px 3px rgba(0,0,0,0.3)",
+   position: "relative",
+   "&::after": {
+      content: '" "',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 2,
+      background: theme.palette.gradient.main,
+   },
 }));

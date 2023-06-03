@@ -28,19 +28,19 @@ const Card = ({ user }: { user: Profile }) => {
    };
 
    return (
-      <MyCard boxShadow={1} borderRadius={1} bgcolor={theme.myColor.white} overflow="hidden">
+      <MyCard boxShadow={1} borderRadius={1} bgcolor={theme.palette.white.main} overflow="hidden">
          <CardContent>
             <Avatar
                alt="avatar"
                src={user.avatar}
                srcSet={user.avatar}
-               sx={{ border: "1px dashed #ccc", margin: "0 auto", width: 200, height: 200 }}
+               sx={{ margin: "0 auto", width: 200, height: 200 }}
             />
             <Stack mt={2} gap={1}>
                <Divider />
                <Stack flexDirection="row" alignItems="center" gap={1}>
                   {user?.isAdmin ? (
-                     <AdminPanelSettingsIcon color="success" />
+                     <AdminPanelSettingsIcon color="warning" />
                   ) : (
                      <PersonIcon color="primary" />
                   )}

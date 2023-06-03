@@ -6,8 +6,8 @@ type Size = "small" | "inherit" | "medium" | "large";
 const MyCloseButton = ({ onClick, size = "medium" }: { size?: Size; onClick: () => void }) => {
    const theme = useTheme();
    return (
-      <CloseButton onClick={onClick} sx={{ padding: size === "large" ? 3 : 1 }}>
-         <CloseIcon fontSize={size} sx={{ color: theme.myColor.textSecondary }} />
+      <CloseButton className={size} onClick={onClick}>
+         <CloseIcon fontSize={size} sx={{ color: theme.palette.text.primary }} />
       </CloseButton>
    );
 };

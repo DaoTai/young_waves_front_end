@@ -12,6 +12,7 @@ import {
    Menu,
    MenuItem,
    Pagination,
+   Paper,
    Stack,
    Typography,
    useTheme,
@@ -118,8 +119,8 @@ const Friends = () => {
                placeholder="Search..."
                sx={{
                   border: 1,
-                  borderColor: theme.myColor.textSecondary,
-                  bgcolor: theme.myColor.white,
+                  borderColor: theme.palette.secondary.main,
+                  bgcolor: theme.palette.white.main,
                   borderRadius: 2,
                }}
                endAdornment={
@@ -137,53 +138,51 @@ const Friends = () => {
                onChange={(e) => setValue(e.target.value)}
             />
             {friends.length > 0 ? (
-               <Grid
-                  container
-                  mt={1}
-                  justifyContent="space-between"
-                  overflow="hidden"
-                  sx={{ padding: "0 4px" }}>
+               <Grid container mt={1} width="unset" sx={{ ml: -0.5, mr: -0.5 }}>
                   {friends.map((friend: Profile, index) => (
                      <Grid
                         key={friend._id}
                         item
+                        md={4}
                         sm={6}
                         xs={12}
+                        sx={{ pl: 0.5, pr: 0.5 }}
                         flexDirection="row"
-                        gap={2}
-                        p={1}
-                        boxShadow={2}
-                        alignItems="center"
-                        display="flex"
-                        justifyContent="space-between"
-                        bgcolor={theme.myColor.white}
-                        sx={{ margin: "4px -4px" }}>
-                        <Avatar
-                           variant="square"
-                           src={friend.avatar}
-                           onClick={() => goToProfile(friend._id)}
-                           sx={{
-                              width: 80,
-                              height: 80,
-                              borderRadius: 2,
-                              objectFit: "cover",
-                              cursor: "pointer",
-                           }}
-                        />
-                        {/* Fullname */}
-                        <Typography
-                           flex={2}
-                           variant="body1"
-                           sx={{ cursor: "pointer" }}
-                           onClick={() => goToProfile(friend._id)}>
-                           {friend.fullName}
-                        </Typography>
-                        {/* Action button*/}
-                        <Button
-                           sx={{ bgcolor: "transparent" }}
-                           onClick={(e) => handleShowMenu(e, friend._id)}>
-                           <MoreHorizIcon />
-                        </Button>
+                        mb={1}>
+                        <Stack
+                           flexDirection="row"
+                           boxShadow={2}
+                           p={1}
+                           alignItems="center"
+                           bgcolor={theme.palette.white.main}
+                           gap={2}>
+                           <Avatar
+                              variant="square"
+                              src={friend.avatar}
+                              onClick={() => goToProfile(friend._id)}
+                              sx={{
+                                 width: 80,
+                                 height: 80,
+                                 borderRadius: 2,
+                                 objectFit: "cover",
+                                 cursor: "pointer",
+                              }}
+                           />
+                           {/* Fullname */}
+                           <Typography
+                              flex={2}
+                              variant="body1"
+                              sx={{ cursor: "pointer" }}
+                              onClick={() => goToProfile(friend._id)}>
+                              {friend.fullName}
+                           </Typography>
+                           {/* Action button*/}
+                           <Button
+                              sx={{ bgcolor: "inherit" }}
+                              onClick={(e) => handleShowMenu(e, friend._id)}>
+                              <MoreHorizIcon sx={{ color: theme.palette.text.primary }} />
+                           </Button>
+                        </Stack>
                      </Grid>
                   ))}
                </Grid>
@@ -199,31 +198,6 @@ const Friends = () => {
                </Typography>
             )}
 
-            {/* Menu actions*/}
-            <Menu
-               anchorEl={anchorEl}
-               open={openMenu}
-               onClose={onCloseMenuActions}
-               sx={{
-                  ".MuiButtonBase-root": {
-                     justifyContent: "space-between",
-                     gap: 1,
-                  },
-               }}>
-               <MenuItem divider onClick={() => navigate("/user/explore/" + idFriend)}>
-                  Explore
-                  <VisibilityIcon />
-               </MenuItem>
-               <MenuItem divider onClick={handleCopyLinkFriend}>
-                  Copy
-                  <ContentCopyIcon />
-               </MenuItem>
-               <MenuItem divider onClick={onOpenDialogUnfriend}>
-                  Unfriend
-                  <PersonRemoveIcon />
-               </MenuItem>
-            </Menu>
-
             {/* Pagination */}
             <Pagination
                count={maxPageRef.current}
@@ -235,6 +209,22 @@ const Friends = () => {
                sx={{ display: "flex", justifyContent: "center", m: 4 }}
             />
          </Box>
+
+         {/* Menu actions*/}
+         <Menu anchorEl={anchorEl} open={openMenu} onClose={onCloseMenuActions}>
+            <MenuItem divider sx={{ gap: 1 }} onClick={() => navigate("/user/explore/" + idFriend)}>
+               <VisibilityIcon />
+               Explore
+            </MenuItem>
+            <MenuItem divider sx={{ gap: 1 }} onClick={handleCopyLinkFriend}>
+               <ContentCopyIcon />
+               Copy
+            </MenuItem>
+            <MenuItem divider sx={{ gap: 1 }} onClick={onOpenDialogUnfriend}>
+               <PersonRemoveIcon />
+               Unfriend
+            </MenuItem>
+         </Menu>
 
          {/* Dialog */}
          <Dialog

@@ -7,10 +7,10 @@ import { authState$ } from "../../../redux-saga/redux/selectors";
 import NavLink from "../../NavLink";
 const Navigation = () => {
    const theme = useTheme();
-   const { isLoading, payload } = useSelector(authState$);
+   const { payload } = useSelector(authState$);
    const isAdmin = payload?.user.isAdmin;
    return (
-      <Container maxWidth="md" sx={{ bgcolor: theme.myColor.white }}>
+      <Container maxWidth="md">
          <Stack direction="row" justifyContent="center" sx={{ gap: 4 }}>
             <NavLink to="/">
                <HomeIcon fontSize="large" />

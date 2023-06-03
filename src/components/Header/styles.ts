@@ -28,35 +28,32 @@ export const Option = styled(Button)(({ theme }) => ({
    justifyContent: "flex-start",
    padding: "8px 12px",
    borderRadius: 0,
-   color: theme.myColor.textSecondary,
-   backgroundColor: theme.myColor.white,
-   border: "1px solid #ccc",
+   color: theme.palette.primary.main,
+   backgroundColor: theme.palette.white.main,
    transition: "all 0.2s linear",
    "& .MuiTypography-root": {
       paddingLeft: 8,
    },
    "&.active .MuiTypography-root": {
-      color: theme.myColor.link,
+      color: theme.palette.link.main,
    },
    "& .MuiSvgIcon-root": {
       width: "1.3em",
       height: "1.3em",
       padding: 6,
       fontSize: 28,
-      color: theme.myColor.black,
-      backgroundColor: theme.myColor.bgGray,
       borderRadius: 99,
       transition: "inherit",
    },
    "&:hover": {
-      color: theme.myColor.white,
+      color: theme.palette.white.main,
       backgroundColor: theme.palette.primary.main,
       ".MuiTypography-root": {
-         color: theme.myColor.white,
+         color: theme.palette.white.main,
       },
       ".MuiSvgIcon-root": {
-         color: theme.myColor.link,
-         backgroundColor: theme.myColor.white,
+         color: theme.palette.link.main,
+         backgroundColor: theme.palette.white.main,
       },
    },
 }));

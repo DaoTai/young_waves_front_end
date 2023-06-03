@@ -11,7 +11,7 @@ export const WrapperPage = styled(Container)(({ theme }) => ({
    ".title": {
       textTransform: "uppercase",
       fontWeight: 600,
-      background: theme.myColor.bgGradient,
+      background: theme.palette.gradient.main,
       textAlign: "center",
       marginBottom: 4,
       textShadow: "0px 2px 2px rgba(0,0,0,0.2)",
@@ -26,7 +26,7 @@ export const WrapperPage = styled(Container)(({ theme }) => ({
          right: 0,
          height: 4,
          borderRadius: 16,
-         background: theme.myColor.bgGradient,
+         background: theme.palette.gradient.main,
       },
    },
 }));

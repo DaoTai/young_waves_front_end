@@ -72,7 +72,6 @@ const CountriesSelect = ({ name, value = "", onChange, onBlur, onlyOptions = fal
                </Box>
             )}
             renderInput={(params) => <TextField {...params} placeholder="--Select country--" />}
-            sx={{ height: "100%" }}
          />
       </>
    );

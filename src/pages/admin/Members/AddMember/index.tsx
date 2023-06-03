@@ -21,7 +21,7 @@ const AddMember = ({ onClose }: { onClose: () => void }) => {
    };
    return (
       <Box
-         bgcolor={theme.myColor.white}
+         bgcolor={theme.palette.white.main}
          boxShadow={2}
          p={2}
          borderRadius={2}

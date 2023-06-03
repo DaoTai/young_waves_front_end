@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { createPost, updatePost } from "../../../redux-saga/redux/actions";
 import { Post } from "../../../utils/interfaces/Post";
 import { CloseButton, ImageInput } from "../../index";
-import { MyBox } from "./styles";
+import { MyBox, Title } from "./styles";
 import { Attachment } from "../../../utils/interfaces/Attachment";
 interface ModalPostProps {
    post?: Post;
@@ -109,12 +109,10 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
       <Modal open onClose={onCloseModal}>
          <MyBox>
             {/* Heading */}
-            <Typography variant="h3" component="h2" textAlign="center" pb={1}>
-               Your post
-            </Typography>
+            <Title variant="h3">Your post</Title>
             <CloseButton onClick={onCloseModal} size="large" />
 
-            <Box borderTop={1} pt={2}>
+            <Box>
                <form>
                   <TextField
                      fullWidth
@@ -155,7 +153,7 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
                      size="large"
                      variant="contained"
                      endIcon={<Send />}
-                     sx={{ marginTop: 2, color: theme.myColor.white }}
+                     sx={{ marginTop: 2, color: "#fff" }}
                      onClick={handleSubmit}>
                      Create
                   </Button>

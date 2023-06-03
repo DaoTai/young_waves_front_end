@@ -82,7 +82,7 @@ const ForgotPassword = () => {
                      onClick={() => navigate(-1)}
                      sx={{
                         color: theme.palette.primary.main,
-                        bgcolor: theme.myColor.white,
+                        bgcolor: theme.palette.white.main,
                         mt: 2,
                      }}>
                      Cancel
@@ -91,7 +91,7 @@ const ForgotPassword = () => {
                      type="submit"
                      variant="contained"
                      endIcon={<SendIcon />}
-                     sx={{ color: theme.myColor.white, mt: 2 }}>
+                     sx={{ color: theme.palette.white.main, mt: 2 }}>
                      Send
                   </Button>
                </Stack>

@@ -27,7 +27,7 @@ const Attachments = ({ attachments }: { attachments: string[] }) => {
       };
    }, []);
    return (
-      <Box position="relative" height="100%" bgcolor={theme.myColor.black} overflow="hidden">
+      <Box position="relative" height="100%" bgcolor={theme.palette.black.main} overflow="hidden">
          <Slider ref={sliderRef} {...settings}>
             {attachments.map((img, index) => (
                <div key={index}>
@@ -46,8 +46,8 @@ const Attachments = ({ attachments }: { attachments: string[] }) => {
             <ButtonSlide>
                <Fab
                   sx={{
-                     color: theme.myColor.textSecondary,
-                     backgroundColor: theme.myColor.white,
+                     color: theme.palette.secondary.main,
+                     backgroundColor: theme.palette.white.main,
                   }}
                   size="medium"
                   onClick={() => sliderRef.current?.slickPrev()}>
@@ -55,8 +55,8 @@ const Attachments = ({ attachments }: { attachments: string[] }) => {
                </Fab>
                <Fab
                   sx={{
-                     color: theme.myColor.textSecondary,
-                     backgroundColor: theme.myColor.white,
+                     color: theme.palette.secondary.main,
+                     backgroundColor: theme.palette.white.main,
                   }}
                   size="medium"
                   onClick={() => sliderRef.current?.slickNext()}>

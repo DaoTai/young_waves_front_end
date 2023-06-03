@@ -28,10 +28,6 @@ const ListImages = ({ id, attachments }: { id: string; attachments: string[] }) 
                   borderRadius: 2,
                   cursor: "pointer",
                   boxShadow: 1,
-                  transition: "all 0.3s linear",
-                  "&:hover": {
-                     filter: "drop-shadow(2px 4px 6px #ccc) contrast(1.1)",
-                  },
                },
             }}>
             {attachments?.map((item, index, arr) => {

@@ -2,6 +2,7 @@ import SendIcon from "@mui/icons-material/Send";
 import {
    Avatar,
    Button,
+   Chip,
    FormControl,
    FormControlLabel,
    FormLabel,
@@ -9,6 +10,7 @@ import {
    Modal,
    Radio,
    RadioGroup,
+   Stack,
    TextField,
    Typography,
    useTheme,
@@ -127,11 +129,14 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                            textAlign="center"
                            mt={2}
                            sx={{ color: theme.palette.primary.main }}>
-                           <Link to={`/user/explore/${values._id}`}>Explore</Link>
+                           <Chip
+                              sx={{ p: 1 }}
+                              label={<Link to={`/user/explore/${values._id}`}>Watch</Link>}
+                           />
                         </Typography>
                      </Grid>
                      <Grid item md={9} xs={12}>
-                        <Grid container spacing={2} alignItems="center">
+                        <Grid container spacing={2} alignItems="stretch">
                            {/* Text fields */}
                            {textInfoUser.map((props: any, i: number) => {
                               return (
@@ -185,12 +190,18 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                                  />
                               )}
                            </Grid>
-                           <Grid item md={6} xs={12}>
+                           <Grid
+                              item
+                              md={6}
+                              xs={12}
+                              display="flex"
+                              flexDirection="column"
+                              justifyContent="space-between">
                               <Typography
                                  variant="body1"
                                  component="label"
-                                 sx={{ mb: "12px", color: "rgba(0,0,0,0.6)" }}
-                                 display="block">
+                                 color="text"
+                                 sx={{ mt: "6px" }}>
                                  Region
                               </Typography>
                               {/* Countries field */}

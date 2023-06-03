@@ -34,7 +34,7 @@ const ContainerAdmin = () => {
             <title>Young Waves | Admin</title>
          </Helmet>
          <Header />
-         <Container maxWidth="xl" sx={{ pb: 2, pt: 4, mt: 7, bgcolor: theme.myColor.white }}>
+         <Container maxWidth="xl" sx={{ pb: 2, pt: 4, mt: 7, bgcolor: theme.palette.white.main }}>
             <Stack flexDirection="row" gap={4} minHeight="100vh">
                <Features onClick={onClick} />
                <Box flex={2} pb={1} pt={1}>

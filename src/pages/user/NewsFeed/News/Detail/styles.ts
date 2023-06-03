@@ -11,7 +11,7 @@ export const MyBox = styled(Box)(({ theme }) => ({
    maxHeight: "90vh",
    overflowY: "auto",
    borderRadius: 4,
-   backgroundColor: theme.myColor.white,
+   backgroundColor: theme.palette.white.main,
    boxShadow:
       "0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%)",
    "&::-webkit-scrollbar": {
@@ -24,7 +24,7 @@ export const ButtonSlide = styled(ButtonGroup)(({ theme }) => ({
    top: "50%",
    left: 5,
    right: 5,
-   color: theme.myColor.white,
+   color: theme.palette.white.main,
    transform: "translateY(-50%)",
    borderRadius: 2,
    display: "flex",
@@ -38,5 +38,5 @@ export const Container = styled(Grid)(({ theme }) => ({
 export const ContentWrapper = styled(Stack)(({ theme }) => ({
    padding: "16px",
    gap: "16px",
-   backgroundColor: theme.myColor.white,
+   backgroundColor: theme.palette.white.main,
 }));

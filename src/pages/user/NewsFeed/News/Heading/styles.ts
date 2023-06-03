@@ -4,15 +4,15 @@ export const Actions = styled(Popover)(({ theme }) => ({
    button: {
       justifyContent: "flex-start",
       textTransform: "none",
-      backgroundColor: theme.myColor.white,
-      color: theme.myColor.link,
+      backgroundColor: theme.palette.white.main,
+      color: theme.palette.link.main,
       borderRadius: 0,
       "&:not(:first-of-type)": {
          borderTop: "1px solid #ccc",
       },
    },
    "& button:hover": {
-      background: theme.myColor.link,
-      color: theme.myColor.white,
+      background: theme.palette.link.main,
+      color: theme.palette.white.main,
    },
 }));

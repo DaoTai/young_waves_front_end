@@ -13,9 +13,6 @@ export const WrapAvatar = styled(Box)(({ theme }) => ({
       right: "-5px",
       transform: "translate(5px,-15%) ",
       transition: "0.2s ease all",
-      "& > div": {
-         backgroundColor: theme.myColor.white,
-      },
    },
    "&:hover": {
       filter: "contrast(110%)",

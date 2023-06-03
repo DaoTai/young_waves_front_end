@@ -127,7 +127,7 @@ const FormSignUp = ({ isAdmin = false }: { isAdmin?: boolean }) => {
                   size="large"
                   variant="contained"
                   endIcon={<Send />}
-                  sx={{ mt: 2, color: theme.myColor.white }}>
+                  sx={{ mt: 2, color: theme.palette.white.main }}>
                   Sign up
                </Button>
             </Stack>

@@ -125,7 +125,7 @@ const Explore = () => {
                      );
                   })
                ) : (
-                  <Grid item xs={12} padding={2}>
+                  <Grid item xs={12} p={2}>
                      <Typography textAlign="center">No exist user</Typography>
                   </Grid>
                )}
@@ -166,7 +166,7 @@ const Explore = () => {
                   border: 1,
                   mt: 1,
                   borderColor: theme.palette.primary.main,
-                  bgcolor: theme.myColor.white,
+                  bgcolor: theme.palette.white.main,
                   borderRadius: 2,
                   p: 0.5,
                }}
@@ -186,7 +186,7 @@ const Explore = () => {
             {/* Category options */}
             <Tabs
                value={tab}
-               sx={{ mt: 2, mb: 2, bgcolor: theme.myColor.white }}
+               sx={{ mt: 2, mb: 2, bgcolor: theme.palette.white.main }}
                onChange={handleChangeTabPanel}>
                <Tab value="users" label="Users" />
                <Tab value="posts" label="Posts" />

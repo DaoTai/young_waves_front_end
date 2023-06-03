@@ -14,7 +14,7 @@ export const WrapButtons = styled(Stack)(({ theme }) => ({
    flexDirection: "row",
    flexWrap: "wrap",
    ".btn": {
-      color: theme.myColor.white,
+      color: theme.palette.white.main,
       fontWeight: 400,
       textOverflow: "clip",
       whiteSpace: "pre",
@@ -22,7 +22,7 @@ export const WrapButtons = styled(Stack)(({ theme }) => ({
       height: "100%",
       flex: 1,
       "&.btn--add-friend": {
-         background: theme.myColor.bgGradient,
+         background: theme.palette.gradient.main,
          "&.hide": {
             display: "none !important",
          },

@@ -4,12 +4,13 @@ const BaseInput = styled(Input)(({ theme }) => ({
    borderRadius: "12px",
    padding: 4,
    border: "1px solid transparent",
+   color: theme.palette.text.primary,
    "&:before, &:after": {
       content: "none",
    },
    "&:focus-within": {
       borderColor: theme.palette.primary.light,
-      backgroundColor: theme.myColor.white,
+      backgroundColor: theme.palette.white.main,
    },
    input: {
       padding: "8px",
@@ -19,7 +20,7 @@ const BaseInput = styled(Input)(({ theme }) => ({
          paddingLeft: "2px",
       },
       "&:focus": {
-         backgroundColor: theme.myColor.white,
+         backgroundColor: theme.palette.white.main,
       },
    },
 }));

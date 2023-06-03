@@ -1,12 +1,12 @@
 import SendIcon from "@mui/icons-material/Send";
-import { Box, Fab, Stack, TextareaAutosize, Typography, useTheme } from "@mui/material";
+import { Box, Fab, Stack, Typography, useTheme } from "@mui/material";
 import dateformat from "dateformat";
-import { KeyboardEvent, useCallback, useEffect, useId, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useId, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 import * as api from "../../../../../apis";
-import { CloseButton, ImageInput } from "../../../../../components";
+import { CloseButton, ImageInput, Textarea } from "../../../../../components";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { URL_SERVER } from "../../../../../utils/constants";
 import { Attachment } from "../../../../../utils/interfaces/Attachment";
@@ -21,7 +21,6 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    const uniqueId = useId();
    // Refs
    const bodyRef = useRef<HTMLDivElement>(null);
-   const textareaRef = useRef<HTMLTextAreaElement>(null);
    const socketRef = useRef<Socket>();
    const maxPageRef = useRef<number>(1);
    const currentPageRef = useRef<number>(1);
@@ -57,7 +56,6 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    // Call api to get messages
    useEffect(() => {
       bodyRef.current?.scrollIntoView({ behavior: "smooth" });
-      textareaRef?.current?.focus();
       conversation?.idConversation &&
          (async () => {
             try {
@@ -90,8 +88,13 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
       }
    };
 
+   // Input message
+   const onInputMsg = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+      setMessage(e.target.value);
+   }, []);
+
    // Send message
-   const handleSendMsg = async () => {
+   const handleSendMsg = useCallback(async () => {
       if (!isLoading && message.trim()) {
          setAttachments([]);
          setMessage("");
@@ -126,25 +129,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
             console.error(err);
          }
       }
-   };
-
-   // Short hand type message
-   const handleShortHandSendMsg = (e: KeyboardEvent) => {
-      if (e.shiftKey && e.keyCode === 13) {
-         e.preventDefault(); // Ngăn chặn xuống dòng tự động
-
-         const cursorPosition = textareaRef?.current?.selectionStart as number; // Đọc vị trí con trỏ hiện tại
-         textareaRef!.current!.value =
-            textareaRef?.current?.value.substring(0, cursorPosition) +
-            "\n" +
-            textareaRef?.current?.value.substring(cursorPosition); // Thêm dòng mới vào vị trí con trỏ
-         textareaRef?.current?.setSelectionRange(cursorPosition + 1, cursorPosition + 1); // Đặt lại vị trí con trỏ
-         return;
-      }
-      if (e.key === "Enter") {
-         handleSendMsg();
-      }
-   };
+   }, [message, attachments]);
 
    // Delete message
    const handleDeleteMsg = useCallback(async (idDeleteMsg: string) => {
@@ -231,7 +216,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
 
          <Footer>
             <ImageInput width={40} height={40} multiple onChange={getAttachments} />
-            <Stack flex={2} borderRadius={2} overflow="hidden">
+            <Stack flex={2} borderRadius={2} p={1} pb={0} overflow="hidden">
                {attachments.length > 0 && (
                   <WrapAttachments>
                      {attachments.map((attach, index) => (
@@ -245,19 +230,16 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
                      ))}
                   </WrapAttachments>
                )}
-               <TextareaAutosize
-                  spellCheck={false}
-                  autoFocus
+               <Textarea
                   id="form-chat"
-                  ref={textareaRef}
                   value={message}
                   placeholder={"Type a message for " + conversation?.friend?.fullName}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyDown={handleShortHandSendMsg}
+                  onChange={onInputMsg}
+                  onEnter={handleSendMsg}
                />
             </Stack>
             <Fab size="small" id="send-btn" onClick={handleSendMsg}>
-               <SendIcon sx={{ color: theme.myColor.link }} />
+               <SendIcon sx={{ color: theme.palette.link.main }} />
             </Fab>
          </Footer>
       </WrapperChat>

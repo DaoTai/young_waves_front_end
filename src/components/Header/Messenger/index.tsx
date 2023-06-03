@@ -1,5 +1,5 @@
 import ChatIcon from "@mui/icons-material/Chat";
-import { Badge, Popover, useTheme } from "@mui/material";
+import { Badge, Box, Popover, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -33,6 +33,7 @@ const Messenger = () => {
                <Popover
                   open={open}
                   anchorEl={anchorEl}
+                  transformOrigin={{ vertical: "top", horizontal: "center" }}
                   onClose={handleCloseListChat}
                   anchorOrigin={{
                      vertical: "bottom",

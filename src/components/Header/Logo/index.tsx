@@ -9,20 +9,7 @@ const MyLogo = () => {
       <Logo to="/" onClick={() => document.body.scrollIntoView({ behavior: "smooth" })}>
          <Stack direction="row" alignItems="center" gap={1}>
             <img src={Icon} alt="Logo" style={{ zoom: 1.4 }} />
-            <Typography
-               variant="h4"
-               component="span"
-               fontWeight={600}
-               sx={{
-                  background: theme.myColor.bgGradient,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  display: {
-                     md: "block",
-                     sm: "none",
-                     xs: "none",
-                  },
-               }}>
+            <Typography variant="gradient" component="h2" fontWeight={600}>
                Young Waves
             </Typography>
          </Stack>

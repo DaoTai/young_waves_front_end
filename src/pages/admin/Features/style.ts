@@ -6,10 +6,10 @@ export const WrapFeatures = styled(List)(({ theme }) => ({
    // bottom: 0,
    // left: 0,
    // zIndex: 10,
-   color: theme.myColor.white,
+   color: theme.palette.white.main,
    ".MuiListItem-root": {
-      borderTop: `1px solid ${theme.myColor.white}`,
-      borderBottom: `1px solid ${theme.myColor.white}`,
+      borderTop: `1px solid ${theme.palette.white.main}`,
+      borderBottom: `1px solid ${theme.palette.white.main}`,
       cursor: "pointer",
       "&:hover": {
          opacity: 0.8,

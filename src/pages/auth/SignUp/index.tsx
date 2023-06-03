@@ -12,15 +12,7 @@ const SignUp = () => {
 
          {/* Body */}
          <Box pt={1} pl={4} pr={4} pb={2}>
-            <Typography
-               variant="h3"
-               textAlign="center"
-               sx={{
-                  background: theme.myColor.bgGradient,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  pb: 2,
-               }}>
+            <Typography variant="gradient" component="h1" fontSize={42} textAlign="center">
                Sign up
             </Typography>
             <Form />

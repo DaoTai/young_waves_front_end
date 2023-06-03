@@ -27,7 +27,9 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
             </Typography>
             <Button
                variant="outlined"
-               sx={{ color: theme.myColor.white, "&:hover": { color: theme.myColor.text } }}
+               sx={{
+                  color: theme.palette.text.primary,
+               }}
                onClick={forwardToChatPage}>
                Go to page chat
             </Button>

@@ -49,15 +49,7 @@ const SignIn = () => {
          <Box p={2} pl={4} pr={4}>
             {/* Form */}
             <form autoComplete="off" onSubmit={handleSubmit}>
-               <Typography
-                  variant="h3"
-                  textAlign="center"
-                  sx={{
-                     background: theme.myColor.bgGradient,
-                     WebkitBackgroundClip: "text",
-                     WebkitTextFillColor: "transparent",
-                     pb: 1,
-                  }}>
+               <Typography variant="gradient" component="h1" fontSize={42} textAlign="center">
                   Sign in
                </Typography>
                <TextField
@@ -98,7 +90,7 @@ const SignIn = () => {
                   size="large"
                   variant="contained"
                   endIcon={<Send />}
-                  sx={{ marginTop: 2, color: theme.myColor.white }}>
+                  sx={{ marginTop: 2, color: theme.palette.white.main }}>
                   Sign in
                </Button>
             </form>
@@ -117,7 +109,7 @@ const SignIn = () => {
                   label="Remember me"
                />
                <Typography>
-                  <Link color={theme.myColor.link} to="/auth/forgot-password">
+                  <Link color={theme.palette.link.main} to="/auth/forgot-password">
                      Forgot password?
                   </Link>
                </Typography>
@@ -127,7 +119,7 @@ const SignIn = () => {
                <Typography variant="subtitle1" component="b" mr={1}>
                   Not a member?
                </Typography>
-               <Link color={theme.myColor.link} to="/auth/sign-up">
+               <Link color={theme.palette.link.main} to="/auth/sign-up">
                   Sign up
                </Link>
             </Box>

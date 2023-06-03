@@ -24,8 +24,8 @@ const Alert = ({ message, title, mode, onClose }: AlertProps) => {
          open
          autoHideDuration={TIME_ALERT}
          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-         message={message}
-         onClose={onCloseAlert}>
+         onClose={onCloseAlert}
+         message={message}>
          <MyAlert
             severity={mode || alert$.payload.mode}
             closeText="Close"

@@ -3,6 +3,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import {
    Avatar,
    Button,
@@ -17,7 +18,7 @@ import dateFormat from "dateformat";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Dialog, PostModal } from "../../../../../components";
+import { AdminIcon, Dialog, PostModal } from "../../../../../components";
 import { deletePost, updatePost } from "../../../../../redux-saga/redux/actions";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { CreatePost, Post, UpdatePost } from "../../../../../utils/interfaces/Post";
@@ -119,7 +120,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                         <Typography
                            variant="body2"
                            component="span"
-                           sx={{ color: theme.myColor.textSecondary }}>
+                           sx={{ color: theme.palette.secondary.main }}>
                            {dateFormat(post?.createdAt, "h:MM TT, mmmm dS, yyyy")}
                         </Typography>
                      </Tooltip>
@@ -171,15 +172,12 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                   variant="body1"
                   display="flex"
                   flexDirection="row"
+                  gap={1}
                   align="center">
                   <Link to={`/user/profile/${auth$.payload?.user._id}`}>
                      {auth$.payload?.user.fullName}
                   </Link>
-                  {post?.author.isAdmin && (
-                     <Tooltip title="Admin">
-                        <CheckCircleIcon fontSize="small" color="primary" sx={{ ml: 0.25 }} />
-                     </Tooltip>
-                  )}
+                  {post?.author.isAdmin && <AdminIcon />}
                </Typography>
             }
             subheader={
@@ -196,7 +194,7 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                      <Typography
                         variant="body2"
                         component="span"
-                        sx={{ color: theme.myColor.textSecondary }}>
+                        sx={{ color: theme.palette.secondary.main }}>
                         {dateFormat(post?.createdAt, "h:MM TT, mmmm dS, yyyy")}
                      </Typography>
                   </Tooltip>
@@ -219,7 +217,6 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                      <Button startIcon={<ModeEditIcon />} onClick={handleShowEditModal}>
                         Edit
                      </Button>
-
                      <Button
                         startIcon={<DeleteIcon />}
                         onClick={() => {
@@ -230,7 +227,6 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
                      </Button>
                   </>
                )}
-
                <Button startIcon={<ContentCopyIcon />} onClick={handleCopyLinkPost}>
                   Copy link
                </Button>

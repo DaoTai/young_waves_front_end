@@ -14,7 +14,7 @@ const Post = () => {
          alignItems="center"
          p={2}
          gap={2}
-         bgcolor={theme.myColor.white}
+         bgcolor={theme.palette.white.main}
          flexWrap="nowrap"
          boxShadow={1}
          borderRadius={2}>
@@ -40,7 +40,7 @@ const Post = () => {
             onClick={() => setOpenModal(true)}>
             <Typography
                variant="subtitle1"
-               sx={{ color: theme.myColor.textSecondary, letterSpacing: 1.5 }}>
+               sx={{ color: theme.palette.secondary.main, letterSpacing: 1.5 }}>
                Hi {auth$?.payload?.user.fullName}. What's on your mind?
             </Typography>
          </Grid>

@@ -13,7 +13,12 @@ const Trashes = () => {
    };
    return (
       <>
-         <Typography variant="h3" textAlign="center">
+         <Typography
+            variant="gradient"
+            component="h1"
+            fontSize={42}
+            fontWeight={500}
+            textAlign="center">
             Trashes
          </Typography>
 
@@ -25,7 +30,7 @@ const Trashes = () => {
                   sx={{
                      transition: "all 0.3s ease",
                      "&:hover": {
-                        bgcolor: theme.myColor.bgGray,
+                        bgcolor: theme.palette.background.defaultGray,
                      },
                   }}
                />

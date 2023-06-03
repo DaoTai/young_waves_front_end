@@ -17,3 +17,5 @@ export { default as OverlayFullImage } from "./OverlayFullImage";
 export { default as CountriesSelect } from "./CountriesSelect";
 export { default as Dialog } from "./Dialog";
 export { default as ChangeModeButton } from "./ChangeModeButton";
+export { default as AdminIcon } from "./AdminIcon";
+export { default as Textarea } from "./Textarea";

@@ -74,7 +74,7 @@ const CoverPicture = ({ user, children }: { user: Profile; children?: ReactNode 
                     backgroundRepeat: "no-repeat",
                  }
                : {
-                    backgroundImage: `linear-gradient(45deg, ${theme.myColor.text}, transparent)`,
+                    backgroundImage: theme.palette.gradient.main,
                  }
          }>
          {/* Button change cover picture */}
@@ -83,7 +83,7 @@ const CoverPicture = ({ user, children }: { user: Profile; children?: ReactNode 
                <Fab
                   size="small"
                   sx={{
-                     backgroundColor: theme.myColor.white,
+                     backgroundColor: theme.palette.white.main,
                      position: "absolute",
                      top: 5,
                      right: 5,

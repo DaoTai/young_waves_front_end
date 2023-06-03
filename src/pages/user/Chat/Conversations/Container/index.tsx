@@ -95,7 +95,12 @@ const Container = ({ onClickItem }: Props) => {
                )
             }
             onChange={(e) => setSearchValue(e.target.value)}
-            sx={{ bgcolor: theme.myColor.bg, mb: 2, borderRadius: 1 }}
+            sx={{
+               color: theme.palette.text.primary,
+               bgcolor: theme.palette.gray.main,
+               mb: 2,
+               borderRadius: 1,
+            }}
          />
 
          {/* List conversation */}
@@ -121,11 +126,17 @@ const Container = ({ onClickItem }: Props) => {
                            unit: "m",
                         };
                      }
-                     if (timeDiffMin >= 60) {
+                     if (lastestTime.time >= 60) {
                         lastestTime = {
                            time: Math.floor(lastestTime.time / 60),
                            unit: "h",
                         };
+                        if (lastestTime.time >= 24) {
+                           lastestTime = {
+                              time: Math.floor(lastestTime.time / 24),
+                              unit: "d",
+                           };
+                        }
                      }
                      return (
                         <Item

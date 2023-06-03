@@ -261,7 +261,7 @@ const UserTrashes = () => {
                      sx={{
                         transition: "all 0.3s ease",
                         "&:hover": {
-                           bgcolor: theme.myColor.bgGray,
+                           bgcolor: theme.palette.background.defaultGray,
                         },
                      }}
                   />
@@ -271,7 +271,7 @@ const UserTrashes = () => {
                      sx={{
                         transition: "all 0.3s ease",
                         "&:hover": {
-                           bgcolor: theme.myColor.bgGray,
+                           bgcolor: theme.palette.background.defaultGray,
                         },
                      }}
                   />
@@ -296,9 +296,9 @@ const UserTrashes = () => {
                   onClick={handleAll}
                   sx={{
                      alignSelf: "center",
-                     color: theme.myColor.white,
+                     color: theme.palette.white.main,
                      background: `${
-                        !action || selectedIds.length === 0 ? null : theme.myColor.bgGradient
+                        !action || selectedIds.length === 0 ? null : theme.palette.gradient.main
                      }`,
                   }}
                   endIcon={<SendIcon />}>

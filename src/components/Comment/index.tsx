@@ -19,7 +19,7 @@ import dateFormat from "dateformat";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Dialog } from "../../components";
+import { AdminIcon, Dialog } from "../../components";
 import { authState$ } from "../../redux-saga/redux/selectors";
 import { Comment } from "../../utils/interfaces/Comment";
 interface Props {
@@ -72,7 +72,7 @@ const MyComment = ({
       setOpenPopover(null);
       setOpenEditButtons(true);
       if (commentRef.current) {
-         commentRef.current.style.backgroundColor = theme.myColor.white;
+         commentRef.current.style.backgroundColor = theme.palette.white.main;
          const inputComment = commentRef.current.childNodes[0] as HTMLInputElement;
          inputComment.readOnly = false;
       }
@@ -117,7 +117,12 @@ const MyComment = ({
                      ? `/user/profile/${auth$.payload?.user._id}`
                      : `/user/explore/${comment?.user?._id}`
                }>
-               <Avatar sizes="large" srcSet={comment?.user.avatar} src={comment?.user.avatar} />
+               <Avatar
+                  sizes="large"
+                  sx={{ width: 42, height: 42 }}
+                  srcSet={comment?.user.avatar}
+                  src={comment?.user.avatar}
+               />
             </Link>
             {/* Content */}
             <Paper sx={{ flex: 2, borderRadius: 2, p: 1 }}>
@@ -129,29 +134,19 @@ const MyComment = ({
                         component="span"
                         display="flex"
                         flexDirection="row"
-                        align="center"
-                        sx={{
-                           "&:hover": {
-                              textDecoration: "underline",
-                              textDecorationColor: theme.myColor.link,
-                           },
-                        }}>
+                        align="center">
                         <Link
                            to={
                               idAuth === comment?.user?._id
                                  ? `/user/profile/${auth$.payload?.user._id}`
                                  : `/user/explore/${comment?.user?._id}`
                            }
-                           style={{ display: "flex", alignItems: "center" }}>
+                           style={{ display: "flex", alignItems: "center", gap: 4 }}>
                            {comment?.user.fullName}
                            {/* Display admin icon */}
                            {comment?.user?.isAdmin && (
                               <Tooltip title="Admin" TransitionProps={{ timeout: 1000 }}>
-                                 <CheckCircleIcon
-                                    fontSize="small"
-                                    color="primary"
-                                    sx={{ ml: 0.25 }}
-                                 />
+                                 <AdminIcon />
                               </Tooltip>
                            )}
                         </Link>
@@ -166,10 +161,7 @@ const MyComment = ({
                      )
                   }
                   subheader={
-                     <Typography
-                        variant="body2"
-                        component="div"
-                        color={theme.myColor.textSecondary}>
+                     <Typography variant="body2" component="p" color={theme.palette.secondary.main}>
                         {dateFormat(comment?.updatedAt, " mmmm dS, yyyy, h:MM TT")}
                      </Typography>
                   }
@@ -218,30 +210,14 @@ const MyComment = ({
                }}>
                <Stack>
                   <Button
+                     sx={{ color: theme.palette.text.primary, justifyContent: "flex-start" }}
                      startIcon={<EditIcon color="primary" />}
-                     sx={{
-                        justifyContent: "flex-start",
-                        pl: 1,
-                        pr: 1,
-                        bgcolor: "transparent",
-                        "&:hover": {
-                           background: theme.myColor.bg,
-                        },
-                     }}
                      onClick={enableEditComment}>
                      Edit
                   </Button>
                   <Button
+                     sx={{ color: theme.palette.text.primary, justifyContent: "flex-start" }}
                      startIcon={<DeleteIcon color="primary" />}
-                     sx={{
-                        justifyContent: "space-between",
-                        pl: 1,
-                        pr: 1,
-                        bgcolor: "transparent",
-                        "&:hover": {
-                           background: theme.myColor.bg,
-                        },
-                     }}
                      onClick={showDialog}>
                      Delete
                   </Button>

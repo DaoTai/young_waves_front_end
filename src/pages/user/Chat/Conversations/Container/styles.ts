@@ -21,9 +21,12 @@ export const ConvItem = styled(Stack)(({ theme }) => ({
    padding: "8px",
    borderRadius: "4px",
    boxShadow: "0px 0px 4px rgba(0,0,0,0.2)",
+   border: 1,
+   borderColor: theme.palette.secondary.main,
+   borderStyle: "solid",
    gap: 8,
    cursor: "pointer",
    "&:hover": {
-      backgroundColor: theme.myColor.bgGray,
+      backgroundColor: theme.palette.gray.main,
    },
 }));

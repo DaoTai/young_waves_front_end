@@ -3,7 +3,7 @@ import { InputAdornment, styled } from "@mui/material";
 export const ClearButton = styled(InputAdornment)(({ theme }) => ({
    padding: "12px",
    borderRight: "1px solid #ccc",
-   color: theme.myColor.text,
+   color: theme.palette.text.primary,
    cursor: "pointer",
    "&:hover": {
       color: theme.palette.primary.main,
@@ -18,7 +18,7 @@ export const SearchButton = styled(InputAdornment)(({ theme }) => ({
    border: 1,
    borderRadius: 2,
    cursor: "pointer",
-   color: theme.myColor.white,
+   color: theme.palette.white.main,
    "&:hover": {
       opacity: 0.6,
    },

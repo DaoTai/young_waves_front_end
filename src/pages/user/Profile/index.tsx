@@ -97,14 +97,14 @@ const Profile = () => {
             {/* Tab navigate */}
             <Tabs
                value={tab}
-               sx={{ bgcolor: theme.myColor.white, boxShadow: 1 }}
+               sx={{ bgcolor: theme.palette.white.main, boxShadow: 1 }}
                onChange={handleChangeTabPanel}>
                <Tab
                   value="posts"
                   label="posts"
                   sx={{
                      transition: "0.3s linear all",
-                     "&:hover": { backgroundColor: theme.myColor.bgGray },
+                     "&:hover": { backgroundColor: theme.palette.background.defaultGray },
                   }}
                />
                <Tab
@@ -112,7 +112,7 @@ const Profile = () => {
                   label="Friends"
                   sx={{
                      transition: "0.3s linear all",
-                     "&:hover": { backgroundColor: theme.myColor.bgGray },
+                     "&:hover": { backgroundColor: theme.palette.background.defaultGray },
                   }}
                />
             </Tabs>

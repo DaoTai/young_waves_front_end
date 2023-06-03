@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { ConvItem, StyledBadge } from "../styles";
 import { Avatar, Stack, Typography, useTheme } from "@mui/material";
+import { useRef } from "react";
 import { useSelector } from "react-redux";
-import { Socket, io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import { authState$ } from "../../../../../../redux-saga/redux/selectors";
 import { FormatConversation } from "../../../../../../utils/interfaces/Chat";
-import { URL_SERVER } from "../../../../../../utils/constants";
+import { ConvItem, StyledBadge } from "../styles";
 interface Props {
    onClickItem: () => void;
    conversation: FormatConversation;
@@ -47,9 +46,10 @@ const Item = ({ onClickItem, conversation, lastestTime }: Props) => {
                      variant="subtitle2"
                      fontWeight={400}
                      whiteSpace="nowrap"
+                     textOverflow="ellipsis"
                      overflow="hidden"
-                     maxWidth="250px"
-                     sx={{ color: theme.myColor.textSecondary }}>
+                     maxWidth="190px"
+                     sx={{ color: theme.palette.secondary.main }}>
                      {idAuth === conversation?.lastestMessage?.sender
                         ? "You"
                         : conversation.friend.fullName}

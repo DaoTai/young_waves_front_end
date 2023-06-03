@@ -25,7 +25,6 @@ export const WrapFileInput = styled(Box)({
       cursor: "pointer",
       color: "transparent",
       width: "100%",
-      // height: 50,
       paddingTop: "50%",
       background: `url(${ImageIcon}) center center no-repeat`,
       "&::-webkit-file-upload-button": {

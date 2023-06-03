@@ -293,7 +293,13 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
 
    return (
       <>
-         <Typography variant="h3" textAlign="center" letterSpacing={2}>
+         <Typography
+            variant="gradient"
+            component="h1"
+            fontSize={42}
+            fontWeight={500}
+            textAlign="center"
+            letterSpacing={2}>
             Members
          </Typography>
          {/* Roles  */}
@@ -306,7 +312,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   sx={{
                      transition: "all 0.3s ease",
                      "&:hover": {
-                        bgcolor: theme.myColor.bgGray,
+                        bgcolor: theme.palette.background.default,
                      },
                   }}
                />
@@ -316,7 +322,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   sx={{
                      transition: "all 0.3s ease",
                      "&:hover": {
-                        bgcolor: theme.myColor.bgGray,
+                        bgcolor: theme.palette.background.default,
                      },
                   }}
                />
@@ -344,9 +350,9 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   onClick={handleAll}
                   sx={{
                      alignSelf: "center",
-                     color: theme.myColor.white,
+                     color: theme.palette.white.main,
                      background: `${
-                        !action || selectedIds.length === 0 ? null : theme.myColor.bgGradient
+                        !action || selectedIds.length === 0 ? null : theme.palette.gradient.main
                      }`,
                   }}
                   endIcon={<SendIcon />}>
@@ -358,18 +364,12 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             <Stack flexDirection="row" gap={4}>
                <Tooltip title="Trash Store">
                   <Fab sx={{ zIndex: 0 }} color="info" size="medium">
-                     <RestoreFromTrashIcon
-                        sx={{ color: theme.palette.primary.main }}
-                        onClick={goToTrashes}
-                     />
+                     <RestoreFromTrashIcon onClick={goToTrashes} />
                   </Fab>
                </Tooltip>
                <Tooltip title="Add user">
                   <Fab sx={{ zIndex: 0 }} color="success" size="medium">
-                     <AddIcon
-                        sx={{ color: theme.myColor.white }}
-                        onClick={() => setOpen((prev) => ({ ...prev, modal: true }))}
-                     />
+                     <AddIcon onClick={() => setOpen((prev) => ({ ...prev, modal: true }))} />
                   </Fab>
                </Tooltip>
             </Stack>

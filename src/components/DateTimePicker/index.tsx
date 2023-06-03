@@ -9,6 +9,7 @@ import {
    Typography,
    SelectChangeEvent,
    FormControl,
+   useTheme,
 } from "@mui/material";
 import { useState, useEffect, useMemo, memo } from "react";
 import { Dob } from "../../utils/interfaces/DateTimePicker";
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const DateTimePicker = ({ onChange = () => {}, name = "", value = "" }: Props) => {
+   const theme = useTheme();
    const [dob, setDob] = useState<Dob>(() => {
       if (value) {
          const splitValue = value.split("-");
@@ -98,8 +100,8 @@ const DateTimePicker = ({ onChange = () => {}, name = "", value = "" }: Props) =
    }, [dob]);
 
    return (
-      <Box>
-         <Typography variant="subtitle1" mb={1} sx={{ color: "rgba(0, 0, 0, 0.6)" }}>
+      <Stack justifyContent="space-between">
+         <Typography variant="subtitle1" color="text" mb={1}>
             Birthday
          </Typography>
          <Stack direction="row" justifyContent="space-between" sx={{ gap: 1 }}>
@@ -127,7 +129,7 @@ const DateTimePicker = ({ onChange = () => {}, name = "", value = "" }: Props) =
             </FormControl>
             {/* Years */}
             <Autocomplete
-               sx={{ backgroundColor: "#fff" }}
+               sx={{ backgroundColor: theme.palette.white.main }}
                disablePortal
                openOnFocus
                filterSelectedOptions
@@ -151,7 +153,7 @@ const DateTimePicker = ({ onChange = () => {}, name = "", value = "" }: Props) =
                renderInput={(params) => <TextField {...params} label="Year" />}
             />
          </Stack>
-      </Box>
+      </Stack>
    );
 };
 

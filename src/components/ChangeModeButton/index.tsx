@@ -9,12 +9,12 @@ const ChangeModeButton = () => {
    return (
       <Fab
          size="small"
-         sx={{ background: theme.myColor.bgGradient }}
+         sx={{ background: theme.palette.gradient.main }}
          onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
          {mode === "light" ? (
-            <LightModeIcon sx={{ color: theme.myColor.white }} />
+            <LightModeIcon sx={{ color: theme.palette.white.main }} />
          ) : (
-            <DarkModeIcon sx={{ color: theme.myColor.black }} />
+            <DarkModeIcon sx={{ color: theme.palette.black.main }} />
          )}
       </Fab>
    );

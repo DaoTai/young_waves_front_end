@@ -1,6 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Avatar, Box, ListItem, Stack, Tooltip, Typography } from "@mui/material";
+import { Avatar, ListItem, Stack, Tooltip, Typography } from "@mui/material";
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChatBoxWrapperProps } from "../../../../utils/interfaces/Chat";

@@ -47,7 +47,7 @@ const Detail = () => {
          <Modal open={open} onClose={handleClose}>
             <MyBox>
                <Box
-                  bgcolor={theme.myColor.white}
+                  bgcolor={theme.palette.white.main}
                   boxShadow={1}
                   position="sticky"
                   sx={{ top: 0, right: 0, left: 0, zIndex: 999, height: 70 }}
@@ -56,7 +56,7 @@ const Detail = () => {
                   <Typography
                      variant="h4"
                      textAlign="center"
-                     sx={{ color: theme.myColor.text }}
+                     sx={{ color: theme.palette.text }}
                      fontWeight={600}>
                      Trash post
                   </Typography>
@@ -67,7 +67,7 @@ const Detail = () => {
                      <Box
                         position="relative"
                         height="100%"
-                        bgcolor={theme.myColor.black}
+                        bgcolor={theme.palette.black.main}
                         overflow="hidden">
                         <Slider ref={sliderRef} {...settings}>
                            {trashPost?.post.attachments.map((img, index) => (
@@ -87,8 +87,8 @@ const Detail = () => {
                            <ButtonSlide>
                               <Fab
                                  sx={{
-                                    color: theme.myColor.textSecondary,
-                                    backgroundColor: theme.myColor.white,
+                                    color: theme.palette.secondary.main,
+                                    backgroundColor: theme.palette.white.main,
                                  }}
                                  size="medium"
                                  onClick={() => sliderRef.current?.slickPrev()}>
@@ -96,8 +96,8 @@ const Detail = () => {
                               </Fab>
                               <Fab
                                  sx={{
-                                    color: theme.myColor.textSecondary,
-                                    backgroundColor: theme.myColor.white,
+                                    color: theme.palette.secondary.main,
+                                    backgroundColor: theme.palette.white.main,
                                  }}
                                  size="medium"
                                  onClick={() => sliderRef.current?.slickNext()}>
@@ -115,7 +115,7 @@ const Detail = () => {
                      pt={0}
                      gap={2}
                      sx={{
-                        background: theme.myColor.white,
+                        background: theme.palette.white.main,
                         border: "none",
                      }}>
                      <Box>

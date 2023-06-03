@@ -1,8 +1,8 @@
-import { Grid, styled } from "@mui/material";
+import { Box, Grid, styled } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { alertState$ } from "../../../redux-saga/redux/selectors";
-import { Alert } from "../../../components";
+import { Alert, ChangeModeButton } from "../../../components";
 import CoverPicture from "../../../assets/images/cover-picture.jpg";
 const AuthLayout = () => {
    const alert$ = useSelector(alertState$);
@@ -15,7 +15,7 @@ const AuthLayout = () => {
       inset: 0,
    }));
    const WrapForm = styled(Grid)(({ theme }) => ({
-      backgroundColor: theme.myColor.white,
+      backgroundColor: theme.palette.white.main,
       boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
       maxHeight: "100%",
       overflow: "overlay",
@@ -33,6 +33,9 @@ const AuthLayout = () => {
    return (
       <>
          <MyGrid container justifyContent="center" alignItems="center">
+            <Box position="absolute" top={10} right={10}>
+               <ChangeModeButton />
+            </Box>
             <WrapForm
                item
                sx={(theme) => ({

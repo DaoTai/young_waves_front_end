@@ -54,7 +54,7 @@ const Actions = ({ post }: { post: Post }) => {
                   checked={like}
                   onChange={() => setLike(!like)}
                   onClick={clickLike}
-                  checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}
+                  checkedIcon={<FavoriteIcon sx={{ color: theme.palette.primary.main }} />}
                />
             </Stack>
             {/* Show detail */}
@@ -73,7 +73,7 @@ const Actions = ({ post }: { post: Post }) => {
                />
                <Box flex={2}>
                   <CommentIcon
-                     sx={{ cursor: "pointer", height: "100%", color: theme.myColor.textSecondary }}
+                     sx={{ cursor: "pointer", height: "100%", color: theme.palette.secondary.main }}
                   />
                </Box>
             </Stack>

@@ -22,7 +22,7 @@ const News = ({ posts, emptyMsg = "No post", hasMore, fetchMoreData }: Props) =>
    return (
       <Box>
          {posts?.length === 0 ? (
-            <Typography variant="h6" textAlign="center" color={theme.myColor.textSecondary}>
+            <Typography variant="h6" textAlign="center" color={theme.palette.secondary.main}>
                {emptyMsg}
             </Typography>
          ) : hasMore && fetchMoreData ? (

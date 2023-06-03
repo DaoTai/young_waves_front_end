@@ -72,7 +72,14 @@ const Message = ({ message, friendAvatar, onDelete }: Props) => {
                      justifyContent="flex-end"
                      flexWrap="wrap">
                      {message?.attachments?.map((attachment) => (
-                        <Box flex="1 0 20%" key={attachment.url}>
+                        <Box
+                           key={attachment.url}
+                           sx={{
+                              img: {
+                                 marginLeft: idAuth === message.sender ? "auto" : 0,
+                                 marginRight: idAuth !== message.sender ? "auto" : 0,
+                              },
+                           }}>
                            <img
                               src={attachment.url}
                               srcSet={attachment.url + "2x"}
@@ -85,7 +92,6 @@ const Message = ({ message, friendAvatar, onDelete }: Props) => {
 
                {/* Content message */}
                <Typography
-                  mt={1}
                   variant="body1"
                   component={message?.text?.slice(0, 4) === "http" ? "a" : "p"}
                   href={message.text}

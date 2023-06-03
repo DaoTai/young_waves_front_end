@@ -3,12 +3,12 @@ import { styled } from "@mui/material";
 const MyLink = styled(NavLink)(({ theme }) => ({
    display: "block",
    alignItems: "center",
-   color: theme.palette.primary.light,
+   color: theme.palette.primary.main,
    padding: 4,
    position: "relative",
    transition: "all 0.2s linear",
    "&.active": {
-      color: theme.myColor.link,
+      color: theme.palette.link.main,
       fontWeight: "bold",
       "&:after": {
          content: "''",
@@ -17,14 +17,14 @@ const MyLink = styled(NavLink)(({ theme }) => ({
          bottom: 0,
          width: "100%",
          height: 2,
-         backgroundColor: `${theme.myColor.link}`,
+         backgroundColor: `${theme.palette.link.main}`,
          borderRadius: 4,
          transform: "scale(1)",
          transition: "all 0.2s linear",
       },
    },
    "&:hover": {
-      color: theme.myColor.link,
+      color: theme.palette.link.main,
       "&:after": {
          transform: "scaleX(1)",
       },
@@ -36,7 +36,7 @@ const MyLink = styled(NavLink)(({ theme }) => ({
       bottom: 0,
       width: "100%",
       height: 2,
-      backgroundColor: `${theme.myColor.link}`,
+      backgroundColor: `${theme.palette.link.main}`,
       borderRadius: 4,
       transform: "scale(0)",
       transition: "all 0.2s linear",

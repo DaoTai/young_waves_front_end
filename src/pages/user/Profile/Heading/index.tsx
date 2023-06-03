@@ -4,7 +4,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "../../../../components";
+import { AdminIcon, Spinner } from "../../../../components";
 import { addFriend } from "../../../../redux-saga/redux/actions";
 import { authState$ } from "../../../../redux-saga/redux/selectors";
 import { Profile } from "../../../../utils/interfaces/Profile";
@@ -41,18 +41,18 @@ const Heading = ({ user }: { user: Profile }) => {
                   <Avatar user={user} />
                </Grid>
                {/* Name & total posts */}
-               <Grid item>
-                  <Typography
-                     variant="h4"
-                     fontWeight={600}
-                     sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
+               <Grid item color="#fff">
+                  <Typography variant="h4" fontWeight={600} display="flex" alignItems="center">
                      {user?.fullName}
-                     {user?.isAdmin && <CheckCircleIcon color="primary" sx={{ ml: 0.25 }} />}
+                     {user?.isAdmin && <AdminIcon fontSize="large" />}
                   </Typography>
                   <Typography
                      variant="subtitle1"
                      fontWeight={600}
-                     sx={{ color: theme.myColor.white, textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
+                     mb={1}
+                     sx={{
+                        textShadow: "3px 0px 4px rgba(0,0,0,0.3)",
+                     }}>
                      {user.totalPosts && user.totalPosts > 1
                         ? user.totalPosts + " posts"
                         : user.totalPosts + " post"}
@@ -61,14 +61,6 @@ const Heading = ({ user }: { user: Profile }) => {
                   {/* Show button edit */}
                   {idAuth === user?._id && (
                      <Button
-                        sx={{
-                           mt: 2,
-                           color: theme.myColor.white,
-                           "&:hover": {
-                              color: theme.myColor.text,
-                              backgroundColor: theme.myColor.white,
-                           },
-                        }}
                         size="large"
                         variant="outlined"
                         endIcon={<EditIcon />}
@@ -81,7 +73,7 @@ const Heading = ({ user }: { user: Profile }) => {
                      <Button
                         sx={{
                            mt: 2,
-                           color: theme.myColor.white,
+                           color: theme.palette.white.main,
                         }}
                         size="large"
                         variant="contained"

@@ -49,13 +49,13 @@ const Password = () => {
          <Helmet>
             <title>Change password | Young Waves</title>
          </Helmet>
-         <Container maxWidth="md" sx={{ backgroundColor: theme.myColor.white, pt: 1 }}>
+         <Container maxWidth="md" sx={{ backgroundColor: theme.palette.white.main, pt: 1 }}>
             <Stack flexDirection="row" alignItems="baseline">
                <Fab
                   size="medium"
                   sx={{
                      boxShadow: 1,
-                     bgcolor: theme.myColor.white,
+                     bgcolor: theme.palette.white.main,
                   }}
                   onClick={() => navigate("/user/profile/edit")}>
                   <ArrowBackIosIcon />
@@ -65,7 +65,7 @@ const Password = () => {
                   Change Password
                </Typography>
             </Stack>
-            <Box p={2} bgcolor={theme.myColor.white}>
+            <Box p={2} bgcolor={theme.palette.white.main}>
                <form autoComplete="off" onSubmit={handleSubmit}>
                   <Grid container spacing={3}>
                      {textFields.map((props: any, i: number) => {

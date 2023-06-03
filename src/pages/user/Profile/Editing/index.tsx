@@ -63,13 +63,13 @@ const Editing = () => {
          {/* Content */}
          <Container
             maxWidth="lg"
-            sx={{ backgroundColor: theme.myColor.white, pt: 2, pb: 2, minHeight: "100vh" }}>
+            sx={{ backgroundColor: theme.palette.white.main, pt: 2, pb: 2, minHeight: "100vh" }}>
             <Stack flexDirection="row" justifyContent="space-between">
                <Fab
                   size="medium"
                   sx={{
                      boxShadow: 1,
-                     bgcolor: theme.myColor.white,
+                     bgcolor: theme.palette.white.main,
                   }}
                   onClick={() => navigate(`/user/profile/${values._id}`)}>
                   <ArrowBackIosIcon />
@@ -78,7 +78,7 @@ const Editing = () => {
                   variant="contained"
                   endIcon={<KeyIcon />}
                   sx={{
-                     color: theme.myColor.white,
+                     color: theme.palette.white.main,
                   }}
                   onClick={() => navigate("/user/profile/password")}>
                   Change password
@@ -185,7 +185,7 @@ const Editing = () => {
                         variant="contained"
                         endIcon={<SendIcon />}
                         sx={{
-                           color: theme.myColor.white,
+                           color: theme.palette.white.main,
                         }}>
                         Update
                      </Button>

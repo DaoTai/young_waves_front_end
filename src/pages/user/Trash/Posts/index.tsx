@@ -59,7 +59,7 @@ const TrashPosts = () => {
                return (
                   <Button
                      sx={{
-                        color: theme.myColor.white,
+                        color: theme.palette.white.main,
                         bgcolor: theme.palette.primary.main,
                         alignItems: "center",
                         "&:hover": {
@@ -73,7 +73,7 @@ const TrashPosts = () => {
                      <Typography
                         variant="body2"
                         sx={{
-                           color: theme.myColor.white,
+                           color: theme.palette.white.main,
                            display: { md: "block", xs: "none" },
                         }}>
                         Open
@@ -95,7 +95,7 @@ const TrashPosts = () => {
                   <Button
                      color="success"
                      sx={{
-                        color: theme.myColor.white,
+                        color: theme.palette.white.main,
                         bgcolor: theme.palette.success.main,
                         "&:hover": {
                            color: theme.palette.success.main,
@@ -108,7 +108,7 @@ const TrashPosts = () => {
                      <Typography
                         variant="body2"
                         sx={{
-                           color: theme.myColor.white,
+                           color: theme.palette.white.main,
                            display: { md: "block", xs: "none" },
                         }}>
                         Restore
@@ -129,7 +129,7 @@ const TrashPosts = () => {
                return (
                   <Button
                      sx={{
-                        color: theme.myColor.white,
+                        color: theme.palette.white.main,
                         bgcolor: theme.palette.error.main,
                         "&:hover": {
                            color: theme.palette.error.main,
@@ -142,7 +142,7 @@ const TrashPosts = () => {
                      <Typography
                         variant="body2"
                         sx={{
-                           color: theme.myColor.white,
+                           color: theme.palette.white.main,
                            display: { md: "block", xs: "none" },
                         }}>
                         Delete
@@ -200,7 +200,7 @@ const TrashPosts = () => {
                showCellRightBorder={true}
                showColumnRightBorder={true}
                sx={{
-                  bgcolor: theme.myColor.white,
+                  bgcolor: theme.palette.white.main,
                   button: {
                      border: "1px solid #ccc",
                      margin: "auto",
@@ -235,8 +235,8 @@ const TrashPosts = () => {
                   sx={{
                      ".MuiFab-root": {
                         boxShadow: 0,
-                        borderColor: theme.myColor.textSecondary,
-                        bgcolor: theme.myColor.white,
+                        borderColor: theme.palette.secondary.main,
+                        bgcolor: theme.palette.white.main,
                         zIndex: 0,
                      },
                   }}>

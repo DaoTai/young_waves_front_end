@@ -126,7 +126,7 @@ const Detail = () => {
                <MyBox sx={{ overflowY: "overlay" }}>
                   {/* Title */}
                   <Box
-                     bgcolor={theme.myColor.white}
+                     bgcolor={theme.palette.white.main}
                      boxShadow={1}
                      position="sticky"
                      sx={{ top: 0, right: 0, left: 0, zIndex: 999, height: 70 }}
@@ -135,7 +135,7 @@ const Detail = () => {
                      <Typography
                         variant="h4"
                         textAlign="center"
-                        sx={{ color: theme.myColor.text }}
+                        sx={{ color: theme.palette.text.primary }}
                         fontWeight={600}>
                         Post of {detailPost?.post?.author.fullName}
                      </Typography>

@@ -1,23 +1,9 @@
-import React from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import EqualizerIcon from "@mui/icons-material/Equalizer";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
 
-import {
-   Button,
-   Divider,
-   Fab,
-   List,
-   ListItem,
-   Stack,
-   Tooltip,
-   Typography,
-   useTheme,
-} from "@mui/material";
-import { WrapFeatures } from "./style";
-import { TYPE_FEATURES } from "../../../utils/types";
+import { Fab, Stack, useTheme } from "@mui/material";
 import { FEATURES_ADMIN } from "../../../utils/enums";
+import { TYPE_FEATURES } from "../../../utils/types";
 const Features = ({ onClick }: { onClick: (name: TYPE_FEATURES) => void }) => {
    const theme = useTheme();
    const items = [
@@ -36,7 +22,7 @@ const Features = ({ onClick }: { onClick: (name: TYPE_FEATURES) => void }) => {
             borderTopRightRadius: 99,
             borderBottomLeftRadius: 12,
             borderBottomRightRadius: 12,
-            background: "linear-gradient(to top, #667db6, #0082c8, #0082c8, #667db6)",
+            background: theme.palette.gradient.main,
          }}
          boxShadow={2}>
          {items.map((item, index) => (
@@ -45,14 +31,14 @@ const Features = ({ onClick }: { onClick: (name: TYPE_FEATURES) => void }) => {
                size="medium"
                onClick={() => onClick(item.name)}
                sx={{
-                  bgcolor: theme.myColor.link,
-                  color: theme.myColor.white,
+                  bgcolor: theme.palette.link.main,
+                  color: theme.palette.white.main,
                   border: 1,
                   transition: "all 0.3s linear",
                   "&:hover": {
-                     color: theme.myColor.link,
-                     bgcolor: theme.myColor.white,
-                     borderColor: theme.myColor.link,
+                     color: theme.palette.link.main,
+                     bgcolor: theme.palette.white.main,
+                     borderColor: theme.palette.link.main,
                      transform: "scale(1.1)",
                   },
                }}>
