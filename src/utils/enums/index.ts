@@ -8,7 +8,7 @@ export enum TRASHES_ADMIN {
 }
 
 export enum TAB_PROFILE {
-   posts = "posts",
+   about = "about",
    friends = "friends",
 }
 

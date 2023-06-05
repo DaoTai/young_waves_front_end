@@ -12,9 +12,15 @@ import { FormatConversation } from "../../../../../utils/interfaces/Chat";
 import { URL_SERVER } from "../../../../../utils/constants";
 import { ClearButton, ConvItem, StyledBadge } from "./styles";
 import Item from "./Item";
+import { conversation } from "../../../../../apis";
 
 interface Props {
    onClickItem: (conversation: FormatConversation) => void;
+}
+
+interface OnlineFriendsSocket {
+   idUser: string;
+   idSocket: string;
 }
 
 const Container = ({ onClickItem }: Props) => {
@@ -22,11 +28,28 @@ const Container = ({ onClickItem }: Props) => {
    const {
       payload: { user },
    } = useSelector(authState$);
+   const socketRef = useRef<Socket>();
    const currentPageRef = useRef<number>(1);
    const maxPageRef = useRef<number>(1);
    const [conversations, setConversations] = useState<FormatConversation[]>([]);
+   const [onlineFriends, setOnlineFriends] = useState<string[]>([]);
    const [searchValue, setSearchValue] = useState<string>("");
    const debouncedValue = useDebounce(searchValue);
+
+   useEffect(() => {
+      const friends = conversations.map((conv) => conv.friend._id);
+      socketRef.current = io(URL_SERVER);
+      socketRef.current.emit("addOnlineUser", user._id, friends);
+      socketRef.current.on("getOnlineFriends", (idOnlineFriends: string[]) => {
+         setOnlineFriends(idOnlineFriends);
+      });
+      socketRef.current.on("removeOnlineUser", (offlineUserId: string) => {
+         setOnlineFriends(onlineFriends.filter((friend) => friend !== offlineUserId));
+      });
+      return () => {
+         socketRef.current?.disconnect();
+      };
+   }, [conversations]);
 
    useEffect(() => {
       (async () => {
@@ -35,6 +58,7 @@ const Container = ({ onClickItem }: Props) => {
                friendName: debouncedValue,
             });
             setConversations(conversations);
+
             currentPageRef.current = currentPage;
             maxPageRef.current = maxPage;
             // Set page
@@ -48,6 +72,7 @@ const Container = ({ onClickItem }: Props) => {
    const fetchApi = async (q: { friendName?: string; page?: number }) => {
       try {
          const { data } = await api.getAllConversation(q);
+
          // Conversations
          const formatData = data.conversations?.map((conv) => {
             const friend = conv.members.find((member) => member?._id !== user?._id);
@@ -112,6 +137,7 @@ const Container = ({ onClickItem }: Props) => {
             ) : (
                <Stack gap={2} mb={2}>
                   {conversations?.map((conversation) => {
+                     const isOnline = onlineFriends.includes(conversation.friend._id as string);
                      const now = new Date();
                      const specificTime = new Date(String(conversation?.lastestMessage?.updatedAt));
                      const timeDiffMs = now.getTime() - specificTime.getTime();
@@ -141,6 +167,7 @@ const Container = ({ onClickItem }: Props) => {
                      return (
                         <Item
                            key={conversation.idConversation}
+                           isOnline={isOnline}
                            conversation={conversation}
                            lastestTime={lastestTime}
                            onClickItem={() => onClickItem(conversation)}
@@ -152,9 +179,7 @@ const Container = ({ onClickItem }: Props) => {
          </Box>
 
          {/* Button load more */}
-         {currentPageRef.current < maxPageRef.current && (
-            <Chip label="Get more" onClick={handleNextPage} sx={{ width: "100%" }} />
-         )}
+         {currentPageRef.current < maxPageRef.current && <Chip label="Get more" onClick={handleNextPage} sx={{ width: "100%" }} />}
          <Divider />
       </Box>
    );

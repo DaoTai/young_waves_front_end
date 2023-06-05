@@ -46,9 +46,9 @@ const UserTrashes = () => {
    const columns: GridColDef[] = useMemo(
       () => [
          {
-            field: "fullName",
+            field: "username",
             headerAlign: "center",
-            headerName: "Full name",
+            headerName: "Username",
             width: 160,
             flex: 2,
             renderCell(params) {

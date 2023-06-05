@@ -5,7 +5,7 @@ const Spinner = ({ show }: { show: boolean }) => {
    return (
       <>
          {show && (
-            <Backdrop open color="primary" sx={{ zIndex: 999 }}>
+            <Backdrop open color="primary" sx={{ zIndex: 999, bgcolor: "transparent" }}>
                <CircularProgress />
             </Backdrop>
          )}

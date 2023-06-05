@@ -6,7 +6,7 @@ const GlobalStyle = () => {
          styles={(theme) => ({
             html: {
                scrollBehavior: "smooth",
-               overflow: "overlay",
+               // overflow: "overlay",
             },
             "html *::-webkit-scrollbar": {
                borderRadius: 0,

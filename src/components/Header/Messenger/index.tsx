@@ -1,5 +1,5 @@
 import ChatIcon from "@mui/icons-material/Chat";
-import { Badge, Box, Popover, useTheme } from "@mui/material";
+import { Badge, Box, Popover, Tooltip, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -20,16 +20,18 @@ const Messenger = () => {
       <>
          {!location.pathname.includes("/user/chats") && (
             <>
-               <Badge
-                  // badgeContent={4}
-                  color="info"
-                  sx={{
-                     cursor: "pointer",
-                     color: theme.palette.primary.main,
-                  }}
-                  onClick={handleShowListChat}>
-                  <ChatIcon fontSize="large" />
-               </Badge>
+               <Tooltip title="Message">
+                  <Badge
+                     // badgeContent={4}
+                     color="info"
+                     sx={{
+                        cursor: "pointer",
+                        color: theme.palette.primary.main,
+                     }}
+                     onClick={handleShowListChat}>
+                     <ChatIcon fontSize="large" />
+                  </Badge>
+               </Tooltip>
                <Popover
                   open={open}
                   anchorEl={anchorEl}

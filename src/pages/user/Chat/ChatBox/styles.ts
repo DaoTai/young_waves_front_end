@@ -83,7 +83,7 @@ export const Body = styled(Box)(({ theme }) => ({
          height: 35,
       },
       ".message": {
-         color: theme.palette.white.main,
+         color: "#fff",
          whiteSpace: "pre-wrap",
          wordBreak: "break-word",
          padding: "6px 8px",

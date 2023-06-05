@@ -8,7 +8,6 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
    const theme = useTheme();
    const navigate = useNavigate();
    const chatContext = useContext(ChatContext);
-
    const handleClickChatItem = (conversation: FormatConversation) => {
       chatContext?.handleShowChatBox(conversation);
       onClose();
@@ -19,7 +18,7 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
       onClose();
    };
    return (
-      <Box p={2} minWidth="360px" maxHeight="70vh" overflow="scroll">
+      <Box p={2} minWidth="360px" maxHeight="70vh">
          {/* Heading */}
          <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-between">
             <Typography variant="h5" fontWeight={700}>

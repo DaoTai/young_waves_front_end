@@ -1,40 +1,25 @@
 import { Avatar, Stack, Typography, useTheme } from "@mui/material";
-import { useRef } from "react";
 import { useSelector } from "react-redux";
-import { Socket } from "socket.io-client";
 import { authState$ } from "../../../../../../redux-saga/redux/selectors";
 import { FormatConversation } from "../../../../../../utils/interfaces/Chat";
 import { ConvItem, StyledBadge } from "../styles";
 interface Props {
    onClickItem: () => void;
    conversation: FormatConversation;
+   isOnline: boolean;
    lastestTime: {
       time: number;
       unit: string;
    };
 }
-const Item = ({ onClickItem, conversation, lastestTime }: Props) => {
+const Item = ({ onClickItem, conversation, lastestTime, isOnline }: Props) => {
    const theme = useTheme();
    const auth$ = useSelector(authState$);
    const idAuth = auth$.payload.user._id;
-   const socketRef = useRef<Socket>();
-   // useEffect(() => {
-   //    socketRef.current = io(URL_SERVER);
-   //    socketRef.current.emit("addUser", idAuth, conversation.idConversation);
-   //    socketRef.current.on("getOnlineUsers", (data) => {
-   //       console.log("data: ", data);
-   //    });
-   //    return () => {
-   //       socketRef.current?.disconnect();
-   //    };
-   // }, []);
 
    return (
       <ConvItem onClick={onClickItem}>
-         <StyledBadge
-            overlap="circular"
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            variant="dot">
+         <StyledBadge overlap="circular" anchorOrigin={{ vertical: "bottom", horizontal: "right" }} variant={isOnline ? "dot" : "standard"}>
             <Avatar src={conversation?.friend?.avatar} sx={{ width: 60, height: 60 }} />
          </StyledBadge>
          <Stack overflow="hidden">
@@ -50,9 +35,7 @@ const Item = ({ onClickItem, conversation, lastestTime }: Props) => {
                      overflow="hidden"
                      maxWidth="190px"
                      sx={{ color: theme.palette.secondary.main }}>
-                     {idAuth === conversation?.lastestMessage?.sender
-                        ? "You"
-                        : conversation.friend.fullName}
+                     {idAuth === conversation?.lastestMessage?.sender ? "You" : conversation.friend.fullName}
                      {": "}
                      {conversation?.lastestMessage?.text}
                   </Typography>

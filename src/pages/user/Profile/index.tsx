@@ -19,7 +19,7 @@ const Profile = () => {
    const { id } = useParams();
    const auth$ = useSelector(authState$);
    const ownerPosts$ = useSelector(ownerPostsState$);
-   const [tab, setTab] = useState<TYPE_TAB_PROFILE>("posts");
+   const [tab, setTab] = useState<TYPE_TAB_PROFILE>("about");
    const [hasMore, setHasMore] = useState<boolean>(true);
    const [page, setPage] = useState<number>(1);
    useEffect(() => {
@@ -56,7 +56,7 @@ const Profile = () => {
    };
 
    const Detail: Record<TYPE_TAB_PROFILE, React.ReactNode> = {
-      posts: (
+      about: (
          <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
                <Suspense fallback={<Spinner show />}>
@@ -92,22 +92,8 @@ const Profile = () => {
             </Box>
             {/* Tab navigate */}
             <Tabs value={tab} sx={{ bgcolor: theme.palette.white.main, boxShadow: 1 }} onChange={handleChangeTabPanel}>
-               <Tab
-                  value="posts"
-                  label="posts"
-                  sx={{
-                     transition: "0.3s linear all",
-                     "&:hover": { backgroundColor: theme.palette.background.default },
-                  }}
-               />
-               <Tab
-                  value="friends"
-                  label="Friends"
-                  sx={{
-                     transition: "0.3s linear all",
-                     "&:hover": { backgroundColor: theme.palette.background.default },
-                  }}
-               />
+               <Tab value="about" label="About" />
+               <Tab value="friends" label="Friends" />
             </Tabs>
             {/* Detail tab */}
             {Detail[tab]}

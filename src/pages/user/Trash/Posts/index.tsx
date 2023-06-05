@@ -209,7 +209,6 @@ const TrashPosts = () => {
                         borderColor: "currentcolor",
                      },
                   },
-                  overflow: "scroll",
                }}
                rows={trashPosts}
                columns={columns}
