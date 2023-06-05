@@ -1,7 +1,7 @@
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import ExploreIcon from "@mui/icons-material/Explore";
 import HomeIcon from "@mui/icons-material/Home";
-import { Container, Stack, useTheme } from "@mui/material";
+import { Container, Stack, Tooltip, useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
 import { authState$ } from "../../../redux-saga/redux/selectors";
 import NavLink from "../../NavLink";
@@ -10,22 +10,25 @@ const Navigation = () => {
    const { payload } = useSelector(authState$);
    const isAdmin = payload?.user.isAdmin;
    return (
-      <Container maxWidth="md">
-         <Stack direction="row" justifyContent="center" sx={{ gap: 4 }}>
+      <Stack direction="row" justifyContent="center" sx={{ gap: 4 }}>
+         <Tooltip title="Home">
             <NavLink to="/">
                <HomeIcon fontSize="large" />
             </NavLink>
+         </Tooltip>
+         <Tooltip title="Explore">
             <NavLink to="/user/explore">
                <ExploreIcon fontSize="large" />
             </NavLink>
-            {isAdmin && (
+         </Tooltip>
+         {isAdmin && (
+            <Tooltip title="Manage">
                <NavLink to="/admin">
                   <ManageAccountsIcon fontSize="large" />
                </NavLink>
-            )}
-         </Stack>
-         {/* </Stack> */}
-      </Container>
+            </Tooltip>
+         )}
+      </Stack>
    );
 };
 

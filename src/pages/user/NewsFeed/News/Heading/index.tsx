@@ -63,15 +63,15 @@ const Heading = ({ post, showAction = false }: HeadingNewsProps) => {
    };
 
    // Author post is not current user
-   if (auth$.payload?.user?._id !== post?.author._id) {
+   if (auth$.payload?.user?._id !== post?.author?._id) {
       return (
          <>
             <CardHeader
                avatar={
-                  <Link to={`/user/explore/${post?.author._id}`}>
+                  <Link to={`/user/explore/${post?.author?._id}`}>
                      <Avatar
-                        src={post?.author.avatar}
-                        srcSet={post?.author.avatar}
+                        src={post?.author?.avatar}
+                        srcSet={post?.author?.avatar}
                         alt="avatar"
                         sx={{
                            width: 50,

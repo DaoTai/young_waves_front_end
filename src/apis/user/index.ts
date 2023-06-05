@@ -1,13 +1,9 @@
-import { deleteImage, storageImage } from "../../firebase/services";
 import { Profile, UpdateProfile } from "../../utils/interfaces/Profile";
 import { axiosInstance } from "../config";
 export const getAllUser = async (query?: { page?: number; name?: string }) => {
-   return await axiosInstance.get<{ users: Profile[]; currentPage: number; maxPage: number }>(
-      "/user/all",
-      {
-         params: query,
-      }
-   );
+   return await axiosInstance.get<{ users: Profile[]; currentPage: number; maxPage: number }>("/user/all", {
+      params: query,
+   });
 };
 
 export const getProfile = async (id: string) => {
@@ -15,10 +11,6 @@ export const getProfile = async (id: string) => {
 };
 
 export const updateProfile = async (user: UpdateProfile) => {
-   user.newAvatar && (user.avatar = await storageImage(user.newAvatar));
-   user.newCoverPicture && (user.coverPicture = await storageImage(user.newCoverPicture));
-   delete user.newAvatar;
-   delete user.newCoverPicture;
    return await axiosInstance.patch<Profile>(`/user/${user._id}`, user);
 };
 

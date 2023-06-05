@@ -1,6 +1,5 @@
 import { Box, Tooltip } from "@mui/material";
-import { ChangeEvent, memo, useEffect, useRef, useState } from "react";
-import firebase from "../../firebase/config";
+import { ChangeEvent, memo } from "react";
 import { WrapFileInput } from "./styles";
 
 interface Props {
@@ -25,12 +24,7 @@ const ImageInput = ({ multiple = false, onChange, width = 50, height = 50 }: Pro
       <Box className="image-input">
          <Tooltip title="Add images" arrow placement="top" sx={{ display: "flex" }}>
             <WrapFileInput sx={{ width: width, height: height }}>
-               <input
-                  multiple={multiple}
-                  accept="image/png, image/jpeg"
-                  type="file"
-                  onChange={handleChange}
-               />
+               <input multiple={multiple} accept="image/png, image/jpeg" type="file" onChange={handleChange} />
             </WrapFileInput>
          </Tooltip>
       </Box>

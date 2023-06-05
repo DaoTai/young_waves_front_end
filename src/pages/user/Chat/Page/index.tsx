@@ -25,11 +25,7 @@ const PageChat = () => {
          <WrapperPage maxWidth="xl">
             <Grid container flexWrap="nowrap" height="100%">
                {/* Conversation */}
-               <Grid
-                  item
-                  lg={4}
-                  p={1}
-                  sx={{ bgcolor: theme.palette.white.main, overflowY: "scroll" }}>
+               <Grid item lg={3} p={1} sx={{ bgcolor: theme.palette.white.main, overflowY: "scroll" }}>
                   <Stack gap={2}>
                      <Typography className="title" flex={1} variant="h4">
                         My chat
@@ -39,14 +35,7 @@ const PageChat = () => {
                </Grid>
 
                {/* Frame chat */}
-               <Grid
-                  item
-                  lg={8}
-                  pt={1}
-                  boxShadow={2}
-                  bgcolor={theme.palette.white.main}
-                  width="100%"
-                  height="100%">
+               <Grid item lg={9} pt={1} boxShadow={2} bgcolor={theme.palette.white.main} width="100%" height="100%">
                   {conversation ? (
                      <ChatForm conversation={conversation} />
                   ) : (

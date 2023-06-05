@@ -1,5 +1,4 @@
-import { storageImages, deleteMultipleImages, storageImage } from "../../firebase/services";
-import { Post, DetailPost, CreatePost, UpdatePost } from "../../utils/interfaces/Post";
+import { CreatePost, DetailPost, Post, UpdatePost } from "../../utils/interfaces/Post";
 import { axiosInstance } from "../config";
 export const getPosts = async (page: number = 1) => {
    return await axiosInstance.get("/posts", {
@@ -42,28 +41,11 @@ export const getTrashPosts = async (page: number = 1) => {
 };
 
 export const createPost = async (payload: CreatePost) => {
-   let urls: string[] = [];
-   if (payload.attachments) {
-      urls = await storageImages(payload.attachments);
-   }
-   const data = {
-      ...payload,
-      attachments: urls,
-   };
-   return await axiosInstance.post<Post>(`/posts/`, data);
+   return await axiosInstance.post<Post>(`/posts/`, payload);
 };
 
 export const updatePost = async (payload: UpdatePost) => {
-   let urls: string[] = [];
-   if (payload?.newAttachments) {
-      urls = await storageImages(payload.newAttachments);
-   }
-   const data = {
-      ...payload,
-      attachments: [...(payload.attachments ?? []), ...urls],
-   };
-
-   return payload._id && (await axiosInstance.put<Post>(`/posts/${payload._id}`, data));
+   return await axiosInstance.put<Post>(`/posts/${payload._id}`, payload);
 };
 
 export const restorePost = async (id: string) => {
@@ -75,9 +57,8 @@ export const deletePost = async (id: string) => {
 };
 
 export const forceDeletePost = async (id: string) => {
-   const { data, statusText } = await axiosInstance.delete<Post>(`/posts/${id}/force-delete`);
-   await deleteMultipleImages(data.attachments);
-   return statusText;
+   const res = await axiosInstance.delete<Post>(`/posts/${id}/force-delete`);
+   return res;
 };
 export const likePost = async (id: string) => {
    return await axiosInstance.post(`/posts/${id}/like`);

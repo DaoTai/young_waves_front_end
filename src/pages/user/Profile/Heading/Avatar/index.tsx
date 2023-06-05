@@ -52,9 +52,7 @@ const AvatarProfile = ({ user, variant = "circular", borderRadius }: Props) => {
 
    // Confirm to change avatar
    const handleSaveNewAvatar = () => {
-      dispatch(
-         updateProfile({ newAvatar: avatar.file, deletedImages: [user.avatar], _id: user._id })
-      );
+      dispatch(updateProfile({ newAvatar: avatar.file, _id: user._id }));
       URL.revokeObjectURL(avatar.url);
       setShowActions(false);
    };

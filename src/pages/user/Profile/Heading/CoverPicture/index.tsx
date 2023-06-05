@@ -51,7 +51,6 @@ const CoverPicture = ({ user, children }: { user: Profile; children?: ReactNode 
       dispatch(
          updateProfile({
             newCoverPicture: coverPicture.file,
-            deletedImages: [user?.coverPicture ?? ""],
             _id: user._id,
          })
       );

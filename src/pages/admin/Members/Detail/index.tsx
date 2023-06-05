@@ -1,31 +1,9 @@
 import SendIcon from "@mui/icons-material/Send";
-import {
-   Avatar,
-   Button,
-   Chip,
-   FormControl,
-   FormControlLabel,
-   FormLabel,
-   Grid,
-   Modal,
-   Radio,
-   RadioGroup,
-   Stack,
-   TextField,
-   Typography,
-   useTheme,
-} from "@mui/material";
+import { Avatar, Button, Chip, FormControl, FormControlLabel, FormLabel, Grid, Modal, Radio, RadioGroup, Stack, TextField, Typography, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import { memo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-   CloseButton,
-   CountriesSelect,
-   DateTimePicker,
-   ImageInput,
-   OverlayFullImage,
-   Spinner,
-} from "../../../../components";
+import { CloseButton, CountriesSelect, DateTimePicker, ImageInput, OverlayFullImage, Spinner } from "../../../../components";
 import { MyBox } from "../../../../components/Post/Modal/styles";
 import { Profile, UpdateProfile } from "../../../../utils/interfaces/Profile";
 import { initDetail, radioFields, textInfoUser } from "../../../auth/SignUp/config";
@@ -43,23 +21,13 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
    const theme = useTheme();
    const [avatar, setAvatar] = useState<File>();
    const [showFullAvatar, setShowFullAvatar] = useState<boolean>(false);
-   const {
-      values,
-      errors,
-      touched,
-      handleBlur,
-      handleChange,
-      handleSubmit,
-      setValues,
-      setFieldValue,
-   } = useFormik({
+   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues, setFieldValue } = useFormik({
       initialValues: initDetail,
       validationSchema: updateUserOptions,
       onSubmit: async (values: Partial<Profile>) => {
          onSubmit({
             ...values,
             newAvatar: avatar as File,
-            deletedImages: [user.avatar],
          });
       },
    });
@@ -92,7 +60,7 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
    return (
       <Modal open onClose={onClose}>
          <>
-            <MyBox width="100vw" height="100vh">
+            <MyBox width="100vw">
                {/* Heading */}
                <Typography variant="h3" component="h2" textAlign="center" pb={1}>
                   Detail user
@@ -101,13 +69,7 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                <form autoComplete="off" onSubmit={handleSubmit}>
                   <Grid container spacing={2} alignItems="flex-start">
                      {/* Avatar */}
-                     <Grid
-                        item
-                        md={3}
-                        xs={12}
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center">
+                     <Grid item md={3} xs={12} display="flex" flexDirection="column" justifyContent="center">
                         <WrapAvatar mb={2}>
                            <Avatar
                               variant="square"
@@ -115,25 +77,17 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                               sx={{
                                  width: "100%",
                                  height: "100%",
-                                 objectFit: "fill",
+                                 maxHeight: 300,
                                  borderRadius: 2,
                               }}
                               onClick={onOpenFullImage}
                            />
                         </WrapAvatar>
                         <ImageInput onChange={handleChangeAvatar} />
-                        <Typography
-                           variant="body1"
-                           letterSpacing={2}
-                           fontSize={18}
-                           textAlign="center"
-                           mt={2}
-                           sx={{ color: theme.palette.primary.main }}>
-                           <Chip
-                              sx={{ p: 1 }}
-                              label={<Link to={`/user/explore/${values._id}`}>Watch</Link>}
-                           />
-                        </Typography>
+                        <Typography variant="body1" letterSpacing={2} fontSize={18} textAlign="center" mt={2} sx={{ color: theme.palette.primary.main }}></Typography>
+                        <Link to={`/user/explore/${values._id}`}>
+                           <Chip label="Watch" clickable color="info" sx={{ width: "100%" }}></Chip>
+                        </Link>
                      </Grid>
                      <Grid item md={9} xs={12}>
                         <Grid container spacing={2} alignItems="stretch">
@@ -147,11 +101,7 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                                        onChange={handleChange}
                                        onBlur={handleBlur}
                                        error={errors[props.name] && touched[props.name]}
-                                       helperText={
-                                          errors[props.name] && touched[props.name]
-                                             ? errors[props.name]
-                                             : null
-                                       }
+                                       helperText={errors[props.name] && touched[props.name] ? errors[props.name] : null}
                                     />
                                  </Grid>
                               );
@@ -182,43 +132,18 @@ const DetailUser = ({ user, isLoading = false, onClose, onSubmit }: Props) => {
                            })}
                            {/* Time fields */}
                            <Grid item md={6} xs={12}>
-                              {values?.dob && (
-                                 <DateTimePicker
-                                    name="dob"
-                                    value={values.dob}
-                                    onChange={setFieldValue}
-                                 />
-                              )}
+                              {values?.dob && <DateTimePicker name="dob" value={values.dob} onChange={setFieldValue} />}
                            </Grid>
-                           <Grid
-                              item
-                              md={6}
-                              xs={12}
-                              display="flex"
-                              flexDirection="column"
-                              justifyContent="space-between">
-                              <Typography
-                                 variant="body1"
-                                 component="label"
-                                 color="text"
-                                 sx={{ mt: "6px" }}>
+                           <Grid item md={6} xs={12} display="flex" flexDirection="column" justifyContent="space-between">
+                              <Typography variant="body1" component="label" color="text" sx={{ mt: "6px" }}>
                                  Region
                               </Typography>
                               {/* Countries field */}
-                              <CountriesSelect
-                                 value={values.region}
-                                 name="region"
-                                 onBlur={handleBlur}
-                                 onChange={setFieldValue}
-                              />
+                              <CountriesSelect value={values.region} name="region" onBlur={handleBlur} onChange={setFieldValue} />
                            </Grid>
                            {/* Submit button */}
-                           <Grid item md={6} xs={12} sx={{ mt: 2 }}>
-                              <Button
-                                 type="submit"
-                                 size="large"
-                                 variant="contained"
-                                 endIcon={<SendIcon />}>
+                           <Grid item md={6} xs={12} mt={2} ml="auto" display="flex" justifyContent="flex-end">
+                              <Button type="submit" size="large" variant="contained" endIcon={<SendIcon />}>
                                  Update
                               </Button>
                            </Grid>

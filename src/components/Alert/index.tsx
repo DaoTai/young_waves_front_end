@@ -20,17 +20,8 @@ const Alert = ({ message, title, mode, onClose }: AlertProps) => {
    }, []);
 
    return (
-      <Snackbar
-         open
-         autoHideDuration={TIME_ALERT}
-         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-         onClose={onCloseAlert}
-         message={message}>
-         <MyAlert
-            severity={mode || alert$.payload.mode}
-            closeText="Close"
-            variant="outlined"
-            onClose={onCloseAlert}>
+      <Snackbar open autoHideDuration={TIME_ALERT} message={message} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} onClose={onCloseAlert}>
+         <MyAlert severity={mode || alert$.payload.mode} closeText="Close" variant="outlined" onClose={onCloseAlert}>
             <Typography
                variant="body1"
                fontWeight={600}

@@ -3,25 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SendIcon from "@mui/icons-material/Send";
-import {
-   Avatar,
-   Box,
-   Button,
-   Divider,
-   Fab,
-   FormControl,
-   InputLabel,
-   MenuItem,
-   Modal,
-   Select,
-   SelectChangeEvent,
-   Stack,
-   Tab,
-   Tabs,
-   Tooltip,
-   Typography,
-   useTheme,
-} from "@mui/material";
+import { Avatar, Box, Button, Divider, Fab, FormControl, InputLabel, MenuItem, Modal, Select, SelectChangeEvent, Stack, Tab, Tabs, Tooltip, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import dateformat from "dateformat";
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
@@ -83,11 +65,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             flex: 2,
             renderCell(params) {
                return (
-                  <Stack
-                     flexDirection="row"
-                     alignItems="center"
-                     justifyContent="space-between"
-                     gap={2}>
+                  <Stack flexDirection="row" alignItems="center" justifyContent="space-between" gap={2}>
                      <Avatar src={params.row.avatar} />
                      <Typography variant="subtitle1" component="span" mt={0} textOverflow="clip">
                         {params.formattedValue}
@@ -127,8 +105,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             headerName: "Gender",
             width: 130,
             flex: 1,
-            valueFormatter: (params) =>
-               String(params.value[0]).toUpperCase() + String(params.value).slice(1),
+            valueFormatter: (params) => String(params.value[0]).toUpperCase() + String(params.value).slice(1),
          },
          {
             field: "detail",
@@ -228,28 +205,32 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
       async (values: UpdateProfile) => {
          try {
             setLoading(true);
-            await api.admin.editUser(values);
+            const { data, statusText } = await api.admin.editUser(values);
             setLoading(false);
-            setUsers((prev) => {
-               const newUsers = prev.map((user: Profile) => {
-                  if (user._id === values._id) {
-                     return {
-                        ...user,
-                        ...values,
-                     };
-                  }
-                  return user;
+            if (statusText === "OK") {
+               setUsers((prev) => {
+                  const newUsers = prev.map((user: Profile) => {
+                     if (user._id === values._id) {
+                        return {
+                           ...user,
+                           ...data,
+                        };
+                     }
+                     return user;
+                  });
+                  return newUsers;
                });
-               return newUsers;
-            });
 
-            dispatch(
-               showAlert({
-                  title: "Update user",
-                  message: "Update user successfully",
-                  mode: "success",
-               })
-            );
+               dispatch(
+                  showAlert({
+                     title: "Update user",
+                     message: "Update user successfully",
+                     mode: "success",
+                  })
+               );
+            } else {
+               throw new Error("Update user failed");
+            }
          } catch (err: any) {
             dispatch(
                showAlert({
@@ -293,13 +274,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
 
    return (
       <>
-         <Typography
-            variant="gradient"
-            component="h1"
-            fontSize={42}
-            fontWeight={500}
-            textAlign="center"
-            letterSpacing={2}>
+         <Typography variant="gradient" component="h1" fontSize={42} fontWeight={500} textAlign="center" letterSpacing={2}>
             Members
          </Typography>
          {/* Roles  */}
@@ -335,11 +310,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
             <Stack flexDirection="row" gap={4}>
                <FormControl sx={{ width: 150 }}>
                   <InputLabel>Action</InputLabel>
-                  <Select
-                     value={action}
-                     label="Action"
-                     placeholder="--Select--"
-                     onChange={(e) => setAction(e.target.value)}>
+                  <Select value={action} label="Action" placeholder="--Select--" onChange={(e) => setAction(e.target.value)}>
                      <MenuItem value="delete">Delete</MenuItem>
                      <MenuItem value="authorize">Authorize</MenuItem>
                   </Select>
@@ -351,9 +322,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
                   sx={{
                      alignSelf: "center",
                      color: theme.palette.white.main,
-                     background: `${
-                        !action || selectedIds.length === 0 ? null : theme.palette.gradient.main
-                     }`,
+                     background: `${!action || selectedIds.length === 0 ? null : theme.palette.gradient.main}`,
                   }}
                   endIcon={<SendIcon />}>
                   Submit
@@ -399,14 +368,7 @@ const Users = ({ goToTrashes = () => {} }: { goToTrashes: () => void }) => {
          </Box>
 
          {/* Modal detail user */}
-         {open.detail && user && (
-            <DetailUser
-               isLoading={isLoading}
-               user={user}
-               onClose={handleClosePopper}
-               onSubmit={handleUpdateUser}
-            />
-         )}
+         {open.detail && user && <DetailUser isLoading={isLoading} user={user} onClose={handleClosePopper} onSubmit={handleUpdateUser} />}
 
          {/* Dialog confirm delete */}
          <Dialog

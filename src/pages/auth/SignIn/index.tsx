@@ -1,35 +1,25 @@
 import { Send } from "@mui/icons-material";
-import {
-   Box,
-   Button,
-   Checkbox,
-   FormControlLabel,
-   Stack,
-   TextField,
-   Typography,
-   useTheme,
-} from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Stack, TextField, Typography, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
-import { Alert, Spinner } from "../../../components";
+import { Spinner } from "../../../components";
 import { signIn } from "../../../redux-saga/redux/actions";
-import { alertState$, authState$ } from "../../../redux-saga/redux/selectors";
+import { authState$ } from "../../../redux-saga/redux/selectors";
 import { init, signInOptions } from "./config";
 const SignIn = () => {
    const theme = useTheme();
    const dispatch = useDispatch();
    const { isLoading, payload } = useSelector(authState$);
-   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } =
-      useFormik({
-         initialValues: init,
-         validationSchema: signInOptions,
-         onSubmit: (values) => {
-            dispatch(signIn(values));
-         },
-      });
+   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
+      initialValues: init,
+      validationSchema: signInOptions,
+      onSubmit: (values) => {
+         dispatch(signIn(values));
+      },
+   });
 
    useEffect(() => {
       if (localStorage.getItem("user")) {
@@ -84,13 +74,7 @@ const SignIn = () => {
                   onBlur={handleBlur}
                />
 
-               <Button
-                  fullWidth
-                  type="submit"
-                  size="large"
-                  variant="contained"
-                  endIcon={<Send />}
-                  sx={{ marginTop: 2, color: theme.palette.white.main }}>
+               <Button fullWidth type="submit" size="large" variant="contained" endIcon={<Send />} sx={{ marginTop: 2, color: theme.palette.white.main }}>
                   Sign in
                </Button>
             </form>
@@ -101,13 +85,7 @@ const SignIn = () => {
                justifyContent={{ md: "space-between", sm: "space-between", xs: "flex-start" }}
                alignItems={{ md: "center", sm: "flex-start", xs: "flex-start" }}>
                {/* Remember */}
-               <FormControlLabel
-                  name="isRemember"
-                  onChange={handleChange}
-                  checked={values.isRemember}
-                  control={<Checkbox />}
-                  label="Remember me"
-               />
+               <FormControlLabel name="isRemember" onChange={handleChange} checked={values.isRemember} control={<Checkbox />} label="Remember me" />
                <Typography>
                   <Link color={theme.palette.link.main} to="/auth/forgot-password">
                      Forgot password?

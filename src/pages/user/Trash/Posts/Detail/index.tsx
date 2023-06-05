@@ -46,29 +46,16 @@ const Detail = () => {
       <>
          <Modal open={open} onClose={handleClose}>
             <MyBox>
-               <Box
-                  bgcolor={theme.palette.white.main}
-                  boxShadow={1}
-                  position="sticky"
-                  sx={{ top: 0, right: 0, left: 0, zIndex: 999, height: 70 }}
-                  p={2}>
+               <Box bgcolor={theme.palette.white.main} boxShadow={1} position="sticky" sx={{ top: 0, right: 0, left: 0, zIndex: 999, height: 70 }} p={2}>
                   <CloseButton onClick={handleClose} size="large" />
-                  <Typography
-                     variant="h4"
-                     textAlign="center"
-                     sx={{ color: theme.palette.text }}
-                     fontWeight={600}>
+                  <Typography variant="h4" textAlign="center" sx={{ color: theme.palette.text.primary }} fontWeight={600}>
                      Trash post
                   </Typography>
                </Box>
                <Box>
                   {/* Images */}
                   {trashPost?.post.attachments.length ? (
-                     <Box
-                        position="relative"
-                        height="100%"
-                        bgcolor={theme.palette.black.main}
-                        overflow="hidden">
+                     <Box position="relative" height="100%" bgcolor={theme.palette.black.main} overflow="hidden">
                         <Slider ref={sliderRef} {...settings}>
                            {trashPost?.post.attachments.map((img, index) => (
                               <div key={index}>
@@ -120,11 +107,7 @@ const Detail = () => {
                      }}>
                      <Box>
                         <Heading post={trashPost?.post as Post} />
-                        <Typography
-                           variant="body1"
-                           textAlign="justify"
-                           borderBottom={1}
-                           lineHeight={2}>
+                        <Typography variant="body1" textAlign="justify" borderBottom={1} lineHeight={2}>
                            {trashPost?.post?.body}
                         </Typography>
                      </Box>
@@ -132,9 +115,7 @@ const Detail = () => {
                      <Box sx={{ scrollY: "auto" }}>
                         {trashPost?.comments && trashPost?.comments.length > 0 ? (
                            trashPost?.comments?.map((comment: Comment) => {
-                              return (
-                                 <MyComment key={comment._id} comment={comment} enableActions />
-                              );
+                              return <MyComment key={comment._id} comment={comment} enableActions />;
                            })
                         ) : (
                            <Typography variant="body1" textAlign="center">

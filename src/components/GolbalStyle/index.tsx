@@ -6,6 +6,7 @@ const GlobalStyle = () => {
          styles={(theme) => ({
             html: {
                scrollBehavior: "smooth",
+               overflow: "overlay",
             },
             "html *::-webkit-scrollbar": {
                borderRadius: 0,
@@ -24,7 +25,7 @@ const GlobalStyle = () => {
                lineHeight: 1.5,
                textRendering: "optimizeSpeed",
                backgroundColor: theme.palette.background.default,
-               color: theme.palette.text,
+               color: theme.palette.text.primary,
                boxSizing: "border-box",
             },
             a: {
@@ -35,9 +36,6 @@ const GlobalStyle = () => {
                "&:hover": {
                   opacity: 0.8,
                },
-            },
-            ".css-x15wq9": {
-               width: "unset !important",
             },
          })}
       />

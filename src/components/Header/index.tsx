@@ -12,7 +12,13 @@ const Header = () => {
       <>
          <AppBar sx={{ background: theme.palette.white.main, boxShadow: 1, height: HEIGHT_HEADER }}>
             <Toolbar>
-               <Grid container justifyContent="space-between" alignItems="center" gap={2} pt={1}>
+               <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  flexWrap="nowrap"
+                  gap={2}
+                  pt={1}>
                   {/* Logo */}
                   <Grid item>
                      <Logo />

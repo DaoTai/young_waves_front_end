@@ -1,4 +1,3 @@
-import { deleteMultipleImages, storageImage } from "../../firebase/services";
 import { Profile, UpdateProfile } from "../../utils/interfaces/Profile";
 import { axiosInstance } from "../config";
 
@@ -29,7 +28,6 @@ export const restoreTrashedUser = async (idUser: string) => {
 // [DELETE] admin/users/:id/force-delete
 export const forceDeleteUser = async (idUser: string) => {
    const res = await axiosInstance.delete(`/admin/users/${idUser}/force-delete`);
-   await deleteMultipleImages(res.data?.deletedAttachments);
    return res.statusText;
 };
 
@@ -42,23 +40,11 @@ export const authorizeUser = async (idUser: string, isAdmin: boolean) => {
 
 // [PATCH] admin/users/:id
 export const editUser = async (user: UpdateProfile) => {
-   if (user.newAvatar) {
-      user.avatar = await storageImage(user.newAvatar);
-   }
-   delete user.newAvatar;
-   return await axiosInstance.patch(`/admin/users/${user._id}`, user);
+   return await axiosInstance.patch<Profile>(`/admin/users/${user._id}`, user);
 };
 
 // [POST] admin/users/handle-all
-export const handleAll = async (payload: {
-   action: string;
-   memberIds: string[];
-   role?: string;
-}) => {
+export const handleAll = async (payload: { action: string; memberIds: string[]; role?: string }) => {
    const res = await axiosInstance.post("/admin/users/handle-all", payload);
-
-   if (res.data.deletedAttachments) {
-      await deleteMultipleImages(res.data.deletedAttachments);
-   }
    return res;
 };

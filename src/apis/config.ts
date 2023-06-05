@@ -4,7 +4,6 @@ import { signInSuccess, signOut } from "../redux-saga/redux/actions";
 import { RootState, store } from "../redux-saga/redux/store";
 import { Profile } from "../utils/interfaces/Profile";
 import { refreshToken } from "./auth";
-import { deleteMultipleImages } from "../firebase/services";
 interface DecodedAccessToken {
    id: string;
    isAdmin: boolean;
@@ -14,6 +13,9 @@ interface DecodedAccessToken {
 const serverUrl = "http://localhost:8001";
 
 export const axiosInstance = axios.create({
+   headers: {
+      "Content-Type": "multipart/form-data",
+   },
    baseURL: serverUrl,
    timeout: 30000,
    withCredentials: true, // gửi cookie và header xác thực với các request giữa các miền khác nhau.
@@ -24,11 +26,6 @@ export const axiosInstance = axios.create({
 //>>> Config request
 axiosInstance.interceptors.request.use(
    async (config) => {
-      if (config?.data?.deletedImages?.length > 0) {
-         await deleteMultipleImages(config.data.deletedImages);
-      }
-      delete config?.data?.deletedImages;
-      // Do something before request is sent
       const states: RootState = store.getState();
       const user = states.auth.payload?.user as Profile;
       let accessToken = states.auth.payload?.accessToken as string;

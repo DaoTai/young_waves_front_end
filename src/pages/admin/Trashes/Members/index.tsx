@@ -1,23 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import SendIcon from "@mui/icons-material/Send";
-import {
-   Avatar,
-   Box,
-   Button,
-   Divider,
-   Fab,
-   FormControl,
-   InputLabel,
-   MenuItem,
-   Select,
-   SelectChangeEvent,
-   Stack,
-   Tab,
-   Tabs,
-   Typography,
-   useTheme,
-} from "@mui/material";
+import { Avatar, Box, Button, Divider, Fab, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Tab, Tabs, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import dateformat from "dateformat";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -69,11 +53,7 @@ const UserTrashes = () => {
             flex: 2,
             renderCell(params) {
                return (
-                  <Stack
-                     flexDirection="row"
-                     alignItems="center"
-                     justifyContent="space-between"
-                     gap={2}>
+                  <Stack flexDirection="row" alignItems="center" justifyContent="space-between" gap={2}>
                      <Avatar src={params.row.avatar} />
                      <Typography variant="subtitle1" component="span" mt={0} textOverflow="clip">
                         {params.formattedValue}
@@ -117,10 +97,7 @@ const UserTrashes = () => {
             disableColumnMenu: true,
             renderCell(params) {
                return (
-                  <Fab
-                     size="small"
-                     color="success"
-                     onClick={() => handleRestoreUser(params.id.toString())}>
+                  <Fab size="small" color="success" onClick={() => handleRestoreUser(params.id.toString())}>
                      <RestoreFromTrashIcon />
                   </Fab>
                );
@@ -136,10 +113,7 @@ const UserTrashes = () => {
             disableColumnMenu: true,
             renderCell(params) {
                return (
-                  <Fab
-                     size="small"
-                     color="error"
-                     onClick={() => onOpenConfirmForceDelete(params.row)}>
+                  <Fab size="small" color="error" onClick={() => onOpenConfirmForceDelete(params.row)}>
                      <DeleteIcon />
                   </Fab>
                );
@@ -261,7 +235,7 @@ const UserTrashes = () => {
                      sx={{
                         transition: "all 0.3s ease",
                         "&:hover": {
-                           bgcolor: theme.palette.background.defaultGray,
+                           bgcolor: theme.palette.background.default,
                         },
                      }}
                   />
@@ -271,7 +245,7 @@ const UserTrashes = () => {
                      sx={{
                         transition: "all 0.3s ease",
                         "&:hover": {
-                           bgcolor: theme.palette.background.defaultGray,
+                           bgcolor: theme.palette.background.default,
                         },
                      }}
                   />
@@ -281,11 +255,7 @@ const UserTrashes = () => {
             <Stack mt={2} mb={2} gap={2} flexDirection="row" alignItems="center">
                <FormControl sx={{ width: 150 }}>
                   <InputLabel>Action</InputLabel>
-                  <Select
-                     value={action}
-                     label="Action"
-                     placeholder="--Select--"
-                     onChange={(e) => setAction(e.target.value)}>
+                  <Select value={action} label="Action" placeholder="--Select--" onChange={(e) => setAction(e.target.value)}>
                      <MenuItem value="restore">Restore</MenuItem>
                      <MenuItem value="force-delete">ForceDelete</MenuItem>
                   </Select>
@@ -297,9 +267,7 @@ const UserTrashes = () => {
                   sx={{
                      alignSelf: "center",
                      color: theme.palette.white.main,
-                     background: `${
-                        !action || selectedIds.length === 0 ? null : theme.palette.gradient.main
-                     }`,
+                     background: `${!action || selectedIds.length === 0 ? null : theme.palette.gradient.main}`,
                   }}
                   endIcon={<SendIcon />}>
                   Submit

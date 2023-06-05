@@ -1,14 +1,5 @@
 import { Send } from "@mui/icons-material";
-import {
-   Box,
-   Button,
-   ImageList,
-   ImageListItem,
-   Modal,
-   TextField,
-   Typography,
-   useTheme,
-} from "@mui/material";
+import { Box, Button, ImageList, ImageListItem, Modal, TextField, Typography, useTheme } from "@mui/material";
 import { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPost, updatePost } from "../../../redux-saga/redux/actions";
@@ -27,14 +18,14 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
    const dispatch = useDispatch();
    const [body, setBody] = useState<string>("");
    const [status, setStatus] = useState<string>("");
-   const [deletedImages, setDeletedImages] = useState<string[]>([]);
+   const [deletedAttachments, setDeletedAttachments] = useState<string[]>([]);
    const [attachments, setAttachments] = useState<Attachment[]>([]);
 
    useEffect(() => {
       if (post) {
          if (post?.attachments?.length > 0) {
             setAttachments(() => {
-               return post?.attachments.map((item) => ({ url: item }));
+               return post.attachments.map((item) => ({ url: item }));
             });
          }
          post?.body && setBody(post.body);
@@ -58,11 +49,9 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
    const handleRemoveImage = (deletedImg: Attachment) => {
       // If seleted image will be deleted which is old image, we set it to delete
       if (deletedImg.url.includes("https://firebasestorage.googleapis.com")) {
-         setDeletedImages([...deletedImages, deletedImg.url]);
+         setDeletedAttachments([...deletedAttachments, deletedImg.url]);
       }
-      setAttachments(
-         attachments.filter((item) => item.file !== deletedImg?.file || item.url !== deletedImg.url)
-      );
+      setAttachments(attachments.filter((item) => item.file !== deletedImg?.file || item.url !== deletedImg.url));
       URL.revokeObjectURL(deletedImg.url);
    };
 
@@ -71,9 +60,6 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
       // Get files
       const files = attachments.filter((item) => item.file).map((item) => item.file);
       // Get urls of old images
-      const oldImages = attachments
-         .filter((item) => item.url.includes("https://firebasestorage.googleapis.com"))
-         .map((item) => item.url);
       if (body) {
          switch (type) {
             case "create":
@@ -91,8 +77,7 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
                      _id: post!._id,
                      body,
                      status,
-                     attachments: oldImages,
-                     deletedImages,
+                     deletedAttachments,
                      newAttachments: files as File[],
                   })
                );
@@ -113,28 +98,9 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
             <CloseButton onClick={onCloseModal} size="large" />
 
             <Box>
-               <form>
-                  <TextField
-                     fullWidth
-                     variant="outlined"
-                     label="Status"
-                     placeholder="How do you feel..."
-                     margin="dense"
-                     value={status}
-                     onChange={(e) => setStatus(e.target.value)}
-                  />
-                  <TextField
-                     required
-                     fullWidth
-                     multiline
-                     autoFocus
-                     placeholder="What do you think?"
-                     margin="dense"
-                     rows={5}
-                     sx={{ mb: 2 }}
-                     value={body}
-                     onChange={(e) => setBody(e.target.value)}
-                  />
+               <form encType="multipart/form-data">
+                  <TextField fullWidth variant="outlined" label="Status" placeholder="How do you feel..." margin="dense" value={status} onChange={(e) => setStatus(e.target.value)} />
+                  <TextField required fullWidth multiline autoFocus placeholder="What do you think?" margin="dense" rows={5} sx={{ mb: 2 }} value={body} onChange={(e) => setBody(e.target.value)} />
                   {attachments.length > 0 && (
                      <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
                         {attachments?.map((item, index) => (
@@ -147,14 +113,7 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
                   )}
 
                   <ImageInput multiple onChange={handleSetImages} />
-                  <Button
-                     fullWidth
-                     disabled={!body.trim()}
-                     size="large"
-                     variant="contained"
-                     endIcon={<Send />}
-                     sx={{ marginTop: 2, color: "#fff" }}
-                     onClick={handleSubmit}>
+                  <Button fullWidth disabled={!body.trim()} size="large" variant="contained" endIcon={<Send />} sx={{ marginTop: 2, color: "#fff" }} onClick={handleSubmit}>
                      Create
                   </Button>
                </form>

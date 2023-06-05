@@ -24,8 +24,7 @@ export interface UpdatePost {
    _id: string;
    body: string;
    status?: string;
-   attachments?: string[];
-   deletedImages?: string[];
+   deletedAttachments?: string[];
    newAttachments?: File[];
 }
 

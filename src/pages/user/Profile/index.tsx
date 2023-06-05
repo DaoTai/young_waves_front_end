@@ -66,11 +66,7 @@ const Profile = () => {
             <Grid item xs={12} md={8} display="flex" flexDirection="column" sx={{ gap: 2 }}>
                {<Post />}
                <Suspense fallback={<Spinner show />}>
-                  <News
-                     posts={ownerPosts$.payload.posts}
-                     hasMore={hasMore}
-                     fetchMoreData={fetchMoreData}
-                  />
+                  <News posts={ownerPosts$.payload.posts} hasMore={hasMore} fetchMoreData={fetchMoreData} />
                </Suspense>
             </Grid>
          </Grid>
@@ -95,16 +91,13 @@ const Profile = () => {
                </Suspense>
             </Box>
             {/* Tab navigate */}
-            <Tabs
-               value={tab}
-               sx={{ bgcolor: theme.palette.white.main, boxShadow: 1 }}
-               onChange={handleChangeTabPanel}>
+            <Tabs value={tab} sx={{ bgcolor: theme.palette.white.main, boxShadow: 1 }} onChange={handleChangeTabPanel}>
                <Tab
                   value="posts"
                   label="posts"
                   sx={{
                      transition: "0.3s linear all",
-                     "&:hover": { backgroundColor: theme.palette.background.defaultGray },
+                     "&:hover": { backgroundColor: theme.palette.background.default },
                   }}
                />
                <Tab
@@ -112,7 +105,7 @@ const Profile = () => {
                   label="Friends"
                   sx={{
                      transition: "0.3s linear all",
-                     "&:hover": { backgroundColor: theme.palette.background.defaultGray },
+                     "&:hover": { backgroundColor: theme.palette.background.default },
                   }}
                />
             </Tabs>

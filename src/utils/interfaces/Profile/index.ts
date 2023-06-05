@@ -19,7 +19,6 @@ export interface Profile {
 }
 
 export interface UpdateProfile extends Partial<Profile> {
-   deletedImages?: string[];
    newAvatar?: File;
    newCoverPicture?: File;
 }
