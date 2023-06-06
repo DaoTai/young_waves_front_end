@@ -1,26 +1,37 @@
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Avatar, ListItem, Stack, Tooltip, Typography } from "@mui/material";
-import { memo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Avatar, Divider, ListItem, Stack, Tooltip, Typography } from "@mui/material";
+import { memo, useEffect, useState, useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { ChatContext } from "../../../../Contexts";
 import { ChatBoxWrapperProps } from "../../../../utils/interfaces/Chat";
+import { StyledBadge } from "../Conversations/Container/styles";
 import ChatForm from "./ChatForm";
 import { Floating, Heading, MyChatBox } from "./styles";
 
 const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
+   const location = useLocation();
+   const chatContext = useContext(ChatContext);
    const [hide, setHide] = useState<boolean>(false);
-
+   const isOnline = chatContext.onlineFriendIds.includes(conversation.friend._id as string);
    const toggleHide = () => setHide(!hide);
+
+   useEffect(() => {
+      if (location.pathname === "/user/chats") {
+         onClose(conversation.idConversation as string);
+      }
+   }, [location]);
 
    // Display floating ballon
    if (hide) {
       return (
          <Tooltip title={conversation.friend?.fullName} arrow>
-            <Floating
-               onClick={toggleHide}
-               alt={conversation.friend?.fullName}
-               src={conversation.friend?.avatar}
-            />
+            <StyledBadge
+               overlap="circular"
+               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+               variant={isOnline ? "dot" : "standard"}>
+               <Floating onClick={toggleHide} alt={conversation.friend?.fullName} src={conversation.friend?.avatar} />
+            </StyledBadge>
          </Tooltip>
       );
    }
@@ -33,11 +44,16 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
                <Heading>
                   <Link to={`/user/explore/${conversation.friend?._id}`} style={{ flex: 2 }}>
                      <Stack flexDirection="row" alignItems="center" gap={2}>
-                        <Avatar
-                           sx={{ width: 42, height: 42, objectFit: "center" }}
-                           alt={conversation.friend?.fullName}
-                           src={conversation.friend?.avatar}
-                        />
+                        <StyledBadge
+                           overlap="circular"
+                           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                           variant={isOnline ? "dot" : "standard"}>
+                           <Avatar
+                              sx={{ width: 42, height: 42 }}
+                              alt={conversation.friend?.fullName}
+                              src={conversation.friend?.avatar}
+                           />
+                        </StyledBadge>
                         <Typography component="span" textOverflow="ellipsis" width={100} flex={2}>
                            {conversation.friend?.fullName}
                         </Typography>
@@ -53,6 +69,7 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
                      </ListItem>
                   </Stack>
                </Heading>
+               <Divider />
 
                <ChatForm conversation={conversation} />
             </MyChatBox>

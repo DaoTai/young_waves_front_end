@@ -1,10 +1,11 @@
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Fab, Stack, Typography, useTheme } from "@mui/material";
 import dateformat from "dateformat";
-import { ChangeEvent, useCallback, useEffect, useId, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useContext, useEffect, useId, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
+import { ChatContext } from "../../../../../Contexts";
 import * as api from "../../../../../apis";
 import { CloseButton, ImageInput, Textarea } from "../../../../../components";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
@@ -19,6 +20,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    const idAuth = auth$.payload?.user?._id;
    const theme = useTheme();
    const uniqueId = useId();
+   const chatContext = useContext(ChatContext);
    // Refs
    const bodyRef = useRef<HTMLDivElement>(null);
    const socketRef = useRef<Socket>();
@@ -34,20 +36,23 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
    // Work with socket
    useEffect(() => {
       socketRef.current = io(URL_SERVER);
-      socketRef.current.emit("addUser", idAuth, conversation.idConversation);
-      socketRef.current.on(
-         "getMessage",
-         (dataGot: { idSender: string; text: string; attachments: any }) => {
-            const newMessage: IMessage = {
-               _id: uniqueId,
-               sender: dataGot.idSender,
-               text: dataGot.text,
-               createdAt: dateformat(String(new Date())),
-               attachments: dataGot.attachments,
-            };
-            setMessages((oldMsgs) => [newMessage, ...oldMsgs]);
-         }
-      );
+      socketRef.current.emit("addChatUser", idAuth, conversation.idConversation);
+      socketRef.current.on("getMessage", (dataGot: { idSender: string; text: string; attachments: any }) => {
+         const newMessage: IMessage = {
+            _id: uniqueId,
+            sender: dataGot.idSender,
+            text: dataGot.text,
+            createdAt: dateformat(String(new Date())),
+            attachments: dataGot.attachments,
+         };
+         setMessages((oldMsgs) => [newMessage, ...oldMsgs]);
+         chatContext?.handleUpdateLastestMsg({
+            idConversation: conversation.idConversation,
+            text: dataGot.text,
+            attachments: dataGot.attachments,
+            sender: dataGot.idSender,
+         });
+      });
       return () => {
          socketRef.current?.disconnect();
       };
@@ -99,18 +104,14 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
          setAttachments([]);
          setMessage("");
          const files = attachments.map((attach) => attach?.file);
-         const payload = files
-            ? {
-                 idConversation: conversation?.idConversation as string,
-                 sender: idAuth,
-                 text: message.trim(),
-                 attachments: files as File[],
-              }
-            : {
-                 idConversation: conversation?.idConversation as string,
-                 sender: idAuth,
-                 text: message.trim(),
-              };
+         const payload = {
+            idConversation: conversation?.idConversation as string,
+            sender: idAuth,
+            text: message.trim(),
+         };
+         // If exist attachments
+         files && Object.assign(payload, { attachments: files });
+
          try {
             setLoading(true);
             const res = await api.message.createMessage(payload);
@@ -124,6 +125,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
                   text: message.trim(),
                   attachments: res.data.attachments,
                });
+               chatContext?.handleUpdateLastestMsg(payload);
             }
          } catch (err) {
             console.error(err);
@@ -204,12 +206,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
          </Body>
          {/* Footer */}
          {isLoading && (
-            <Typography
-               variant="subtitle1"
-               color="secondary"
-               component="span"
-               textAlign="center"
-               fontSize="small">
+            <Typography variant="subtitle1" color="secondary" component="span" textAlign="center" fontSize="small">
                Message is handling ...
             </Typography>
          )}
@@ -222,10 +219,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
                      {attachments.map((attach, index) => (
                         <Box key={attach.url + index} position="relative">
                            <img width="100%" height="100%" src={attach.url} />
-                           <CloseButton
-                              size="small"
-                              onClick={() => handleRemoveAttachments(attach)}
-                           />
+                           <CloseButton size="small" onClick={() => handleRemoveAttachments(attach)} />
                         </Box>
                      ))}
                   </WrapAttachments>

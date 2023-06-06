@@ -26,7 +26,6 @@ export const Heading = styled(Stack)(({ theme }) => ({
    alignItems: "center",
    color: theme.palette.text.primary,
    borderBottom: "1px solid #ccc",
-   boxShadow: theme.shadows[1],
    backgroundColor: theme.palette.white.main,
    ".MuiListItem-root": {
       cursor: "pointer",

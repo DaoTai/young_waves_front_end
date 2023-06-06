@@ -10,6 +10,7 @@ const Messenger = () => {
    const location = useLocation();
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
+   const id = open ? "simple-popover" : undefined;
    const handleShowListChat = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(anchorEl ? null : event.currentTarget);
    };
@@ -23,6 +24,7 @@ const Messenger = () => {
                <Tooltip title="Message">
                   <Badge
                      // badgeContent={4}
+                     aria-describedby={id}
                      color="info"
                      sx={{
                         cursor: "pointer",
@@ -39,9 +41,11 @@ const Messenger = () => {
                   onClose={handleCloseListChat}
                   anchorOrigin={{
                      vertical: "bottom",
-                     horizontal: "left",
+                     horizontal: "center",
                   }}
-                  sx={{ top: 12 }}>
+                  sx={{
+                     top: 12,
+                  }}>
                   <Conversations onClose={handleCloseListChat} />
                </Popover>
             </>

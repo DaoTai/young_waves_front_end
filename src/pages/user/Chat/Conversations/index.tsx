@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatContext } from "../../../../Contexts";
@@ -18,21 +18,25 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
       onClose();
    };
    return (
-      <Box p={2} minWidth="360px" maxHeight="70vh">
+      <Box p={2} minWidth="360px" maxHeight="70vh" overflow="auto">
          {/* Heading */}
-         <Stack mb={2} flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="h5" fontWeight={700}>
-               Chat
-            </Typography>
-            <Button
-               variant="outlined"
-               sx={{
-                  color: theme.palette.text.primary,
-               }}
-               onClick={forwardToChatPage}>
-               Go to page chat
-            </Button>
-         </Stack>
+         <Box mb={1}>
+            <Stack mb={1} flexDirection="row" alignItems="center" justifyContent="space-between">
+               <Typography variant="h5" fontWeight={700}>
+                  Chat
+               </Typography>
+               <Button
+                  variant="outlined"
+                  sx={{
+                     color: theme.palette.text.primary,
+                  }}
+                  onClick={forwardToChatPage}>
+                  Go to page chat
+               </Button>
+            </Stack>
+
+            <Divider />
+         </Box>
 
          <ListData onClickItem={handleClickChatItem} />
       </Box>
