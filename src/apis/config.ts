@@ -10,7 +10,8 @@ interface DecodedAccessToken {
    iat: number;
    exp: number;
 }
-const serverUrl = "http://localhost:8001";
+const serverUrl = "https://be-young-waves.onrender.com";
+// const serverUrl = "http://localhost:8001";
 
 export const axiosInstance = axios.create({
    headers: {
