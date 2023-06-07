@@ -31,7 +31,7 @@ const Item = ({ onClickItem, conversation, lastestTime, isOnline }: Props) => {
             </Typography>
             {/* Lastest message */}
             {conversation.lastestMessage && (
-               <Stack alignItems="center" flexDirection="row" gap={1}>
+               <Stack alignItems="center" flexDirection="row" justifyContent="space-between" gap={1}>
                   <Stack
                      flexDirection="row"
                      flexWrap="nowrap"
@@ -52,13 +52,7 @@ const Item = ({ onClickItem, conversation, lastestTime, isOnline }: Props) => {
                         {conversation?.lastestMessage?.text}
                      </Typography>
                   </Stack>
-                  <Typography
-                     variant="subtitle2"
-                     fontWeight={500}
-                     pr={1}
-                     pl={1}
-                     borderRadius={99}
-                     bgcolor={theme.palette.gray.main}>
+                  <Typography variant="subtitle2" fontWeight={400} pr={1} pl={1}>
                      {lastestTime && lastestTime.time + lastestTime.unit}
                   </Typography>
                </Stack>

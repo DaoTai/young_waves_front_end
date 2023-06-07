@@ -27,15 +27,12 @@ const AuthLayout = () => {
       "& > #sign-up": {
          width: "60vw",
          maxWidth: "100%",
-         maxHeight: "95vh",
+         // maxHeight: "95vh",
       },
    }));
    return (
       <>
          <MyGrid container justifyContent="center" alignItems="center">
-            <Box position="absolute" top={10} right={10}>
-               <ChangeModeButton />
-            </Box>
             <WrapForm
                item
                sx={(theme) => ({

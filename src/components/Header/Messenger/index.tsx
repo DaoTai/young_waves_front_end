@@ -1,5 +1,5 @@
 import ChatIcon from "@mui/icons-material/Chat";
-import { Badge, Box, Popover, Tooltip, useTheme } from "@mui/material";
+import { Badge, Popover, Tooltip, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -10,7 +10,6 @@ const Messenger = () => {
    const location = useLocation();
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
-   const id = open ? "simple-popover" : undefined;
    const handleShowListChat = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(anchorEl ? null : event.currentTarget);
    };
@@ -23,8 +22,6 @@ const Messenger = () => {
             <>
                <Tooltip title="Message">
                   <Badge
-                     // badgeContent={4}
-                     aria-describedby={id}
                      color="info"
                      sx={{
                         cursor: "pointer",

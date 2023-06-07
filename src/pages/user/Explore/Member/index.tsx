@@ -1,23 +1,27 @@
 import { Box, Grid, Stack } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Spinner } from "../../../../components";
-import { getProfile } from "../../../../apis/user";
-import { getOwnerPosts } from "../../../../apis/post";
-import Heading from "../../Profile/Heading";
-import { Profile } from "../../../../utils/interfaces/Profile";
-import Introduction from "../../Profile/Introduction";
-import { Post } from "../../../../utils/interfaces/Post";
-import News from "../../NewsFeed/News";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
+import { useParams, Navigate } from "react-router-dom";
+import { authState$ } from "../../../../redux-saga/redux/selectors";
+import { getOwnerPosts } from "../../../../apis/post";
+import { getProfile } from "../../../../apis/user";
+import { Spinner } from "../../../../components";
+import { Post } from "../../../../utils/interfaces/Post";
+import { Profile } from "../../../../utils/interfaces/Profile";
+import News from "../../NewsFeed/News";
+import Heading from "../../Profile/Heading";
+import Introduction from "../../Profile/Introduction";
 const Member = () => {
    const { id } = useParams();
+   const auth$ = useSelector(authState$);
    const [user, setUser] = useState<(Profile & { totalPosts: number }) | null>(null);
    const [show, setShow] = useState<boolean>(false);
    const [listNews, setListNews] = useState<Post[]>([]);
    const [page, setPage] = useState<number>(1);
    const [hasMore, setHasMore] = useState<boolean>(true);
    const maxPage = useRef<number>(1);
+
    useEffect(() => {
       (async () => {
          try {
@@ -43,6 +47,10 @@ const Member = () => {
          setHasMore(false);
       }
    };
+
+   if (auth$.payload?.user._id === id) {
+      return <Navigate to={"/user/profile/" + auth$.payload?.user._id} replace />;
+   }
 
    return (
       <>

@@ -1,4 +1,5 @@
 import { CreatePost, DetailPost, Post, UpdatePost } from "../../utils/interfaces/Post";
+import { Profile } from "../../utils/interfaces/Profile";
 import { axiosInstance } from "../config";
 export const getPosts = async (page: number = 1) => {
    return await axiosInstance.get("/posts", {
@@ -18,6 +19,10 @@ export const getDetailPost = async (payload: { id: string; page?: number }) => {
          pageComment: payload.page || 1,
       },
    });
+};
+
+export const getLikesPost = async (payload: { id: string }) => {
+   return await axiosInstance.get<Partial<Profile>[]>(`/posts/${payload.id}/likes`);
 };
 
 export const getDetailTrashPost = async (id: string) => {
