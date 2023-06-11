@@ -94,13 +94,32 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
       <Modal open onClose={onCloseModal}>
          <MyBox>
             {/* Heading */}
-            <Title variant="h3">Your post</Title>
+            <Title variant="h3">{type} post</Title>
             <CloseButton onClick={onCloseModal} size="large" />
 
             <Box>
                <form encType="multipart/form-data">
-                  <TextField fullWidth variant="outlined" label="Status" placeholder="How do you feel..." margin="dense" value={status} onChange={(e) => setStatus(e.target.value)} />
-                  <TextField required fullWidth multiline autoFocus placeholder="What do you think?" margin="dense" rows={5} sx={{ mb: 2 }} value={body} onChange={(e) => setBody(e.target.value)} />
+                  <TextField
+                     fullWidth
+                     variant="outlined"
+                     label="Status"
+                     placeholder="How do you feel..."
+                     margin="dense"
+                     value={status}
+                     onChange={(e) => setStatus(e.target.value)}
+                  />
+                  <TextField
+                     required
+                     fullWidth
+                     multiline
+                     autoFocus
+                     placeholder="What do you think?"
+                     margin="dense"
+                     rows={5}
+                     sx={{ mb: 2 }}
+                     value={body}
+                     onChange={(e) => setBody(e.target.value)}
+                  />
                   {attachments.length > 0 && (
                      <ImageList cols={3} rowHeight={164} gap={8} variant="quilted">
                         {attachments?.map((item, index) => (
@@ -113,8 +132,15 @@ const MyModal = ({ post, type = "create", onClose }: ModalPostProps) => {
                   )}
 
                   <ImageInput multiple onChange={handleSetImages} />
-                  <Button fullWidth disabled={!body.trim()} size="large" variant="contained" endIcon={<Send />} sx={{ marginTop: 2, color: "#fff" }} onClick={handleSubmit}>
-                     Create
+                  <Button
+                     fullWidth
+                     disabled={!body.trim()}
+                     size="large"
+                     variant="contained"
+                     endIcon={<Send />}
+                     sx={{ marginTop: 2, color: "#fff", textTransform: "capitalize" }}
+                     onClick={handleSubmit}>
+                     {type}
                   </Button>
                </form>
             </Box>

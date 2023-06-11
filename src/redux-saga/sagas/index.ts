@@ -20,9 +20,7 @@ function* signInSaga(action: { type: string; payload: SignIn }) {
       yield put(ACTIONS.signInSuccess(res.data));
       const { password, ...user } = action.payload;
       // Remember username to login
-      action.payload.isRemember
-         ? localStorage.setItem("user", JSON.stringify(user))
-         : localStorage.removeItem("user");
+      action.payload.isRemember ? localStorage.setItem("user", JSON.stringify(user)) : localStorage.removeItem("user");
    } catch (err: any) {
       yield put(ACTIONS.signInFailure());
       throw new Error(err);
@@ -162,12 +160,10 @@ function* getOwnerPostsSaga(action: { type: string; payload: { id: string; page?
 function* createPostSaga(action: { type: string; payload: CreatePost }) {
    try {
       const res = yield call(api.post.createPost, action.payload);
-      if (res.status === 200) {
-         yield put(ACTIONS.createPostSuccess(res.data));
-      } else {
-         throw new Error("Create post failed");
-      }
+      console.log("Res: ", res);
+      yield put(ACTIONS.createPostSuccess(res.data));
    } catch (err: any) {
+      yield put(ACTIONS.createPostFailure());
       yield put(
          ACTIONS.showAlert({
             title: "Create post",
@@ -186,8 +182,8 @@ function* updatePostSaga(action: { type: string; payload: UpdatePost }) {
    } catch (err) {
       yield put(
          ACTIONS.showAlert({
-            title: "Create post",
-            message: "Create post failed",
+            title: "Update post",
+            message: "Update post failed",
             mode: "error",
          })
       );
@@ -206,10 +202,7 @@ function* deletePostSaga(action: { type: string; payload: string }) {
 }
 
 // Delete comment
-function* deleteCommentSaga(action: {
-   type: string;
-   payload: { idPost: string; idComment: string };
-}) {
+function* deleteCommentSaga(action: { type: string; payload: { idPost: string; idComment: string } }) {
    try {
       const res = yield call(api.comment.deleteComment, action.payload);
       yield put(ACTIONS.deleteCommentSuccess(action.payload));

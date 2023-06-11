@@ -21,6 +21,7 @@ export const Title = styled(Typography)(({ theme }) => ({
    textAlign: "center",
    padding: 12,
    color: theme.palette.text.primary,
+   textTransform: "capitalize",
    textShadow: "1px 2px 3px rgba(0,0,0,0.3)",
    position: "relative",
    "&::after": {
