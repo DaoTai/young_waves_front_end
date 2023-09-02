@@ -1,12 +1,4 @@
-import {
-   Button,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogContentText,
-   DialogTitle,
-   Divider,
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider } from "@mui/material";
 
 interface Props {
    open: boolean;
@@ -22,11 +14,7 @@ const MyDialog = ({ open, title, content, onClose, onSubmit }: Props) => {
       onClose();
    };
    return (
-      <Dialog
-         open={open}
-         keepMounted
-         onClose={onClose}
-         aria-describedby="alert-dialog-slide-description">
+      <Dialog open={open} onClose={onClose}>
          <DialogTitle sx={{ pt: 1, pb: 1 }}>{title}</DialogTitle>
          <Divider />
          <DialogContent>

@@ -14,6 +14,11 @@ export interface Attachment {
    url: string;
 }
 
+export interface PreviewImage {
+   url: string
+   type: string
+ }
+
 export interface Message {
    _id: string;
    idConversation?: string;
@@ -22,6 +27,8 @@ export interface Message {
    sender: string;
    text: string;
    attachments?: Attachment[];
+   isUrl?: boolean;
+   previewImage?: PreviewImage
 }
 
 export interface SendMessage {

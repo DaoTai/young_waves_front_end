@@ -1,16 +1,7 @@
-import {
-   AUTH_ACTION,
-   FRIEND_ACTION,
-   POSTS_ACTION,
-   PROFILE_ACTION,
-   TRASH_POSTS_ACTION,
-} from "../../../../utils/enums";
+import { AUTH_ACTION, FRIEND_ACTION, POSTS_ACTION, PROFILE_ACTION, TRASH_POSTS_ACTION } from "../../../../utils/enums";
 import { AuthPayload, AuthState, init } from "./helpers";
 
-const authReducer = (
-   state = init,
-   action: { type: string; payload: AuthPayload | any }
-): AuthState => {
+const authReducer = (state = init, action: { type: string; payload: AuthPayload | any }): AuthState => {
    switch (action.type) {
       case AUTH_ACTION.SIGN_IN:
       case AUTH_ACTION.SIGN_OUT:

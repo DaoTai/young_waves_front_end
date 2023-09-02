@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Stack, Typography, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChatContext } from "../../../../Contexts";
+import { ChatContext } from "../../../../Contexts/contexts";
 import { FormatConversation } from "../../../../utils/interfaces/Chat";
 import ListData from "./Container";
 const Conversations = ({ onClose }: { onClose: () => void }) => {
