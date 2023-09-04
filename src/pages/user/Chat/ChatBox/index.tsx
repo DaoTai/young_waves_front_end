@@ -49,7 +49,7 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
           {/* Heading */}
           <Heading>
             {/* Link to profile */}
-            <Link to={`/user/explore/${conversation.friend?._id}`}>
+            <Link to={`/user/explore/${conversation.idConversation}`}>
               <Stack flexDirection="row" alignItems="center" gap={2}>
                 <StyledBadge
                   overlap="circular"
@@ -68,9 +68,11 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
               </Stack>
             </Link>
 
+            {/* Đang gặp vấn đề về vite với webrtc */}
+            {/* 
             {isOnline && conversation.friend._id && (
-              <VideoStreamControl idFriend={conversation.friend._id} />
-            )}
+              <VideoStreamControl conversation={conversation} />
+            )} */}
             <Stack flexDirection="row" alignItems="center">
               {/* Hide button */}
               <ListItem onClick={toggleHide}>

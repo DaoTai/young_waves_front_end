@@ -19,4 +19,4 @@ export { default as Dialog } from "./Dialog";
 export { default as ChangeModeButton } from "./ChangeModeButton";
 export { default as AdminIcon } from "./AdminIcon";
 export { default as Textarea } from "./Textarea";
-export { default as VideoStreamControl } from "./VideoStreamControl";
+export { default as VideoStreamControl } from "./videoCall-components/VideoStreamControl";

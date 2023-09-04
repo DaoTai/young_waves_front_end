@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ChatContext as IChatContext } from "../../utils/interfaces/Contexts";
+import { IChatContext, IVideoCallChatContext } from "../../utils/interfaces/Contexts";
 
 export const ChatContext = createContext<IChatContext>({
   socket: undefined,
@@ -8,3 +8,5 @@ export const ChatContext = createContext<IChatContext>({
   handleShowChatBox: () => {},
   handleUpdateLastestMsg: () => {},
 });
+
+export const VideoCallContext = createContext<Partial<IVideoCallChatContext>>({});

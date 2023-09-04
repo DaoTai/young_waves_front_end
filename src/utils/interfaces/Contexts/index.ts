@@ -1,7 +1,8 @@
-import { Dispatch, MutableRefObject, SetStateAction } from "react";
-import { FormatConversation, SendMessage } from "../../interfaces/Chat";
+import Peer from "simple-peer";
 import { Socket } from "socket.io-client";
-export interface ChatContext {
+import { FormatConversation, SendMessage } from "../../interfaces/Chat";
+import { Profile } from "../Profile";
+export interface IChatContext {
   socket: Socket | undefined;
   updatedConversation: SendMessage | undefined;
   onlineIdUsers: string[];
@@ -9,26 +10,12 @@ export interface ChatContext {
   handleUpdateLastestMsg: (data: SendMessage) => void;
 }
 
-export interface ICall {
-  isReceivingCall: boolean;
-  from: any;
-  name: any;
-  signal: any;
-}
-
-export interface VideoStreamContext {
-  openStream: boolean;
-  callAccepted: boolean;
-  callEnded: boolean;
-  myVideo: MutableRefObject<HTMLVideoElement | null>;
-  friendVideo: MutableRefObject<HTMLVideoElement | null>;
-  call: ICall | undefined;
-  stream: MediaStream | undefined;
-  name: string;
-  me: string;
-  setName: Dispatch<SetStateAction<string>>;
-  handleOnStream: () => void;
-  callUser: any;
-  leaveCall: any;
-  answerCall: any;
+export interface IVideoCallChatContext {
+  isInviting: boolean;
+  isAccept: boolean;
+  friend: Partial<Profile>;
+  friendSignal: Peer.SignalData | string;
+  setFriend: (value: Partial<Profile>) => void;
+  onAccept: () => void;
+  onDeny: () => void;
 }
