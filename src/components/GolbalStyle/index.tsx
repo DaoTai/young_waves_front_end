@@ -6,7 +6,13 @@ const GlobalStyle = () => {
       styles={(theme) => ({
         html: {
           scrollBehavior: "smooth",
-          // overflow: "overlay",
+        },
+        body: {
+          fontFamily: "'Poppins', sans-serif",
+          lineHeight: 1.5,
+          textRendering: "optimizeSpeed",
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
         },
         "html *::-webkit-scrollbar": {
           borderRadius: 0,
@@ -19,13 +25,6 @@ const GlobalStyle = () => {
         "html *::-webkit-scrollbar-track ": {
           borderRadius: 0,
           backgroundColor: "rgba(0, 0, 0, 0)",
-        },
-        body: {
-          fontFamily: "'Poppins', sans-serif",
-          lineHeight: 1.5,
-          textRendering: "optimizeSpeed",
-          backgroundColor: theme.palette.background.default,
-          color: theme.palette.text.primary,
         },
         a: {
           color: theme.palette.link.main,

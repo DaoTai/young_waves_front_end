@@ -9,48 +9,58 @@ import dateFormat from "dateformat";
 import { memo } from "react";
 import { Profile } from "../../../../utils/interfaces/Profile";
 const Introduction = ({ user }: { user: Partial<Profile> }) => {
-   const theme = useTheme();
-   return (
-      <Box p={1} boxShadow={1} borderRadius={2} bgcolor={theme.palette.white.main}>
-         <Typography variant="h5" textAlign="center" p={1} borderBottom={1}>
-            Introduction
-         </Typography>
-         <Stack flexDirection="row" alignItems="center" p={1}>
-            {user?.gender?.toLowerCase() !== "other" && (
-               <>
-                  {user?.gender?.toLowerCase() === "male" ? <MaleIcon /> : <FemaleIcon />}
-                  <Typography variant="body1" component="span" pl={1}>
-                     Gender: {user?.gender?.toLowerCase()}
-                  </Typography>
-               </>
+  const theme = useTheme();
+  return (
+    <Box
+      p={1}
+      boxShadow={1}
+      borderRadius={2}
+      bgcolor={theme.palette.white.main}
+      sx={{ position: "sticky", top: "80px" }}
+    >
+      <Typography variant="h5" textAlign="center" p={1} borderBottom={1}>
+        Introduction
+      </Typography>
+      <Stack flexDirection="row" alignItems="center" p={1}>
+        {user?.gender?.toLowerCase() !== "other" && (
+          <>
+            {user?.gender?.toLowerCase() === "male" ? (
+              <MaleIcon />
+            ) : (
+              <FemaleIcon />
             )}
-         </Stack>
-         <Stack flexDirection="row" alignItems="center" p={1}>
-            <CakeIcon />
             <Typography variant="body1" component="span" pl={1}>
-               Birthday: {user?.dob}
+              Gender: {user?.gender?.toLowerCase()}
             </Typography>
-         </Stack>
-         <Stack flexDirection="row" alignItems="center" p={1}>
-            <HandshakeIcon />
-            <Typography variant="body1" component="span" pl={1}>
-               Joined from: {dateFormat(user?.createdAt, " mmmm dS, yyyy")}
-            </Typography>
-         </Stack>
-         <Stack flexDirection="row" alignItems="center" p={1}>
-            <LocationOnIcon />
-            <Typography variant="body1" component="span" pl={1}>
-               City: {user?.city}
-            </Typography>
-         </Stack>
-         <Stack flexDirection="row" alignItems="center" p={1}>
-            <PublicIcon />
-            <Typography variant="body1" component="span" pl={1}>
-               Region: {user?.region}
-            </Typography>
-         </Stack>
-      </Box>
-   );
+          </>
+        )}
+      </Stack>
+      <Stack flexDirection="row" alignItems="center" p={1}>
+        <CakeIcon />
+        <Typography variant="body1" component="span" pl={1}>
+          Birthday: {user?.dob}
+        </Typography>
+      </Stack>
+      <Stack flexDirection="row" alignItems="center" p={1}>
+        <HandshakeIcon />
+        <Typography variant="body1" component="span" pl={1}>
+          Joined from: {dateFormat(user?.createdAt, " mmmm dS, yyyy")}
+        </Typography>
+      </Stack>
+      <Stack flexDirection="row" alignItems="center" p={1}>
+        <LocationOnIcon />
+        <Typography variant="body1" component="span" pl={1}>
+          City: {user?.city}
+        </Typography>
+      </Stack>
+      <Stack flexDirection="row" alignItems="center" p={1}>
+        <PublicIcon />
+        <Typography variant="body1" component="span" pl={1}>
+          Region: {user?.region}
+        </Typography>
+      </Stack>
+    </Box>
+  );
 };
 
 export default memo(Introduction);

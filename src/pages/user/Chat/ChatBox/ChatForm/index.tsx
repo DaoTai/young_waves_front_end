@@ -1,7 +1,22 @@
 import SendIcon from "@mui/icons-material/Send";
-import { Box, Fab, Grid, Stack, TextField, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Fab,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import dateformat from "dateformat";
-import { ChangeEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatContext } from "../../../../../Contexts/contexts";
@@ -10,7 +25,10 @@ import { CloseButton, ImageInput, Textarea } from "../../../../../components";
 import { showAlert } from "../../../../../redux-saga/redux/actions";
 import { authState$ } from "../../../../../redux-saga/redux/selectors";
 import { Attachment } from "../../../../../utils/interfaces/Attachment";
-import { FormatConversation, Message as IMessage } from "../../../../../utils/interfaces/Chat";
+import {
+  FormatConversation,
+  Message as IMessage,
+} from "../../../../../utils/interfaces/Chat";
 import { Body, Footer, WrapAttachments, WrapperChat } from "../styles";
 import Message from "./Message";
 
@@ -182,7 +200,9 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
 
   // Remove preview attachments
   const handleRemoveAttachments = (attachment: Attachment) => {
-    const newAttachments = attachments.filter((attach) => attach.url !== attachment.url);
+    const newAttachments = attachments.filter(
+      (attach) => attach.url !== attachment.url
+    );
     setAttachments(newAttachments);
     URL.revokeObjectURL(attachment.url);
   };
@@ -192,17 +212,25 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
       {/* Body */}
       <Body ref={bodyRef}>
         {messages.length === 0 ? (
-          <Typography variant="body1" component="h6" textAlign="center" height="100%">
+          <Typography
+            variant="body1"
+            component="h6"
+            textAlign="center"
+            height="100%"
+          >
             You don't have message. <br /> Let's chat together
           </Typography>
         ) : (
           <InfiniteScroll
+            height={"100%"}
             style={{
               display: "flex",
               flexDirection: "column-reverse",
+              gap: 8,
+              height: "100%",
             }}
             inverse={true}
-            height={"100%"}
+            scrollableTarget="scrollableDiv"
             dataLength={messages.length}
             hasMore={hasMore}
             next={fetchMoreData}
@@ -253,7 +281,10 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
               {attachments.map((attach, index) => (
                 <Box key={attach.url + index} position="relative">
                   <img width="100%" height="100%" src={attach.url} />
-                  <CloseButton size="small" onClick={() => handleRemoveAttachments(attach)} />
+                  <CloseButton
+                    size="small"
+                    onClick={() => handleRemoveAttachments(attach)}
+                  />
                 </Box>
               ))}
             </WrapAttachments>

@@ -1,6 +1,13 @@
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Avatar, Divider, ListItem, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  Divider,
+  ListItem,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { memo, useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChatContext } from "../../../../Contexts/contexts";
@@ -14,7 +21,9 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
   const location = useLocation();
   const chatContext = useContext(ChatContext);
   const [hide, setHide] = useState<boolean>(false);
-  const isOnline = chatContext.onlineIdUsers?.includes(conversation.friend._id as string);
+  const isOnline = chatContext.onlineIdUsers?.includes(
+    conversation.friend._id as string
+  );
   const toggleHide = () => setHide(!hide);
 
   useEffect(() => {
@@ -45,7 +54,7 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
   return (
     <>
       {!!conversation.idConversation && (
-        <MyChatBox>
+        <MyChatBox sx={{ borderRadius: 4, overflow: "hidden" }}>
           {/* Heading */}
           <Heading>
             {/* Link to profile */}
@@ -62,7 +71,12 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
                     src={conversation.friend?.avatar}
                   />
                 </StyledBadge>
-                <Typography component="span" textOverflow="ellipsis" width={100} flex={2}>
+                <Typography
+                  component="span"
+                  textOverflow="ellipsis"
+                  width={100}
+                  flex={2}
+                >
                   {conversation.friend?.fullName}
                 </Typography>
               </Stack>
@@ -79,7 +93,9 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
                 <RemoveIcon />
               </ListItem>
               {/* Close button */}
-              <ListItem onClick={() => onClose(conversation.idConversation as string)}>
+              <ListItem
+                onClick={() => onClose(conversation.idConversation as string)}
+              >
                 <CloseIcon />
               </ListItem>
             </Stack>

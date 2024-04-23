@@ -4,13 +4,12 @@ export const MyChatBox = styled(Stack)(({ theme }) => ({
   position: "relative",
   zIndex: 10,
   width: "330px",
-  height: "75vh",
+  height: "60vh",
   paddingTop: 50,
   borderRadius: 4,
   boxShadow: theme.shadows[2],
   border: "1px solid #ccc",
   backgroundColor: theme.palette.white.main,
-  overflow: "hidden",
 }));
 
 export const Heading = styled(Stack)(({ theme }) => ({

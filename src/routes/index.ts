@@ -12,7 +12,6 @@ import {
   TrashPosts,
   TrashDetail,
   ChatPage,
-  VideoCall,
 } from "../pages/user";
 import Route from "./interface";
 
@@ -75,10 +74,6 @@ const userRoutes: Array<Route> = [
       {
         path: "",
         component: ChatPage,
-      },
-      {
-        path: "video-call/:idConversation",
-        component: VideoCall,
       },
     ],
   },

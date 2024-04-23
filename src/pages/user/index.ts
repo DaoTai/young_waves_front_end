@@ -11,4 +11,3 @@ export { default as OwnerImages } from "./Profile/OwnerImages";
 export { default as TrashPosts } from "./Trash/Posts";
 export { default as Friends } from "./Profile/Friends";
 export { default as ChatPage } from "./Chat/Page";
-export { default as VideoCall } from "./Chat/VideoCall";

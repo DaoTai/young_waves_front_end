@@ -1,4 +1,11 @@
-import { Box, Button, Divider, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatContext } from "../../../../Contexts/contexts";
@@ -18,10 +25,15 @@ const Conversations = ({ onClose }: { onClose: () => void }) => {
     onClose();
   };
   return (
-    <Box p={2} minWidth="360px" maxHeight="70vh" overflow="auto">
+    <Box p={2} minWidth="360px" maxHeight="70vh" sx={{ overflowY: "overlay" }}>
       {/* Heading */}
       <Box mb={1}>
-        <Stack mb={1} flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          mb={1}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Typography variant="h5" fontWeight={700}>
             Chat
           </Typography>
