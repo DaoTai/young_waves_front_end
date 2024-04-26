@@ -54,11 +54,17 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
   return (
     <>
       {!!conversation.idConversation && (
-        <MyChatBox sx={{ borderRadius: 4, overflow: "hidden" }}>
+        <MyChatBox
+          sx={{
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+            overflow: "hidden",
+          }}
+        >
           {/* Heading */}
           <Heading>
             {/* Link to profile */}
-            <Link to={`/user/explore/${conversation.idConversation}`}>
+            <Link to={`/user/explore/${conversation.friend._id}`}>
               <Stack flexDirection="row" alignItems="center" gap={2}>
                 <StyledBadge
                   overlap="circular"
@@ -66,7 +72,15 @@ const ChatBox = ({ conversation, onClose = () => {} }: ChatBoxWrapperProps) => {
                   variant={isOnline ? "dot" : "standard"}
                 >
                   <Avatar
-                    sx={{ width: 42, height: 42 }}
+                    sx={{
+                      width: 42,
+                      height: 42,
+                      border: 1,
+                      img: {
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      },
+                    }}
                     alt={conversation.friend?.fullName}
                     src={conversation.friend?.avatar}
                   />

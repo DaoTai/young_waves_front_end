@@ -266,7 +266,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
       )}
       {/* Footer */}
 
-      <Footer flexDirection={"row"} gap={2} p={1}>
+      <Footer flexDirection={"row"} alignItems="center" p={1}>
         <ImageInput width={40} height={40} multiple onChange={getAttachments} />
         {/* Chat input */}
         <Stack
@@ -295,6 +295,7 @@ const ChatFrame = ({ conversation }: { conversation: FormatConversation }) => {
             spellCheck={false}
             value={message}
             onChange={onInputMsg}
+            sx={{ p: 1 }}
             onKeyDown={(e) => e.key === "Enter" && handleSendMsg()}
           />
         </Stack>

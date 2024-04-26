@@ -149,6 +149,7 @@ export const Footer = styled(Stack)(({ theme }) => ({
   zIndex: 10,
   "#form-chat": {
     maxHeight: 100,
+    padding: 12,
     fontSize: 14,
     color: theme.palette.text.primary,
     fontFamily: "inherit",
